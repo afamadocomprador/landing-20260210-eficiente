@@ -26,7 +26,6 @@ export const metadata: Metadata = {
   verification: {
     google: 'ZcZv1ys4X1ftnI0uYOf6EfLkxGXAUsuaiK_9h1DaRv0', // Tu código de Search Console
   },
-  
 };
 
 export default function RootLayout({
@@ -38,7 +37,9 @@ export default function RootLayout({
     <html lang="es" className="scroll-smooth">
       <head>
         {/* 1. GOOGLE CONSENT MODE v2 (CRÍTICO - LEGALIDAD) */}
-        <Script id="google-consent-mode" strategy="beforeInteractive">
+        {/* <Script id="google-consent-mode" strategy="beforeInteractive"> */}
+        {/*  lo cambiamos a afterInteractive para que se dibuje todo antes */}
+        <Script id="google-consent-mode" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
@@ -72,6 +73,4 @@ export default function RootLayout({
       </body>
     </html>
   );
-
 }
-
