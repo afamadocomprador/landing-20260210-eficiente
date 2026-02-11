@@ -25,6 +25,7 @@ export default function FixedBreadcrumb({ items }: FixedBreadcrumbProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Efecto Auto-scroll al final
   useEffect(() => {
     if (navRef.current && items && items.length > 0) {
       requestAnimationFrame(() => {
@@ -39,7 +40,7 @@ export default function FixedBreadcrumb({ items }: FixedBreadcrumbProps) {
 
   return (
     <div
-      role="navigation" // SEO: Para que Lighthouse lo identifique
+      role="navigation"
       aria-label="Breadcrumb"
       className={`
         fixed left-0 w-full z-[1015] 
@@ -50,32 +51,40 @@ export default function FixedBreadcrumb({ items }: FixedBreadcrumbProps) {
         ${isScrolled ? "top-[70px]" : "top-[110px]"} 
       `}
     >
-      <div
-        ref={navRef}
-        className="
-          flex items-center gap-2 px-6 py-1
-          overflow-x-auto    
-          scrollbar-hide     
-          mask-linear-fade   
-          pr-8               
-        "
-      >
-        {/* ÚNICO CAMBIO LIGHTHOUSE: Tamaño 14px y Gris oscuro */}
-        <div className="flex items-center gap-2 shrink-0 font-fsme text-[14px] uppercase tracking-wider font-bold text-gray-600">
+      <div className="container mx-auto">
+        <nav 
+          ref={navRef}
+          aria-label="Breadcrumb"
+          className="
+            flex items-center justify-start gap-2 
+            text-sm text-gray-500 font-fsme uppercase tracking-wider 
+            whitespace-nowrap
+            overflow-x-auto    
+            scrollbar-hide     
+            mask-linear-fade   
+            pr-8               
+          "
+        >
+          {/* ENLACE BASE: DENTISTAS (Antes Inicio) */}
           <Link 
             href="/" 
             className="hover:text-dkv-green flex items-center gap-1 transition-colors shrink-0"
           >
-            <Home className="w-4 h-4" aria-hidden="true" /> 
-            <span>Dentistas</span>
+            <Home className="w-3 h-3" /> 
+            {/* Texto cambiado aquí */}
+            <span className="sr-only">Dentistas</span> 
+            <span aria-hidden="true">Dentistas</span>
           </Link>
           
           {items.map((item, index) => {
             const isLast = index === items.length - 1;
 
             return (
-              <div key={item.href} className="flex items-center gap-2 shrink-0">
-                <ChevronRight className="w-4 h-4 text-gray-400" aria-hidden="true" />
+              <div 
+                key={item.href} 
+                className="flex items-center gap-2 shrink-0"
+              >
+                <ChevronRight className="w-3 h-3 text-gray-600" />
                 
                 <Link
                   href={item.href}
@@ -83,7 +92,7 @@ export default function FixedBreadcrumb({ items }: FixedBreadcrumbProps) {
                   className={`
                     transition-colors
                     ${isLast 
-                      ? "text-dkv-green-dark font-black pointer-events-none" 
+                      ? "text-dkv-green-dark font-bold pointer-events-none cursor-default" 
                       : "hover:text-dkv-green"
                     }
                   `}
@@ -93,7 +102,7 @@ export default function FixedBreadcrumb({ items }: FixedBreadcrumbProps) {
               </div>
             );
           })}
-        </div>
+        </nav>
       </div>
     </div>
   );
