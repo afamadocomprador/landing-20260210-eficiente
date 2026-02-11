@@ -54,24 +54,13 @@ export default function MainHero() {
             */}
             <div className="relative w-full h-full bg-neutral-100 flex items-center justify-center">
                <Image
-                //src="/images/hero-dkv.png"
-                src="/images/hero-dkv.webp"
-                alt="Cliente feliz DKV Dentisalud"
-                fill
-                className="object-cover"
-                priority
-                // sizes="(max-width: 768px) 100vw, 50vw"
-                // ⚠️ CAMBIO CRÍTICO AQUÍ:
-                // Le decimos explícitamente: "En pantallas de móvil (hasta 640px), la imagen NUNCA pasará de 400px de ancho".
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 450px"
-                /* se suprime al quitar "use client"
-                  onError={(e) => {
-                      // Fallback elegante si la imagen no existe aún
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
-                  }}
-                */
-              />
+  src="/images/hero-dkv.webp"
+  alt="Cliente feliz DKV Dentisalud"
+  fill
+  className="object-cover"
+  priority
+  unoptimized={true} // <--- La llave maestra
+/>
             </div>
           </div>
 
