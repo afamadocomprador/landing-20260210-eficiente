@@ -54,7 +54,8 @@ export default function MainHero() {
             */}
             <div className="relative w-full h-full bg-neutral-100 flex items-center justify-center">
                <Image
-                src="/images/hero-dkv.png"
+                //src="/images/hero-dkv.png"
+                src="/images/hero-dkv.webp"
                 alt="Cliente feliz DKV Dentisalud"
                 fill
                 className="object-cover"
