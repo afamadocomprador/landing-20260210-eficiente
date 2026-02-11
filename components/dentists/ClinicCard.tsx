@@ -1,22 +1,16 @@
+// components/dentists/ClinicCard.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, KeyboardEvent } from "react";
 import { Clinic } from "@/types/database";
 import { MapPin, Phone, Users, ArrowRight, Plus, Minus } from "lucide-react";
-import { formatPhoneNumber } from "@/lib/text-formatter"; // Importamos tu utilidad
+import { formatPhoneNumber } from "@/lib/text-formatter";
 
-// Extendemos el tipo Clinic para incluir los campos que inyectamos en el servidor
+// Extendemos el tipo localmente para asegurar compatibilidad
 interface ExtendedClinic extends Clinic {
- /*
   staff_names?: string[];
   zip_code?: string;
- */
-  // Aquí puedes poner propiedades que calcules TÚ en el código React/Node
-  // y que NO vengan de la base de datos.
-  
-  distance_km?: number;         // Ejemplo: Distancia calculada al usuario
-  formatted_phone?: string;     // Ejemplo: Teléfono formateado bonito
-  
+  staff_count?: number;
 }
 
 interface ClinicCardProps {
@@ -27,39 +21,52 @@ interface ClinicCardProps {
 export default function ClinicCard({ clinic, onSelectClinic }: ClinicCardProps) {
   const [showStaff, setShowStaff] = useState(false);
 
+  // Manejador para que la tarjeta sea accesible mediante teclado
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onSelectClinic(clinic.clinic_id);
+    }
+  };
+
   return (
-    <div 
+    <article 
+      role="button"
+      tabIndex={0}
       onClick={() => onSelectClinic(clinic.clinic_id)}
-      className="group bg-white p-6 rounded-[28px] border border-gray-100 hover:border-dkv-green/40 hover:shadow-[0_12px_40px_rgba(0,0,0,0.1)] transition-all cursor-pointer relative overflow-hidden"
+      onKeyDown={handleKeyDown}
+      aria-label={`Ver detalles y ubicación de ${clinic.name}`}
+      className="group bg-white p-6 rounded-[28px] border border-gray-100 hover:border-dkv-green/40 hover:shadow-[0_12px_40px_rgba(0,0,0,0.1)] transition-all cursor-pointer relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-dkv-green"
     >
-      {/* Línea lateral de marca */}
-      <div className="absolute left-0 top-0 bottom-0 w-2 bg-dkv-green transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300" />
+      {/* Indicador visual lateral */}
+      <div className="absolute left-0 top-0 bottom-0 w-2 bg-dkv-green transform -translate-x-full group-hover:translate-y-0 group-hover:translate-x-0 transition-transform duration-300" aria-hidden="true" />
 
       <div className="flex flex-col sm:flex-row justify-between items-start gap-6">
         <div className="flex-1 min-w-0 w-full">
           
-          {/* 1. BADGE "ÉLITE" */}
+          {/* Badge de Centro Propio */}
           {clinic.is_propio && (
             <div className="mb-3">
               <span className="bg-dkv-green text-white text-[10px] font-bold px-3 py-1 rounded-lg uppercase tracking-wide shadow-sm">
-                Centro Élite
+                Centro Élite DKV
               </span>
             </div>
           )}
 
-          {/* 2. TÍTULO DEL CENTRO */}
           <h3 className="font-lemon text-dkv-green-dark text-lg md:text-xl leading-tight mb-3 group-hover:text-dkv-green transition-colors">
             {clinic.name}
           </h3>
 
-          {/* 3. ETIQUETA DE DENTISTAS */}
-          {clinic.staff_count > 0 && (
+          {/* Acordeón de Especialistas */}
+          {(clinic.staff_count ?? 0) > 0 && (
             <div className="mb-4">
               <button 
                 onClick={(e) => {
-                  e.stopPropagation(); 
+                  e.stopPropagation(); // Evita que se dispare el onSelectClinic del padre
                   setShowStaff(!showStaff);
                 }}
+                aria-expanded={showStaff}
+                aria-label={showStaff ? "Ocultar lista de doctores" : "Ver lista de doctores especialistas"}
                 className={`
                   inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-all duration-300
                   ${showStaff 
@@ -68,71 +75,68 @@ export default function ClinicCard({ clinic, onSelectClinic }: ClinicCardProps) 
                   }
                 `}
               >
-                <Users className={`w-4 h-4 ${showStaff ? 'text-white' : 'text-dkv-green'}`} />
+                {/* SVG silenciado para accesibilidad */}
+                <Users className={`w-4 h-4 ${showStaff ? 'text-white' : 'text-dkv-green'}`} aria-hidden="true" />
                 <span>{clinic.staff_count} Especialistas</span>
-                {showStaff ? <Minus className="w-3.5 h-3.5 ml-1" /> : <Plus className="w-3.5 h-3.5 ml-1 animate-pulse" />}
+                {showStaff ? <Minus className="w-3.5 h-3.5 ml-1" aria-hidden="true" /> : <Plus className="w-3.5 h-3.5 ml-1" aria-hidden="true" />}
               </button>
 
-              {/* ACORDEÓN DE DENTISTAS */}
               <div className={`
                 overflow-hidden transition-all duration-500 ease-in-out
                 ${showStaff ? 'max-h-[500px] opacity-100 mt-3 mb-2' : 'max-h-0 opacity-0'}
               `}>
                 <div className="bg-gray-50/80 rounded-xl p-4 border border-dashed border-gray-200">
-                  <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-3">Equipo Médico disponible:</p>
+                  <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-3">Equipo Médico:</p>
                   <ul className="grid grid-cols-1 gap-y-2">
-                    {clinic.staff_names && clinic.staff_names.length > 0 ? (
-                      clinic.staff_names.map((doctor, i) => (
-                        <li key={i} className="flex items-center gap-2 text-sm text-gray-700 font-fsme">
-                          <div className="w-1.5 h-1.5 rounded-full bg-dkv-green"></div>
-                          {doctor}
-                        </li>
-                      ))
-                    ) : (
-                      <li className="text-sm text-gray-400 italic">Lista disponible en el centro</li>
-                    )}
+                    {clinic.staff_names?.map((doctor: string, i: number) => (
+                      <li key={i} className="flex items-center gap-2 text-sm text-gray-700 font-fsme">
+                        <div className="w-1.5 h-1.5 rounded-full bg-dkv-green" aria-hidden="true"></div>
+                        {doctor}
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>
             </div>
           )}
           
-          {/* 4. DIRECCIÓN */}
+          {/* Ubicación */}
           <div className="flex items-start gap-3 mb-6">
-            <div className="w-10 h-10 rounded-full bg-dkv-green/5 flex items-center justify-center shrink-0 mt-0.5">
+            <div className="w-10 h-10 rounded-full bg-dkv-green/5 flex items-center justify-center shrink-0 mt-0.5" aria-hidden="true">
                 <MapPin className="w-5 h-5 text-dkv-green" />
             </div>
             <div className="flex flex-col font-fsme leading-tight">
               <span className="text-gray-800 font-bold text-base md:text-lg mb-0.5">{clinic.address}</span>
-              <span className="text-gray-500 font-medium text-sm md:text-base">
+              {/* ACCESIBILIDAD: text-gray-600 para asegurar ratio de contraste 4.5:1 */}
+              <span className="text-gray-600 font-medium text-sm md:text-base">
                 {clinic.zip_code || ""} {clinic.city}
               </span>
             </div>
           </div>
 
-          {/* 5. BOTÓN TELÉFONO ACTUALIZADO */}
+          {/* Botón de Teléfono */}
           <div className="flex items-center">
             {clinic.phone && (
               <a 
-                href={`tel:${clinic.phone.toString().replace(/\D/g, "")}`} // Limpio para el sistema
+                href={`tel:${clinic.phone.toString().replace(/\D/g, "")}`}
                 onClick={(e) => e.stopPropagation()}
+                aria-label={`Llamar a la clínica ${clinic.name} al número ${clinic.phone}`}
                 className="flex items-center gap-3 px-6 py-3.5 bg-dkv-green-dark text-white rounded-2xl text-base font-bold shadow-md hover:bg-dkv-green transition-all active:scale-95"
               >
-                <Phone className="w-5 h-5" />
-                {/* Formateado 3-3-3 para el usuario */}
+                <Phone className="w-5 h-5" aria-hidden="true" />
                 <span>{formatPhoneNumber(clinic.phone)}</span>
               </a>
             )}
           </div>
         </div>
 
-        {/* FLECHA DECORATIVA */}
-        <div className="hidden sm:flex shrink-0 self-center">
+        {/* Flecha visual lateral */}
+        <div className="hidden sm:flex shrink-0 self-center" aria-hidden="true">
           <div className="w-14 h-14 rounded-full bg-gray-50 flex items-center justify-center text-dkv-green group-hover:bg-dkv-green group-hover:text-white transition-all shadow-sm border border-gray-100">
             <ArrowRight className="w-7 h-7" />
           </div>
         </div>
       </div>
-    </div>
+    </article>
   );
 }
