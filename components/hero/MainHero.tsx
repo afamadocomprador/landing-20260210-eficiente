@@ -1,11 +1,10 @@
-"use client";
-
 import React from "react";
 import Image from "next/image";
 
 /**
  * MainHero: Componente visual estático para la Landing Principal (Home).
  * Estilo: Basado en V1 (DKV Corporativo "Bonito").
+ * OPTIMIZACIÓN: Convertido a Server Component (RSC) para mejorar LCP.
  */
 export default function MainHero() {
   return (
