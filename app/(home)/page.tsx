@@ -1,51 +1,33 @@
 // app/(home)/page.tsx
 
-
 import React from 'react';
-import dynamic from 'next/dynamic'; // Para importación dinámica de "user cliente" en lazy-load
-import Link from 'next/link';   // OPTIMIZACIÓN: Navegación SPA
-import Image from 'next/image'; // OPTIMIZACIÓN: Gestión de imágenes/iconos
+import dynamic from 'next/dynamic'; 
+import Link from 'next/link';   
+import Image from 'next/image'; 
 import type { Metadata } from 'next';
 
 // --- IMPORTACIÓN DE COMPONENTES ---
-// Next.js maneja automáticamente si son Server o Client Components según su directiva interna.
-// Importaciones estáticas (Server Components) - SE CARGAN AL INSTANTE
-import Header from '@/components/layout/Header'; 
-import MainHero from '@/components/hero/MainHero'; // Ahora es Server Component (RSC)
-import PricingCards from '@/components/PricingCards'; // Probablemente Client Component
-import FooterLegal from '@/components/FooterLegal'; // Ahora es Server Component (RSC)
-import Archetypes from '@/components/Archetypes'; // Client Component (según tu código previo)
-// Estas dos son user cliente, por lo que se hace lazy-loading
-//import LeadForm from '@/components/LeadForm'; // Client Component (Manejo de estados del form)
-//import CookieBanner from '@/components/CookieBanner'; // Client Component (interacción de usuario)
+// Nota: Header eliminado de aquí porque ya se carga en layout.tsx
+import MainHero from '@/components/hero/MainHero'; 
+import PricingCards from '@/components/PricingCards'; 
+import FooterLegal from '@/components/FooterLegal'; 
+import Archetypes from '@/components/Archetypes'; 
 
-
-// Importaciones dinámicas (Client Components pesados)
-// Esto hace que el JS de estos componentes se descargue DESPUÉS de que la página ya es visible.
-
-
-
-// El formulario está abajo, no urge cargarlo en el primer milisegundo.
+// Importaciones dinámicas (Lazy Loading)
 const LeadForm = dynamic(() => import('@/components/LeadForm'), {
-  loading: () => <div className="h-96 bg-gray-100 animate-pulse rounded-xl"></div>, // Skeleton mientras carga
+  loading: () => <div className="h-96 bg-gray-100 animate-pulse rounded-xl"></div>, 
 });
 
-// El banner de cookies no es contenido crítico para el LCP.
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), {
-  ssr: false, // No renderizar en servidor (evita hydration mismatch con localStorage)
+  ssr: false, 
 });
 
-
-
-
-
-// --- 1. CONFIGURACIÓN SEO (Server Side) ---
-// Esto genera las etiquetas <meta> y <title> en el HTML inicial.
+// --- 1. CONFIGURACIÓN SEO ---
 export const metadata: Metadata = {
   title: 'DKV Dentisalud Élite | Seguro Dental con Precios Pactados',
   description: 'Contrata tu seguro dental DKV con hasta 40% de descuento. Implantes, ortodoncia y limpiezas gratuitas. Agente exclusivo Bernardo Sobrecasas.',
   alternates: {
-    canonical: 'https://midominio.com', // ⚠️ CAMBIAR por tu dominio real en producción
+    canonical: 'https://midominio.com', // Recuerda poner tu dominio real
   },
   openGraph: {
     title: 'Ahorra en tu dentista con DKV Dentisalud Élite',
@@ -58,14 +40,13 @@ export const metadata: Metadata = {
 };
 
 // --- 2. DATOS ESTRUCTURADOS (JSON-LD) ---
-// Schema.org para negocios locales/seguros.
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'InsuranceAgency',
   'name': 'DKV Dentisalud Élite - Bernardo Sobrecasas',
   'description': 'Agencia exclusiva de seguros dentales DKV en Zaragoza.',
   'url': 'https://midominio.com',
-  'telephone': '900 000 000', // ⚠️ Poner teléfono real
+  'telephone': '900 000 000', 
   'address': {
     '@type': 'PostalAddress',
     'addressLocality': 'Zaragoza',
@@ -77,23 +58,19 @@ const jsonLd = {
 
 export default function LandingPage() {
   return (
-    // Definimos la estructura base. 'selection' personaliza el color al seleccionar texto.
     <div className="min-h-screen bg-white text-dkv-gray selection:bg-dkv-green selection:text-white">
       
-      {/* Inyección de JSON-LD para Google */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
       <CookieBanner />
-      <Header />
       
       <main>
-        {/* HERO SECTION: Renderizado en servidor, carga inmediata (LCP optimizado) */}
         <MainHero /> 
 
-        {/* --- SECCIÓN TRATAMIENTOS --- */}
+        {/* --- SECCIÓN INTRODUCCIÓN (Sin ID de menú específico) --- */}
         <section className="py-20 bg-white border-t border-dkv-gray-border">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-4xl font-lemon text-dkv-green-dark mb-6">
@@ -103,7 +80,6 @@ export default function LandingPage() {
               Numerosos servicios dentales gratuitos y resto a precios muy inferiores a mercado.
             </p>
             
-            {/* OPTIMIZACIÓN: Usamos Link para navegación interna rápida */}
             <Link 
               href="/tratamientos"
               className="inline-flex items-center justify-center rounded-dkv font-fsme font-bold duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-dkv-green text-white hover:bg-dkv-green-hover focus:ring-dkv-green shadow-xl hover:scale-105 transition-transform text-lg px-8 py-6 h-auto cursor-pointer"
@@ -117,8 +93,11 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* --- SECCIÓN DENTISTAS --- */}
-        <section className="py-20 bg-white border-t border-dkv-gray-border">
+        {/* --- SECCIÓN DENTISTAS (ID Menú: #dentistas) --- */}
+        <section 
+          id="dentistas" 
+          className="py-20 bg-white border-t border-dkv-gray-border scroll-mt-28"
+        >
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-4xl font-lemon text-dkv-green-dark mb-6">
               Dentistas.
@@ -128,12 +107,10 @@ export default function LandingPage() {
               Seguro que tienes uno cerca de ti.
             </p>
             
-            {/* OPTIMIZACIÓN: Link + Image para el icono */}
             <Link 
               href="/dentistas"
               className="inline-flex items-center justify-center rounded-dkv font-fsme font-bold duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-dkv-green text-white hover:bg-dkv-green-hover focus:ring-dkv-green disabled:bg-dkv-gray-disabled shadow-xl hover:scale-105 transition-transform gap-3 text-lg px-8 py-6 h-auto"
             >
-              {/* Icono optimizado: carga lazy, tamaño definido */}
               <Image 
                 alt="Ubicación" 
                 width={28} 
@@ -150,15 +127,15 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* --- COMPONENTES INTERACTIVOS (ISLAS) --- */}
-        {/* Estos componentes se hidratarán en el cliente independientemente */}
-        <div id="ventajas">
+        {/* --- TARJETAS DE PRECIOS (ID Menú: #tratamientos) --- */}
+        <div id="tratamientos" className="scroll-mt-28">
           <PricingCards />
         </div>
         
+        {/* --- FORMULARIO (ID Menú: #información) --- */}
         <section 
-          id="presupuesto" 
-          className="py-20 bg-dkv-gray-border border-y border-dkv-gray/10 scroll-mt-20"
+          id="información" 
+          className="py-20 bg-dkv-gray-border border-y border-dkv-gray/10 scroll-mt-28"
         >
            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -172,10 +149,7 @@ export default function LandingPage() {
               </div>
               
               <div className="relative">
-                 {/* Efecto visual de fondo (CSS puro) */}
                  <div className="absolute -inset-4 bg-dkv-green/5 rounded-xl blur-lg -z-10"></div>
-                 
-                 {/* El formulario es interactivo ('use client'), pero vive feliz aquí */}
                  <LeadForm />
               </div>
             </div>
@@ -184,7 +158,7 @@ export default function LandingPage() {
 
         <section className="py-16 bg-white">
            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-             {/* Espacio reservado para logos o sellos de calidad */}
+             {/* Espacio para logos si se necesita */}
            </div>
         </section>
 
