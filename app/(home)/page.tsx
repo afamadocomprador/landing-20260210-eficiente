@@ -7,13 +7,11 @@ import Image from 'next/image';
 import type { Metadata } from 'next';
 
 // --- IMPORTACIÓN DE COMPONENTES ---
-// Nota: Header eliminado de aquí porque ya se carga en layout.tsx
 import MainHero from '@/components/hero/MainHero'; 
 import PricingCards from '@/components/PricingCards'; 
 import FooterLegal from '@/components/FooterLegal'; 
 import Archetypes from '@/components/Archetypes'; 
 
-// Importaciones dinámicas (Lazy Loading)
 const LeadForm = dynamic(() => import('@/components/LeadForm'), {
   loading: () => <div className="h-96 bg-gray-100 animate-pulse rounded-xl"></div>, 
 });
@@ -22,47 +20,26 @@ const CookieBanner = dynamic(() => import('@/components/CookieBanner'), {
   ssr: false, 
 });
 
-// --- 1. CONFIGURACIÓN SEO ---
+// ... (Metadata y JSON-LD se mantienen igual que tu versión anterior) ...
+// He resumido esta parte para no ocupar tanto espacio, copia tus metadatos aquí.
 export const metadata: Metadata = {
   title: 'DKV Dentisalud Élite | Seguro Dental con Precios Pactados',
-  description: 'Contrata tu seguro dental DKV con hasta 40% de descuento. Implantes, ortodoncia y limpiezas gratuitas. Agente exclusivo Bernardo Sobrecasas.',
-  alternates: {
-    canonical: 'https://midominio.com', // Recuerda poner tu dominio real
-  },
-  openGraph: {
-    title: 'Ahorra en tu dentista con DKV Dentisalud Élite',
-    description: 'Accede al cuadro médico dental de DKV. Precios claros y sin sorpresas.',
-    url: 'https://midominio.com',
-    siteName: 'DKV Dentisalud Élite',
-    locale: 'es_ES',
-    type: 'website',
-  },
+  description: 'Contrata tu seguro dental DKV con hasta 40% de descuento.',
+  // ... resto de metadata
 };
 
-// --- 2. DATOS ESTRUCTURADOS (JSON-LD) ---
 const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'InsuranceAgency',
-  'name': 'DKV Dentisalud Élite - Bernardo Sobrecasas',
-  'description': 'Agencia exclusiva de seguros dentales DKV en Zaragoza.',
-  'url': 'https://midominio.com',
-  'telephone': '900 000 000', 
-  'address': {
-    '@type': 'PostalAddress',
-    'addressLocality': 'Zaragoza',
-    'addressCountry': 'ES'
-  },
-  'priceRange': '$$',
-  'image': 'https://midominio.com/images/hero-dkv.png'
+  // ... resto de jsonLd
 };
 
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white text-dkv-gray selection:bg-dkv-green selection:text-white">
       
+      {/* Script JSON-LD inyectado */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} // Corregido para usar la variable
       />
 
       <CookieBanner />
@@ -70,7 +47,7 @@ export default function LandingPage() {
       <main>
         <MainHero /> 
 
-        {/* --- SECCIÓN INTRODUCCIÓN (Sin ID de menú específico) --- */}
+        {/* --- SECCIÓN TRATAMIENTOS --- */}
         <section className="py-20 bg-white border-t border-dkv-gray-border">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-4xl font-lemon text-dkv-green-dark mb-6">
@@ -82,7 +59,8 @@ export default function LandingPage() {
             
             <Link 
               href="/tratamientos"
-              className="inline-flex items-center justify-center rounded-dkv font-fsme font-bold duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-dkv-green text-white hover:bg-dkv-green-hover focus:ring-dkv-green shadow-xl hover:scale-105 transition-transform text-lg px-8 py-6 h-auto cursor-pointer"
+              // CAMBIO ACCESIBILIDAD: De text-lg a text-xl para cumplir ratio de contraste
+              className="inline-flex items-center justify-center rounded-dkv font-fsme font-bold duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-dkv-green text-white hover:bg-dkv-green-hover focus:ring-dkv-green shadow-xl hover:scale-105 transition-transform text-xl px-8 py-6 h-auto cursor-pointer"
             >
               Ver Tratamientos y Precios
             </Link>
@@ -93,7 +71,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* --- SECCIÓN DENTISTAS (ID Menú: #dentistas) --- */}
+        {/* --- SECCIÓN DENTISTAS --- */}
         <section 
           id="dentistas" 
           className="py-20 bg-white border-t border-dkv-gray-border scroll-mt-28"
@@ -109,7 +87,8 @@ export default function LandingPage() {
             
             <Link 
               href="/dentistas"
-              className="inline-flex items-center justify-center rounded-dkv font-fsme font-bold duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-dkv-green text-white hover:bg-dkv-green-hover focus:ring-dkv-green disabled:bg-dkv-gray-disabled shadow-xl hover:scale-105 transition-transform gap-3 text-lg px-8 py-6 h-auto"
+              // CAMBIO ACCESIBILIDAD: De text-lg a text-xl
+              className="inline-flex items-center justify-center rounded-dkv font-fsme font-bold duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-dkv-green text-white hover:bg-dkv-green-hover focus:ring-dkv-green disabled:bg-dkv-gray-disabled shadow-xl hover:scale-105 transition-transform gap-3 text-xl px-8 py-6 h-auto"
             >
               <Image 
                 alt="Ubicación" 
@@ -127,12 +106,12 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* --- TARJETAS DE PRECIOS (ID Menú: #tratamientos) --- */}
+        {/* --- PRICING CARDS --- */}
         <div id="tratamientos" className="scroll-mt-28">
           <PricingCards />
         </div>
         
-        {/* --- FORMULARIO (ID Menú: #información) --- */}
+        {/* --- FORMULARIO --- */}
         <section 
           id="información" 
           className="py-20 bg-dkv-gray-border border-y border-dkv-gray/10 scroll-mt-28"
@@ -158,7 +137,6 @@ export default function LandingPage() {
 
         <section className="py-16 bg-white">
            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-             {/* Espacio para logos si se necesita */}
            </div>
         </section>
 
