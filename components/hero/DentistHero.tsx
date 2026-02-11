@@ -1,4 +1,4 @@
-// components/dentists/DentistHero.tsx
+// components/hero/DentistHero.tsx
 import React from "react";
 
 interface DentistHeroProps {
@@ -21,7 +21,8 @@ export default function DentistHero({ h1, totalDentistas, totalCentros }: Dentis
     <section className="relative pt-16 pb-8 px-safe-x md:px-6 container mx-auto">
       <div className="max-w-4xl relative">
         <div className="relative pl-8 md:pl-10 pb-8 pr-4">
-          {/* Hilo conductor - Marcado como oculto para lectores de pantalla */}
+          
+          {/* ✅ OPTIMIZACIÓN: Todo el bloque decorativo oculto para accesibilidad */}
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none" aria-hidden="true">
             <div className="absolute top-1 left-0 w-4 h-4 bg-white border-2 border-dkv-green-dark rounded-full z-20"></div>
             <div className="absolute top-3 left-[7px] right-[7px] h-[calc(100%-15px)] border-l-2 border-b-2 border-dkv-green-dark rounded-bl-[30px] z-10">
@@ -41,7 +42,7 @@ export default function DentistHero({ h1, totalDentistas, totalCentros }: Dentis
                <span className="text-dkv-green">{h1.normal}.</span>
             </h1>
             
-            {/* ACCESIBILIDAD: Cambiado text-gray-600 a text-gray-700 para contraste WCAG AA */}
+            {/* ✅ ACCESIBILIDAD: Contraste verificado (text-gray-700) */}
             <p className="font-fsme text-gray-700 text-lg md:text-xl leading-relaxed max-w-2xl text-left">
               Accede al Cuadro Médico Dental DKV. {showPlusPrefix && "Más de "} 
               <strong className="text-dkv-green"> {formattedProfessionals} </strong> dentistas disponibles en 
