@@ -60,11 +60,13 @@ export default function MainHero() {
                 className="object-cover"
                 priority
                 sizes="(max-width: 768px) 100vw, 50vw"
-                onError={(e) => {
-                    // Fallback elegante si la imagen no existe aún
-                    const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
-                }}
+                /* se suprime al quitar "use client"
+                  onError={(e) => {
+                      // Fallback elegante si la imagen no existe aún
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                  }}
+                */
               />
             </div>
           </div>
