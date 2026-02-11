@@ -1,178 +1,171 @@
-// app/(home)/page.tsx
+"use client";
 
-import React from 'react';
-import dynamic from 'next/dynamic'; 
-import Link from 'next/link';   
-import Image from 'next/image'; 
-import type { Metadata } from 'next';
+import React, { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { Menu, X } from "lucide-react";
 
-// --- IMPORTACIÓN DE COMPONENTES ---
-import Header from '@/components/layout/Header'; 
-import MainHero from '@/components/hero/MainHero'; 
-import PricingCards from '@/components/PricingCards'; 
-import FooterLegal from '@/components/FooterLegal'; 
-import Archetypes from '@/components/Archetypes'; 
+interface HeaderProps {
+  onOpenCalculator?: () => void;
+}
 
-// Importaciones dinámicas (Client Components pesados)
-const LeadForm = dynamic(() => import('@/components/LeadForm'), {
-  loading: () => <div className="h-96 bg-gray-100 animate-pulse rounded-xl"></div>, 
-});
+interface NavItem {
+  label: string;
+  href: string;
+  ariaLabel: string;
+}
 
-const CookieBanner = dynamic(() => import('@/components/CookieBanner'), {
-  ssr: false, 
-});
+const NAV_ITEMS: NavItem[] = [
+  { label: "Precios de tratamientos", href: "#tratamientos", ariaLabel: "Ver precios de tratamientos cubiertos" },
+  { label: "Encontrar dentista", href: "#dentistas", ariaLabel: "Buscar dentistas en toda España o cerca de mí" },
+  { label: "Solicita información", href: "#información", ariaLabel: "Planteanos cualquier duda o comentario que necesites" },
+];
 
-// --- 1. CONFIGURACIÓN SEO ---
-export const metadata: Metadata = {
-  title: 'DKV Dentisalud Élite | Seguro Dental con Precios Pactados',
-  description: 'Contrata tu seguro dental DKV con hasta 40% de descuento. Implantes, ortodoncia y limpiezas gratuitas. Agente exclusivo Bernardo Sobrecasas.',
-  alternates: {
-    canonical: 'https://midominio.com', 
-  },
-  openGraph: {
-    title: 'Ahorra en tu dentista con DKV Dentisalud Élite',
-    description: 'Accede al cuadro médico dental de DKV. Precios claros y sin sorpresas.',
-    url: 'https://midominio.com',
-    siteName: 'DKV Dentisalud Élite',
-    locale: 'es_ES',
-    type: 'website',
-  },
-};
+export default function Header({ onOpenCalculator }: HeaderProps) {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [showCta, setShowCta] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-// --- 2. DATOS ESTRUCTURADOS (JSON-LD) ---
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'InsuranceAgency',
-  'name': 'DKV Dentisalud Élite - Bernardo Sobrecasas',
-  'description': 'Agencia exclusiva de seguros dentales DKV en Zaragoza.',
-  'url': 'https://midominio.com',
-  'telephone': '900 000 000', 
-  'address': {
-    '@type': 'PostalAddress',
-    'addressLocality': 'Zaragoza',
-    'addressCountry': 'ES'
-  },
-  'priceRange': '$$',
-  'image': 'https://midominio.com/images/hero-dkv.png'
-};
+  const handleScroll = useCallback(() => {
+    window.requestAnimationFrame(() => {
+      const scrollY = window.scrollY;
+      setIsScrolled(scrollY > 50);
+      setShowCta(scrollY > 350);
+    });
+  }, []);
 
-export default function LandingPage() {
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
   return (
-    <div className="min-h-screen bg-white text-dkv-gray selection:bg-dkv-green selection:text-white">
-      
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-
-      <CookieBanner />
-      {/* Pasamos la función para abrir el formulario si fuera necesario, aunque el botón del header ya hace scroll */}
-      <Header />
-      
-      <main>
-        <MainHero /> 
-
-        {/* --- SECCIÓN TRATAMIENTOS (Intro) --- */}
-        {/* Nota: No le pongo ID aquí porque el menú 'Precios' apunta mejor a las tarjetas de precios más abajo */}
-        <section className="py-20 bg-white border-t border-dkv-gray-border">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-4xl font-lemon text-dkv-green-dark mb-6">
-              Tratamientos.
-            </h2>
-            <p className="text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-10 leading-relaxed text-balance">
-              Numerosos servicios dentales gratuitos y resto a precios muy inferiores a mercado.
-            </p>
-            
-            <Link 
-              href="/tratamientos"
-              className="inline-flex items-center justify-center rounded-dkv font-fsme font-bold duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-dkv-green text-white hover:bg-dkv-green-hover focus:ring-dkv-green shadow-xl hover:scale-105 transition-transform text-lg px-8 py-6 h-auto cursor-pointer"
-            >
-              Ver Tratamientos y Precios
-            </Link>
-            
-            <p className="text-sm font-medium text-dkv-green-dark mt-6">
-              Aquí puedes ver los tratamientos y sus precios. <br /> Directamente y sin formularios.
-            </p>
-          </div>
-        </section>
-
-        {/* --- SECCIÓN DENTISTAS --- */}
-        {/* ✅ AÑADIDO ID: 'dentistas' + scroll-mt-28 para compensar header */}
-        <section 
-          id="dentistas" 
-          className="py-20 bg-white border-t border-dkv-gray-border scroll-mt-28"
-        >
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-4xl font-lemon text-dkv-green-dark mb-6">
-              Dentistas.
-            </h2>
-            <p className="text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-10 leading-relaxed text-balance">
-              Tan fácil como elegir tu dentista y pedir cita en su consulta.
-              Seguro que tienes uno cerca de ti.
-            </p>
-            
-            <Link 
-              href="/dentistas"
-              className="inline-flex items-center justify-center rounded-dkv font-fsme font-bold duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-dkv-green text-white hover:bg-dkv-green-hover focus:ring-dkv-green disabled:bg-dkv-gray-disabled shadow-xl hover:scale-105 transition-transform gap-3 text-lg px-8 py-6 h-auto"
-            >
-              <Image 
-                alt="Ubicación" 
-                width={28} 
-                height={28} 
-                className="w-7 h-7 object-contain brightness-0 invert" 
-                src="/icons/location-pin.svg" 
-              />
-              Ver Centros Dentales
-            </Link>
-            
-            <p className="text-sm font-medium text-dkv-green-dark mt-6">
-              Busca centros dentales en toda España. <br /> Sin registros previos.
-            </p>
-          </div>
-        </section>
-
-        {/* --- COMPONENTES INTERACTIVOS (ISLAS) --- */}
+    <header
+      role="banner"
+      className={`fixed top-0 left-0 w-full z-[1020] transition-all duration-300 ease-in-out border-b border-white/10 ${
+        isScrolled
+          ? "h-[70px] bg-dkv-green/95 backdrop-blur-sm shadow-dkv-card" 
+          : "h-[110px] bg-dkv-green" 
+      }`}
+    >
+      <div className="container mx-auto h-full px-4 md:px-6 flex items-center justify-between">
         
-        {/* ✅ AÑADIDO ID: 'tratamientos' para el enlace 'Precios de tratamientos' */}
-        {/* Antes era 'ventajas', ahora apunta aquí porque es donde están los precios */}
-        <div id="tratamientos" className="scroll-mt-28">
-          <PricingCards />
+        {/* --- LOGOTIPO --- */}
+        <div className="relative flex items-center h-full shrink-0">
+           <Link 
+             href="/" 
+             aria-label="Volver al inicio - DKV Dentisalud"
+             className="relative flex items-center transition-all duration-300"
+             onClick={() => setIsMobileMenuOpen(false)}
+           >
+             <div 
+               className={`relative transition-all duration-300 overflow-hidden flex items-center ${
+                 isScrolled ? 'w-[140px]' : 'w-[180px] md:w-[220px]'
+               }`}
+             >
+                <Image 
+                  src="/images/dkv-logo.png"
+                  alt="DKV Seguros Médicos" 
+                  width={220}
+                  height={90}
+                  className="w-full h-auto object-contain object-left"
+                  priority 
+                  sizes="(max-width: 768px) 140px, 220px"
+                  style={{ objectFit: 'contain' }}
+                />
+             </div>
+           </Link>
         </div>
-        
-        {/* ✅ CAMBIADO ID: de 'presupuesto' a 'información' para coincidir con el Header */}
-        <section 
-          id="información" 
-          className="py-20 bg-dkv-gray-border border-y border-dkv-gray/10 scroll-mt-28"
-        >
-           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <div className="space-y-6">
-                 <h2 className="text-3xl lg:text-4xl font-lemon font-bold text-dkv-green-dark uppercase leading-tight">
-                   ¿Listo para empezar <br/> a ahorrar?
-                 </h2>
-                 <p className="text-lg text-dkv-gray">
-                   Déjanos tus datos y calculamos tu cuota personalizada en menos de 24h.
-                 </p>
-              </div>
-              
-              <div className="relative">
-                 <div className="absolute -inset-4 bg-dkv-green/5 rounded-xl blur-lg -z-10"></div>
-                 <LeadForm />
-              </div>
-            </div>
-           </div>
-        </section>
 
-        <section className="py-16 bg-white">
-           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-             {/* Espacio reservado para logos o sellos de calidad */}
-           </div>
-        </section>
+        {/* --- NAVEGACIÓN DESKTOP --- */}
+        <div className="flex items-center gap-6 lg:gap-10">
+          <nav className="hidden md:flex gap-6 lg:gap-8" role="navigation">
+            {NAV_ITEMS.map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                aria-label={item.ariaLabel}
+                className="text-white font-fsme text-sm lg:text-base font-bold hover:text-white/80 transition-colors uppercase tracking-widest relative group py-2"
+              >
+                {item.label}
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+            ))}
+          </nav>
+          
+          {/* --- BOTÓN CTA (STICKY) --- */}
+          <div 
+            className={`transition-all duration-500 ease-out transform ${
+              showCta 
+                ? "opacity-100 translate-y-0 pointer-events-auto" 
+                : "opacity-0 translate-y-4 pointer-events-none hidden md:block"
+            }`}
+            aria-hidden={!showCta}
+          >
+            <button
+              onClick={onOpenCalculator}
+              className="
+                bg-white text-dkv-green hover:bg-gray-100 
+                font-lemon tracking-widest text-xs md:text-sm 
+                h-10 px-6 
+                rounded-btn 
+                shadow-lg hover:shadow-xl hover:scale-105 active:scale-95
+                transition-all duration-300
+                flex items-center justify-center
+                uppercase font-bold
+              "
+              aria-label="Abrir calculadora de precios"
+            >
+              Calcula tu precio
+            </button>
+          </div>
 
-        <Archetypes />
-      </main>
+          {/* --- BOTÓN MENÚ MÓVIL --- */}
+          <button
+            className="md:hidden text-white p-2 -mr-2 flex items-center justify-center"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú de navegación"}
+            aria-expanded={isMobileMenuOpen}
+          >
+            {isMobileMenuOpen ? <X size={32} /> : <Menu size={32} />}
+          </button>
+        </div>
+      </div>
 
-      <FooterLegal />
-    </div>
+      {/* --- MENÚ MÓVIL DESPLEGABLE (CORREGIDO) --- */}
+      <div 
+        className={`
+          md:hidden fixed left-0 w-full bg-dkv-green border-t border-white/10 shadow-xl 
+          overflow-hidden transition-all duration-300 ease-in-out
+          
+          /* 🔥 SOLUCIÓN AQUÍ: La posición 'top' cambia según el estado del scroll */
+          ${isScrolled ? "top-[70px]" : "top-[110px]"}
+          
+          ${isMobileMenuOpen ? "max-h-[300px] opacity-100" : "max-h-0 opacity-0"}
+        `}
+      >
+        <nav className="flex flex-col p-6 gap-4">
+          {NAV_ITEMS.map((item) => (
+            <Link
+              key={item.label}
+              href={item.href}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="text-white font-lemon text-lg font-bold tracking-widest hover:text-white/80 transition-colors border-b border-white/5 pb-2"
+            >
+              {item.label}
+            </Link>
+          ))}
+          <button
+            onClick={() => {
+              onOpenCalculator?.();
+              setIsMobileMenuOpen(false);
+            }}
+            className="mt-4 w-full bg-white text-dkv-green font-lemon py-3 rounded-xl font-bold uppercase tracking-widest shadow-md active:scale-95 transition-transform"
+          >
+            Calcula tu precio
+          </button>
+        </nav>
+      </div>
+    </header>
   );
 }
