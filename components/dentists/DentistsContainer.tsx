@@ -40,17 +40,17 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
         </div>
 
         <div className={`absolute bottom-0 left-0 right-0 z-30 bg-white transition-all duration-500 flex flex-col ${isListOpen ? 'h-[70%]' : 'h-[80px]'}`}>
-          <div onClick={() => setIsListOpen(!isListOpen)} className="h-[80px] px-6 flex items-center justify-between cursor-pointer border-b shrink-0">
+          <button onClick={() => setIsListOpen(!isListOpen)} className="h-[80px] px-6 flex items-center justify-between cursor-pointer border-b shrink-0">
             <div className="flex items-center gap-4">
               <Stethoscope className="w-5 h-5 text-dkv-green" />
               <h3 className="font-lemon text-dkv-green-dark uppercase tracking-tight">
                 <span className="text-dkv-green">{formatter.format(activeStats.totalDentistas)}</span> DENTISTAS
               </h3>
             </div>
-            <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400">
+            <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400" aria-hidden="true">
               {isListOpen ? <ChevronDown /> : <ChevronUp />}
             </div>
-          </div>
+          </button>
           
           <div className="flex-1 overflow-y-auto bg-gray-50/30">
             <div className="max-w-5xl mx-auto py-2">
