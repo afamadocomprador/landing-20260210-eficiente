@@ -63,7 +63,13 @@ export default function MainHero() {
                 // sizes="(max-width: 768px) 100vw, 50vw"
                 // ⚠️ CAMBIO CRÍTICO AQUÍ:
                 // Le decimos explícitamente: "En pantallas de móvil (hasta 640px), la imagen NUNCA pasará de 400px de ancho".
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 450px"
+                //sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 450px"
+
+                // ⬇️ AQUÍ ESTÁ LA MAGIA ⬇️
+                // Antes: (max-width: 640px) 100vw -> "Descarga ancho de pantalla completo" (MAL)
+                // Ahora: (max-width: 1024px) 280px -> "En móvil/tablet la imagen mide FIJO 280px"
+                sizes="(max-width: 1024px) 280px, 450px"
+
                 /* se suprime al quitar "use client"
                   onError={(e) => {
                       // Fallback elegante si la imagen no existe aún
