@@ -23,9 +23,9 @@ const fsMe = localFont({
 export const metadata: Metadata = {
   title: "DKV Dentisalud Élite | Bernardo Sobrecasas",
   description: "Seguro dental DKV con precios pactados. Implantes a 1.200€ y menores incluidos.",
-  verification: {
-    google: 'ZcZv1ys4X1ftnI0uYOf6EfLkxGXAUsuaiK_9h1DaRv0', // Tu código de Search Console
-  },
+  //verification: {
+  //  google: 'ZcZv1ys4X1ftnI0uYOf6EfLkxGXAUsuaiK_9h1DaRv0', // Tu código de Search Console
+  //},
 };
 
 export default function RootLayout({
@@ -71,4 +71,5 @@ export default function RootLayout({
       </body>
     </html>
   );
+
 }
