@@ -1,6 +1,6 @@
 // components/Archetypes.tsx
 import React from 'react';
-import Image from 'next/image'; // ✅ Importamos componente optimizado
+import Image from 'next/image'; 
 import { CheckCircle2 } from 'lucide-react';
 
 const Archetypes = () => {
@@ -8,10 +8,10 @@ const Archetypes = () => {
     <section className="py-16 md:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-           {/* TITULAR SECCIÓN: Estilo Lemon Milk V1 */}
-           <h3 className="text-2xl font-lemon font-bold text-dkv-green-dark tracking-widest uppercase">
+           {/* AQUÍ ESTÁ EL CAMBIO: h2 para accesibilidad */}
+           <h2 className="text-2xl font-lemon font-bold text-dkv-green-dark tracking-widest uppercase">
              Diseñado para ti
-           </h3>
+           </h2>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
@@ -19,13 +19,11 @@ const Archetypes = () => {
           {/* --- CARD FAMILIAS --- */}
           <div className="group border border-dkv-gray-border rounded-xl overflow-hidden hover:shadow-dkv-card transition-all bg-white hover:-translate-y-1">
             <div className="h-48 bg-dkv-gray-border relative overflow-hidden">
-                {/* OPTIMIZACIÓN: Image de Next.js */}
                 <Image 
                   src="/images/card-familia.webp" 
                   alt="Familia DKV" 
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  // En móvil (menos de 768px) ocupa todo el ancho, en escritorio 1/3
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
             </div>
