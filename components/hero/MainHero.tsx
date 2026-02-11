@@ -60,7 +60,10 @@ export default function MainHero() {
                 fill
                 className="object-cover"
                 priority
-                sizes="(max-width: 768px) 100vw, 50vw"
+                // sizes="(max-width: 768px) 100vw, 50vw"
+                // ⚠️ CAMBIO CRÍTICO AQUÍ:
+                // Le decimos explícitamente: "En pantallas de móvil (hasta 640px), la imagen NUNCA pasará de 400px de ancho".
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 450px"
                 /* se suprime al quitar "use client"
                   onError={(e) => {
                       // Fallback elegante si la imagen no existe aún
