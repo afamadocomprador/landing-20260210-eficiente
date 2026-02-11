@@ -22,7 +22,8 @@ const Archetypes = () => {
             {/* Fondo placeholder gris corporativo */}
             <div className="h-48 bg-dkv-gray-border relative overflow-hidden">
                 <img 
-                  src="/images/card-familia.jpg" 
+                  //src="/images/card-familia.jpg" 
+                  src="/images/card-familia.webp" 
                   alt="Familia DKV" 
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   // Fallback limpio sin romper hidratación
@@ -49,7 +50,8 @@ const Archetypes = () => {
           <div className="group border border-dkv-gray-border rounded-xl overflow-hidden hover:shadow-dkv-card transition-all bg-white hover:-translate-y-1">
             <div className="h-48 bg-dkv-gray-border relative overflow-hidden">
                 <img 
-                  src="/images/card-senior.jpg" 
+                  //src="/images/card-senior.jpg" 
+                  src="/images/card-senior.webp" 
                   alt="Seniors DKV" 
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   onError={(e) => { e.currentTarget.style.display = 'none'; }}
@@ -75,7 +77,8 @@ const Archetypes = () => {
           <div className="group border border-dkv-gray-border rounded-xl overflow-hidden hover:shadow-dkv-card transition-all bg-white hover:-translate-y-1">
             <div className="h-48 bg-dkv-gray-border relative overflow-hidden">
                 <img 
-                  src="/images/card-joven.jpg" 
+                  //src="/images/card-joven.jpg" 
+                  src="/images/card-joven.webp" 
                   alt="Jóvenes DKV" 
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   onError={(e) => { e.currentTarget.style.display = 'none'; }}
