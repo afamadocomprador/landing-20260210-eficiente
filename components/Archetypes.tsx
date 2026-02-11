@@ -1,6 +1,6 @@
-"use client";
-
+// components/Archetypes.tsx
 import React from 'react';
+import Image from 'next/image'; // ✅ Importamos componente optimizado
 import { CheckCircle2 } from 'lucide-react';
 
 const Archetypes = () => {
@@ -17,17 +17,16 @@ const Archetypes = () => {
         <div className="grid md:grid-cols-3 gap-8">
           
           {/* --- CARD FAMILIAS --- */}
-          {/* Borde sutil gris DKV y sombra corporativa al hover */}
           <div className="group border border-dkv-gray-border rounded-xl overflow-hidden hover:shadow-dkv-card transition-all bg-white hover:-translate-y-1">
-            {/* Fondo placeholder gris corporativo */}
             <div className="h-48 bg-dkv-gray-border relative overflow-hidden">
-                <img 
-                  //src="/images/card-familia.jpg" 
+                {/* OPTIMIZACIÓN: Image de Next.js */}
+                <Image 
                   src="/images/card-familia.webp" 
                   alt="Familia DKV" 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  // Fallback limpio sin romper hidratación
-                  onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.parentElement!.style.backgroundColor = '#F0EFED'; }} 
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  // En móvil (menos de 768px) ocupa todo el ancho, en escritorio 1/3
+                  sizes="(max-width: 768px) 100vw, 33vw"
                 />
             </div>
             <div className="p-8">
@@ -49,12 +48,12 @@ const Archetypes = () => {
           {/* --- CARD SENIORS --- */}
           <div className="group border border-dkv-gray-border rounded-xl overflow-hidden hover:shadow-dkv-card transition-all bg-white hover:-translate-y-1">
             <div className="h-48 bg-dkv-gray-border relative overflow-hidden">
-                <img 
-                  //src="/images/card-senior.jpg" 
+                <Image 
                   src="/images/card-senior.webp" 
                   alt="Seniors DKV" 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, 33vw"
                 />
             </div>
             <div className="p-8">
@@ -76,12 +75,12 @@ const Archetypes = () => {
           {/* --- CARD JÓVENES --- */}
           <div className="group border border-dkv-gray-border rounded-xl overflow-hidden hover:shadow-dkv-card transition-all bg-white hover:-translate-y-1">
             <div className="h-48 bg-dkv-gray-border relative overflow-hidden">
-                <img 
-                  //src="/images/card-joven.jpg" 
+                <Image 
                   src="/images/card-joven.webp" 
                   alt="Jóvenes DKV" 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, 33vw"
                 />
             </div>
             <div className="p-8">
