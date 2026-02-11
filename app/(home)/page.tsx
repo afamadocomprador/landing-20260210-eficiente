@@ -1,17 +1,43 @@
+// app/(home)/page.tsx
+
+
 import React from 'react';
+import dynamic from 'next/dynamic'; // Para importación dinámica de "user cliente" en lazy-load
 import Link from 'next/link';   // OPTIMIZACIÓN: Navegación SPA
 import Image from 'next/image'; // OPTIMIZACIÓN: Gestión de imágenes/iconos
 import type { Metadata } from 'next';
 
 // --- IMPORTACIÓN DE COMPONENTES ---
 // Next.js maneja automáticamente si son Server o Client Components según su directiva interna.
+// Importaciones estáticas (Server Components) - SE CARGAN AL INSTANTE
 import Header from '@/components/layout/Header'; 
 import MainHero from '@/components/hero/MainHero'; // Ahora es Server Component (RSC)
 import PricingCards from '@/components/PricingCards'; // Probablemente Client Component
-import LeadForm from '@/components/LeadForm'; // Client Component (Manejo de estados del form)
 import FooterLegal from '@/components/FooterLegal'; // Ahora es Server Component (RSC)
 import Archetypes from '@/components/Archetypes'; // Client Component (según tu código previo)
-import CookieBanner from '@/components/CookieBanner'; // Client Component (interacción de usuario)
+// Estas dos son user cliente, por lo que se hace lazy-loading
+//import LeadForm from '@/components/LeadForm'; // Client Component (Manejo de estados del form)
+//import CookieBanner from '@/components/CookieBanner'; // Client Component (interacción de usuario)
+
+
+// Importaciones dinámicas (Client Components pesados)
+// Esto hace que el JS de estos componentes se descargue DESPUÉS de que la página ya es visible.
+
+
+
+// El formulario está abajo, no urge cargarlo en el primer milisegundo.
+const LeadForm = dynamic(() => import('@/components/LeadForm'), {
+  loading: () => <div className="h-96 bg-gray-100 animate-pulse rounded-xl"></div>, // Skeleton mientras carga
+});
+
+// El banner de cookies no es contenido crítico para el LCP.
+const CookieBanner = dynamic(() => import('@/components/CookieBanner'), {
+  ssr: false, // No renderizar en servidor (evita hydration mismatch con localStorage)
+});
+
+
+
+
 
 // --- 1. CONFIGURACIÓN SEO (Server Side) ---
 // Esto genera las etiquetas <meta> y <title> en el HTML inicial.
