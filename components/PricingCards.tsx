@@ -1,6 +1,8 @@
 import React from 'react';
 import { CheckCircle2, Info } from 'lucide-react';
-import { cn, formatPrice } from '@/lib/utils'; // Importamos utilidades para precios y clases
+// Asegúrate de que esta ruta sea correcta en tu proyecto.
+// Si formatPrice no se usa, lo puedes quitar del import, pero lo dejo por si acaso.
+import { cn, formatPrice } from '@/lib/utils'; 
 
 const PricingCards = () => {
   return (
@@ -55,21 +57,22 @@ const PricingCards = () => {
                     <CheckCircle2 className="w-5 h-5 text-dkv-green shrink-0" /> 
                     <span>Implante Titanio</span>
                   </span>
-                  <span className="font-bold text-dkv-gray whitespace-nowrap">{formatPrice(550)}</span>
+                  {/* Usamos formatPrice si existe, si no, puedes poner "550 €" directo */}
+                  <span className="font-bold text-dkv-gray whitespace-nowrap">{formatPrice ? formatPrice(550) : "550 €"}</span>
                 </li>
                 <li className="flex justify-between text-sm items-center">
                   <span className="flex items-center gap-2 text-dkv-gray">
                     <CheckCircle2 className="w-5 h-5 text-dkv-green shrink-0" /> 
                     <span>Corona Metal-Cerámica</span>
                   </span>
-                  <span className="font-bold text-dkv-gray whitespace-nowrap">{formatPrice(303)}</span>
+                  <span className="font-bold text-dkv-gray whitespace-nowrap">{formatPrice ? formatPrice(303) : "303 €"}</span>
                 </li>
                 <li className="flex justify-between text-sm items-center">
                   <span className="flex items-center gap-2 text-dkv-gray">
                     <CheckCircle2 className="w-5 h-5 text-dkv-green shrink-0" /> 
                     <span>Aditamentos Protésicos</span>
                   </span>
-                  <span className="font-bold text-dkv-gray whitespace-nowrap">{formatPrice(247)}</span>
+                  <span className="font-bold text-dkv-gray whitespace-nowrap">{formatPrice ? formatPrice(247) : "247 €"}</span>
                 </li>
               </ul>
 
