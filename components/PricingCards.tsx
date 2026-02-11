@@ -1,7 +1,6 @@
+// components/PricingCards.tsx
 import React from 'react';
 import { CheckCircle2, Info } from 'lucide-react';
-// Asegúrate de que esta ruta sea correcta en tu proyecto.
-// Si formatPrice no se usa, lo puedes quitar del import, pero lo dejo por si acaso.
 import { cn, formatPrice } from '@/lib/utils'; 
 
 const PricingCards = () => {
@@ -25,8 +24,8 @@ const PricingCards = () => {
           
           {/* --- TARJETA 1: PACK IMPLANTE COMPLETO (DESTACADA) --- */}
           <div className="bg-white rounded-2xl shadow-dkv-card overflow-hidden border border-dkv-gray-border relative transform hover:-translate-y-1 transition-transform duration-300">
-            {/* CABECERA: Verde Corporativo (#849700) */}
-            <div className="bg-dkv-green p-5 text-center">
+            {/* CABECERA: Verde Oscuro (#033B37) para Accesibilidad */}
+            <div className="bg-dkv-green-dark p-5 text-center">
               <h3 className="text-white font-lemon font-bold text-xl tracking-wide">PACK IMPLANTE TOTAL</h3>
               <p className="text-white/90 text-sm font-fsme mt-1">Todo incluido (Fase Quirúrgica + Prótesis)</p>
             </div>
@@ -38,9 +37,16 @@ const PricingCards = () => {
                   <p className="text-2xl text-dkv-gray-disabled line-through font-lemon">~1.850 €</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-xs text-dkv-green uppercase font-bold mb-1 font-lemon">Precio DKV Élite</p>
-                  {/* PRECIO DESTACADO: Verde Oscuro (#033B37) */}
-                  <p className="text-4xl text-dkv-green-dark font-lemon font-bold">1.100 €</p>
+                  {/* Etiqueta pequeña: La mantenemos oscura para que se lea bien */}
+                  <p className="text-xs text-dkv-green-dark uppercase font-bold mb-1 font-lemon">Precio DKV Élite</p>
+                  
+                  {/* PRECIO MODIFICADO: 
+                      1. text-dkv-green (Verde normal corporativo)
+                      2. whitespace-nowrap (Evita que el € baje de línea) 
+                  */}
+                  <p className="text-4xl text-dkv-green font-lemon font-bold whitespace-nowrap">
+                    1.100 €
+                  </p>
                 </div>
               </div>
 
@@ -57,7 +63,6 @@ const PricingCards = () => {
                     <CheckCircle2 className="w-5 h-5 text-dkv-green shrink-0" /> 
                     <span>Implante Titanio</span>
                   </span>
-                  {/* Usamos formatPrice si existe, si no, puedes poner "550 €" directo */}
                   <span className="font-bold text-dkv-gray whitespace-nowrap">{formatPrice ? formatPrice(550) : "550 €"}</span>
                 </li>
                 <li className="flex justify-between text-sm items-center">
@@ -76,7 +81,7 @@ const PricingCards = () => {
                 </li>
               </ul>
 
-              {/* INFO BOX: Fondo verde muy claro (10% opacidad) */}
+              {/* INFO BOX: Fondo verde muy claro */}
               <div className="bg-dkv-green/10 p-4 rounded-lg text-xs text-dkv-gray flex gap-3 items-start border border-dkv-green/20">
                 <Info className="w-5 h-5 text-dkv-green-dark shrink-0 mt-0.5" />
                 <p className="font-fsme">
@@ -93,7 +98,7 @@ const PricingCards = () => {
             
             <div className="space-y-8 flex-1 font-fsme">
               <div className="flex gap-4 group">
-                {/* ICONO CIRCULAR: Verde Claro fondo + Texto Verde Oscuro */}
+                {/* ICONO CIRCULAR */}
                 <div className="w-14 h-14 bg-dkv-green/10 rounded-full flex items-center justify-center text-dkv-green-dark font-bold text-xl group-hover:bg-dkv-green group-hover:text-white transition-colors duration-300 shrink-0">
                   0€
                 </div>
