@@ -57,16 +57,34 @@ export const viewport: Viewport = {
 
 const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "InsuranceAgency",
+    "@type": "InsuranceAgency", // Eres una agencia/agente, no la corporación entera
     "name": "DKV Dentisalud Élite",
-    "image": "https://landing-20260210-eficiente.vercel.app/images/logo-dkv.png",
+    "url": "https://landing-20260210-eficiente.vercel.app",
+    "logo": "https://landing-20260210-eficiente.vercel.app/images/logo-dkv.png",
     "description": "Dentistas en tod España con precios pactados y grandes descuentos.",
     "priceRange": "$$",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "España",
-      "addressCountry": "ES"
-    }
+
+    // TUS DATOS DE CONTACTO (Lo más importante)
+    "telephone": "+34900810076", // Asegúrate de que este sea TU teléfono directo
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+34976217463",
+      "contactType": "sales", // Tipo "Ventas" para que sepan que es para contratar
+      "areaServed": "ES",
+      "availableLanguage": "Spanish"
+    },
+
+    // LA VINCULACIÓN SEGURA (Heredas confianza, mantienes independencia)
+    "parentOrganization": {
+      "@type": "InsuranceCompany",
+      "name": "DKV Seguros",
+      "url": "https://dkv.es"
+    },
+
+  // Solo pon sameAs si tienes TUS PROPIAS redes (ej: facebook.com/AgenteDKVJuan)
+  // Si no tienes, déjalo vacío o bórralo para no enviar tráfico a la central.
+  "sameAs": []
+
 };
 
 
