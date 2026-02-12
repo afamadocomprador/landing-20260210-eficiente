@@ -140,12 +140,12 @@ export default async function DentistasPage({ params }: PageProps) {
        "@type": "Service", // Usamos Service porque es una página de listado, no UNA oficina física concreta
        "serviceType": "Seguro Dental DKV",
        "provider": {
-         "@type": "InsuranceAgency",
+         "@type": "Organization",
          "name": "DKV Dentisalud Élite",
-         "image": "https://landing-20260210-eficiente.vercel.app//images/logo-dkv.png",
+         "image": "https://landing-20260210-eficiente.vercel.app/images/logo-dkv.png",
          "telephone": "+34976217463",
-         "priceRange": "$$"
-       },
+         "url": "https://landing-20260210-eficiente.vercel.app" // Es bueno reforzar la URL oficial
+       },       },
        "areaServed": {
          "@type": "Place",
          "name": locationName // Ej: "Zaragoza"
