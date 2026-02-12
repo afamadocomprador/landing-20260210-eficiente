@@ -145,7 +145,7 @@ export default async function DentistasPage({ params }: PageProps) {
          "image": "https://landing-20260210-eficiente.vercel.app/images/logo-dkv.png",
          "telephone": "+34976217463",
          "url": "https://landing-20260210-eficiente.vercel.app" // Es bueno reforzar la URL oficial
-       },       },
+       },       
        "areaServed": {
          "@type": "Place",
          "name": locationName // Ej: "Zaragoza"
