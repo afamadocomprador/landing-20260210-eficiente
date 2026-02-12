@@ -116,8 +116,62 @@ export default async function DentistasPage({ params }: PageProps) {
     // Usamos el helper centralizado
     const navigationData = await getPageData(params.slug);
 
+
+
+     // --- 4. GENERACIÓN DE JSON-LD DINÁMICO (Nuevo) ---
+     // Esto crea la estructura de datos que Google busca para validar la entidad
+     const locationName = navigationData.seo.h1.normal || "España";
+     
+     // 4.1. JSON-LD para Breadcrumbs (Rutas de exploración)
+     const breadcrumbJsonLd = {
+       "@context": "https://schema.org",
+       "@type": "BreadcrumbList",
+       "itemListElement": navigationData.seo.breadcrumbs.map((item: any, index: number) => ({
+         "@type": "ListItem",
+         "position": index + 1,
+         "name": item.label,
+         "item": `https://landing-20260210-eficiente.vercel.app/${item.href}` // Asegúrate de usar dominio absoluto
+       }))
+     };
+
+     // 4.2. JSON-LD para Servicio Local (Service / InsuranceAgency) en esa zona
+     const localServiceJsonLd = {
+       "@context": "https://schema.org",
+       "@type": "Service", // Usamos Service porque es una página de listado, no UNA oficina física concreta
+       "serviceType": "Seguro Dental DKV",
+       "provider": {
+         "@type": "InsuranceAgency",
+         "name": "DKV Dentisalud Élite",
+         "image": "https://landing-20260210-eficiente.vercel.app//images/logo-dkv.png",
+         "telephone": "+34976217463",
+         "priceRange": "$$"
+       },
+       "areaServed": {
+         "@type": "Place",
+         "name": locationName // Ej: "Zaragoza"
+       },
+       "description": `Cuadro médico de dentistas DKV en ${locationName} con precios pactados.`
+     };
+
+
+
+
+
     return (
       <div className="flex flex-col min-h-screen bg-white font-fsme">
+
+
+         {/* Inyección de JSON-LD Dinámico */}
+         <script
+           type="application/ld+json"
+           dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+         />
+         <script
+           type="application/ld+json"
+           dangerouslySetInnerHTML={{ __html: JSON.stringify(localServiceJsonLd) }}
+         />
+
+
         <FixedBreadcrumb items={navigationData.seo.breadcrumbs} />
 
         <DentistHero 
