@@ -4,9 +4,12 @@ import React from 'react';
 import dynamic from 'next/dynamic'; 
 import Link from 'next/link';   
 import Image from 'next/image'; 
-import type { Metadata } from 'next';
+// Añadimos Viewport
+//import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 
 // --- IMPORTACIÓN DE COMPONENTES ---
+// LCP: El hero debe ser cargar estático para que cargue rápido
 import MainHero from '@/components/hero/MainHero'; 
 import PricingCards from '@/components/PricingCards'; 
 import FooterLegal from '@/components/FooterLegal'; 
@@ -20,31 +23,68 @@ const CookieBanner = dynamic(() => import('@/components/CookieBanner'), {
   ssr: false, 
 });
 
-// ... (Metadata y JSON-LD se mantienen igual que tu versión anterior) ...
-// He resumido esta parte para no ocupar tanto espacio, copia tus metadatos aquí.
 export const metadata: Metadata = {
   title: 'DKV Dentisalud Élite | Seguro Dental con Precios Pactados',
-  description: 'Contrata tu seguro dental DKV con hasta 40% de descuento.',
-  // ... resto de metadata
+  description: 'Contrata tu seguro dental DKV con hasta 40% de descuento. Niños gratis en póliza familiar.',
+  alternates: {
+       canonical: '/',
+  },
+  openGraph: {
+     title: 'DKV Dentisalud Élite | Precios Pactados con dentistas en toda España',
+     description: 'Tratamientos dentales con hasta 40% de descuento.',
+     url: 'https://landing-20260210-eficiente.vercel.app', // Asegúrate de que coincida con tu dominio real
+     siteName: 'DKV Dentisalud',
+     images: [
+       { url: '/images/og-home.jpg', 
+         width: 1200, 
+         height: 630,
+         alt: 'Cliente sonriendo DKV Dentisalud', 
+       }
+     ],
+     type: 'website',
+   },
+};
+
+// --- CONFIGURACIÓN VIEWPORT (Nuevo estándar Next.js 14) ---
+export const viewport: Viewport = {
+   themeColor: [
+     { media: '(prefers-color-scheme: light)', color: '#849700' }, // Verde DKV
+     { media: '(prefers-color-scheme: dark)', color: '#033B37' },  // Verde Oscuro
+   ],
+   width: 'device-width',
+   initialScale: 1,
 };
 
 const jsonLd = {
-  // ... resto de jsonLd
+    "@context": "https://schema.org",
+    "@type": "InsuranceAgency",
+    "name": "DKV Dentisalud Élite",
+    "image": "https://landing-20260210-eficiente.vercel.app/images/logo-dkv.png",
+    "description": "Dentistas en tod España con precios pactados y grandes descuentos.",
+    "priceRange": "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "España",
+      "addressCountry": "ES"
+    }
 };
+
 
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white text-dkv-gray selection:bg-dkv-green selection:text-white">
       
-      {/* Script JSON-LD inyectado */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} // Corregido para usar la variable
-      />
-
       <CookieBanner />
       
       <main>
+
+        {/* Script JSON-LD inyectado */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} 
+        />
+
+
         <MainHero /> 
 
         {/* --- SECCIÓN TRATAMIENTOS --- */}
@@ -106,6 +146,8 @@ export default function LandingPage() {
           </div>
         </section>
 
+        <Archetypes />
+
         {/* --- PRICING CARDS --- */}
         <div id="tratamientos" className="scroll-mt-28">
           <PricingCards />
@@ -140,10 +182,9 @@ export default function LandingPage() {
            </div>
         </section>
 
-        <Archetypes />
+        <FooterLegal />
       </main>
 
-      <FooterLegal />
     </div>
   );
 }
