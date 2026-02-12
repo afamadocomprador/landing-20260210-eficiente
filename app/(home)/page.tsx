@@ -59,27 +59,37 @@ const jsonLd = {
     "@context": "https://schema.org",
     "@type": "InsuranceAgency", // Eres una agencia/agente, no la corporación entera
     "name": "DKV Dentisalud Élite",
+    "description": "Dentistas en toda España con precios pactados y grandes descuentos.",
     "url": "https://landing-20260210-eficiente.vercel.app",
+    "telephone": "+34976217463",
     "logo": "https://landing-20260210-eficiente.vercel.app/images/logo-dkv.png",
-    "description": "Dentistas en tod España con precios pactados y grandes descuentos.",
+    "image": [
+        "https://landing-20260210-eficiente.vercel.app/images/og-home.jpg",
+        "https://landing-20260210-eficiente.vercel.app/images/logo-dkv.png"
+      ],
+
+    // 1. TU DIRECCIÓN (Da confianza y valida la entidad)
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Av. César Augusto, 33", // Tu dirección fiscal/oficina
+      "addressLocality": "Zaragoza",
+      "postalCode": "50004",
+      "addressCountry": "ES"
+    },
+
+    // 2. EL ANTÍDOTO (Esto evita que te limiten localmente)
+   "areaServed": {
+      "@type": "Country",
+      "name": "España" // 👈 ESTO le dice a Google que tu ámbito es nacional
+    },
+
+    // 3. TIPO DE SERVICIO
     "priceRange": "$$",
-
-    // TUS DATOS DE CONTACTO (Lo más importante)
-    "telephone": "+34900810076", // Asegúrate de que este sea TU teléfono directo
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "telephone": "+34976217463",
-      "contactType": "sales", // Tipo "Ventas" para que sepan que es para contratar
-      "areaServed": "ES",
-      "availableLanguage": "Spanish"
-    },
-
-    // LA VINCULACIÓN SEGURA (Heredas confianza, mantienes independencia)
     "parentOrganization": {
-      "@type": "InsuranceCompany",
-      "name": "DKV Seguros",
-      "url": "https://dkv.es"
-    },
+        "@type": "InsuranceCompany",
+        "name": "DKV Seguros",
+        "url": "https://dkv.es"
+    }
 
   // Solo pon sameAs si tienes TUS PROPIAS redes (ej: facebook.com/AgenteDKVJuan)
   // Si no tienes, déjalo vacío o bórralo para no enviar tráfico a la central.
