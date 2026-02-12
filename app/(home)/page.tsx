@@ -89,7 +89,7 @@ const jsonLd = {
         "@type": "InsuranceCompany",
         "name": "DKV Seguros",
         "url": "https://dkv.es"
-    }
+    },
 
   // Solo pon sameAs si tienes TUS PROPIAS redes (ej: facebook.com/AgenteDKVJuan)
   // Si no tienes, déjalo vacío o bórralo para no enviar tráfico a la central.
