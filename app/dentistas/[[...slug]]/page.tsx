@@ -218,10 +218,16 @@ export default async function DentistasPage({ params }: PageProps) {
       "@context": "https://schema.org",
       "@graph": categories
         .filter(cat => cat.data && cat.data.items && cat.data.items.length > 0)
-        .map(cat => ({
-          "@type": "SiteNavigationElement",
+        .map((cat: any, blockIndex: number) => ({
+          "@type": "ItemList",
           "name": cat.data?.title || "Relacionados",
-          "alternateName": cat.role,
+          "position": blockIndex + 1, // <--- Prioridad del bloque de navegación
+          "mainEntityOfPage": {
+            "@type": "SiteNavigationElement",
+            "name": cat.data?.title || "Relacionados",
+            "alternateName": cat.role
+          },
+          "numberOfItems": cat.data.items.length,
           "itemListElement": (cat.data?.items || []).map((item: any, index: number) => ({
             "@type": "ListItem",
             "position": index + 1,
