@@ -222,7 +222,7 @@ export default async function DentistasPage({ params }: PageProps) {
           "@type": "SiteNavigationElement",
           "name": cat.data?.title || "Relacionados",
           "alternateName": cat.role,
-          "itemListElement": cat.data.items.map((item: any, index: number) => ({
+          "itemListElement": (cat.data?.items || []).map((item: any, index: number) => ({
             "@type": "ListItem",
             "position": index + 1,
             "item": {
