@@ -213,32 +213,43 @@ export default async function DentistasPage({ params }: PageProps) {
 
     console.log('navigationData.relatedLinks:',navigationData.relatedLinks);
 
+    // Filtramos primero para tener el conteo real de bloques activos
+    const activeCategories = categories.filter(
+      cat => cat.data && cat.data.items && cat.data.items.length > 0
+    );
+
     // Usamos @graph para definir múltiples intenciones de navegación en un solo bloque
     const navigationSchema = {
       "@context": "https://schema.org",
-      "@graph": categories
-        .filter(cat => cat.data && cat.data.items && cat.data.items.length > 0)
+      "@type": "ItemList", // Lista maestra de bloques
+      "name": `Red de navegación para ${locationName}`,
+      "description": `Enlaces jerárquicos y geográficos para la búsqueda de dentistas en ${locationName}`,
+      "numberOfItems": activeCategories.length, // Conteo total de bloques (Madre, Hijas, etc.)
+      "itemListElement": activeCategories
         .map((cat: any, blockIndex: number) => ({
-          "@type": "ItemList",
-          "name": cat.data?.title || "Relacionados",
-          "position": blockIndex + 1, // <--- Prioridad del bloque de navegación
-          "mainEntityOfPage": {
-            "@type": "SiteNavigationElement",
-            "name": cat.data?.title || "Relacionados",
-            "alternateName": cat.role
-          },
-          "numberOfItems": cat.data.items.length,
-          "itemListElement": (cat.data?.items || []).map((item: any, index: number) => ({
-            "@type": "ListItem",
-            "position": index + 1,
-            "item": {
-              "@type": "WebPage",
-              "@id": `${baseUrl}${item.href}`,
-              "name": item.label,
-              "description": `Consulta de cuadro médico dental en ${item.label}`
+           "@type": "ListItem",
+           "position": blockIndex + 1,
+           "item": {
+              "@type": "ItemList",
+              "name": cat.data?.title || "Relacionados",
+              "numberOfItems": cat.data.items.length, // Conteo de enlaces dentro de este bloque
+              "mainEntityOfPage": {
+                "@type": "SiteNavigationElement",
+                "name": cat.data?.title || "Relacionados",
+                "alternateName": cat.role
+              },
+             "itemListElement": (cat.data?.items || []).map((item: any, index: number) => ({
+                "@type": "ListItem",
+                "position": index + 1,
+                "item": {
+                  "@type": "WebPage",
+                  "@id": `${baseUrl}${item.href}`,
+                  "name": item.label,
+                  "description": `Consulta de cuadro médico dental en ${item.label}`
+                }
+              }))
             }
           }))
-        }))
     };
  
 
