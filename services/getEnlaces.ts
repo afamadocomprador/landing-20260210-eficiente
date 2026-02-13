@@ -158,7 +158,8 @@ export const getRelatedLinks = async (
         .order('breadcrumb', { ascending: true });
 
       if (provinciasLanding) {
-        results.hijas = { title: `Buscar dentistas en las provincias de ${landing.nombre}`, items: provinciasLanding.map(p => ({ label: p.breadcrumb, href: `/dentistas/${p.slug}-provincia` })) };
+        //results.hijas = { title: `Buscar dentistas en las provincias de ${landing.nombre}`, items: provinciasLanding.map(p => ({ label: p.breadcrumb, href: `/dentistas/${p.slug}-provincia` })) };
+        results.hijas = { title: `Buscar dentistas en las provincias de ${landing.nombre}`, items: provinciasLanding.map(p => ({ label: p.breadcrumb, href: `/dentistas/${p.slug}` })) };
       }
     }
   }
@@ -432,4 +433,5 @@ export const getRelatedLinks = async (
   }
 
   return results;
+
 };
