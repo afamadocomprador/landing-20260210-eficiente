@@ -209,10 +209,10 @@ export default async function DentistasPage({ params }: PageProps) {
                 "itemOffered": {
                   "@type": "Service",
                   "name": "Cuadro Médico Dental",
+                  "serviceType": "Dentistas en España a precios pactados",
                   "areaServed": {
                     "@type": "AdministrativeArea",
                     "name": locationName,
-                    "serviceType": "Seguro Dental / Cuadro Médico",
                   }
                 }
               }
