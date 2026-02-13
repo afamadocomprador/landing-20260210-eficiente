@@ -55,6 +55,8 @@ export const viewport: Viewport = {
    initialScale: 1,
 };
 
+
+/* ************************************************** DESDE AQUI 
 const jsonLd = {
     "@context": "https://schema.org",
     "@type": "InsuranceAgency", // Eres una agencia/agente, no la corporación entera
@@ -95,6 +97,84 @@ const jsonLd = {
   // Si no tienes, déjalo vacío o bórralo para no enviar tráfico a la central.
   "sameAs": []
 
+};
+
+******************************** hata aqui * */
+
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      // 1. LA ENTIDAD: Te posicionas como una Red Médica, no solo un vendedor de seguros
+      "@type": "MedicalOrganization", 
+      "@id": "https://tuweb.es/#organization",
+      "name": "Red Dental Élite España", // Nombre comercial que prioriza el servicio
+      "legalName": "Bernardo Sobrecasas Gallizo", // Cumplimiento legal "oculto"
+      "url": "https://tuweb.es",
+      "logo": "https://tuweb.es/images/tu-logo-o-dkv.png",
+      "telephone": "+34976217463",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Av. César Augusto, 33",
+        "addressLocality": "Zaragoza",
+        "postalCode": "50004",
+        "addressCountry": "ES"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "España"
+      },
+      "parentOrganization": {
+        "@type": "Organization",
+        "name": "DKV Seguros",
+        "url": "https://dkv.es"
+      }
+    },
+    {
+      // 2. EL SERVICIO: Aquí es donde enganchas por "Problema-Solución"
+      "@type": "Service",
+      "serviceType": "Odontología con Precios Pactados",
+      "provider": { "@id": "https://tuweb.es/#organization" },
+      "description": "Acceso a cuadro médico dental con ahorro garantizado en tratamientos.",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Baremos Oficiales de Tratamientos",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Implante Dental Completo",
+              "description": "Cirugía + Aditamentos + Corona"
+            },
+            "price": "1100.00", // PRECIO REAL del tratamiento, no el del seguro
+            "priceCurrency": "EUR"
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Ortodoncia Invisible (Pack Completo)",
+              "description": "Incluye estudio y alineadores ilimitados"
+            },
+            "price": "2950.00",
+            "priceCurrency": "EUR"
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Limpieza de Boca y Tartrectomía",
+              "description": "Anual para miembros de la red"
+            },
+            "price": "0.00", // GANCHO PSICOLÓGICO: Gratis
+            "priceCurrency": "EUR"
+          }
+        ]
+      }
+    }
+  ]
 };
 
 
