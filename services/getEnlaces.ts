@@ -189,7 +189,8 @@ export const getRelatedLinks = async (
            limitrofes = allProvs.filter(p => p.codigo_ine !== landing.codigo_ine).sort((a,b) => getDistance(landing.latitude, landing.longitude, a.latitude, a.longitude) - getDistance(landing.latitude, landing.longitude, b.latitude, b.longitude)).slice(0, 6);
        }
        if (limitrofes.length > 0) {
-          results.cercanas = { title: `Buscar dentistas en provincias limítrofes a ${landing.nombre}`, items: limitrofes.map(p => ({ label: p.breadcrumb, href: `/dentistas/${p.slug}-provincia` })) };
+          //results.cercanas = { title: `Buscar dentistas en provincias limítrofes a ${landing.nombre}`, items: limitrofes.map(p => ({ label: p.breadcrumb, href: `/dentistas/${p.slug}-provincia` })) };
+         results.cercanas = { title: `Buscar dentistas en provincias limítrofes a ${landing.nombre}`, items: limitrofes.map(p => ({ label: p.breadcrumb, href: `/dentistas/${p.slug}` })) };
        }
     }
 
@@ -199,7 +200,8 @@ export const getRelatedLinks = async (
       const codes = provsHermanas?.map(p => p.codigo) || [];
       const hermanas = allProvs.filter(p => codes.includes(p.codigo_ine) && p.codigo_ine !== landing.codigo_ine);
       if (hermanas.length > 0) {
-        results.hermanas = { title: `Buscar dentistas en otras provincias de ${nombreComunidad}`, items: hermanas.map(p => ({ label: p.breadcrumb, href: `/dentistas/${p.slug}-provincia` })) };
+        //results.hermanas = { title: `Buscar dentistas en otras provincias de ${nombreComunidad}`, items: hermanas.map(p => ({ label: p.breadcrumb, href: `/dentistas/${p.slug}-provincia` })) };
+        results.hermanas = { title: `Buscar dentistas en otras provincias de ${nombreComunidad}`, items: hermanas.map(p => ({ label: p.breadcrumb, href: `/dentistas/${p.slug}` })) };
       }
     }
 
@@ -275,7 +277,8 @@ export const getRelatedLinks = async (
       if (landingProv) {
         results.madre = {
           title: `Volver a buscar dentistas en ${nombreProvincia}`,
-          items: [{ label: landingProv.breadcrumb, href: `/dentistas/${landingProv.slug}-provincia` }]
+          //items: [{ label: landingProv.breadcrumb, href: `/dentistas/${landingProv.slug}-provincia` }]
+          items: [{ label: landingProv.breadcrumb, href: `/dentistas/${landingProv.slug}` }]
         };
       }
 
@@ -340,7 +343,8 @@ export const getRelatedLinks = async (
       if (landingProv) {
          results.madre = {
            title: `Volver a buscar dentistas en ${nombreProvincia}`,
-           items: [{ label: landingProv.breadcrumb, href: `/dentistas/${landingProv.slug}-provincia` }]
+           //items: [{ label: landingProv.breadcrumb, href: `/dentistas/${landingProv.slug}-provincia` }]
+           items: [{ label: landingProv.breadcrumb, href: `/dentistas/${landingProv.slug}` }]
          };
       }
 
@@ -420,7 +424,8 @@ export const getRelatedLinks = async (
       if (landingProv) {
         results.madre = {
           title: `Volver a buscar dentistas en ${nombreProvincia}`,
-          items: [{ label: landingProv.breadcrumb, href: `/dentistas/${landingProv.slug}-provincia` }]
+          //items: [{ label: landingProv.breadcrumb, href: `/dentistas/${landingProv.slug}-provincia` }]
+          items: [{ label: landingProv.breadcrumb, href: `/dentistas/${landingProv.slug}` }]
         };
       }
 
@@ -435,3 +440,4 @@ export const getRelatedLinks = async (
   return results;
 
 };
+
