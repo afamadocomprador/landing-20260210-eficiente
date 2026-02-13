@@ -154,16 +154,21 @@ export default async function DentistasPage({ params }: PageProps) {
         }
       },
       // --- PASO 2: Mapeamos los niveles dinámicos ---
-      ...navigationData.seo.breadcrumbs.map((item: any, index: number) => ({
-        "@type": "ListItem",
-        "position": index + 2, // Empezamos en 2 porque el 1 es Inicio
-        "name": item.label || "Nivel", // Fallback por seguridad
-        "item": {
-          "@type": "WebPage", // <--- Soluciona el tipo "Thing"
-          "@id": `${baseUrl}${item.href}`, // Dominio absoluto
-          "name": item.label
-        }
-      }))
+      ...navigationData.seo.breadcrumbs.map((item: any, index: number) => {
+        // Creamos el nombre optimizado: "Dentistas en Zaragoza" en lugar de solo "Zaragoza"
+        const optimizedName = item.label ? `Dentistas en ${item.label}` : "Nivel";
+        
+        return {
+          "@type": "ListItem",
+          "position": index + 2, // Empezamos en 2 porque el 1 es Inicio
+          "name": optimizedName,
+          "item": {
+            "@type": "WebPage", // <--- Soluciona el tipo "Thing"
+            "@id": `${baseUrl}${item.href}`, // Dominio absoluto
+            "name": optimizedName
+          }
+        };
+      })
     ];
 
     const breadcrumbJsonLd = {
