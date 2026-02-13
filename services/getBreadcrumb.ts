@@ -151,9 +151,9 @@ export const getBreadcrumbTrail = async (
     if (l.nivel === '01') { 
         href = "/dentistas"; 
     } 
-    else if (l.nivel === '03') {
-        href = `/dentistas/${l.slug}-provincia`;
-    } 
+//    else if (l.nivel === '03') {
+//        href = `/dentistas/${l.slug}-provincia`;
+//  } 
     else {
         href = `/dentistas/${l.slug}`;
     }
