@@ -220,7 +220,7 @@ export default async function DentistasPage({ params }: PageProps) {
         .filter(cat => cat.data && cat.data.items && cat.data.items.length > 0)
         .map(cat => ({
           "@type": "SiteNavigationElement",
-          "name": cat.data.title,
+          "name": cat.data?.title || "Relacionados",
           "alternateName": cat.role,
           "itemListElement": cat.data.items.map((item: any, index: number) => ({
             "@type": "ListItem",
