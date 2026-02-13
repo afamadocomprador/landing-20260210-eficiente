@@ -164,6 +164,8 @@ export default async function DentistasPage({ params }: PageProps) {
     const breadcrumbJsonLd = {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
+      "name": "Ruta de navegación",
+      "description": "Jerarquía de navegación de la página",
       "itemListElement": breadcrumbItems
     };
 
