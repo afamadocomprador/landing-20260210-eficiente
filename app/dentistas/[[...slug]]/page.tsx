@@ -188,7 +188,8 @@ export default async function DentistasPage({ params }: PageProps) {
        "name": "DKV Dentisalud Élite",
        "url": baseUrl,
        "logo": `${baseUrl}/images/logo-dkv.png`,
-       "description": `Cuadro médico de dentistas DKV en ${locationName} con precios pactados.`,
+       "description": `Cuadro médico de dentistas DKV en ${locationName} con precios pactados para asegurados.`,
+       "knowsAbout": ["Seguro Dental", "Odontología", "Cuadro Médico", "Dentistas"],
        "contactPoint": {
           "@type": "ContactPoint",
           "telephone": "+34976217463",
@@ -203,7 +204,6 @@ export default async function DentistasPage({ params }: PageProps) {
          "name": locationName,
          "containedIn": { "@type": "Country", "name": "España" }
        },
-       "serviceType": "Seguro Dental / Cuadro Médico",
        "hasOfferCatalog": {
             "@type": "OfferCatalog",
             "name": "Servicios Odontológicos",
@@ -215,7 +215,8 @@ export default async function DentistasPage({ params }: PageProps) {
                   "name": "Cuadro Médico Dental",
                   "areaServed": {
                     "@type": "AdministrativeArea",
-                    "name": locationName
+                    "name": locationName,
+                    "serviceType": "Seguro Dental / Cuadro Médico",
                   }
                 }
               }
