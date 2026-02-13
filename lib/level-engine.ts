@@ -228,7 +228,8 @@ export async function getLevelData(
     seo: {
       totalDentistasHero: totalHeroDentistas || 0, 
       totalCentrosHero: totalHeroCentros || 0,
-      h1: { dark: "Encuentra tu dentista en", normal: landing.nombre_ine },
+      //h1: { dark: "Encuentra tu dentista en", normal: landing.nombre_ine },
+      h1: { dark: "Encuentra tu dentista en", normal: landing.breadcrumb },
       breadcrumbs: breadcrumbItems,
       enlacesSugeridos: [], 
       title: `${landing.nombre_ine} | DKV Dentisalud`,
@@ -236,4 +237,5 @@ export async function getLevelData(
     },
     relatedLinks: relatedLinks // Objeto completo con secciones
   };
+
 }
