@@ -15,6 +15,10 @@ import RelatedLinks from "@/components/dentists/links/RelatedLinks"; // <--- Com
 
 export const dynamic = "force-dynamic";
 
+// --- CONFIGURACIÓN GLOBAL ---
+// Declaramos baseUrl aquí para que sea accesible en todo el archivo
+const baseUrl = "https://landing-20260210-eficiente.vercel.app";
+
 interface PageProps {
   params: { slug?: string[] };
   searchParams?: { [key: string]: string | string[] | undefined }; // Tipado estricto recomendado
@@ -54,6 +58,7 @@ interface PageProps {
      const description = seo.description || `Cuadro médico DKV en ${seo.h1.normal}.`;
 
      return {
+       metadataBase: new URL(baseUrl),
        title: title,
        description: description,
        alternates: {
@@ -144,7 +149,7 @@ export default async function DentistasPage({ params }: PageProps) {
         "name": "Inicio",
         "item": {
           "@type": "WebPage", // <--- Soluciona el tipo "Thing"
-          "@id": "https://landing-20260210-eficiente.vercel.app", // Usa tu dominio final
+          "@id": baseUrl, // Usa tu dominio final
           "name": "Inicio"
         }
       },
@@ -155,7 +160,7 @@ export default async function DentistasPage({ params }: PageProps) {
         "name": item.label || "Nivel", // Fallback por seguridad
         "item": {
           "@type": "WebPage", // <--- Soluciona el tipo "Thing"
-          "@id": `https://landing-20260210-eficiente.vercel.app${item.href}`, // Dominio absoluto
+          "@id": `${baseUrl}${item.href}`, // Dominio absoluto
           "name": item.label
         }
       }))
@@ -180,8 +185,8 @@ export default async function DentistasPage({ params }: PageProps) {
        "@context": "https://schema.org",
        "@type": "Organization", 
        "name": "DKV Dentisalud Élite",
-       "url": "https://landing-20260210-eficiente.vercel.app",
-       "logo": "https://landing-20260210-eficiente.vercel.app/images/logo-dkv.png",
+       "url": baseUrl,
+       "logo": `${baseUrl}/images/logo-dkv.png`,
        "description": `Cuadro médico de dentistas DKV en ${locationName} con precios pactados.`,
        "contactPoint": {
           "@type": "ContactPoint",
@@ -194,24 +199,65 @@ export default async function DentistasPage({ params }: PageProps) {
        },
      };
 
+    // 4.3. RED DE NAVEGACIÓN SEMÁNTICA CATEGORIZADA
+    const rel = navigationData.relatedLinks || {};
+    
+    // Definimos las categorías que queremos procesar
+    const categories = [
+      { data: rel.madre, role: "ParentHierarchy" },
+      { data: rel.hijas, role: "SubHierarchy" },
+      { data: rel.hermanas, role: "SiblingHierarchy" },
+      { data: rel.cercanas, role: "AdjacentHierarchy" },
+      { data: rel.comarcas, role: "RegionalHierarchy" }
+    ];
 
+    console.log('navigationData.relatedLinks:',navigationData.relatedLinks);
 
-
+    // Usamos @graph para definir múltiples intenciones de navegación en un solo bloque
+    const navigationSchema = {
+      "@context": "https://schema.org",
+      "@graph": categories
+        .filter(cat => cat.data && cat.data.items && cat.data.items.length > 0)
+        .map(cat => ({
+          "@type": "SiteNavigationElement",
+          "name": cat.data.title,
+          "alternateName": cat.role,
+          "itemListElement": cat.data.items.map((item: any, index: number) => ({
+            "@type": "ListItem",
+            "position": index + 1,
+            "item": {
+              "@type": "WebPage",
+              "@id": `${baseUrl}${item.href}`,
+              "name": item.label,
+              "description": `Consulta de cuadro médico dental en ${item.label}`
+            }
+          }))
+        }))
+    };
+ 
 
     return (
       <div className="flex flex-col min-h-screen bg-white font-fsme">
 
 
-         {/* Inyección de JSON-LD Dinámico */}
-         <script
-           type="application/ld+json"
-           dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-         />
-         <script
-           type="application/ld+json"
-           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-         />
+{/* 1. Breadcrumbs (La ruta jerárquica lineal) */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        />
+        
+        {/* 2. Organización (La entidad que presta el servicio) */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
 
+        {/* 3. Red de Enlaces (La telaraña semántica: Madres, Hermanos e Hijos) */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(navigationSchema) }}
+        />
+ 
 
         <FixedBreadcrumb items={navigationData.seo.breadcrumbs} />
 
