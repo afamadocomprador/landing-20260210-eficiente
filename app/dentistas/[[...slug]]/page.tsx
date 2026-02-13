@@ -134,23 +134,24 @@ export default async function DentistasPage({ params }: PageProps) {
        }))
      };
 
-     // 4.2. JSON-LD para Servicio Local (Service / InsuranceAgency) en esa zona
-     const localServiceJsonLd = {
+     // 4.2. Organización (Marca en Zona) - REEMPLAZA AL "SERVICE"
+     // Al usar directamente "Organization" como entidad principal, Google no pide dirección física.
+     const organizationJsonLd = {
        "@context": "https://schema.org",
-       "@type": "Service", // Usamos Service porque es una página de listado, no UNA oficina física concreta
-       "serviceType": "Seguro Dental DKV",
-       "provider": {
-         "@type": "Organization",
-         "name": "DKV Dentisalud Élite",
-         "image": "https://landing-20260210-eficiente.vercel.app/images/logo-dkv.png",
-         "telephone": "+34976217463",
-         "url": "https://landing-20260210-eficiente.vercel.app" // Es bueno reforzar la URL oficial
-       },       
+       "@type": "Organization", 
+       "name": "DKV Dentisalud Élite",
+       "url": "https://landing-20260210-eficiente.vercel.app",
+       "logo": "https://landing-20260210-eficiente.vercel.app/images/logo-dkv.png",
+       "description": `Cuadro médico de dentistas DKV en ${locationName} con precios pactados.`,
+       "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+34976217463",
+          "contactType": "customer service"
+       },
        "areaServed": {
          "@type": "Place",
          "name": locationName // Ej: "Zaragoza"
        },
-       "description": `Cuadro médico de dentistas DKV en ${locationName} con precios pactados.`
      };
 
 
@@ -168,7 +169,7 @@ export default async function DentistasPage({ params }: PageProps) {
          />
          <script
            type="application/ld+json"
-           dangerouslySetInnerHTML={{ __html: JSON.stringify(localServiceJsonLd) }}
+           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
          />
 
 
