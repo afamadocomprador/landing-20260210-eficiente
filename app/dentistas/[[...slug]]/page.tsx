@@ -123,16 +123,54 @@ export default async function DentistasPage({ params }: PageProps) {
      const locationName = navigationData.seo.h1.normal || "España";
      
      // 4.1. JSON-LD para Breadcrumbs (Rutas de exploración)
-     const breadcrumbJsonLd = {
-       "@context": "https://schema.org",
-       "@type": "BreadcrumbList",
-       "itemListElement": navigationData.seo.breadcrumbs.map((item: any, index: number) => ({
-         "@type": "ListItem",
-         "position": index + 1,
-         "name": item.label,
-         "item": `https://landing-20260210-eficiente.vercel.app/${item.href}` // Asegúrate de usar dominio absoluto
-       }))
-     };
+     //const breadcrumbJsonLd = {
+     //  "@context": "https://schema.org",
+     //  "@type": "BreadcrumbList",
+     //  "itemListElement": navigationData.seo.breadcrumbs.map((item: any, index: number) => ({
+     //    "@type": "ListItem",
+     //    "position": index + 1,
+     //    "name": item.label,
+     //    "item": `https://landing-20260210-eficiente.vercel.app/${item.href}` // Asegúrate de usar dominio absoluto
+     //  }))
+     //};
+
+    // 4.1. BREADCRUMBS OPTIMIZADOS (Soluciona "Elemento sin nombre" y "Thing")
+    const breadcrumbItems = [
+      // --- PASO 1: Inyectamos manualmente la HOME ---
+      // Esto asegura que el primer nivel siempre tenga nombre y evita el error de Google.
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Inicio",
+        "item": {
+          "@type": "WebPage", // <--- Soluciona el tipo "Thing"
+          "@id": "https://landing-20260210-eficiente.vercel.app", // Usa tu dominio final
+          "name": "Inicio"
+        }
+      },
+      // --- PASO 2: Mapeamos los niveles dinámicos ---
+      ...navigationData.seo.breadcrumbs.map((item: any, index: number) => ({
+        "@type": "ListItem",
+        "position": index + 2, // Empezamos en 2 porque el 1 es Inicio
+        "name": item.label || "Nivel", // Fallback por seguridad
+        "item": {
+          "@type": "WebPage", // <--- Soluciona el tipo "Thing"
+          "@id": `https://landing-20260210-eficiente.vercel.app${item.href}`, // Dominio absoluto
+          "name": item.label
+        }
+      }))
+    ];
+
+    const breadcrumbJsonLd = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": breadcrumbItems
+    };
+
+
+
+
+
 
      // 4.2. Organización (Marca en Zona) - REEMPLAZA AL "SERVICE"
      // Al usar directamente "Organization" como entidad principal, Google no pide dirección física.
