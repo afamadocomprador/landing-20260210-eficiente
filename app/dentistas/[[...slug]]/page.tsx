@@ -198,7 +198,9 @@ export default async function DentistasPage({ params }: PageProps) {
        "contactPoint": {
           "@type": "ContactPoint",
           "telephone": "+34976217463",
-          "contactType": "customer service"
+          "contactType": "customer service",
+          "areaServed": "ES",
+          "availableLanguage": "Spanish"
        },
        "areaServed": {
          "@type": "AdministrativeArea",
