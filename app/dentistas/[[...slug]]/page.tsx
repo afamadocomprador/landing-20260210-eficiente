@@ -50,11 +50,11 @@ interface PageProps {
    try {
      const navigationData = await getPageData(params.slug);
      const { seo } = navigationData;
-     const currentPath = params.slug ? params.slug.join('/') : '';
+     // 1. Normalizamos el path para evitar "//" si el slug es undefined o vacío
+    const currentPath = params.slug ? params.slug.join('/') : '';
      
-     // Construcción de URL Canónica y Título fallback
-     const canonicalUrl = `/dentistas/${currentPath}`;
-     const title = seo.title || `Dentistas en ${seo.h1.normal} | DKV Dentisalud Elite`;
+    // Aseguramos que no termine en / para consistencia SEO
+    const canonicalUrl = `/dentistas/${currentPath}`.replace(/\/$/, "");     const title = seo.title || `Dentistas en ${seo.h1.normal} | DKV Dentisalud Elite`;
      const description = seo.description || `Cuadro médico DKV en ${seo.h1.normal}.`;
 
      return {
@@ -68,6 +68,8 @@ interface PageProps {
          title: title,
          description: description,
          url: canonicalUrl,
+         siteName: 'DKV Dentisalud Élite', // Añade el nombre del sitio para OG
+         locale: 'es_ES',
          type: 'website',
          images: [
            {
@@ -79,9 +81,16 @@ interface PageProps {
            },
          ],
        },
+       robots: {
+         index: true,
+         follow: true,
+       }
      };
    } catch (e) {
-     return { title: 'Buscador de Dentistas | DKV Dentisalud' };
+     return {
+       title: 'Buscador de Dentistas | DKV Dentisalud',
+       metadataBase: new URL(baseUrl)
+     };
    }
  }
 
