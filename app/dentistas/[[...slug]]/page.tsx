@@ -194,10 +194,33 @@ export default async function DentistasPage({ params }: PageProps) {
           "telephone": "+34976217463",
           "contactType": "customer service"
        },
+       "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "ES"
+      },
        "areaServed": {
-         "@type": "Place",
-         "name": locationName // Ej: "Zaragoza"
+         "@type": "AdministrativeArea",
+         "name": locationName,
+         "containedIn": { "@type": "Country", "name": "España" }
        },
+       "serviceType": "Seguro Dental / Cuadro Médico",
+       "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Servicios Odontológicos",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Cuadro Médico Dental",
+                  "areaServed": {
+                    "@type": "AdministrativeArea",
+                    "name": locationName
+                  }
+                }
+              }
+            ]
+       }
      };
 
     // 4.3. RED DE NAVEGACIÓN SEMÁNTICA CATEGORIZADA
