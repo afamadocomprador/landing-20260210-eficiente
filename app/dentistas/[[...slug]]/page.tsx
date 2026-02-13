@@ -171,6 +171,7 @@ export default async function DentistasPage({ params }: PageProps) {
       "@type": "BreadcrumbList",
       "name": "Ruta de navegación",
       "description": "Jerarquía de navegación de la página",
+      "numberOfItems": breadcrumbItems.length,
       "itemListElement": breadcrumbItems
     };
 
