@@ -12,6 +12,7 @@ import DentistHero from "@/components/hero/DentistHero";
 import FixedBreadcrumb from "@/components/layout/FixedBreadcrumb";
 import ScrollToMapButton from "@/components/dentists/ScrollToMapButton";
 import RelatedLinks from "@/components/dentists/links/RelatedLinks"; // <--- Componente Nuevo
+import FooterLegal from "@/components/FooterLegal"; // <--- IMPORTACIÓN AÑADIDA
 
 export const dynamic = "force-dynamic";
 
@@ -136,18 +137,6 @@ export default async function DentistasPage({ params }: PageProps) {
      // Esto crea la estructura de datos que Google busca para validar la entidad
      const locationName = navigationData.seo.h1.normal || "España";
      
-     // 4.1. JSON-LD para Breadcrumbs (Rutas de exploración)
-     //const breadcrumbJsonLd = {
-     //  "@context": "https://schema.org",
-     //  "@type": "BreadcrumbList",
-     //  "itemListElement": navigationData.seo.breadcrumbs.map((item: any, index: number) => ({
-     //    "@type": "ListItem",
-     //    "position": index + 1,
-     //    "name": item.label,
-     //    "item": `https://landing-20260210-eficiente.vercel.app/${item.href}` // Asegúrate de usar dominio absoluto
-     //  }))
-     //};
-
     // 4.1. BREADCRUMBS OPTIMIZADOS (Soluciona "Elemento sin nombre" y "Thing")
     const breadcrumbItems = [
       // --- PASO 1: Inyectamos manualmente la HOME ---
@@ -194,48 +183,96 @@ export default async function DentistasPage({ params }: PageProps) {
 
 
 
-     // 4.2. Organización (Marca en Zona) - REEMPLAZA AL "SERVICE"
-     // Al usar directamente "Organization" como entidad principal, Google no pide dirección física.
-     const organizationJsonLd = {
-       "@context": "https://schema.org",
-       "@type": "Organization", 
-       "name": "DKV Dentisalud Élite",
-       "url": baseUrl,
-       "logo": `${baseUrl}/images/logo-dkv.png`,
-       "description": `Cuadro médico de dentistas DKV en ${locationName} con precios pactados para asegurados.`,
-       "knowsAbout": ["Seguro Dental", "Odontología", "Cuadro Médico", "Dentistas"],
-       "contactPoint": {
-          "@type": "ContactPoint",
-          "telephone": "+34976217463",
-          "contactType": "customer service",
-          "areaServed": "ES",
-          "availableLanguage": "Spanish"
-       },
-       "areaServed": {
-         "@type": "AdministrativeArea",
-         "name": locationName,
-         "containedIn": { "@type": "Country", "name": "España" }
-       },
-       "hasOfferCatalog": {
-            "@type": "OfferCatalog",
-            "name": "Servicios Odontológicos",
-            "itemListElement": [
-              {
-                "@type": "Offer",
-                "itemOffered": {
-                  "@type": "Service",
-                  "name": "Cuadro Médico Dental",
-                  "serviceType": "Dentistas en España a precios pactados",
-                  "areaServed": {
-                    "@type": "AdministrativeArea",
-                    "name": locationName,
-                  }
-                }
-              }
-            ]
-       }
-     };
+// 4.2. Entidad Local y Catálogo de Precios (Fusión Estratégica)
+// Reemplaza tu antiguo organizationJsonLd por este:
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": ["InsuranceAgency", "Organization"],
+  "@id": `${baseUrl}${params.slug ? '/dentistas/' + params.slug.join('/') : ''}/#local-agency`,
+  "mainEntityOfPage": `${baseUrl}${params.slug ? '/dentistas/' + params.slug.join('/') : ''}`,
+  
+  // Nombre dinámico: "Clínicas Dentales DKV Zaragoza - Precios Pactados"
+  "name": `Clínicas Dentales DKV ${locationName} - Precios Pactados`,
+  
+  // Cumplimiento Legal (Datos fijos del agente)
+  "legalName": "Bernardo Sobrecasas Gallizo - Agente de Seguros Exclusivo DKV",
+  "identifier": "C016125451380V",
+  
+  "description": `Cuadro médico oficial DKV en ${locationName}. Acceso a la Red Dental Élite con precios máximos garantizados en implantes, ortodoncia e Invisalign para asegurados.`,
+  "url": `${baseUrl}${params.slug ? '/dentistas/' + params.slug.join('/') : ''}`,
+  "telephone": "+34976217463",
+  "priceRange": "124€ (Cuota Anual del Plan)",
+  "logo": `${baseUrl}/images/logo-dkv.png`,
+  "image": `${baseUrl}/api/og?title=${encodeURIComponent(locationName)}&subtitle=Cuadro Médico`,
 
+  // Área Servida Dinámica: Esto le dice a Google que eres la autoridad en esta ciudad/provincia
+  "areaServed": {
+    "@type": "AdministrativeArea",
+    "name": locationName,
+    "containedIn": { "@type": "Country", "name": "ES" }
+  },
+
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Av. César Augusto, 33",
+    "addressLocality": "Zaragoza", // Tu base sigue en Zaragoza
+    "postalCode": "50004",
+    "addressCountry": "ES"
+  },
+
+  "brand": {
+    "@type": "Brand",
+    "name": "DKV Dentisalud",
+    "description": "Seguro dental oficial con baremos franquiciados"
+  },
+
+  // CATÁLOGO DE OFERTAS LOCALES (Lo que roba clics en Google)
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": `Baremos Dentales en ${locationName}`,
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": `Implante Dental en ${locationName}`,
+          "description": `Precio baremado oficial en clínicas de ${locationName}. Incluye cirugía y corona.`,
+          "areaServed": { "@type": "AdministrativeArea", "name": locationName }
+        },
+        "price": "1100.00",
+        "priceCurrency": "EUR"
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": `Ortodoncia Invisible (Invisalign) en ${locationName}`,
+          "description": "Tratamiento completo con alineadores transparentes y estudio digital incluido.",
+          "areaServed": { "@type": "AdministrativeArea", "name": locationName }
+        },
+        "price": "2950.00",
+        "priceCurrency": "EUR"
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Limpieza Dental y Fluoración",
+          "description": "Servicio incluido sin coste adicional para asegurados en la red local.",
+          "areaServed": { "@type": "AdministrativeArea", "name": locationName }
+        },
+        "price": "0.00",
+        "priceCurrency": "EUR"
+      }
+    ]
+  },
+
+  // Transparencia requerida
+  "publishingPrinciples": [
+    `${baseUrl}/condiciones-generales.pdf`,
+    `${baseUrl}/ipid.pdf`
+  ]
+};
     // 4.3. RED DE NAVEGACIÓN SEMÁNTICA CATEGORIZADA
     const rel = navigationData.relatedLinks || {};
     
@@ -331,6 +368,9 @@ export default async function DentistasPage({ params }: PageProps) {
 
         {/* 2. NUEVO: Componente de Enlaces Relacionados (datos vienen del engine) */}
         <RelatedLinks data={navigationData.relatedLinks} />
+
+        {/* --- EL PIE DE PÁGINA AÑADIDO --- */}
+        <FooterLegal />
 
       </div>
     );
