@@ -56,52 +56,6 @@ export const viewport: Viewport = {
 };
 
 
-/* ************************************************** DESDE AQUI 
-const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "InsuranceAgency", // Eres una agencia/agente, no la corporación entera
-    "name": "DKV Dentisalud Élite",
-    "description": "Dentistas en toda España con precios pactados y grandes descuentos.",
-    "url": "https://landing-20260210-eficiente.vercel.app",
-    "telephone": "+34976217463",
-    "logo": "https://landing-20260210-eficiente.vercel.app/images/logo-dkv.png",
-    "image": [
-        "https://landing-20260210-eficiente.vercel.app/images/og-home.jpg",
-        "https://landing-20260210-eficiente.vercel.app/images/logo-dkv.png"
-      ],
-
-    // 1. TU DIRECCIÓN (Da confianza y valida la entidad)
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Av. César Augusto, 33", // Tu dirección fiscal/oficina
-      "addressLocality": "Zaragoza",
-      "postalCode": "50004",
-      "addressCountry": "ES"
-    },
-
-    // 2. EL ANTÍDOTO (Esto evita que te limiten localmente)
-   "areaServed": {
-      "@type": "Country",
-      "name": "España" // 👈 ESTO le dice a Google que tu ámbito es nacional
-    },
-
-    // 3. TIPO DE SERVICIO
-    "priceRange": "$$",
-    "parentOrganization": {
-        "@type": "InsuranceCompany",
-        "name": "DKV Seguros",
-        "url": "https://dkv.es"
-    },
-
-  // Solo pon sameAs si tienes TUS PROPIAS redes (ej: facebook.com/AgenteDKVJuan)
-  // Si no tienes, déjalo vacío o bórralo para no enviar tráfico a la central.
-  "sameAs": []
-
-};
-
-******************************** hata aqui * */
-
-
 /**
  * JSON-LD ESTRATÉGICO 2026 - VERSIÓN FINAL DE CUMPLIMIENTO
  * Proyecto: Red Dental Élite (Bernardo Sobrecasas)
