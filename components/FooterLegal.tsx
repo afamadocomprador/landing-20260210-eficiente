@@ -1,29 +1,28 @@
-// components/FooterLegal.tsx
 import React from 'react';
 import Link from 'next/link';
 
-const FooterLegal = () => {
+/**
+ * FooterLegal - Estructura de dos zonas
+ * Zona Oscura: Navegación de contenido y contacto.
+ * Zona Clara: Enlaces legales y cumplimiento.
+ */
+const FooterLegal: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer>
-      {/* --- FRANJA SUPERIOR --- */}
-      <div className="bg-dkv-gray text-white py-12 font-fsme">
+    <footer className="w-full">
+      {/* --- ZONA 1: GRIS OSCURA (Contenido y Navegación) --- */}
+      <div className="bg-dkv-gray text-white py-14 font-fsme">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-3 gap-12 text-sm font-light">
   
-             {/* Columna 1: Navegación Interna -> USAMOS <Link> */}
+             {/* Columna Izquierda: Opciones de la página */}
              <div>
                <h4 className="font-bold mb-6 text-lg uppercase tracking-wide font-lemon">DKV SEGUROS</h4>
-               <ul className="space-y-3 opacity-90">
-                 <li>
-                   <Link href="/seguros-salud" className="hover:underline hover:text-white/80 transition-colors">
-                     Seguros de Salud
-                   </Link>
-                 </li>
+               <ul className="space-y-4 opacity-90">
                  <li>
                    <Link href="/seguros-dentales" className="hover:underline hover:text-white/80 transition-colors">
-                     Seguros Dentales
+                     Dentisalud Élite
                    </Link>
                  </li>
                  <li>
@@ -31,75 +30,69 @@ const FooterLegal = () => {
                      Cuadro Médico
                    </Link>
                  </li>
-               </ul>
-             </div>
-  
-             {/* Columna 2: Contacto -> MANTENEMOS <a> (Protocolos tel: y mailto:) */}
-             <div>
-               <h4 className="font-bold mb-6 text-lg uppercase tracking-wide font-lemon">ATENCIÓN AL CLIENTE</h4>
-               <ul className="space-y-3 opacity-90">
                  <li>
-                   Teléfono: <a href="tel:900000000" className="hover:underline font-bold">900 000 000</a>
-                 </li>
-                 <li>
-                   Email: <a href="mailto:atencion@dkv.es" className="hover:underline">atencion@dkv.es</a>
+                   <Link href="/tratamientos" className="hover:underline hover:text-white/80 transition-colors">
+                     Tratamientos y Precios
+                   </Link>
                  </li>
                </ul>
              </div>
 
-             {/* Columna 3: Información Estática */}
-             <div>
-               <h4 className="font-bold mb-6 text-lg uppercase tracking-wide font-lemon">AGENTE EXCLUSIVO</h4>
-               <div className="flex items-start gap-4">
-                  <div className="border border-white/30 px-3 py-1.5 rounded text-xs font-bold tracking-widest font-lemon">DKV</div>
-                  <div>
-                    <p className="font-bold text-base">Bernardo Sobrecasas Gallizo</p>
-                    <p className="text-xs opacity-70 mt-1">Agente de Seguros Exclusivo</p>
-                    <p className="text-xs opacity-70">Nº Registro DGSFP: C016125451380V</p>
-                  </div>
-               </div>
+             {/* Columna Central: Suprimida (Espacio libre) */}
+             <div className="hidden md:block"></div>
+
+             {/* Columna Derecha: Contacto Urgente */}
+             <div className="md:text-right">
+               <h4 className="font-bold mb-6 text-lg uppercase tracking-wide font-lemon">Contacto</h4>
+               <ul className="space-y-4 opacity-90">
+                 <li>
+                   <a href="tel:+34976217463" className="hover:underline text-xl font-bold flex md:justify-end items-center gap-2">
+                     976 217 463
+                   </a>
+                 </li>
+                 <li>
+                   <Link href="/#información" className="hover:underline md:justify-end">
+                     Solicitar información
+                   </Link>
+                 </li>
+               </ul>
              </div>
           </div>
         </div>
       </div>
 
-      {/* --- FRANJA INFERIOR --- */}
-      <div className="bg-dkv-gray-border py-8 border-t border-dkv-gray/10 text-dkv-gray">
+      {/* --- ZONA 2: GRIS CLARA (Legal y Copyright) --- */}
+      <div className="bg-gray-100 py-10 border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          {/* TEXTO LEGAL COMPLETO RESTAURADO */}
-          <div className="text-[10px] leading-relaxed mb-6 text-justify md:text-left opacity-80 space-y-2 font-fsme">
-            <p>
-              <strong>INFORMACIÓN LEGAL:</strong> Esta web está gestionada por Bernardo Sobrecasas Gallizo, Agente de Seguros Exclusivo de DKV Seguros y Reaseguros S.A.E. Tiene concertado seguro de Responsabilidad Civil profesional conforme a la legislación vigente.
-            </p>
-            <p>
-              <strong>ASEGURADORA:</strong> DKV Seguros y Reaseguros, S.A.E. (Sociedad Unipersonal). Inscrita en el R.M. de Zaragoza, tomo 1.711, folio 214, hoja Z-15.152. NIF A-50004209. Sede social: Torre DKV, Avda. María Zambrano 31, 50018 Zaragoza.
-            </p>
-            <p>
-              <strong>PROTECCIÓN DE DATOS:</strong> Responsable: DKV Seguros. Finalidad: Gestión de la solicitud y comercialización. Derechos: Puede ejercitar sus derechos de acceso, rectificación, supresión y otros enviando un correo a bernardo.sobrecasas@segurosdkv.es.
-            </p>
-            <p>
-              <strong>CONDICIONES:</strong> Las primas y coberturas están sujetas a las Condiciones Generales y Particulares de la póliza DKV Dentisalud Élite. Los tratamientos con coste 0€ se refieren a los servicios incluidos en la franquicia dental sin coste adicional. Los ahorros mostrados son estimaciones basadas en precios medios de mercado 2024.
-            </p>
-          </div>
-
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 border-t border-dkv-gray/10 pt-6">
-            <p className="text-[11px] font-bold text-dkv-gray uppercase tracking-wider font-fsme">
-              &copy; {currentYear} Bernardo Sobrecasas. Todos los derechos reservados.
-            </p>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
             
-            {/* Navegación Legal -> USAMOS <Link> */}
-            <div className="flex gap-6 text-[11px] font-bold text-dkv-gray font-fsme">
-               <Link href="/aviso-legal" className="hover:text-dkv-green transition-colors">
+            {/* Copyright e Identificación breve */}
+            <div className="text-[11px] font-bold text-dkv-gray uppercase tracking-wider font-fsme text-center md:text-left">
+              <p>&copy; {currentYear} RED DENTAL ÉLITE.</p>
+              <p className="mt-1 opacity-70">Bernardo Sobrecasas Gallizo - Agente Exclusivo DKV</p>
+            </div>
+            
+            {/* Navegación Legal Crítica */}
+            <nav className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-[11px] font-bold text-dkv-gray font-fsme uppercase tracking-widest">
+               <Link href="/aviso-legal" className="hover:text-dkv-green transition-colors border-b border-dkv-gray/20">
                  Aviso Legal
                </Link>
                <Link href="/politica-privacidad" className="hover:text-dkv-green transition-colors">
-                 Política de Privacidad
+                 Privacidad
                </Link>
                <Link href="/politica-cookies" className="hover:text-dkv-green transition-colors">
-                 Política de Cookies
+                 Cookies
                </Link>
-            </div>
+            </nav>
+          </div>
+
+          {/* Nota legal mínima obligatoria en la zona clara */}
+          <div className="mt-8 pt-8 border-t border-gray-200/50">
+            <p className="text-[10px] leading-relaxed text-dkv-gray/60 text-center font-fsme max-w-3xl mx-auto">
+              La actividad de mediación de seguros está sujeta a la supervisión de la DGSFP. 
+              Los datos identificativos completos del mediador y las condiciones de uso del portal 
+              se encuentran detallados en el Aviso Legal.
+            </p>
           </div>
         </div>
       </div>
