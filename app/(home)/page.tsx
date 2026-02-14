@@ -102,81 +102,101 @@ const jsonLd = {
 ******************************** hata aqui * */
 
 
+/**
+ * JSON-LD ESTRATÉGICO 2026 - VERSIÓN FINAL DE CUMPLIMIENTO
+ * Proyecto: Red Dental Élite (Bernardo Sobrecasas)
+ * Validador: Compatible con validator.schema.org y Google Search Console.
+ * Cumplimiento: LSSI, LDS (Ley de Distribución) y ToolKit DKV 2025.
+ */
 const jsonLd = {
   "@context": "https://schema.org",
-  "@graph": [
-    {
-      // 1. LA ENTIDAD: Te posicionas como una Red Médica, no solo un vendedor de seguros
-      "@type": "MedicalOrganization", 
-      "@id": "https://tuweb.es/#organization",
-      "name": "Red Dental Élite España", // Nombre comercial que prioriza el servicio
-      "legalName": "Bernardo Sobrecasas Gallizo", // Cumplimiento legal "oculto"
-      "url": "https://tuweb.es",
-      "logo": "https://tuweb.es/images/tu-logo-o-dkv.png",
-      "telephone": "+34976217463",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Av. César Augusto, 33",
-        "addressLocality": "Zaragoza",
-        "postalCode": "50004",
-        "addressCountry": "ES"
+  "@type": ["InsuranceAgency", "Organization"],
+  "@id": "https://landing-20260210-eficiente.vercel.app/#agency-identity",
+  "mainEntityOfPage": "https://landing-20260210-eficiente.vercel.app",
+  
+  // Nombre comercial para captación
+  "name": "Portal Red Dental Élite - Precios Pactados",
+  
+  // Identificación legal obligatoria (LSSI Art. 10 y Ley de Distribución de Seguros)
+  "legalName": "Bernardo Sobrecasas Gallizo - Agente de Seguros Exclusivo DKV",
+  "identifier": "C016125451380V", // Número de registro DGSFP sin prefijos para facilitar lectura de bots
+  
+  "description": "Distribuidor oficial del Plan DKV Dentisalud. Acceso a red nacional con 1.400 dentistas y baremos de precios protegidos en implantes y ortodoncia.",
+  "url": "https://landing-20260210-eficiente.vercel.app",
+  "telephone": "+34976217463",
+  
+  // Ajuste Compliance: Definimos el rango de precios vinculado a la suscripción
+  "priceRange": "124€ (Cuota Anual del Plan)",
+
+  "image": "https://landing-20260210-eficiente.vercel.app/images/clinica-dental-equipo.jpg",
+  "logo": "https://landing-20260210-eficiente.vercel.app/images/logo-dkv.png",
+
+  // Declaración de Servicio Nacional para evitar sesgo geográfico
+  "areaServed": {
+    "@type": "Country",
+    "name": "ES"
+  },
+
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Av. César Augusto, 33",
+    "addressLocality": "Zaragoza",
+    "postalCode": "50004",
+    "addressCountry": "ES"
+  },
+
+  "brand": {
+    "@type": "Brand",
+    "name": "DKV Dentisalud",
+    "description": "Seguro dental oficial con baremos franquiciados garantizados"
+  },
+
+  // Catálogo con protección legal contra "Publicidad Engañosa"
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Catálogo de Baremos Protegidos 2026",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Suscripción al Plan Dental (Acceso Anual)",
+          "description": "Cuota única anual que otorga acceso a toda la red de dentistas y precios pactados."
+        },
+        "price": "124.00",
+        "priceCurrency": "EUR"
       },
-      "areaServed": {
-        "@type": "Country",
-        "name": "España"
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Implante Dental Completo (Precio Protegido)",
+          "description": "Precio máximo garantizado para miembros del plan. Incluye cirugía y corona.",
+          "areaServed": { "@type": "Country", "name": "ES" }
+        },
+        "price": "1100.00",
+        "priceCurrency": "EUR"
       },
-      "parentOrganization": {
-        "@type": "Organization",
-        "name": "DKV Seguros",
-        "url": "https://dkv.es"
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Limpieza de Boca y Fluoración (Incluida)",
+          "description": "Servicio sin coste adicional incluido en la cuota anual para asegurados.",
+          "areaServed": { "@type": "Country", "name": "ES" }
+        },
+        "price": "0.00",
+        "priceCurrency": "EUR"
       }
-    },
-    {
-      // 2. EL SERVICIO: Aquí es donde enganchas por "Problema-Solución"
-      "@type": "Service",
-      "serviceType": "Odontología con Precios Pactados",
-      "provider": { "@id": "https://tuweb.es/#organization" },
-      "description": "Acceso a cuadro médico dental con ahorro garantizado en tratamientos.",
-      "hasOfferCatalog": {
-        "@type": "OfferCatalog",
-        "name": "Baremos Oficiales de Tratamientos",
-        "itemListElement": [
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Implante Dental Completo",
-              "description": "Cirugía + Aditamentos + Corona"
-            },
-            "price": "1100.00", // PRECIO REAL del tratamiento, no el del seguro
-            "priceCurrency": "EUR"
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Ortodoncia Invisible (Pack Completo)",
-              "description": "Incluye estudio y alineadores ilimitados"
-            },
-            "price": "2950.00",
-            "priceCurrency": "EUR"
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Limpieza de Boca y Tartrectomía",
-              "description": "Anual para miembros de la red"
-            },
-            "price": "0.00", // GANCHO PSICOLÓGICO: Gratis
-            "priceCurrency": "EUR"
-          }
-        ]
-      }
-    }
+    ]
+  },
+
+  // Documentación de Transparencia (IPID y CG) requerida por normativa UE
+  "publishingPrinciples": [
+    "https://landing-20260210-eficiente.vercel.app/condiciones-generales.pdf",
+    "https://landing-20260210-eficiente.vercel.app/ipid.pdf"
   ]
 };
-
 
 export default function LandingPage() {
   return (
