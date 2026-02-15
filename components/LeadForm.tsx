@@ -10,13 +10,20 @@ interface LeadFormData {
   telefono: string;
   email: string;
   cp: string;
+  mensaje: string; // AÑADIDO: Campo para la duda o comentario
   consentPolicy: boolean;
   consentCommercial: boolean;
 }
 
 const LeadForm = () => {
   const [formData, setFormData] = useState<LeadFormData>({
-    nombre: '', telefono: '', email: '', cp: '', consentPolicy: false, consentCommercial: false
+    nombre: '', 
+    telefono: '', 
+    email: '', 
+    cp: '', 
+    mensaje: '', // AÑADIDO: Inicialización
+    consentPolicy: false, 
+    consentCommercial: false
   });
   
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
@@ -56,20 +63,10 @@ const LeadForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Función auxiliar para formatear la fecha a milisegundos
   const generateTimeId = () => {
     const now = new Date();
     const pad = (n: number, width: number = 2) => n.toString().padStart(width, '0');
-    
-    const year = now.getFullYear();
-    const month = pad(now.getMonth() + 1);
-    const day = pad(now.getDate());
-    const hours = pad(now.getHours());
-    const minutes = pad(now.getMinutes());
-    const seconds = pad(now.getSeconds());
-    const milliseconds = pad(now.getMilliseconds(), 3); // 3 dígitos para mmm
-
-    return `${year}-${month}-${day}-${hours}:${minutes}:${seconds}.${milliseconds}`;
+    return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}-${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}.${pad(now.getMilliseconds(), 3)}`;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -79,23 +76,26 @@ const LeadForm = () => {
     setStatus('submitting');
     setErrorMessage('');
     
-    // 1. GENERAMOS EL ID CON FORMATO DE TIEMPO (AAAA-MM-DD-HH:MM:SS.mmm)
     const leadId = generateTimeId();
 
     try {
       const location = await getUserLocation();
 
-      // 2. INSERTAR EN SUPABASE (Usando la nueva columna id_referencia)
+      // INSERTAR EN SUPABASE
+
+      // MODIFICADO: Generamos la fecha local en formato ISO pero manteniendo el offset local
+      const localISOTime = new Date(Date.now() - (new Date().getTimezoneOffset() * 60000)).toISOString();
+
       const { error: dbError } = await supabase
         .from('leads_dental') 
         .insert([
           {
-            // CAMBIO: No insertamos en 'id' (UUID), sino en 'id_referencia' (TEXT)
             id_referencia: leadId, 
             nombre: formData.nombre,
             telefono: formData.telefono,
             email: formData.email,
             codigo_postal: formData.cp,
+            mensaje_consulta: formData.mensaje, // MODIFICADO: Añadida columna mensaje_consulta
             localidad_landing: landingSlug,
             url_referencia: currentUrl,
             latitud: location.lat,
@@ -103,23 +103,26 @@ const LeadForm = () => {
             consentimiento_privacidad: formData.consentPolicy,
             consentimiento_comercial: formData.consentCommercial,
             estado: 'Nuevo',
-            created_at: new Date().toISOString(),
+            //created_at: new Date().toISOString(),
+            // MODIFICADO: Forzamos la hora local en lugar de dejar que Supabase ponga la suya
+            created_at: localISOTime,
           },
         ]);
 
       if (dbError) throw dbError;
 
-      // 3. ENVIAR NOTIFICACIÓN (Pasamos el leadId temporal para Email/Telegram)
+      // ENVIAR NOTIFICACIÓN
       try {
         await fetch('/api/lead-notification', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            leadId: leadId, // Enviamos el string AAAA-MM-DD...
+            leadId: leadId,
             nombre: formData.nombre,
             telefono: formData.telefono,
             email: formData.email,
             cp: formData.cp,
+            mensaje: formData.mensaje, // MODIFICADO: Añadido mensaje para notificación
             consentCommercial: formData.consentCommercial
           })
         });
@@ -127,7 +130,7 @@ const LeadForm = () => {
         console.warn("Fallo notificación:", emailError);
       }
 
-      // 4. DATALAYER
+      // DATALAYER
       if (typeof window !== 'undefined' && (window as any).dataLayer) {
         (window as any).dataLayer.push({
           'event': 'generate_lead',
@@ -157,9 +160,9 @@ const LeadForm = () => {
         </div>
         <h3 className="text-2xl font-lemon font-bold text-dkv-green-dark mb-2 uppercase">¡Solicitud Recibida!</h3>
         <p className="text-dkv-gray font-fsme mb-8 max-w-xs mx-auto text-sm">
-          Gracias <strong>{formData.nombre}</strong>. Te contactaremos en breve.
+          Gracias <strong>{formData.nombre}</strong>. Te contactaremos en breve para resolver tus dudas.
         </p>
-        <button onClick={() => { setStatus('idle'); setFormData({ nombre: '', telefono: '', email: '', cp: '', consentPolicy: false, consentCommercial: false }); }} className="text-dkv-green font-bold text-sm underline font-fsme">
+        <button onClick={() => { setStatus('idle'); setFormData({ nombre: '', telefono: '', email: '', cp: '', mensaje: '', consentPolicy: false, consentCommercial: false }); }} className="text-dkv-green font-bold text-sm underline font-fsme">
           Volver al formulario
         </button>
       </motion.div>
@@ -169,8 +172,8 @@ const LeadForm = () => {
   return (
     <div className="bg-white p-6 md:p-8 shadow-dkv-card border-t-4 border-dkv-green rounded-sm relative z-20">
       <div className="mb-6">
-        <h3 className="text-xl md:text-2xl font-bold text-dkv-green-dark font-lemon uppercase tracking-wide">PRESUPUESTO RÁPIDO</h3>
-        <p className="text-dkv-gray text-xs mt-1 font-fsme">Precios oficiales DKV 2025. Sin compromiso.</p>
+        <h3 className="text-xl md:text-2xl font-bold text-dkv-green-dark font-lemon uppercase tracking-wide">PLANTEAR CONSULTA</h3>
+        <p className="text-dkv-gray text-xs mt-1 font-fsme text-balance">Déjanos tu duda y Bernardo Sobrecasas te asesorará personalmente.</p>
       </div>
       
       {status === 'error' && (
@@ -190,7 +193,18 @@ const LeadForm = () => {
           <input type="text" className={`w-full px-4 py-3 bg-dkv-gray-light border ${errors.cp ? 'border-dkv-red' : 'border-transparent focus:border-dkv-green'} text-dkv-green-dark text-sm outline-none font-fsme`} value={formData.cp} onChange={e => setFormData({...formData, cp: e.target.value})} placeholder="CP" maxLength={5} disabled={status === 'submitting'} />
         </div>
 
-        <input type="email" className={`w-full px-4 py-3 bg-dkv-gray-light border ${errors.email ? 'border-dkv-red' : 'border-transparent focus:border-dkv-green'} text-dkv-green-dark text-sm outline-none font-fsme`} value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} placeholder="Email (opcional)" disabled={status === 'submitting'} />
+        <input type="email" className={`w-full px-4 py-3 bg-dkv-gray-light border ${errors.email ? 'border-dkv-red' : 'border-transparent focus:border-dkv-green'} text-dkv-green-dark text-sm outline-none font-fsme`} value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} placeholder="Email" disabled={status === 'submitting'} />
+
+        {/* MODIFICADO: Añadido Textarea para el mensaje */}
+        <div className="relative">
+          <textarea 
+            className="w-full px-4 py-3 bg-dkv-gray-light border border-transparent focus:border-dkv-green text-dkv-green-dark text-sm outline-none font-fsme min-h-[100px] resize-none" 
+            value={formData.mensaje} 
+            onChange={e => setFormData({...formData, mensaje: e.target.value})} 
+            placeholder="¿En qué podemos ayudarte? (opcional)" 
+            disabled={status === 'submitting'}
+          />
+        </div>
 
         <div className="pt-3 space-y-3 border-t border-dkv-gray/10 mt-4">
           <label className="flex items-start gap-3 cursor-pointer group select-none">
@@ -198,7 +212,7 @@ const LeadForm = () => {
               <input type="checkbox" className="peer sr-only" checked={formData.consentPolicy} onChange={e => setFormData({...formData, consentPolicy: e.target.checked})} disabled={status === 'submitting'} />
               <div className={`w-5 h-5 border border-dkv-gray/30 flex items-center justify-center transition-all ${errors.consentPolicy ? 'border-dkv-red bg-red-50' : 'peer-checked:bg-dkv-green peer-checked:border-dkv-green'}`}><CheckCircle2 className="w-3.5 h-3.5 text-white opacity-0 peer-checked:opacity-100" /></div>
             </div>
-            <span className={`text-[11px] leading-tight font-fsme transition-colors ${errors.consentPolicy ? 'text-dkv-red font-bold' : 'text-dkv-gray'}`}>He leído y acepto la <a href="#" className="underline hover:text-dkv-green">Política de Privacidad</a>. *</span>
+            <span className={`text-[11px] leading-tight font-fsme transition-colors ${errors.consentPolicy ? 'text-dkv-red font-bold' : 'text-dkv-gray'}`}>He leído y acepto la <a href="/aviso-legal" target="_blank" className="underline hover:text-dkv-green">Política de Privacidad</a>. *</span>
           </label>
           
           <label className="flex items-start gap-3 cursor-pointer group select-none">
@@ -206,12 +220,12 @@ const LeadForm = () => {
               <input type="checkbox" className="peer sr-only" checked={formData.consentCommercial} onChange={e => setFormData({...formData, consentCommercial: e.target.checked})} disabled={status === 'submitting'} />
               <div className="w-5 h-5 border border-dkv-gray/30 flex items-center justify-center transition-all peer-checked:bg-dkv-green peer-checked:border-dkv-green"><CheckCircle2 className="w-3.5 h-3.5 text-white opacity-0 peer-checked:opacity-100" /></div>
             </div>
-            <span className="text-[11px] text-dkv-gray/80 leading-tight font-fsme">[OPCIONAL] Deseo recibir comunicaciones comerciales.</span>
+            <span className="text-[11px] text-dkv-gray/80 leading-tight font-fsme">[OPCIONAL] Deseo recibir promociones de Bernardo Sobrecasas.</span>
           </label>
         </div>
 
         <button type="submit" disabled={status === 'submitting'} className="w-full bg-dkv-green hover:bg-dkv-green-hover text-white font-bold py-4 text-lg uppercase tracking-widest transition-all mt-4 font-lemon shadow-dkv-card disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 rounded-full">
-          {status === 'submitting' ? <><Loader2 className="w-5 h-5 animate-spin" />Enviando...</> : 'PEDIR PRESUPUESTO'}
+          {status === 'submitting' ? <><Loader2 className="w-5 h-5 animate-spin" />Enviando...</> : 'ENVIAR CONSULTA'}
         </button>
       </form>
     </div>
