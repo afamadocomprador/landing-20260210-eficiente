@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import ImageLink from "next/link"; // Alias para evitar conflicto
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
 interface HeaderProps {
@@ -22,6 +24,9 @@ const NAV_ITEMS: NavItem[] = [
 ];
 
 export default function Header({ onOpenCalculator }: HeaderProps) {
+  const pathname = usePathname();  
+  const isHome = pathname === "/";
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [showCta, setShowCta] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -83,9 +88,9 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
             {NAV_ITEMS.map((item) => (
               <Link
                 key={item.label}
-                href={item.href}
+                href={isHome ? item.href : `/${item.href}`}
                 aria-label={item.ariaLabel}
-                className="text-white font-fsme text-sm lg:text-base font-bold hover:text-white/80 transition-colors uppercase tracking-widest relative group py-2"
+                className="text-white/90 font-fsme text-sm lg:text-base font-bold hover:text-white transition-colors uppercase tracking-widest relative group py-2"
               >
                 {item.label}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
@@ -102,8 +107,9 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
             }`}
             aria-hidden={!showCta}
           >
-            <button
-              onClick={onOpenCalculator}
+            {/* MODIFICADO: De <button> a <Link> para evitar bloqueos de estado y navegar directamente */}
+            <Link
+              href="/presupuesto"
               className="
                 bg-white text-dkv-green hover:bg-gray-100 
                 font-lemon tracking-widest text-xs md:text-sm 
@@ -114,10 +120,10 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
                 flex items-center justify-center
                 uppercase font-bold
               "
-              aria-label="Abrir calculadora de precios"
+              aria-label="Ir a calculadora de precios"
             >
               Calcula tu precio
-            </button>
+            </Link>
           </div>
 
           {/* --- BOTÓN MENÚ MÓVIL --- */}
@@ -132,15 +138,12 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
         </div>
       </div>
 
-      {/* --- MENÚ MÓVIL DESPLEGABLE (CORREGIDO) --- */}
+      {/* --- MENÚ MÓVIL DESPLEGABLE --- */}
       <div 
         className={`
           md:hidden fixed left-0 w-full bg-dkv-green border-t border-white/10 shadow-xl 
           overflow-hidden transition-all duration-300 ease-in-out
-          
-          /* 🔥 SOLUCIÓN AQUÍ: La posición 'top' cambia según el estado del scroll */
           ${isScrolled ? "top-[70px]" : "top-[110px]"}
-          
           ${isMobileMenuOpen ? "max-h-[300px] opacity-100" : "max-h-0 opacity-0"}
         `}
       >
@@ -148,22 +151,21 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.label}
-              href={item.href}
+              href={isHome ? item.href : `/${item.href}`}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="text-white font-lemon text-lg font-bold tracking-widest hover:text-white/80 transition-colors border-b border-white/5 pb-2"
+              className="text-white font-lemon text-lg font-bold tracking-widest hover:text-white/80 transition-colors border-b border-white/5 pb-2 uppercase"
             >
               {item.label}
             </Link>
           ))}
-          <button
-            onClick={() => {
-              onOpenCalculator?.();
-              setIsMobileMenuOpen(false);
-            }}
-            className="mt-4 w-full bg-white text-dkv-green font-lemon py-3 rounded-xl font-bold uppercase tracking-widest shadow-md active:scale-95 transition-transform"
+          {/* MODIFICADO: De <button> a <Link> para ser consistente con la navegación de la página */}
+          <Link
+            href="/presupuesto"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="mt-4 w-full bg-white text-dkv-green font-lemon py-3 rounded-xl font-bold uppercase tracking-widest shadow-md active:scale-95 transition-transform flex items-center justify-center"
           >
             Calcula tu precio
-          </button>
+          </Link>
         </nav>
       </div>
     </header>
