@@ -207,7 +207,218 @@ export async function getLevelData(
     nombre: landing.nombre_ine 
   });
 
-  // 7. RETORNO FINAL
+
+
+// ====================================================================
+  // 7. GENERACIÓN DE JSON-LD (Fusión de Legal + Catálogo + Ontología Médica)
+  // ====================================================================
+  const baseUrl = "https://landing-20260210-eficiente.vercel.app";
+  const currentPath = slug? `/dentistas/${slug}` : `/dentistas`;
+  const currentUrl = `${baseUrl}${currentPath}`;
+  const locationName = landing.nombre_ine || "España";
+
+  // Mapeo preciso de jerarquías para Google
+  let areaServedType = "AdministrativeArea"; // Valor por defecto para Comarcas (06) y Barrios (04-a)
+  if (landing.nivel === "01") areaServedType = "Country";
+  else if (landing.nivel === "03") areaServedType = "State"; // Provincia
+  else if (landing.nivel === "04" && ["b", "c"].includes(landing.subnivel)) areaServedType = "City";
+
+  // Nodo Primario: La Súper-Entidad
+  const insuranceAgencyNode: any = {
+    "@type": ["InsuranceAgency", "Organization"],
+    "@id": `${currentUrl}#local-agency`,
+    "mainEntityOfPage": currentUrl,
+    
+    // --- BLOQUE LEGAL ESTRICTO ---
+    "name": `Clínicas Dentales DKV ${locationName} - Precios Pactados`,
+    "legalName": "Bernardo Sobrecasas Gallizo - Agente de Seguros Exclusivo DKV",
+    "identifier": "C016125451380V",
+    "description": `Cuadro médico oficial DKV en ${locationName}. Acceso a la Red Dental Élite con precios máximos garantizados en implantes, ortodoncia e Invisalign para asegurados.`,
+    "url": currentUrl,
+    "telephone": "+34976217463",
+    "priceRange": "124€ (Cuota Anual del Plan)",
+    "logo": `${baseUrl}/images/logo-dkv.png`,
+    "image": `${baseUrl}/api/og?title=${encodeURIComponent(locationName)}&subtitle=Cuadro%20Médico`,
+    "brand": {
+      "@type": "Brand",
+      "name": "DKV Dentisalud",
+      "description": "Seguro dental oficial con baremos franquiciados"
+    },
+    // Dirección inyectada de forma incondicional por exigencia legal DGSFP
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Av. César Augusto, 33",
+      "addressLocality": "Zaragoza",
+      "postalCode": "50004",
+      "addressCountry": "ES"
+    },
+    "publishingPrinciples": [
+      `${baseUrl}/condiciones-generales.pdf`,
+      `${baseUrl}/ipid.pdf`
+    ],
+    "areaServed": {
+      "@type": areaServedType,
+      "name": locationName,
+      "containedIn": { "@type": "Country", "name": "ES" }
+    },
+    
+    // CATÁLOGO DE OFERTAS LOCALES (Lo que roba clics en Google)
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": `Baremos Dentales en ${locationName}`,
+      "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": `Implante Dental en ${locationName}`,
+          "description": `Precio baremado oficial en clínicas de ${locationName}. Incluye cirugía y corona.`,
+          "areaServed": { "@type": "AdministrativeArea", "name": locationName }
+        },
+        "price": "1100.00",
+        "priceCurrency": "EUR"
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": `Ortodoncia Invisible (Invisalign) en ${locationName}`,
+          "description": "Tratamiento completo con alineadores transparentes y estudio digital incluido.",
+          "areaServed": { "@type": "AdministrativeArea", "name": locationName }
+        },
+        "price": "2950.00",
+        "priceCurrency": "EUR"
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Limpieza Dental y Fluoración",
+          "description": "Servicio incluido sin coste adicional para asegurados en la red local.",
+          "areaServed": { "@type": "AdministrativeArea", "name": locationName }
+        },
+        "price": "0.00",
+        "priceCurrency": "EUR"
+      }
+      ]
+    },
+
+
+    // --- SEGURO TRANSACCIONAL BASE ---
+    "makesOffer": {
+      "@type": "Offer",
+      "name": "Seguro médico dental DKV Dentisalud Élite",
+      "price": "124",
+      "priceCurrency": "EUR",
+    }
+  };
+
+  // Inicializamos el grafo semántico con la agencia principal
+  const schemaGraph: any = [insuranceAgencyNode];
+
+  // --- NODO ONTOLÓGICO MÉDICO INDEPENDIENTE (Validable 100%) ---
+  const medicalConditionNode = {
+    "@type": "MedicalCondition",
+    "@id": `${currentUrl}#caries-profunda`,
+    "name": "Caries profunda y dolor de muelas",
+    "possibleTreatment": {
+      "@type": ["MedicalTherapy", "Service"],
+      "name": "Tratamiento de Empaste Dental",
+      "provider": {
+        "@id": `${currentUrl}#local-agency`
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "29.00",
+        "priceCurrency": "EUR",
+        "name": "Precio Franquiciado DKV Élite"
+      }
+    }
+  };
+  schemaGraph.push(medicalConditionNode);
+
+
+
+
+  // Nodos Secundarios: Las Clínicas Reales y sus Médicos (limitado a 20 para cuidar el Crawl Budget)
+  const clinicsToMap = (listClinics || []).slice(0, 20);
+
+  clinicsToMap.forEach((clinic: any) => {
+    const safeClinicId = clinic.clinic_id || Math.random().toString(36).substring(2, 9);
+    
+    const clinicNode: any = {
+      "@type": "MedicalClinic",
+      "@id": `${currentUrl}#clinica-${safeClinicId}`,
+      "name": clinic.name || clinic.nombre_centro,
+      "telephone": clinic.phone || clinic.telefono,
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": clinic.address || clinic.direccion,
+        "addressLocality": clinic.city || clinic.municipio,
+        "postalCode": clinic.zip_code || clinic.cp,
+        "addressCountry": "ES"
+      }
+    };
+
+    if (clinic.specialties && Array.isArray(clinic.specialties) && clinic.specialties.length > 0) {
+      clinicNode.medicalSpecialty = clinic.specialties;
+    }
+
+
+    if (clinic.specialties && Array.isArray(clinic.specialties) && clinic.specialties.length > 0) {
+      // 1. Mapeo a valores válidos de Enumeración de Schema.org para medicalSpecialty
+      const validSchemaSpecialties = new Set<string>();
+      
+      clinic.specialties.forEach((spec: string) => {
+        const lowerSpec = spec.toLowerCase();
+        if (lowerSpec.includes("odontología") || lowerSpec.includes("ortodoncia") || lowerSpec.includes("implantes") || lowerSpec.includes("bucodental")) {
+          validSchemaSpecialties.add("Dentistry");
+        }
+        if (lowerSpec.includes("radiología") || lowerSpec.includes("radiografía")) {
+          validSchemaSpecialties.add("Radiography");
+        }
+        if (lowerSpec.includes("urgencias")) {
+          validSchemaSpecialties.add("Emergency");
+        }
+        if (lowerSpec.includes("cirugía") || lowerSpec.includes("maxilofacial")) {
+          validSchemaSpecialties.add("Surgical");
+        }
+        if (lowerSpec.includes("odontopediatría") || lowerSpec.includes("infantil")) {
+          validSchemaSpecialties.add("Pediatric");
+        }
+      });
+
+      if (validSchemaSpecialties.size > 0) {
+        clinicNode.medicalSpecialty = Array.from(validSchemaSpecialties);
+      }
+
+      // 2. Inyección SEO: Mantenemos los textos exactos en español en knowsAbout
+      clinicNode.knowsAbout = clinic.specialties;
+    }
+
+
+
+    if (clinic.staff_names && Array.isArray(clinic.staff_names) && clinic.staff_names.length > 0) {
+      clinicNode.employee = clinic.staff_names.map((docName: string) => ({
+        "@type": "Person",
+        "name": docName
+      }));
+    }
+
+    schemaGraph.push(clinicNode);
+  });
+
+  const schemaJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": schemaGraph
+  };
+
+
+
+
+
+
+  // 8. RETORNO FINAL
   return {
     nivelInicial, 
     nivelFinal: landing.nivel, 
@@ -233,7 +444,8 @@ export async function getLevelData(
       breadcrumbs: breadcrumbItems,
       enlacesSugeridos: [], 
       title: `${landing.nombre_ine} | DKV Dentisalud`,
-      description: ""
+      description: "",
+      schemaData: schemaJsonLd // <--- AÑADIDO PARA QUE PAGE.TSX LO INYECTE
     },
     relatedLinks: relatedLinks // Objeto completo con secciones
   };
