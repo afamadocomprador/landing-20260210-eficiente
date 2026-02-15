@@ -15,9 +15,9 @@ import PricingCards from '@/components/PricingCards';
 import FooterLegal from '@/components/FooterLegal'; 
 import Archetypes from '@/components/Archetypes'; 
 
-const LeadForm = dynamic(() => import('@/components/LeadForm'), {
-  loading: () => <div className="h-96 bg-gray-100 animate-pulse rounded-xl"></div>, 
-});
+//const LeadForm = dynamic(() => import('@/components/LeadForm'), {
+//  loading: () => <div className="h-96 bg-gray-100 animate-pulse rounded-xl"></div>, 
+//});
 
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), {
   ssr: false, 
@@ -228,6 +228,36 @@ export default function LandingPage() {
           </div>
         </section>
 
+
+        {/* --- SECCIÓN COMENTAR --- */}
+        <section 
+          id="información" 
+          className="py-20 bg-white border-t border-dkv-gray-border scroll-mt-28"
+        >
+          <div className="container mx-auto px-4 text-center">
+            <h2 className="text-4xl font-lemon text-dkv-green-dark mb-6">
+              ¿Algo que comentar?
+            </h2>
+            <p className="text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-10 leading-relaxed text-balance">
+                Plantéanos cualquier duda sobre tus circunstancias y cómo te puedes beneficiar de nuestros tratamientos.
+            </p>
+            
+            <Link 
+              href="/comentarios"
+              className="inline-flex items-center justify-center rounded-dkv font-fsme font-bold duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-dkv-green text-white hover:bg-dkv-green-hover focus:ring-dkv-green disabled:bg-dkv-gray-disabled shadow-xl hover:scale-105 transition-transform gap-3 text-xl px-8 py-6 h-auto"
+            >
+              Plantear Consulta
+            </Link>
+
+           
+            <p className="text-sm font-medium text-dkv-green-dark mt-6">
+              No te quedes con la duda. <br /> Respuesta personal.
+            </p>
+          </div>
+        </section>
+
+
+
         <Archetypes />
 
         {/* --- PRICING CARDS --- */}
@@ -235,34 +265,6 @@ export default function LandingPage() {
           <PricingCards />
         </div>
         
-        {/* --- FORMULARIO --- */}
-        <section 
-          id="información" 
-          className="py-20 bg-dkv-gray-border border-y border-dkv-gray/10 scroll-mt-28"
-        >
-           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <div className="space-y-6">
-                 <h2 className="text-3xl lg:text-4xl font-lemon font-bold text-dkv-green-dark uppercase leading-tight">
-                   ¿Listo para empezar <br/> a ahorrar?
-                 </h2>
-                 <p className="text-lg text-dkv-gray">
-                   Déjanos tus datos y calculamos tu cuota personalizada en menos de 24h.
-                 </p>
-              </div>
-              
-              <div className="relative">
-                 <div className="absolute -inset-4 bg-dkv-green/5 rounded-xl blur-lg -z-10"></div>
-                 <LeadForm />
-              </div>
-            </div>
-           </div>
-        </section>
-
-        <section className="py-16 bg-white">
-           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-           </div>
-        </section>
 
         <FooterLegal />
       </main>
