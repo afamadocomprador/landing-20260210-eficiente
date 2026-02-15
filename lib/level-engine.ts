@@ -237,5 +237,4 @@ export async function getLevelData(
     },
     relatedLinks: relatedLinks // Objeto completo con secciones
   };
-
 }
