@@ -28,6 +28,7 @@ export interface NavigationState {
     enlacesSugeridos: Array<{ label: string; href: string; tipo: string }>;
     title: string;
     description: string;
+    schemaData?: any; // <--- NUEVO: Declaración para el JSON-LD inyectado por el motor
   };
 }
 
