@@ -52,10 +52,11 @@ interface PageProps {
      const navigationData = await getPageData(params.slug);
      const { seo } = navigationData;
      // 1. Normalizamos el path para evitar "//" si el slug es undefined o vacío
-    const currentPath = params.slug ? params.slug.join('/') : '';
+     const currentPath = params.slug ? params.slug.join('/') : '';
      
-    // Aseguramos que no termine en / para consistencia SEO
-    const canonicalUrl = `/dentistas/${currentPath}`.replace(/\/$/, "");     const title = seo.title || `Dentistas en ${seo.h1.normal} | DKV Dentisalud Elite`;
+     // Aseguramos que no termine en / para consistencia SEO
+     const canonicalUrl = `/dentistas/${currentPath}`.replace(/\/$/, "");
+     const title = seo.title || `Dentistas en ${seo.h1.normal} | DKV Dentisalud Elite`;
      const description = seo.description || `Cuadro médico DKV en ${seo.h1.normal}.`;
 
      return {
@@ -181,7 +182,7 @@ export default async function DentistasPage({ params }: PageProps) {
 
 
 
-
+/* ******** TODO ESTO PASA A level-engine ***********
 
 // 4.2. Entidad Local y Catálogo de Precios (Fusión Estratégica)
 // Reemplaza tu antiguo organizationJsonLd por este:
@@ -273,6 +274,10 @@ const organizationJsonLd = {
     `${baseUrl}/ipid.pdf`
   ]
 };
+
+*************** HASTA AQUIIII ****** */
+
+
     // 4.3. RED DE NAVEGACIÓN SEMÁNTICA CATEGORIZADA
     const rel = navigationData.relatedLinks || {};
     
@@ -337,11 +342,13 @@ const organizationJsonLd = {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
         />
         
-        {/* 2. Organización (La entidad que presta el servicio) */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-        />
+        {/* 2. Súper-Entidad (Legal + Clínicas + SEO Médico Inyectado desde el Motor) */}
+        {navigationData.seo.schemaData && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(navigationData.seo.schemaData) }}
+          />
+        )}
 
         {/* 3. Red de Enlaces (La telaraña semántica: Madres, Hermanos e Hijos) */}
         <script
