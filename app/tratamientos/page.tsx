@@ -7,6 +7,7 @@ import PricingCards from '@/components/PricingCards';
 import { ArrowRight, Sparkles, Activity, Smile, Shield } from 'lucide-react';
 
 // --- NUEVOS IMPORTS PARA SEO SEMÁNTICO ---
+import { SITE_CONFIG } from '@/constants/config';
 import { createClient } from '@supabase/supabase-js';
 import { getDentalCatalog } from '@/services/getDentalCatalog';
 
@@ -52,7 +53,7 @@ const treatments = [
 ];
 
 export const metadata = {
-  title: 'Tratamientos Dentales DKV | Precios y Coberturas',
+  title: 'Tratamientos Dentales DKV DENTISALUD ELITE | Precios y Coberturas',
   description: 'Descubre todos los tratamientos dentales cubiertos por DKV Dentisalud Élite. Implantes, ortodoncia y más a precios pactados.',
 };
 
@@ -67,33 +68,33 @@ export default async function TreatmentsPage() {
 
   const { maestro, especial } = await getDentalCatalog(supabase);
 
-  const baseUrl = "https://landing-20260210-eficiente.vercel.app";
-  const currentUrl = `${baseUrl}/tratamientos`;
+  // Usamos la configuración global
+  const currentUrl = `${SITE_CONFIG.domain}/tratamientos`;
 
 
   // 1. Nodo de la Agencia (Bernardo / DKV)
+  // 1. Nodo de la Agencia (REFERENCIA AL NODO MAESTRO)
+  // Aquí no repetimos todo el bloque legal, solo el ID y el enlace a los catálogos
+  /* **** esto pasa a la landing principal
   const agencyNode = {
-    "@type": ["InsuranceAgency", "Organization"],
-    "@id": `${currentUrl}#local-agency`,
-    "name": "Tratamientos Dentales DKV - Red Élite",
-    "legalName": "Bernardo Sobrecasas Gallizo - Agente Exclusivo DKV",
-    "description": "Catálogo completo de tratamientos dentales con precios baremados oficiales.",
-    "url": currentUrl,
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Av. César Augusto, 33",
-      "addressLocality": "Zaragoza",
-      "postalCode": "50004",
-      "addressCountry": "ES"
-    }
+    "@type": ["InsuranceAgency"],
+    "@id": SITE_CONFIG.ids.agent, // <--- ID CENTRALIZADO
+    "name": "Bernardo Sobrecasas - Agente Exclusivo DKV",
+    "url": SITE_CONFIG.domain,
+    "mainEntityOfPage": currentUrl,
+    "hasOfferCatalog": [
+        { "@id": SITE_CONFIG.ids.masterCatalog },
+        { "@id": SITE_CONFIG.ids.packsCatalog }
+    ]
   };
+  ******* */
 
 
   // 2. EL "LIBRO" MAESTRO: Catálogo con todos los servicios básicos
   // 2. EL "LIBRO" MAESTRO: Catálogo con ListItem para validación estricta
   const masterCatalogNode = {
     "@type": "OfferCatalog",
-    "@id": `${currentUrl}#baremo-maestro`,
+    "@id": SITE_CONFIG.ids.masterCatalog, // <--- ID CENTRALIZADO
     "name": "Baremo Odontológico Completo DKV Dentisalud Elite",
     "description": "Listado oficial de más de 200 tratamientos con tarifas protegidas.",
     "itemListElement": maestro.map((t, index) => ({
@@ -101,14 +102,16 @@ export default async function TreatmentsPage() {
       "position": index + 1,
       "item": {
         "@type": "Offer",
+        /* CONEXIÓN SEMÁNTICA INDIVIDUAL */
+        "offeredBy": { "@id": SITE_CONFIG.ids.agent },
+        "price": t.price_value.toFixed(2),
+        "priceCurrency": "EUR",
         "itemOffered": {
           "@type": "Service",
           "@id": `${currentUrl}#treatment-${t.id}`, // ID crucial para referencias
           "name": t.treatment_name,
           "description": t.description_notes
         },
-        "price": t.price_value.toFixed(2),
-        "priceCurrency": "EUR"
       }
     }))
   };
@@ -116,13 +119,15 @@ export default async function TreatmentsPage() {
   // 3. EL ESCAPARATE: Catálogo de Packs Destacados (También con ListItem)
 const packsCatalogNode = {
     "@type": "OfferCatalog",
-    "@id": `${currentUrl}#packs-destacados`,
+    "@id": SITE_CONFIG.ids.packsCatalog, // <--- ID CENTRALIZADO
     "name": "Packs Solución Completa",
     "itemListElement": especial.map((p, index) => ({
       "@type": "ListItem",
       "position": index + 1,
       "item": {
         "@type": "Offer",
+        /* CONEXIÓN SEMÁNTICA INDIVIDUAL */
+        "offeredBy": { "@id": SITE_CONFIG.ids.agent },
         "price": p.price_value.toFixed(2),
         "priceCurrency": "EUR",
         "itemOffered": {
@@ -150,21 +155,18 @@ const packsCatalogNode = {
     "@type": "MedicalCondition",
     "@id": `${currentUrl}#caries-profunda`,
     "name": "Caries profunda y dolor de muelas",
+    "relevantSpecialty": { "@type": "MedicalSpecialty", "name": "Dentistry" },
     "possibleTreatment": {
-      "@type": ["MedicalTherapy", "Service"],
-      "name": "Tratamiento de Empaste Dental",
-      "provider": { "@id": `${currentUrl}#local-agency` },
-      "offers": {
-        "@type": "Offer",
-        "price": "29.00",
-        "priceCurrency": "EUR"
-      }
+      "@type": ["MedicalTherapy"],
+      // REFERENCIA DIRECTA AL ID DEL TRATAMIENTO EN EL CATÁLOGO MAESTRO
+      // Usamos el UUID de "Obturación" de tu tabla
+      "@id": `${currentUrl}#treatment-cba6fdd8-d6ce-4a74-9b4c-6ed01363b1eb`
     }
   };
 
   // CONSTRUCCIÓN DEL GRAFO UNIFICADO
   const schemaGraph = [
-    agencyNode,
+    //agencyNode,
     masterCatalogNode, 
     packsCatalogNode,
     cariesNode
