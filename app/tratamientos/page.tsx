@@ -3,9 +3,13 @@ import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import FooterLegal from '@/components/FooterLegal';
 import LeadForm from '@/components/LeadForm';
-// Importamos PricingCards
 import PricingCards from '@/components/PricingCards';
 import { ArrowRight, Sparkles, Activity, Smile, Shield } from 'lucide-react';
+
+// --- NUEVOS IMPORTS PARA SEO SEMÁNTICO ---
+import { createClient } from '@supabase/supabase-js';
+import { getDentalCatalog } from '@/services/getDentalCatalog';
+
 
 // Datos estáticos
 const treatments = [
@@ -52,9 +56,131 @@ export const metadata = {
   description: 'Descubre todos los tratamientos dentales cubiertos por DKV Dentisalud Élite. Implantes, ortodoncia y más a precios pactados.',
 };
 
-export default function TreatmentsPage() {
+// Transformamos a async para obtener los datos del catálogo
+export default async function TreatmentsPage() {
+
+  // 1. INICIALIZACIÓN SEGURA (Imitando variables de entorno)
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+
+  const { maestro, especial } = await getDentalCatalog(supabase);
+
+  const baseUrl = "https://landing-20260210-eficiente.vercel.app";
+  const currentUrl = `${baseUrl}/tratamientos`;
+
+
+  // 1. Nodo de la Agencia (Bernardo / DKV)
+  const agencyNode = {
+    "@type": ["InsuranceAgency", "Organization"],
+    "@id": `${currentUrl}#local-agency`,
+    "name": "Tratamientos Dentales DKV - Red Élite",
+    "legalName": "Bernardo Sobrecasas Gallizo - Agente Exclusivo DKV",
+    "description": "Catálogo completo de tratamientos dentales con precios baremados oficiales.",
+    "url": currentUrl,
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Av. César Augusto, 33",
+      "addressLocality": "Zaragoza",
+      "postalCode": "50004",
+      "addressCountry": "ES"
+    }
+  };
+
+
+  // 2. EL "LIBRO" MAESTRO: Catálogo con todos los servicios básicos
+  // 2. EL "LIBRO" MAESTRO: Catálogo con ListItem para validación estricta
+  const masterCatalogNode = {
+    "@type": "OfferCatalog",
+    "@id": `${currentUrl}#baremo-maestro`,
+    "name": "Baremo Odontológico Completo DKV Dentisalud Elite",
+    "description": "Listado oficial de más de 200 tratamientos con tarifas protegidas.",
+    "itemListElement": maestro.map((t, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "@id": `${currentUrl}#treatment-${t.id}`, // ID crucial para referencias
+          "name": t.treatment_name,
+          "description": t.description_notes
+        },
+        "price": t.price_value.toFixed(2),
+        "priceCurrency": "EUR"
+      }
+    }))
+  };
+
+  // 3. EL ESCAPARATE: Catálogo de Packs Destacados (También con ListItem)
+const packsCatalogNode = {
+    "@type": "OfferCatalog",
+    "@id": `${currentUrl}#packs-destacados`,
+    "name": "Packs Solución Completa",
+    "itemListElement": especial.map((p, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "Offer",
+        "price": p.price_value.toFixed(2),
+        "priceCurrency": "EUR",
+        "itemOffered": {
+          "@type": "Service",
+          "@id": `${currentUrl}#treatment-${p.id}`,
+          "name": p.treatment_name,
+          "description": p.description_notes || `Tratamiento completo de ${p.treatment_name}`
+        },
+        /* LA LLAVE MAESTRA: includesObject */
+        "includesObject": p.parts?.map(part => ({
+          "@type": "TypeAndQuantityNode",
+          "amountOfThisGood": 1,
+          "typeofGood": { 
+            /* Apuntamos al @id del tratamiento básico definido en el catálogo maestro */
+            "@id": `${currentUrl}#treatment-${part.id}` 
+          }
+        }))
+      }
+    }))
+  };
+
+
+  // 4. Nodo de la Caries (Tu Caballo de Troya)
+  const cariesNode = {
+    "@type": "MedicalCondition",
+    "@id": `${currentUrl}#caries-profunda`,
+    "name": "Caries profunda y dolor de muelas",
+    "possibleTreatment": {
+      "@type": ["MedicalTherapy", "Service"],
+      "name": "Tratamiento de Empaste Dental",
+      "provider": { "@id": `${currentUrl}#local-agency` },
+      "offers": {
+        "@type": "Offer",
+        "price": "29.00",
+        "priceCurrency": "EUR"
+      }
+    }
+  };
+
+  // CONSTRUCCIÓN DEL GRAFO UNIFICADO
+  const schemaGraph = [
+    agencyNode,
+    masterCatalogNode, 
+    packsCatalogNode,
+    cariesNode
+  ];
+
   return (
-    <div className="min-h-screen bg-white font-fsme text-dkv-gray">
+   <div className="min-h-screen bg-white font-fsme text-dkv-gray">
+      {/* INYECCIÓN SEMÁNTICA */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": schemaGraph
+        }) }}
+      />
+
       <Header />
       
       <main className="pt-[110px]">
