@@ -2,6 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { Metadata, Viewport, ResolvingMetadata } from "next";
+import { SITE_CONFIG } from '@/constants/config'; // <--- AÑADIR ESTA LÍNEA
 
 // Motor de datos
 import { getLevelData } from "@/lib/level-engine";
@@ -16,9 +17,7 @@ import FooterLegal from "@/components/FooterLegal"; // <--- IMPORTACIÓN AÑADID
 
 export const dynamic = "force-dynamic";
 
-// --- CONFIGURACIÓN GLOBAL ---
-// Declaramos baseUrl aquí para que sea accesible en todo el archivo
-const baseUrl = "https://landing-20260210-eficiente.vercel.app";
+const baseUrl = SITE_CONFIG.domain;
 
 interface PageProps {
   params: { slug?: string[] };
