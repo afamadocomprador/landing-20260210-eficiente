@@ -74,6 +74,11 @@ const nationalMasterSchema = {
       "legalName": "Bernardo Sobrecasas Gallizo",
       "url": SITE_CONFIG.domain,
       "telephone": "+34976217463",
+      "priceRange": "124€", // Obligatorio para InsuranceAgency
+      "image": {
+        "@type": "ImageObject",
+        "url": `${SITE_CONFIG.domain}/images/oficina-central-dkv.jpg`
+      },
       "logo": {
         "@type": "ImageObject",
         "url": `${SITE_CONFIG.domain}/images/logo-dkv-dentisalud.png`
@@ -140,7 +145,9 @@ const nationalMasterSchema = {
       "publishingPrinciples": [
         `${SITE_CONFIG.domain}/condiciones-generales.pdf`,
         `${SITE_CONFIG.domain}/ipid.pdf`
-      ]
+      ],
+      // LA LLAVE MAESTRA: Decimos que esta agencia es la dueña de esta URL
+      "mainEntityOfPage": { "@id": `${SITE_CONFIG.domain}/#webpage` }
     },
 
     // --- NODO WEBSITE: LA FIRMA DE AUTORIDAD DEL DOMINIO ---
@@ -150,6 +157,18 @@ const nationalMasterSchema = {
       "url": SITE_CONFIG.domain,
       "name": "DKV Dentisalud Élite Nacional",
       "publisher": { "@id": SITE_CONFIG.ids.agent }
+    },
+
+    // NODO 3: LA PÁGINA ESPECÍFICA (WebPage)
+    {
+      "@type": "WebPage",
+      "@id": `${SITE_CONFIG.domain}/#webpage`,
+      "url": SITE_CONFIG.domain,
+      "name": "Seguro Dental DKV | Bernardo Sobrecasas",
+      "isPartOf": { "@id": `${SITE_CONFIG.domain}/#website` }
+      // En lugar de "about" (que anida), usamos "mainEntity" para indicar 
+      // que la página REPRESENTA a la agencia.
+      //"mainEntity": { "@id": SITE_CONFIG.ids.agent } 
     }
   ]
 };
