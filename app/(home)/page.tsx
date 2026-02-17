@@ -8,6 +8,9 @@ import Image from 'next/image';
 //import type { Metadata } from 'next';
 import type { Metadata, Viewport } from 'next';
 
+// --- NUEVOS IMPORTS DE CONFIGURACIÓN ---
+import { SITE_CONFIG } from '@/constants/config';
+
 // --- IMPORTACIÓN DE COMPONENTES ---
 // LCP: El hero debe ser cargar estático para que cargue rápido
 import MainHero from '@/components/hero/MainHero'; 
@@ -57,100 +60,100 @@ export const viewport: Viewport = {
 
 
 /**
- * JSON-LD ESTRATÉGICO 2026 - VERSIÓN FINAL DE CUMPLIMIENTO
- * Proyecto: Red Dental Élite (Bernardo Sobrecasas)
- * Validador: Compatible con validator.schema.org y Google Search Console.
- * Cumplimiento: LSSI, LDS (Ley de Distribución) y ToolKit DKV 2025.
+ * JSON-LD MAESTRO: AUTORIDAD NUCLEAR NACIONAL
+ * Este nodo centraliza la identidad legal de Bernardo y su vínculo oficial con DKV.
  */
-const jsonLd = {
+const nationalMasterSchema = {
   "@context": "https://schema.org",
-  "@type": ["InsuranceAgency", "Organization"],
-  "@id": "https://landing-20260210-eficiente.vercel.app/#agency-identity",
-  "mainEntityOfPage": "https://landing-20260210-eficiente.vercel.app",
-  
-  // Nombre comercial para captación
-  "name": "Portal Red Dental Élite - Precios Pactados",
-  
-  // Identificación legal obligatoria (LSSI Art. 10 y Ley de Distribución de Seguros)
-  "legalName": "Bernardo Sobrecasas Gallizo - Agente de Seguros Exclusivo DKV",
-  "identifier": "C016125451380V", // Número de registro DGSFP sin prefijos para facilitar lectura de bots
-  
-  "description": "Distribuidor oficial del Plan DKV Dentisalud. Acceso a red nacional con 1.400 dentistas y baremos de precios protegidos en implantes y ortodoncia.",
-  "url": "https://landing-20260210-eficiente.vercel.app",
-  "telephone": "+34976217463",
-  
-  // Ajuste Compliance: Definimos el rango de precios vinculado a la suscripción
-  "priceRange": "124€ (Cuota Anual del Plan)",
-
-  "image": "https://landing-20260210-eficiente.vercel.app/images/clinica-dental-equipo.jpg",
-  "logo": "https://landing-20260210-eficiente.vercel.app/images/logo-dkv.png",
-
-  // Declaración de Servicio Nacional para evitar sesgo geográfico
-  "areaServed": {
-    "@type": "Country",
-    "name": "ES"
-  },
-
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Av. César Augusto, 33",
-    "addressLocality": "Zaragoza",
-    "postalCode": "50004",
-    "addressCountry": "ES"
-  },
-
-  "brand": {
-    "@type": "Brand",
-    "name": "DKV Dentisalud",
-    "description": "Seguro dental oficial con baremos franquiciados garantizados"
-  },
-
-  // Catálogo con protección legal contra "Publicidad Engañosa"
-  "hasOfferCatalog": {
-    "@type": "OfferCatalog",
-    "name": "Catálogo de Baremos Protegidos 2026",
-    "itemListElement": [
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Suscripción al Plan Dental (Acceso Anual)",
-          "description": "Cuota única anual que otorga acceso a toda la red de dentistas y precios pactados."
-        },
-        "price": "124.00",
-        "priceCurrency": "EUR"
+  "@graph": [
+    {
+      // --- IDENTIDAD CORE: AGENTE NACIONAL ---
+      "@type": ["InsuranceAgency", "Organization"],
+      "@id": SITE_CONFIG.ids.agent,
+      "name": "Bernardo Sobrecasas - Especialista Nacional DKV Dentisalud",
+      "legalName": "Bernardo Sobrecasas Gallizo",
+      "url": SITE_CONFIG.domain,
+      "telephone": "+34976217463",
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${SITE_CONFIG.domain}/images/logo-dkv-dentisalud.png`
       },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Implante Dental Completo (Precio Protegido)",
-          "description": "Precio máximo garantizado para miembros del plan. Incluye cirugía y corona.",
-          "areaServed": { "@type": "Country", "name": "ES" }
-        },
-        "price": "1100.00",
-        "priceCurrency": "EUR"
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Limpieza de Boca y Fluoración (Incluida)",
-          "description": "Servicio sin coste adicional incluido en la cuota anual para asegurados.",
-          "areaServed": { "@type": "Country", "name": "ES" }
-        },
-        "price": "0.00",
-        "priceCurrency": "EUR"
-      }
-    ]
-  },
 
-  // Documentación de Transparencia (IPID y CG) requerida por normativa UE
-  "publishingPrinciples": [
-    "https://landing-20260210-eficiente.vercel.app/condiciones-generales.pdf",
-    "https://landing-20260210-eficiente.vercel.app/ipid.pdf"
+      // --- AUTORIDAD DGSFP (CREDENCIAL PROFESIONAL) ---
+      "identifier": {
+        "@type": "PropertyValue",
+        "name": "Registro Oficial de Distribuidores de Seguros (DGSFP)",
+        "propertyID": "DGSFP-MEDIADOR",
+        "value": "C016125451380V",
+        "description": "Inscripción oficial como Agente de Seguros Exclusivo en el Registro de la DGSFP.",
+        "url": "https://rrpp.dgsfp.mineco.es/Mediador"
+      },
+
+      // --- VÍNCULO CORPORATIVO: RED OFICIAL DKV ESPAÑA ---
+      "memberOf": {
+        "@type": "Organization",
+        "@id": "https://dkv.es/#organization",
+        "name": "Red Comercial DKV Seguros España",
+        "parentOrganization": {
+          "@type": "Organization",
+          "name": "DKV Seguros y Reaseguros SAE",
+          "url": "https://dkv.es",
+          "sameAs": [
+            "https://es.wikipedia.org/wiki/DKV_Seguros",
+            "https://www.wikidata.org/wiki/Q1154568"
+          ]
+        }
+      },
+
+      // --- VÍNCULO CON EL PRODUCTO / MARCA ---
+      "brand": {
+        "@type": "Brand",
+        "@id": "https://dkv.es/#brand-dentisalud",
+        "name": "DKV Dentisalud Élite",
+        "alternateName": "Seguro Dental DKV",
+        "logo": "https://dkv.es/sites/default/files/logo-dkv.png"
+      },
+
+      // --- ALCANCE NACIONAL (ÁREA SERVIDA) ---
+      "areaServed": {
+        "@type": "Country",
+        "name": "ES",
+        "containsPlace": "España"
+      },
+
+      // --- SEDE CENTRAL (TRANSPARENCIA) ---
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Av. César Augusto, 33",
+        "addressLocality": "Zaragoza",
+        "postalCode": "50004",
+        "addressCountry": "ES"
+      },
+
+      // --- CONEXIÓN CON LOS CATÁLOGOS DEFINIDOS EN /TRATAMIENTOS ---
+      "hasOfferCatalog": [
+        { "@id": SITE_CONFIG.ids.masterCatalog },
+        { "@id": SITE_CONFIG.ids.packsCatalog }
+      ],
+
+      // --- IPID Y CONDICIONES (COMPLIANCE) ---
+      "publishingPrinciples": [
+        `${SITE_CONFIG.domain}/condiciones-generales.pdf`,
+        `${SITE_CONFIG.domain}/ipid.pdf`
+      ]
+    },
+
+    // --- NODO WEBSITE: LA FIRMA DE AUTORIDAD DEL DOMINIO ---
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_CONFIG.domain}/#website`,
+      "url": SITE_CONFIG.domain,
+      "name": "DKV Dentisalud Élite Nacional",
+      "publisher": { "@id": SITE_CONFIG.ids.agent }
+    }
   ]
 };
+
 
 export default function LandingPage() {
   return (
@@ -163,7 +166,7 @@ export default function LandingPage() {
         {/* Script JSON-LD inyectado */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} 
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(nationalMasterSchema) }} 
         />
 
 
