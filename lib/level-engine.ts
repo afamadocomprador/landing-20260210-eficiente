@@ -7,6 +7,8 @@ import { getDatosMunicipiosDeComarca } from '@/services/getMunicipiosDeComarcas'
 import { getDatosCentros } from '@/services/getCentros';
 import { getDatosHubs } from '@/services/getHubs';
 import { getBreadcrumbTrail } from '@/services/getBreadcrumb';
+import { SITE_CONFIG } from '@/constants/config'; 
+
 
 // IMPORTAR EL NUEVO SERVICIO Y TIPOS
 import { getRelatedLinks, RelatedLinksData } from '@/services/getEnlaces';
@@ -212,7 +214,7 @@ export async function getLevelData(
 // ====================================================================
   // 7. GENERACIÓN DE JSON-LD (Fusión de Legal + Catálogo + Ontología Médica)
   // ====================================================================
-  const baseUrl = "https://landing-20260210-eficiente.vercel.app";
+  const baseUrl = SITE_CONFIG.domain;
   const currentPath = slug? `/dentistas/${slug}` : `/dentistas`;
   const currentUrl = `${baseUrl}${currentPath}`;
   const locationName = landing.nombre_ine || "España";
