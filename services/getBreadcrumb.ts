@@ -13,17 +13,27 @@ export interface BreadcrumbItem {
 export const getBreadcrumbTrail = async (
   supabase: SupabaseClient,
   nivel: string,
-  codigoIne: string
+  codigoIne: string,
+  subCodigoIne: string
 ): Promise<BreadcrumbItem[]> => {
 
   // 1. LISTA DE CÓDIGOS A BUSCAR
   // Empezamos incluyendo el código de la ubicación actual (o su padre directo).
-  let codigosA_Buscar: string[] = [codigoIne];
+  //let codigosA_Buscar: string[] = [codigoIne];
+  let codigosA_Buscar: string[] = [];
+
+  if (nivel === "05") {
+      codigosA_Buscar.push(subCodigoIne);
+  } else {
+      codigosA_Buscar.push(codigoIne);
+  }
+
 
   // --------------------------------------------------------------------------------
   // LÓGICA DE PADRES (Recursividad jerárquica)
   // Dependiendo del nivel, buscamos a los antepasados en las tablas INE
   // --------------------------------------------------------------------------------
+
 
   // --- NIVEL 02: COMUNIDAD AUTÓNOMA ---
   if (nivel === "02") {
@@ -65,7 +75,7 @@ export const getBreadcrumbTrail = async (
   // La lógica de ancestros es idéntica: El padre es la Provincia.
   // En Nivel 05, el 'codigoIne' de entrada es el del Municipio (ej: 28079),
   // por lo que ya está en la lista y solo necesitamos subir hacia Provincia.
-  else if (nivel === "04" || nivel === "05") {
+  else if (nivel === "04" || nivel === "07") {
     
     // 1. Obtenemos PROVINCIA (Los 2 primeros dígitos del municipio)
     const codProvincia = codigoIne.substring(0, 2); 
@@ -93,6 +103,43 @@ export const getBreadcrumbTrail = async (
     }
   }
 
+  // --- NIVEL 05: COMARCA (Opcional) ---   donde pone comarca ponemos hub, donde pone provincia ponemos municipio
+  else if (nivel === "05") {
+
+     const { data: hub } = await supabase.from('hubs').select('codigo_ine_municipio').eq('codigo_hub', subCodigoIne).single();
+
+     if(hub) {
+        codigosA_Buscar.push(hub.codigo_ine_municipio); // + municipio
+
+        const { data: municipio } = await supabase.from('ine_municipios').select('comarca_codigo').eq('codigo', hub.codigo_ine_municipio).single();
+
+        if(municipio) {
+
+           // en este caso, al haber bajado desde provincia sin pasar por comarca la comarca no va al breadcrumbn aunque haga falta para seguir la cadena
+           //codigosA_Buscar.push(`CA-${municipio.comarca_codigo}`); // + Comarca
+
+           const { data: comarca } = await supabase.from('ine_comarcas').select('provincia_codigo').eq('codigo', municipio.comarca_codigo).single();
+
+           if(comarca) {
+              codigosA_Buscar.push(comarca.provincia_codigo); // + provincia
+
+              const { data: prov } = await supabase.from('ine_provincias').select('comunidad_codigo').eq('codigo', comarca.provincia_codigo).single();
+
+              if(prov) {
+                 codigosA_Buscar.push(`CA-${prov.comunidad_codigo}`); // + Comunidad
+
+                 const { data: com } = await supabase.from('ine_comunidades').select('pais_codigo').eq('codigo', prov.comunidad_codigo).single();
+
+
+                 if(com?.pais_codigo) codigosA_Buscar.push(com.pais_codigo); // + País
+              }
+           }
+        }
+     }
+
+  }
+
+
   // --- NIVEL 06: COMARCA (Opcional) ---
   else if (nivel === "06") {
      const { data: comarca } = await supabase.from('ine_comarcas').select('provincia_codigo').eq('codigo', codigoIne).single();
@@ -112,10 +159,42 @@ export const getBreadcrumbTrail = async (
   // 2. HIDRATACIÓN (Consulta única a DB)
   // --------------------------------------------------------------------------------
   // IMPORTANTE: Solicitamos también 'subcodigo_ine' para poder filtrar.
+  /*
   const { data: landings } = await supabase
     .from('landings_search_dentistry')
     .select('codigo_ine, subcodigo_ine, breadcrumb, slug, nivel')
     .in('codigo_ine', codigosA_Buscar);
+  */
+
+  const cods = `(${codigosA_Buscar.join(',')})`;
+
+  // Para representar un espacio en blanco en la cadena de filtro, 
+  // lo envolvemos en comillas dobles: " "
+  const espacioBlanco = '" "';
+
+  // Condición 1: Es el código principal y no tiene sub-hijo
+  const condicionMaestra = `and(codigo_ine.in.${cods},subcodigo_ine.eq.${espacioBlanco})`;
+
+  // Condición 2: El código buscado es un sub-código
+  const condicionSubArea = `subcodigo_ine.in.${cods}`;
+
+  const { data: landings } = await supabase
+    .from('landings_search_dentistry')
+    .select('codigo_ine, subcodigo_ine, breadcrumb, slug, nivel')
+    .or(`${condicionMaestra},${condicionSubArea}`);
+
+
+
+/*****
+  // Construimos la condición OR
+  // Formato: "columna1.in.(valor1,valor2),columna2.in.(valor1,valor2)"
+  const filterCondition = `codigo_ine.in.(${codigosA_Buscar.join(',')}),subcodigo_ine.in.(${codigosA_Buscar.join(',')})`;
+
+  const { data: landings } = await supabase
+    .from('landings_search_dentistry')
+    .select('codigo_ine, subcodigo_ine, breadcrumb, slug, nivel')
+    .or(filterCondition);
+****/
 
   if (!landings || landings.length === 0) return [];
 
@@ -134,7 +213,7 @@ export const getBreadcrumbTrail = async (
   const landingsFiltradas = landings.filter(l => {
       // Si el elemento recuperado es un Hub (05), lo excluimos del trail automático
       // para evitar que salgan todos los distritos en la barra.
-      if (l.nivel === '05') return false;
+     /* if (l.nivel === '05') return false; ****** OJOOOO */
       return true;
   });
 
