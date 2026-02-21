@@ -11,6 +11,9 @@ const DentalMapClient = dynamic(() => import("@/components/map/DentalMapClient")
   loading: () => <div className="w-full h-full bg-gray-100 animate-pulse flex items-center justify-center">Cargando mapa...</div>
 });
 
+// EXTRAÍDO: Para evitar Hydration Mismatch y re-instanciación en cada render.
+const formatter = new Intl.NumberFormat('es-ES');
+
 export default function DentistsContainer({ initialData }: { initialData: NavigationState }) {
   const { updateNavigation } = useNavigation();
 
@@ -22,8 +25,33 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
   const activeMapaConfig = initialData.mapa;
   const activeStats = initialData.lista;
 
+  // ESTADO ORIGINAL: Controla si la lista está desplegada o colapsada
   const [isListOpen, setIsListOpen] = useState(initialData.lista.estadoInicial !== 'CLOSED');
-  const formatter = new Intl.NumberFormat('es-ES');
+
+  // NUEVO ESTADO: Controla qué clínica se ha seleccionado en el mapa
+  const [selectedClinicId, setSelectedClinicId] = useState<string | null>(null);
+
+  //se pasa arriba mejor
+  //const formatter = new Intl.NumberFormat('es-ES');
+
+  // NUEVO HANDLER: Orquesta la interacción Mapa -> Lista 
+  // Si esta función se ejecuta, ES SEGURO que es una clínica gracias a la lógica del mapa.
+  // NUEVO HANDLER: Orquesta la interacción y "traduce" el ID
+  // NUEVO HANDLER: Recibe directamente el nombre de la clínica (o el slug si es región)
+  const handleMarkerClick = (markerIdentifier: string) => {
+    
+    // Buscamos si el identificador coincide con el NOMBRE de alguna clínica de nuestra lista
+    const matchedClinic = activeStats.clinics.find((c: any) => c.name === markerIdentifier);
+    
+    if (matchedClinic) {
+      // ES UNA CLÍNICA: Pasamos el ID real de la base de datos (el hash) a la lista
+      setSelectedClinicId(matchedClinic.clinic_id);
+      setIsListOpen(true); 
+    } else {
+      // NO ES CLÍNICA: Es una región, así que navegamos
+      router.push(`/dentistas/${markerIdentifier}`);
+    }
+  };
 
   return (
     <div className="relative w-full h-[600px] md:h-[700px] bg-white flex flex-col pt-4 pb-12 px-4 md:px-10 font-fsme">
@@ -36,6 +64,8 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
                 initialCenter={activeMapaConfig.centro} 
                 initialZoom={activeMapaConfig.zoom}
                 tileStyle={activeMapaConfig.tileStyle}
+                // NUEVA PROP: Pasamos el control de click al mapa
+                onMarkerClick={handleMarkerClick}
             /> 
         </div>
 
@@ -52,9 +82,21 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
             </div>
           </button>
           
-          <div className="flex-1 overflow-y-auto bg-gray-50/30">
+          {/* <div className="flex-1 overflow-y-auto bg-gray-50/30"> */}
+          <div id="scroll-clinicas" className="flex-1 overflow-y-auto bg-gray-50/30 relative scroll-smooth">
             <div className="max-w-5xl mx-auto py-2">
-              <ClinicList clinics={activeStats.clinics} onSelectClinic={() => setIsListOpen(false)} />
+                {/* 1. Pasamos el ID seleccionado a la lista.
+                    2. Modificado para limpiar la selección al cerrarla manualmente.
+                */}
+                    {/* NUEVA PROP: Pasamos el ID seleccionado a la lista */}
+                <ClinicList 
+                    clinics={activeStats.clinics} 
+                    onSelectClinic={(id) => {
+                        setSelectedClinicId(id);
+                        setIsListOpen(false);
+                    }} 
+                    selectedClinicId={selectedClinicId}
+                />
             </div>
           </div>
         </div>

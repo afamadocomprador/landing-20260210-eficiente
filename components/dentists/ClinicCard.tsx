@@ -5,13 +5,26 @@ import { MapPin, Phone, Users, ArrowRight, Plus, Minus } from "lucide-react";
 import { formatPhoneNumber } from "@/lib/text-formatter";
 
 interface ClinicCardProps {
-  // Volvemos a 'any' para garantizar compatibilidad total con tu base de datos y evitar errores de build
+  // Mantenemos 'any' por tu directiva de evitar errores de build con la DB, 
+  // aunque idealmente usaríamos el tipo 'Clinic' exportado de tus tipos.
   clinic: any; 
   onSelectClinic: (id: string) => void;
+  // 1. NUEVA PROP: Recibimos si esta es la tarjeta seleccionada
+  isSelected?: boolean;
 }
 
-export default function ClinicCard({ clinic, onSelectClinic }: ClinicCardProps) {
+
+//añadimos
+//export default function ClinicCard({ clinic, onSelectClinic }: ClinicCardProps) {
+export default function ClinicCard({ clinic, onSelectClinic, isSelected = false }: ClinicCardProps) {
+
   const [showStaff, setShowStaff] = useState(false);
+
+  // --- AÑADE ESTO ---
+  if (isSelected) {
+      console.log("💳 [PASO 7] Tarjeta iluminada. El ID real de este componente es:", clinic.clinic_id);
+  }
+  // ------------------
 
   // Soporte para navegación por teclado (Enter/Espacio) - Clave para Accesibilidad
   const handleKeyDown = (e: KeyboardEvent<HTMLElement>) => {
@@ -23,16 +36,33 @@ export default function ClinicCard({ clinic, onSelectClinic }: ClinicCardProps) 
 
   return (
     <article 
+      // Usamos el ID real de base de datos (el Hash que tú mismo has visto)
+      id={`clinic-${clinic.clinic_id}`}
       role="button"
       tabIndex={0}
       onClick={() => onSelectClinic(clinic.clinic_id)}
       onKeyDown={handleKeyDown}
       aria-label={`Ver detalles de ${clinic.name}`}
-      className="group bg-white p-6 rounded-[28px] border border-gray-100 hover:border-dkv-green/40 hover:shadow-[0_12px_40px_rgba(0,0,0,0.1)] transition-all cursor-pointer relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-dkv-green"
+
+      className={`group bg-white p-6 rounded-[28px] border transition-all duration-300 cursor-pointer relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-dkv-green
+        ${isSelected 
+          ? 'border-dkv-green shadow-[0_8px_30px_rgba(132,151,0,0.15)] ring-1 ring-dkv-green' 
+          : 'border-gray-100 hover:border-dkv-green/40 hover:shadow-[0_12px_40px_rgba(0,0,0,0.1)]'
+        }
+      `}
     >
-      {/* Indicador visual lateral */}
+
+      {/* 4. INDICADOR VISUAL: Si está seleccionado, la barra lateral verde se queda fija
       <div 
         className="absolute left-0 top-0 bottom-0 w-2 bg-dkv-green transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300" 
+        aria-hidden="true" 
+      />
+       */}
+
+      <div 
+        className={`absolute left-0 top-0 bottom-0 w-2 bg-dkv-green transform transition-transform duration-300
+          ${isSelected ? 'translate-x-0' : '-translate-x-full group-hover:translate-x-0'}
+        `} 
         aria-hidden="true" 
       />
 
@@ -47,7 +77,15 @@ export default function ClinicCard({ clinic, onSelectClinic }: ClinicCardProps) 
             </div>
           )}
 
+          {/*
           <h3 className="font-lemon text-dkv-green-dark text-lg md:text-xl leading-tight mb-3 group-hover:text-dkv-green transition-colors">
+            {clinic.name}
+          </h3>
+          */}
+
+           <h3 className={`font-lemon text-lg md:text-xl leading-tight mb-3 transition-colors
+            ${isSelected ? 'text-dkv-green' : 'text-dkv-green-dark group-hover:text-dkv-green'}
+          `}>
             {clinic.name}
           </h3>
 
@@ -123,7 +161,17 @@ export default function ClinicCard({ clinic, onSelectClinic }: ClinicCardProps) 
         </div>
 
         <div className="hidden sm:flex shrink-0 self-center" aria-hidden="true">
+
+          {/*
           <div className="w-14 h-14 rounded-full bg-gray-50 flex items-center justify-center text-dkv-green group-hover:bg-dkv-green group-hover:text-white transition-all shadow-sm border border-gray-100">
+          */}
+
+          <div className={`w-14 h-14 rounded-full flex items-center justify-center transition-all shadow-sm border border-gray-100
+            ${isSelected ? 'bg-dkv-green text-white' : 'bg-gray-50 text-dkv-green group-hover:bg-dkv-green group-hover:text-white'}
+          `}>
+
+
+
             <ArrowRight className="w-7 h-7" />
           </div>
         </div>
