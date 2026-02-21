@@ -13,6 +13,7 @@ export interface MapMarkerData {
   count: number; 
   slug: string;
   tipo?: 'centro' | 'region';
+  codigo_ine?: string; // <--- NUEVA PROPIEDAD
 }
 
 interface MapProps {
@@ -85,6 +86,9 @@ export default function DentalMapClient({
   // 4. TYPESCRIPT: Evitamos el 'any' implícito al inicializar con null
   //const [geoJsonData, setGeoJsonData] = useState(null); // <--- 4. Estado para los datos
   const [geoJsonData, setGeoJsonData] = useState<any | null>(null);
+  // Estado para saber qué región debe iluminarse en rojo
+  const [highlightedRegion, setHighlightedRegion] = useState<string | null>(null);
+
   const router = useRouter();
 
   const tileUrl = `https://{s}.basemaps.cartocdn.com/${tileStyle}/{z}/{x}/{y}{r}.png`;
@@ -118,8 +122,14 @@ export default function DentalMapClient({
             if (m.tipo === 'centro' && onMarkerClick) {
               onMarkerClick(m.name);
             } else if (m.slug) {
-              // Si es región (Comunidad/Provincia), navegamos con su slug normal
-              router.push(`/dentistas/${m.slug}`);
+              // 1. Iluminamos el polígono en rojo usando su nombre
+              // 1. Guardamos el CÓDIGO INE (ej: "CA-02") en lugar del nombre
+              setHighlightedRegion(m.codigo_ine || m.name);
+
+              // 2. Pausa dramática para ver el efecto
+              setTimeout(() => {
+                router.push(`/dentistas/${m.slug}`);
+              }, 400);
             }
           },
         }}
@@ -130,6 +140,7 @@ export default function DentalMapClient({
 
 
   // Estilo del contorno (puedes parametrizarlo también si quieres)
+  /* ********
   const geoJsonStyle = {
     color: "#033B37", // Color del borde (Naranja/Rojo)
     weight: 1,        // Grosor
@@ -137,6 +148,7 @@ export default function DentalMapClient({
     fillColor: "#FFFFFF",
     fillOpacity: 0.5  // Transparencia del relleno (muy sutil)
   };
+  ********** */
 
   return (
     <div style={{ height: "100%", width: "100%" }}>
@@ -146,10 +158,70 @@ export default function DentalMapClient({
         <TileLayer url={tileUrl} attribution='&copy; CARTO' />
         
         {/* --- 6. Renderizado del Contorno --- */}
+        {/* 
         {geoJsonData && <GeoJSON data={geoJsonData} style={geoJsonStyle} filter={(feature) => {
             // A veces la propiedad es "name", "nombre" o "NAME_1". Revisa tu archivo.
             return feature.properties.name === "Aragón" || feature.properties.nombre === "Aragón";
          }}/>}
+         */}
+
+
+         {/* --- Renderizado del Contorno --- */}
+         {/*
+         {geoJsonData && (
+             <GeoJSON 
+                 data={geoJsonData} 
+                 style={geoJsonStyle} 
+             />
+         )}
+         */}
+ 
+
+
+
+        {/* --- Renderizado del Contorno Dinámico --- */}
+        {geoJsonData && (
+          <GeoJSON 
+            data={geoJsonData} 
+            style={(feature: any) => {
+              // 1. Si no hay nada seleccionado, devolvemos el estilo base inmediatamente (optimización de rendimiento)
+              if (!highlightedRegion) {
+                return { color: '#849700', weight: 1, fillColor: '#849700', fillOpacity: 0.05 };
+              }
+
+              // 2. Limpiamos nuestro código (ej: "CA-02" pasa a ser "02")
+              const targetId = highlightedRegion.replace('CA-', '');
+
+              // 3. Obtenemos el ID del GeoJSON (puede venir en la raíz o en properties)
+              const featureId = feature.id || feature.properties?.id;
+
+              // 4. Comparación directa (ya que nos confirmas que trae el 0)
+              const isHighlighted = String(featureId) === targetId;
+
+              // 5. Devolvemos el estilo resaltado en rojo si hay coincidencia
+              return {
+                //color: isHighlighted ? '#e60000' : '#849700',
+                color: isHighlighted ? '#e60000' : '#FFFFFFF',
+                weight: isHighlighted ? 1 : 1,
+                opacity: isHighlighted ? 1 : 0.2,
+                //fillColor: isHighlighted ? '#e60000' : '#849700',
+                fillColor: isHighlighted ? '#e60000' : '#FFFFFF',
+                //fillOpacity: isHighlighted ? 0.02 : 0.05,
+                fillOpacity: isHighlighted ? 0.02 : 0.1,
+                // Nota: Leaflet a veces requiere que las transiciones se manejen vía clases CSS, 
+                // pero si el motor de renderizado lo soporta, hará un fundido suave.
+                className: 'transition-all duration-300' 
+              };
+            }}
+          />
+        )}
+
+
+
+
+
+
+
 
         {renderedMarkers}
       </MapContainer>
