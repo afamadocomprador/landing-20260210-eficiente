@@ -149,7 +149,12 @@ export async function getLevelData(
     };
 
     markers = (listado || []).filter(m => m.lat_comunidad).map(m => ({
-        name: NAME_OVERRIDES[m.cod_comunidad] || m.nombre_comunidad, lat: m.lat_comunidad, lng: m.lng_comunidad, slug: SLUG_OVERRIDES[m.cod_comunidad] || m.slug_comunidad, count: m.num_dentistas_comunidad 
+        name: NAME_OVERRIDES[m.cod_comunidad] || m.nombre_comunidad,
+        lat: m.lat_comunidad,
+        lng: m.lng_comunidad,
+        slug: SLUG_OVERRIDES[m.cod_comunidad] || m.slug_comunidad,
+        count: m.num_dentistas_comunidad,
+        tipo: 'region' // <--- NUEVO
     }));
 
 
@@ -160,25 +165,45 @@ export async function getLevelData(
     //    name: m.nombre_provincia, lat: m.lat_provincia, lng: m.lng_provincia, slug: m.slug_provincia, count: m.num_dentistas_provincia 
     //}));
     markers = (listado || []).filter(m => m.lat_provincia).map(m => ({
-        name: m.nombre_provincia.replace("Provincia de ", ""), lat: m.lat_provincia, lng: m.lng_provincia, slug: m.slug_provincia, count: m.num_dentistas_provincia 
+        name: m.nombre_provincia.replace("Provincia de ", ""),
+        lat: m.lat_provincia,
+        lng: m.lng_provincia,
+        slug: m.slug_provincia,
+        count: m.num_dentistas_provincia,
+        tipo: 'region' // <--- NUEVO
     }));
   }
   else if (landing.nivel === "03") {
     markers = (listado || []).filter(m => m.lat_municipio).map(m => ({
-        name: m.nombre_municipio, lat: m.lat_municipio, lng: m.lng_municipio, slug: m.slug_municipio, count: m.num_dentistas_municipio
+        name: m.nombre_municipio,
+        lat: m.lat_municipio,
+        lng: m.lng_municipio,
+        slug: m.slug_municipio,
+        count: m.num_dentistas_municipio,
+        tipo: 'region' // <--- NUEVO
     }));
   }
   else if (landing.nivel === "04") {
      if (landing.subnivel === "a") {
         // Marcadores son los HUBS
         markers = (listado || []).filter(m => m.lat_hub).map(m => ({
-             name: m.nombre_hub, lat: m.lat_hub, lng: m.lng_hub, slug: m.slug_hub, count: m.num_dentistas_hub 
+             name: m.nombre_hub,
+             lat: m.lat_hub,
+             lng: m.lng_hub,
+             slug: m.slug_hub,
+             count: m.num_dentistas_hub,
+             tipo: 'region' // <--- NUEVO
         }));
      } 
      else {
         // Marcadores son los CENTROS (Clínicas)
         markers = (listado || []).filter(m => m.lat_centro).map(m => ({
-             name: m.nombre_centro, lat: m.lat_centro, lng: m.lng_centro, slug: m.slug_centro, count: m.num_dentistas_centro 
+             name: m.nombre_centro,
+             lat: m.lat_centro,
+             lng: m.lng_centro,
+             slug: m.slug_centro,
+             count: m.num_dentistas_centro,
+             tipo: 'centro' // <--- NUEVO (¡AQUÍ ESTÁ LA MAGIA!)
         }));
      } 
   }
@@ -191,7 +216,8 @@ export async function getLevelData(
             lat: m.lat_centro_de_hub, 
             lng: m.lng_centro_de_hub, 
             slug: m.slug_centro_de_hub, 
-            count: m.num_dentistas_centro_de_hub 
+            count: m.num_dentistas_centro_de_hub,
+            tipo: 'centro' // <--- NUEVO (¡AQUÍ ESTÁ LA MAGIA!)
        }));
   }
   else if (landing.nivel === "06") {
@@ -202,7 +228,8 @@ export async function getLevelData(
             lat: m.lat_municipio_de_comarca, 
             lng: m.lng_municipio_de_comarca, 
             slug: m.slug_municipio_de_comarca, 
-            count: m.num_dentistas_municipio_de_comarca 
+            count: m.num_dentistas_municipio_de_comarca, 
+             tipo: 'region' // <--- NUEVO
        }));
   }
 
