@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 import { ChevronUp, ChevronDown, Stethoscope } from "lucide-react";
 import { useNavigation, NavigationState } from "@/context/NavigationContext";
 import ClinicList from "@/components/dentists/ClinicList";
@@ -16,6 +17,9 @@ const formatter = new Intl.NumberFormat('es-ES');
 
 export default function DentistsContainer({ initialData }: { initialData: NavigationState }) {
   const { updateNavigation } = useNavigation();
+
+  // 2. INSTANCIAR EL ROUTER AQUÍ (Al principio del componente)
+  const router = useRouter();
 
   useEffect(() => {
     updateNavigation(initialData);
