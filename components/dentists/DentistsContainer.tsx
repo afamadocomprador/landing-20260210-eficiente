@@ -58,7 +58,7 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
   };
 
   return (
-    <div className="relative w-full h-[600px] md:h-[700px] bg-white flex flex-col pt-4 pb-12 px-4 md:px-10 font-fsme">
+    <div className="relative w-full h-[85dvh] min-h-[600px] md:h-[80vh] md:min-h-[750px] bg-white flex flex-col pt-4 pb-12 px-4 md:px-10 font-fsme">
       <div className="relative w-full h-full bg-white rounded-[40px] overflow-hidden border-8 border-white shadow-xl z-20">
         
         <div className="absolute inset-0 z-10">
