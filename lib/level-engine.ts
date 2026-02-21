@@ -154,7 +154,8 @@ export async function getLevelData(
         lng: m.lng_comunidad,
         slug: SLUG_OVERRIDES[m.cod_comunidad] || m.slug_comunidad,
         count: m.num_dentistas_comunidad,
-        tipo: 'region' // <--- NUEVO
+        tipo: 'region', // <--- NUEVO
+        codigo_ine: `CA-${m.cod_comunidad}` // <--- AÑADIMOS EL CÓDIGO AQUÍ
     }));
 
 
