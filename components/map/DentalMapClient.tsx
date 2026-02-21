@@ -7,7 +7,12 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export interface MapMarkerData {
-  name: string; lat: number; lng: number; count: number; slug: string;
+  name: string; 
+  lat: number; 
+  lng: number; 
+  count: number; 
+  slug: string;
+  tipo?: 'centro' | 'region';
 }
 
 interface MapProps {
@@ -17,7 +22,20 @@ interface MapProps {
   modo?: 'FIT_BOUNDS' | 'CENTER_ZOOM';
   tileStyle?: string; 
   geoJsonUrl?: string; // <--- SOLO EL TIPO (sin el valor)
+  // 1. NUEVA PROP: Callback para delegar el click al padre
+  onMarkerClick?: (id: string) => void;
 }
+
+
+// 2. TYPESCRIPT ESTRICTO: Interfaz para el controlador en lugar de usar 'any'
+interface MapControllerProps {
+  marks?: MapMarkerData[];
+  modo?: 'FIT_BOUNDS' | 'CENTER_ZOOM';
+  initialCenter?: [number, number];
+  initialZoom?: number;
+  setReady: (ready: boolean) => void;
+}
+
 
 const createCustomIcon = (count: number, name: string) => {
   const displayName = name.length > 15 ? name.substring(0, 12) + "..." : name;
@@ -35,7 +53,9 @@ const createCustomIcon = (count: number, name: string) => {
   return L.divIcon({ className: 'custom-pin', html: htmlContent, iconSize: [80, 75], iconAnchor: [40, 46] });
 };
 
-function MapController({ marks, modo, initialCenter, initialZoom, setReady }: any) {
+// 3. TYPESCRIPT: Aplicamos la interfaz MapControllerProps
+//function MapController({ marks, modo, initialCenter, initialZoom, setReady }: any) {
+function MapController({ marks, modo, initialCenter, initialZoom, setReady }: MapControllerProps) {
   const map = useMap();
   useEffect(() => {
     if (!map) return;
@@ -57,10 +77,13 @@ export default function DentalMapClient({
   initialZoom = 6,
   modo = 'CENTER_ZOOM',
   tileStyle = 'light_all',
-  geoJsonUrl = "/maps/autonomous_regions.geojson" // <--- AQUÍ VA EL VALOR POR DEFECTO
+  geoJsonUrl = "/maps/autonomous_regions.geojson", // <--- AQUÍ VA EL VALOR POR DEFECTO
+  onMarkerClick // Recibimos la nueva prop
 }: MapProps) {
   const [mapIsReady, setMapIsReady] = useState(false);
-  const [geoJsonData, setGeoJsonData] = useState(null); // <--- 4. Estado para los datos
+  // 4. TYPESCRIPT: Evitamos el 'any' implícito al inicializar con null
+  //const [geoJsonData, setGeoJsonData] = useState(null); // <--- 4. Estado para los datos
+  const [geoJsonData, setGeoJsonData] = useState<any | null>(null);
   const router = useRouter();
 
   const tileUrl = `https://{s}.basemaps.cartocdn.com/${tileStyle}/{z}/{x}/{y}{r}.png`;
@@ -90,12 +113,20 @@ export default function DentalMapClient({
         icon={createCustomIcon(m.count, m.name)}
         eventHandlers={{
           click: () => {
-            if (m.slug) router.push(`/dentistas/${m.slug}`); // Aquí podrías añadir también ?origen=mapa si usas la estrategia de URL
+            // Si es un centro, ignoramos su slug roto y enviamos SU NOMBRE EXACTO
+            if (m.tipo === 'centro' && onMarkerClick) {
+              onMarkerClick(m.name);
+            } else if (m.slug) {
+              // Si es región (Comunidad/Provincia), navegamos con su slug normal
+              router.push(`/dentistas/${m.slug}`);
+            }
           },
         }}
       />
     ));
-  }, [marks, mapIsReady, router]);
+  //}, [marks, mapIsReady, router]);
+  }, [marks, mapIsReady, router, onMarkerClick]); // Añadido onMarkerClick a las dependencias
+
 
   // Estilo del contorno (puedes parametrizarlo también si quieres)
   const geoJsonStyle = {
@@ -115,9 +146,9 @@ export default function DentalMapClient({
         
         {/* --- 6. Renderizado del Contorno --- */}
         {geoJsonData && <GeoJSON data={geoJsonData} style={geoJsonStyle} filter={(feature) => {
-    // A veces la propiedad es "name", "nombre" o "NAME_1". Revisa tu archivo.
-    return feature.properties.name === "Aragón" || feature.properties.nombre === "Aragón";
-  }}/>}
+            // A veces la propiedad es "name", "nombre" o "NAME_1". Revisa tu archivo.
+            return feature.properties.name === "Aragón" || feature.properties.nombre === "Aragón";
+         }}/>}
 
         {renderedMarkers}
       </MapContainer>
