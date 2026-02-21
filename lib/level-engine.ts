@@ -6,6 +6,7 @@ import { getDatosMunicipios } from '@/services/getMunicipios';
 import { getDatosMunicipiosDeComarca } from '@/services/getMunicipiosDeComarcas';
 import { getDatosCentros } from '@/services/getCentros';
 import { getDatosHubs } from '@/services/getHubs';
+import { getDatosCentrosDeHub } from '@/services/getCentrosDeHubs';
 import { getBreadcrumbTrail } from '@/services/getBreadcrumb';
 import { SITE_CONFIG } from '@/constants/config'; 
 
@@ -98,6 +99,16 @@ export async function getLevelData(
         console.warn("[DEBUG] Nivel 04 con subnivel desconocido o nulo:", landing.subnivel);
      }
   } 
+  else if (landing.nivel === "05") {
+     
+     const datos = await getDatosCentrosDeHub(supabase, landing.codigo_ine, landing.subcodigo_ine);
+     stats = datos.stats;
+     listado = datos.listado;
+     console.log('stats.total_hub_dentistas: ', stats.total_hub_dentistas);
+     console.log('stats.total_hub_centros: ', stats.total_hub_centros);
+     totalHeroDentistas = stats.total_hub_dentistas;
+     totalHeroCentros = stats.total_hub_centros;
+  } 
   else if (landing.nivel === "06") {
      const datos = await getDatosMunicipiosDeComarca(supabase, landing.codigo_ine);
      stats = datos.stats;
@@ -105,6 +116,7 @@ export async function getLevelData(
      totalHeroDentistas = stats.total_comarca_dentistas;
      totalHeroCentros = stats.total_comarca_centros;
   } 
+
 
 
   // 3. MARCADORES MAPA
@@ -170,6 +182,18 @@ export async function getLevelData(
         }));
      } 
   }
+  else if (landing.nivel === "05") {
+       console.log(listado);
+       markers = (listado || [])
+         .filter(m => m.lat_centro_de_hub != null)
+         .map(m => ({
+            name: m.nombre_centro_de_hub, 
+            lat: m.lat_centro_de_hub, 
+            lng: m.lng_centro_de_hub, 
+            slug: m.slug_centro_de_hub, 
+            count: m.num_dentistas_centro_de_hub 
+       }));
+  }
   else if (landing.nivel === "06") {
        markers = (listado || [])
          .filter(m => m.lat_municipio_de_comarca != null)
@@ -184,7 +208,7 @@ export async function getLevelData(
 
 
   // 4. BREADCRUMBS
-  const breadcrumbItems = await getBreadcrumbTrail(supabase, landing.nivel, landing.codigo_ine);
+  const breadcrumbItems = await getBreadcrumbTrail(supabase, landing.nivel, landing.codigo_ine, landing.subcodigo_ine);
 
   // 5. CLÍNICAS (Listado inferior)
   let queryClinicsBuilder = supabase.from("view_clinics_con_dentistas").select("*");
@@ -192,6 +216,7 @@ export async function getLevelData(
     case "01": case "02": queryClinicsBuilder = queryClinicsBuilder.eq('is_propio', true); break;
     case "03": queryClinicsBuilder = queryClinicsBuilder.eq('ine_province_code', landing.codigo_ine); break;
     case "04": queryClinicsBuilder = queryClinicsBuilder.eq('ine_city_code', landing.codigo_ine); break;
+    case "05": queryClinicsBuilder = queryClinicsBuilder.eq('codigo_hub', landing.subcodigo_ine); break;
     case "06": queryClinicsBuilder = queryClinicsBuilder.eq('ine_comarca_code', landing.codigo_ine); break;
   }
   
