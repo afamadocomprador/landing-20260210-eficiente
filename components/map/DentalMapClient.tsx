@@ -66,7 +66,7 @@ function MapController({ marks, modo, initialCenter, initialZoom, setReady }: Ma
       //map.setView(initialCenter, initialZoom || 6);
       map.flyTo(initialCenter,
                 initialZoom || 6, {
-                     animage: true,
+                     animate: true,
                      duration: 1.5 // Duración en segundos
       });
     } else if (modo === 'FIT_BOUNDS' && marks && marks.length > 0) {
