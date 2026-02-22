@@ -185,7 +185,8 @@ export async function getLevelData(
         lng: m.lng_municipio,
         slug: m.slug_municipio,
         count: m.num_dentistas_municipio,
-        tipo: 'municipio' // <--- NUEVO
+        tipo: 'municipio', // <--- NUEVO
+        codigo_ine: m.cod_municipio
     }));
   }
   else if (landing.nivel === "04") {
@@ -482,12 +483,20 @@ export async function getLevelData(
     nivelInicial, 
     nivelFinal: landing.nivel, 
     entidadId: slug,
+    codigo_ine: landing.codigo_ine,
     mapa: {
       marks: markers,
       modo: landing.nivel === "01" ? 'CENTER_ZOOM' : 'FIT_BOUNDS',
       centro: [landing.latitud_gps || 40.41, landing.longitud_gps || -3.70],
       zoom: landing.nivel === "01" ? 6 : 10,
-      tileStyle: landing.nivel === "01" ? "light_nolabels" : "light_all"
+      //tileStyle: landing.nivel === "01" ? "light_nolabels" : "light_all"
+      // NUEVA LÓGICA DE TILES: Nivel 1 (Sin etiquetas), Nivel 2 y 3 (Claro), Nivel 4+ (Callejero detallado OSM)
+      //tileStyle: landing.nivel === "01" ? "light_nolabels" : 
+      //           (["04", "05", "06"].includes(landing.nivel) ? "osm" : "light_all")
+      // NUEVA LÓGICA DE TILES: Nivel 1 y 2 (Sin etiquetas), Nivel 3 (Claro), Nivel 4+ (Callejero detallado OSM)
+      tileStyle: ["01", "02", "03"].includes(landing.nivel) ? "light_nolabels" : 
+                 (["04", "05", "06"].includes(landing.nivel) ? "osm" : "light_all")
+
     },
     lista: {
       totalDentistas: totalHeroDentistas || 0,
