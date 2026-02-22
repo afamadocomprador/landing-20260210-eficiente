@@ -33,20 +33,41 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
   // 1. Detección Inteligente del Nivel de Detalle (LOD)
   const hasComunidades = activeMarks.some((m: any) => m.tipo === 'comunidad');
   const hasProvincias = activeMarks.some((m: any) => m.tipo === 'provincia');
+  const hasMunicipios = activeMarks.some((m: any) => m.tipo === 'municipio'); // O como llames a este nivel
+  // NUEVO: Detectamos si estamos DENTRO de un municipio (Nivel 4)
+  const isInsideMunicipio = activeMarks.some((m: any) => m.tipo === 'centro' || m.tipo === 'hub');
 
-  // TRAZA DE DIAGNÓSTICO: Veremos qué tipos exactos están llegando
-  console.log("🕵️‍♂️ [MAPA LOD] Tipos recibidos:", activeMarks.map((m: any) => m.tipo));
-  
+ 
   // 2. Asignación del GeoJSON correspondiente
   let mapGeoJsonUrl = undefined; // Por defecto no cargamos contornos (ej. para municipios o clínicas sueltas)
 
   if (hasComunidades) {
     mapGeoJsonUrl = '/maps/autonomous_regions.geojson';
-    console.log("🗺️ [MAPA LOD] Cargando archivo de COMUNIDADES");
   } else if (hasProvincias) {
-    mapGeoJsonUrl = '/maps/spain-provinces.geojson';
-    console.log("🗺️ [MAPA LOD] Cargando archivo de PROVINCIAS");
+    mapGeoJsonUrl = '/maps/spain-provinces.geojson'; 
+  } else if (hasMunicipios || isInsideMunicipio) {
+    // Tanto en Nivel 3 como en Nivel 4, usamos el TopoJSON de municipios
+    mapGeoJsonUrl = '/maps/municipalities.json'; // <--- EL NUEVO ARCHIVO // es un topojson
   }
+
+  // 3. Obtenemos el INE del municipio actual. 
+  // (Asumo que lo tienes en initialData.zona.codigo_ine o similar. 
+  // Si no, sácalo del primer marcador si en level-engine le pusiste codigo_ine a los centros).
+  //const currentMunicipioId = isInsideMunicipio ? initialData.zona?.codigo_ine : undefined;
+
+  // 🕵️‍♂️ CHIVATO PARA EL CONTENEDOR:
+  console.log("🧠 [CEREBRO] Buscando el ID del municipio en initialData:", initialData);
+
+  // Intenta cogerlo de la zona, del landing, o del primer marcador si es que lo tienen
+  //const currentMunicipioId = isInsideMunicipio 
+  //  ? (initialData.zona?.codigo_ine || initialData.landing?.cod_municipio || activeMarks[0]?.codigo_ine) 
+  //  : undefined;
+  // Buscamos el ID del municipio directamente en la raíz de los datos
+  const currentMunicipioId = isInsideMunicipio ? initialData.codigo_ine : undefined;
+
+
+  console.log("🧠 [CEREBRO] ID que le mando al mapa:", currentMunicipioId);
+
 
 
   // ESTADO ORIGINAL: Controla si la lista está desplegada o colapsada
@@ -54,6 +75,9 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
 
   // NUEVO ESTADO: Controla qué clínica se ha seleccionado en el mapa
   const [selectedClinicId, setSelectedClinicId] = useState<string | null>(null);
+
+  // NUEVO ESTADO: Controla qué clínica se ha seleccionado en la lista
+  const [selectedFromList, setSelectedFromList] = useState<string | null>(null);
 
   //se pasa arriba mejor
   //const formatter = new Intl.NumberFormat('es-ES');
@@ -90,6 +114,8 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
                 tileStyle={activeMapaConfig.tileStyle}
                 // NUEVA PROP: Pasamos el control de click al mapa
                 onMarkerClick={handleMarkerClick}
+                activeBoundaryId={currentMunicipioId} // <--- NUEVA PROP PARA EL NIVEL 4
+                activeCenterExternal={selectedFromList} // <--- AÑADIR ESTA LÍNEA
                 geoJsonUrl={mapGeoJsonUrl} // El mapa recibirá null si estamos a nivel municipio, o la URL correcta
             /> 
         </div>
@@ -118,10 +144,20 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
                     clinics={activeStats.clinics} 
                     onSelectClinic={(id) => {
                         setSelectedClinicId(id);
-                        setIsListOpen(false);
+                        // 🌟 CLAVE: Buscamos el nombre para mover el mapa
+                        const clinic = activeStats.clinics.find((c: any) => c.clinic_id === id);
+                        if (clinic) {
+                            setSelectedFromList(clinic.name);
+                        }
+                        // No cerramos la lista para que el usuario vea el mapa volar
+                        // setIsListOpen(false); 
                     }} 
                     selectedClinicId={selectedClinicId}
                 />
+
+
+
+
             </div>
           </div>
         </div>
