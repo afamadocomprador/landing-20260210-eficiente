@@ -63,11 +63,24 @@ function MapController({ marks, modo, initialCenter, initialZoom, setReady }: Ma
     setReady(true);
     map.invalidateSize();
     if (modo === 'CENTER_ZOOM' && initialCenter) {
-      map.setView(initialCenter, initialZoom || 6);
+      //map.setView(initialCenter, initialZoom || 6);
+      map.flyTo(initialCenter,
+                initialZoom || 6, {
+                     animage: true,
+                     duration: 1.5 // Duración en segundos
+      });
     } else if (modo === 'FIT_BOUNDS' && marks && marks.length > 0) {
       //const pts = marks.filter((m: any) => m.lat != null).map((m: any) => [m.lat, m.lng]);
       const pts = marks.filter((m: any) => m.lat != null).map((m: any) => [m.lat, m.lng] as [number, number]);
-      if (pts.length > 0) map.fitBounds(L.latLngBounds(pts), { padding: [70, 70], maxZoom: 12 });
+      //if (pts.length > 0) map.fitBounds(L.latLngBounds(pts), { padding: [70, 70], maxZoom: 12 });
+      if (pts.length > 0) {
+          map.flyToBounds(L.latLngBounds(pts), {
+                                 padding: [70, 70],
+                                 maxZoom: 12, 
+                                 animate: true,
+                                 duration: 1.5
+          });
+      }
     }
   }, [marks, modo, initialCenter, initialZoom, map, setReady]);
   return null;
@@ -128,7 +141,7 @@ export default function DentalMapClient({
 
               // 2. Pausa dramática para ver el efecto
               setTimeout(() => {
-                router.push(`/dentistas/${m.slug}`);
+                router.push(`/dentistas/${m.slug}`, {scroll: false});
               }, 400);
             }
           },
