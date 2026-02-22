@@ -154,7 +154,7 @@ export async function getLevelData(
         lng: m.lng_comunidad,
         slug: SLUG_OVERRIDES[m.cod_comunidad] || m.slug_comunidad,
         count: m.num_dentistas_comunidad,
-        tipo: 'region', // <--- NUEVO
+        tipo: 'comunidad', // <--- NUEVO
         codigo_ine: `CA-${m.cod_comunidad}` // <--- AÑADIMOS EL CÓDIGO AQUÍ
     }));
 
@@ -171,7 +171,11 @@ export async function getLevelData(
         lng: m.lng_provincia,
         slug: m.slug_provincia,
         count: m.num_dentistas_provincia,
-        tipo: 'region' // <--- NUEVO
+        tipo: 'provincia', // <--- NUEVO
+        // 👉 ¡ESTA ES LA LÍNEA QUE FALTA! 
+        // (Asegúrate de poner el nombre exacto que tenga la columna en tu base de datos, 
+        // puede ser cod_provincia, id_provincia, ine_prov, etc.)
+        codigo_ine: m.cod_provincia
     }));
   }
   else if (landing.nivel === "03") {
@@ -181,7 +185,7 @@ export async function getLevelData(
         lng: m.lng_municipio,
         slug: m.slug_municipio,
         count: m.num_dentistas_municipio,
-        tipo: 'region' // <--- NUEVO
+        tipo: 'municipio' // <--- NUEVO
     }));
   }
   else if (landing.nivel === "04") {
@@ -193,7 +197,7 @@ export async function getLevelData(
              lng: m.lng_hub,
              slug: m.slug_hub,
              count: m.num_dentistas_hub,
-             tipo: 'region' // <--- NUEVO
+             tipo: 'hub' // <--- NUEVO
         }));
      } 
      else {
@@ -230,7 +234,7 @@ export async function getLevelData(
             lng: m.lng_municipio_de_comarca, 
             slug: m.slug_municipio_de_comarca, 
             count: m.num_dentistas_municipio_de_comarca, 
-             tipo: 'region' // <--- NUEVO
+             tipo: 'comarca' // <--- NUEVO
        }));
   }
 
