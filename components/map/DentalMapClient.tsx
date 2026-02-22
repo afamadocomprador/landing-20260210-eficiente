@@ -98,7 +98,16 @@ function MapController({ marks, modo, initialCenter, initialZoom, setMapInstance
       //if (pts.length > 0) map.fitBounds(L.latLngBounds(pts), { padding: [70, 70], maxZoom: 12 });
       if (pts.length > 0) {
           map.flyToBounds(L.latLngBounds(pts), {
-                                 padding: [70, 70],
+
+                                 // Formato de Leaflet: [MargenHorizontal, MargenVertical]
+
+                                 //padding: [70, 70],          
+                                 // Izquierda: 15px (aprovecha el ancho) | Arriba: 40px (respira por el top)
+                                 paddingTopLeft: [15, 40],
+
+                                 // Derecha: 15px (aprovecha el ancho)  | Abajo: 120px (salva tu lista desplegable)
+                                 paddingBottomRight: [15, 120],
+
                                  maxZoom: 12, 
                                  animate: true,
                                  duration: 1.5
