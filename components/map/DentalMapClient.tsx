@@ -74,50 +74,59 @@ const createCustomIcon = (count: number, name: string, isActive: boolean = false
 
 
 
-// 3. TYPESCRIPT: Aplicamos la interfaz MapControllerProps
-//function MapController({ marks, modo, initialCenter, initialZoom, setReady }: any) {
-//function MapController({ marks, modo, initialCenter, initialZoom, setReady }: MapControllerProps) {
 function MapController({ marks, modo, initialCenter, initialZoom, setMapInstance }: MapControllerProps) {
   const map = useMap();
+  
   useEffect(() => {
     if (!map) return;
-    //setReady(true);
-    setMapInstance(map); // <--- GUARDAMOS LA INSTANCIA COMPLETA
+    setMapInstance(map); 
     map.invalidateSize();
 
     if (modo === 'CENTER_ZOOM' && initialCenter) {
-      //map.setView(initialCenter, initialZoom || 6);
-      map.flyTo(initialCenter,
-                initialZoom || 6, {
-                     animate: true,
-                     duration: 1.5 // Duración en segundos
-      });
+      map.flyTo(initialCenter, initialZoom || 6, { animate: true, duration: 1.5 });
+      
     } else if (modo === 'FIT_BOUNDS' && marks && marks.length > 0) {
-      //const pts = marks.filter((m: any) => m.lat != null).map((m: any) => [m.lat, m.lng]);
-      const pts = marks.filter((m: any) => m.lat != null).map((m: any) => [m.lat, m.lng] as [number, number]);
-      //if (pts.length > 0) map.fitBounds(L.latLngBounds(pts), { padding: [70, 70], maxZoom: 12 });
+      const validMarks = marks.filter((m: any) => m.lat != null);
+      const pts = validMarks.map((m: any) => [m.lat, m.lng] as [number, number]);
+      
       if (pts.length > 0) {
+        
+        // 1. Detectar qué estamos viendo usando el 'tipo' del primer marcador
+        const tipoMarcador = validMarks[0]?.tipo;
+
+        // 2. Si vemos Provincias (ej: Andalucía) O hay pocos puntos: Encuadre Clásico
+        // NUNCA hacemos "Hero Centering" cuando queremos ver la visión general de la Comunidad.
+        if (tipoMarcador === 'provincia' || pts.length <= 6) {
           map.flyToBounds(L.latLngBounds(pts), {
-
-                                 // Formato de Leaflet: [MargenHorizontal, MargenVertical]
-
-                                 //padding: [70, 70],          
-                                 // Izquierda: 15px (aprovecha el ancho) | Arriba: 40px (respira por el top)
-                                 paddingTopLeft: [15, 40],
-
-                                 // Derecha: 15px (aprovecha el ancho)  | Abajo: 120px (salva tu lista desplegable)
-                                 paddingBottomRight: [15, 120],
-
-                                 maxZoom: 12, 
-                                 animate: true,
-                                 duration: 1.5
+            paddingTopLeft: [15, 60],
+            paddingBottomRight: [15, 120],
+            maxZoom: 12, 
+            animate: true,
+            duration: 1.5
           });
+        } 
+        // 3. Si vemos Municipios/Centros y hay muchos (ej: Sevilla, Barcelona): Modo Hero
+        else {
+          // Buscamos el "Hero": El municipio con más clínicas (la capital)
+          const mainMarker = validMarks.reduce((prev, current) => ((prev.count || 0) > (current.count || 0)) ? prev : current);
+          
+          // 🚨 CLAVE: Usamos Zoom 11. 
+          // Esto acerca la cámara al área metropolitana, esparciendo los pines que estaban pegados.
+          const heroZoom = 11; 
+          
+          map.flyTo([mainMarker.lat, mainMarker.lng], heroZoom, {
+            animate: true,
+            duration: 1.5
+          });
+        }
       }
     }
-  //}, [marks, modo, initialCenter, initialZoom, map, setReady]);
   }, [marks, modo, initialCenter, initialZoom, map, setMapInstance]);
+  
   return null;
 }
+
+
 
 export default function DentalMapClient({ 
   marks = [], 
