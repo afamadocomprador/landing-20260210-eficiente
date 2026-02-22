@@ -7,6 +7,7 @@ export interface NavigationState {
   nivelInicial: string;
   nivelFinal: string;
   entidadId: string | null;
+  codigo_ine?: string; 
   mapa: {
     marks: any[];
     modo: 'FIT_BOUNDS' | 'CENTER_ZOOM';
