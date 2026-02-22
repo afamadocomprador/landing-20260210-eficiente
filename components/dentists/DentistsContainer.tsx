@@ -29,6 +29,26 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
   const activeMapaConfig = initialData.mapa;
   const activeStats = initialData.lista;
 
+
+  // 1. Detección Inteligente del Nivel de Detalle (LOD)
+  const hasComunidades = activeMarks.some((m: any) => m.tipo === 'comunidad');
+  const hasProvincias = activeMarks.some((m: any) => m.tipo === 'provincia');
+
+  // TRAZA DE DIAGNÓSTICO: Veremos qué tipos exactos están llegando
+  console.log("🕵️‍♂️ [MAPA LOD] Tipos recibidos:", activeMarks.map((m: any) => m.tipo));
+  
+  // 2. Asignación del GeoJSON correspondiente
+  let mapGeoJsonUrl = undefined; // Por defecto no cargamos contornos (ej. para municipios o clínicas sueltas)
+
+  if (hasComunidades) {
+    mapGeoJsonUrl = '/maps/autonomous_regions.geojson';
+    console.log("🗺️ [MAPA LOD] Cargando archivo de COMUNIDADES");
+  } else if (hasProvincias) {
+    mapGeoJsonUrl = '/maps/spain-provinces.geojson';
+    console.log("🗺️ [MAPA LOD] Cargando archivo de PROVINCIAS");
+  }
+
+
   // ESTADO ORIGINAL: Controla si la lista está desplegada o colapsada
   const [isListOpen, setIsListOpen] = useState(initialData.lista.estadoInicial !== 'CLOSED');
 
@@ -70,6 +90,7 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
                 tileStyle={activeMapaConfig.tileStyle}
                 // NUEVA PROP: Pasamos el control de click al mapa
                 onMarkerClick={handleMarkerClick}
+                geoJsonUrl={mapGeoJsonUrl} // El mapa recibirá null si estamos a nivel municipio, o la URL correcta
             /> 
         </div>
 
