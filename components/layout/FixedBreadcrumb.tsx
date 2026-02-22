@@ -21,6 +21,10 @@ export default function FixedBreadcrumb({ items }: FixedBreadcrumbProps) {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
+    // Ejecutamos el chequeo justo al montarse el componente
+    // Como estamos en useEffect sabemos que 'window' ya existe
+    handleScroll();
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -88,6 +92,7 @@ export default function FixedBreadcrumb({ items }: FixedBreadcrumbProps) {
                 
                 <Link
                   href={item.href}
+                  scroll={false} // para evitar scroll al moverse de página
                   aria-current={isLast ? "page" : undefined}
                   className={`
                     transition-colors
