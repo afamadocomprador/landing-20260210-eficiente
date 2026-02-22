@@ -116,7 +116,7 @@ export default function SpainInteractiveMap() {
   const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
 
   const handleRegionClick = (slug: string) => {
-    router.push(`/dentistas/${slug}`);
+    router.push(`/dentistas/${slug}`, {scroll: false});
   };
 
   return (
