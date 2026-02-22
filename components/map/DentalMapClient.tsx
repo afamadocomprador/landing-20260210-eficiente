@@ -12,7 +12,7 @@ export interface MapMarkerData {
   lng: number; 
   count: number; 
   slug: string;
-  tipo?: 'centro' | 'region';
+  tipo?: 'centro' | 'comunidad' | 'provincia' | 'municipio' | 'comarca' | 'hub';
   codigo_ine?: string; // <--- NUEVA PROPIEDAD
 }
 
@@ -133,8 +133,12 @@ export default function DentalMapClient({
           click: () => {
             // Si es un centro, ignoramos su slug roto y enviamos SU NOMBRE EXACTO
             if (m.tipo === 'centro' && onMarkerClick) {
+              // ES UNA CLÍNICA: Avisamos al contenedor para que haga scroll en la lista
               onMarkerClick(m.name);
             } else if (m.slug) {
+
+              // ES NAVEGABLE (comunidad, provincia, municipio, hub...):
+              // 1. Guardamos su identificador para que el GeoJSON (si lo hay) lo pinte de rojo
               // 1. Iluminamos el polígono en rojo usando su nombre
               // 1. Guardamos el CÓDIGO INE (ej: "CA-02") en lugar del nombre
               setHighlightedRegion(m.codigo_ine || m.name);
@@ -195,6 +199,8 @@ export default function DentalMapClient({
         {/* --- Renderizado del Contorno Dinámico --- */}
         {geoJsonData && (
           <GeoJSON 
+            // TRUCO PRO: Forzamos el redibujado completo si cambia el archivo
+            key={geoJsonUrl}
             data={geoJsonData} 
             style={(feature: any) => {
               // 1. Si no hay nada seleccionado, devolvemos el estilo base inmediatamente (optimización de rendimiento)
@@ -206,7 +212,11 @@ export default function DentalMapClient({
               const targetId = highlightedRegion.replace('CA-', '');
 
               // 3. Obtenemos el ID del GeoJSON (puede venir en la raíz o en properties)
-              const featureId = feature.id || feature.properties?.id;
+              //const featureId = feature.id || feature.properties?.id;
+              // SÚPER-BÚSQUEDA: 
+              // - feature.properties.cod_prov (para el archivo de provincias de GitHub)
+              // - feature.id / feature.properties.id (para el de comunidades)
+              const featureId = feature.properties?.cod_prov || feature.id || feature.properties?.id;
 
               // 4. Comparación directa (ya que nos confirmas que trae el 0)
               const isHighlighted = String(featureId) === targetId;
