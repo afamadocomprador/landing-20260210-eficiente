@@ -17,6 +17,7 @@ export default function HeroSearch() {
   const [isOpen, setIsOpen] = useState(false);
   const [dictionary, setDictionary] = useState<SearchItem[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLocating, setIsLocating] = useState(false); // 🌟 Nuevo estado
   
   const router = useRouter();
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -86,16 +87,48 @@ export default function HeroSearch() {
   };
 
   const handleGeolocate = () => {
-    setIsOpen(false);
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          router.push(`/dentistas/cerca-de-mi?lat=${latitude}&lng=${longitude}`);
-        }
-      );
+    if (!("geolocation" in navigator)) {
+      alert("Tu navegador no soporta la geolocalización.");
+      return;
     }
+
+    setIsLocating(true); // Mostramos feedback visual al instante
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setIsLocating(false);
+        setIsOpen(false);
+        const { latitude, longitude } = position.coords;
+        router.push(`/dentistas/cerca-de-mi?lat=${latitude}&lng=${longitude}`);
+      },
+      (error) => {
+        setIsLocating(false);
+        console.warn("Error de geolocalización:", error);
+        
+        // 🌟 Manejo de errores específico para móviles
+        switch(error.code) {
+          case error.PERMISSION_DENIED:
+            alert("📍 No tenemos permiso para ver tu ubicación. Por favor, actívala en los Ajustes de tu iPhone/Móvil para usar esta función.");
+            break;
+          case error.POSITION_UNAVAILABLE:
+            alert("📍 La señal del GPS no está disponible en este momento. Inténtalo de nuevo en unos segundos.");
+            break;
+          case error.TIMEOUT:
+            alert("📍 Hemos tardado demasiado en encontrarte. Por favor, asegúrate de tener buena cobertura.");
+            break;
+          default:
+            alert("📍 Ha ocurrido un error al intentar localizarte. Usa la búsqueda por texto, por favor.");
+        }
+      },
+      // 🌟 Opciones extra para forzar precisión en móviles
+      {
+        enableHighAccuracy: true, // Fuerza a usar el GPS real, no solo la IP
+        timeout: 10000,           // Espera hasta 10 segundos antes de dar error
+        maximumAge: 0             // No usa caché antigua, busca la posición actual
+      }
+    );
   };
+
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -181,15 +214,22 @@ return (
               onClick={handleGeolocate}
               className="px-6 py-4 hover:bg-gray-50 cursor-pointer flex items-center gap-4 group transition-colors"
             >
-              <div className="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center group-hover:bg-dkv-green transition-colors flex-shrink-0">
-                <Navigation className="w-6 h-6 text-dkv-green group-hover:text-white transition-colors" />
+              <div className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 transition-colors
+                ${isLocating ? 'bg-dkv-green text-white animate-pulse' : 'bg-green-50 text-dkv-green group-hover:bg-dkv-green group-hover:text-white'}`}
+              >
+                <Navigation className={`w-6 h-6 transition-colors ${isLocating ? 'animate-spin' : ''}`} />
               </div>
               <div>
-                <span className="text-gray-800 font-bold text-lg block">Búsqueda cercana</span>
-                <span className="text-gray-500 text-sm block">Encuentra dentistas cerca de tu ubicación actual</span>
+                <span className="text-gray-800 font-bold text-lg block">
+                  {isLocating ? "Buscando tu ubicación..." : "Búsqueda cercana"}
+                </span>
+                <span className="text-gray-500 text-sm block">
+                  {isLocating ? "Espera un momento, por favor" : "Encuentra dentistas cerca de tu ubicación actual"}
+                </span>
               </div>
             </div>
           )}
+
 
           {/* ESTADO B: Escribiendo -> Mostramos Resultados Predictivos */}
           {query.length > 0 && results.length > 0 && results.map((item, idx) => (
