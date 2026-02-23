@@ -2,7 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Search, MapPin, Navigation } from "lucide-react";
+// 🌟 1. AÑADIMOS Loader2 a los iconos
+import { Search, MapPin, Navigation, Loader2 } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 
 interface SearchItem {
@@ -19,6 +20,9 @@ export default function HeroSearch() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
   
+  // 🌟 2. NUEVO ESTADO: Para saber si estamos viajando a otra página
+  const [isNavigating, setIsNavigating] = useState(false);
+  
   const router = useRouter();
   const wrapperRef = useRef<HTMLDivElement>(null);
   
@@ -28,7 +32,7 @@ export default function HeroSearch() {
   );
 
   const loadDictionary = async () => {
-    if (dictionary || isLoading) return; 
+    if (dictionary || isLoading || isNavigating) return; 
     
     setIsLoading(true);
     try {
@@ -46,6 +50,7 @@ export default function HeroSearch() {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (isNavigating) return; // Bloqueamos si ya está viajando
     const value = e.target.value;
     setQuery(value);
 
@@ -66,12 +71,13 @@ export default function HeroSearch() {
   const handleSelect = (slug: string, name: string) => {
     setQuery(name);
     setIsOpen(false);
+    // 🌟 3. ACTIVAMOS EL FEEDBACK VISUAL ANTES DE VIAJAR
+    setIsNavigating(true); 
     router.push(`/dentistas/${slug}`);
   };
 
-  // Mantenemos esta función activa SOLAMENTE para cuando el usuario pulsa la tecla "Enter"
   const handleSearch = () => {
-    if (!query) return;
+    if (!query || isNavigating) return;
 
     if (results.length > 0) {
       handleSelect(results[0].s, results[0].n);
@@ -99,6 +105,8 @@ export default function HeroSearch() {
       (position) => {
         setIsLocating(false);
         setIsOpen(false);
+        // 🌟 4. ACTIVAMOS EL FEEDBACK TAMBIÉN PARA EL GPS
+        setIsNavigating(true);
         const { latitude, longitude } = position.coords;
         router.push(`/dentistas/cerca-de-mi?lat=${latitude}&lng=${longitude}`);
       },
@@ -136,10 +144,17 @@ export default function HeroSearch() {
   return (
     <div ref={wrapperRef} className="relative w-full max-w-3xl mx-auto z-50 text-left">
       
-      {/* 1. PASTILLA ULTRALIMPIA SIN BOTÓN */}
+      {/* 🌟 5. APLICAMOS LOS ESTILOS DE TRANSICIÓN A LA PASTILLA */}
       <div 
-        className={`bg-white rounded-full shadow-lg border border-gray-200 p-2 flex items-center relative transition-all duration-300 ${isOpen ? 'ring-2 ring-dkv-green/30 shadow-xl' : 'hover:shadow-xl'}`}
+        className={`bg-white rounded-full border p-2 flex items-center relative transition-all duration-300 
+          ${isNavigating 
+            ? 'border-dkv-green/50 ring-2 ring-dkv-green/20 bg-gray-50/50 cursor-wait shadow-inner' 
+            : isOpen 
+              ? 'border-gray-200 ring-2 ring-dkv-green/30 shadow-xl' 
+              : 'border-gray-200 shadow-lg hover:shadow-xl'
+          }`}
         onClick={() => {
+          if (isNavigating) return; // Si está viajando, bloqueamos clics
           setIsOpen(true);
           loadDictionary();
           
@@ -157,7 +172,10 @@ export default function HeroSearch() {
         }}
       >
         <div className="pl-4 pr-2 text-dkv-green">
-          {isLoading ? (
+          {/* 🌟 6. EL ICONO CAMBIA SEGÚN EL ESTADO */}
+          {isNavigating ? (
+            <Loader2 className="w-6 h-6 animate-spin text-dkv-green" />
+          ) : isLoading ? (
             <Search className="w-6 h-6 animate-pulse opacity-50" />
           ) : (
             <Search className="w-6 h-6" />
@@ -167,17 +185,22 @@ export default function HeroSearch() {
         <input
           type="text"
           placeholder="Busca por provincia, municipio, barrio..."
-          className="flex-1 w-full bg-transparent border-none focus:ring-0 px-2 py-3 text-gray-700 text-lg placeholder-gray-400 outline-none"
+          // 🌟 7. EL TEXTO SE VUELVE OPACADO AL VIAJAR Y SE BLOQUEA
+          className={`flex-1 w-full bg-transparent border-none focus:ring-0 px-2 py-3 text-lg outline-none transition-colors
+            ${isNavigating ? 'text-gray-400 placeholder-gray-300 cursor-wait' : 'text-gray-700 placeholder-gray-400'}
+          `}
           value={query}
+          readOnly={isNavigating} // Evita que se despliegue el teclado del móvil otra vez
           onChange={handleInputChange}
-          onFocus={() => setIsOpen(true)}
-          // La red de seguridad se mantiene: si pulsa "Ir" o "Enter" en el teclado, busca el mejor resultado
+          onFocus={() => {
+            if(!isNavigating) setIsOpen(true);
+          }}
           onKeyDown={(e) => e.key === 'Enter' && handleSearch()} 
         />
       </div>
 
-      {/* 2. MENÚ DESPLEGABLE */}
-      {isOpen && (
+      {/* MENÚ DESPLEGABLE (Se oculta automáticamente al viajar porque setIsOpen pasa a false) */}
+      {isOpen && !isNavigating && (
         <div className="absolute top-full left-0 right-0 mt-4 bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden divide-y divide-gray-50 py-2">
           
           {query.length === 0 && (
