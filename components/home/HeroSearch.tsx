@@ -101,14 +101,20 @@ export default function HeroSearch() {
 
     setIsLocating(true);
 
-    navigator.geolocation.getCurrentPosition(
+navigator.geolocation.getCurrentPosition(
       (position) => {
         setIsLocating(false);
         setIsOpen(false);
-        // 🌟 4. ACTIVAMOS EL FEEDBACK TAMBIÉN PARA EL GPS
-        setIsNavigating(true);
+        setIsNavigating(true); // Arrancamos la animación de viajar
+        
         const { latitude, longitude } = position.coords;
-        router.push(`/dentistas/cerca-de-mi?lat=${latitude}&lng=${longitude}`);
+        
+        // 🌟 MAGIA: Guardamos las coordenadas en cookies temporales (Max-Age=3600 es 1 hora)
+        document.cookie = `user_lat=${latitude}; path=/; max-age=3600; SameSite=Strict`;
+        document.cookie = `user_lng=${longitude}; path=/; max-age=3600; SameSite=Strict`;
+        
+        // Viajamos a una URL totalmente limpia
+        router.push(`/dentistas/cerca-de-mi`);
       },
       (error) => {
         setIsLocating(false);
