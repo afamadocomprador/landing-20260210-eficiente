@@ -17,6 +17,7 @@ import MainHero from '@/components/hero/MainHero';
 import PricingCards from '@/components/PricingCards'; 
 import FooterLegal from '@/components/FooterLegal'; 
 import Archetypes from '@/components/Archetypes'; 
+import HeroSearch from '@/components/home/HeroSearch';
 
 //const LeadForm = dynamic(() => import('@/components/LeadForm'), {
 //  loading: () => <div className="h-96 bg-gray-100 animate-pulse rounded-xl"></div>, 
@@ -215,40 +216,32 @@ export default function LandingPage() {
           </div>
         </section>
 
+
+
         {/* --- SECCIÓN DENTISTAS --- */}
         <section 
           id="dentistas" 
-          className="py-20 bg-white border-t border-dkv-gray-border scroll-mt-28"
+          className="py-24 bg-white border-t border-dkv-gray-border relative overflow-visible"
         >
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-4xl font-lemon text-dkv-green-dark mb-6">
+          <div className="container mx-auto px-4 text-center relative z-20">
+            <h2 className="text-4xl md:text-5xl font-lemon text-dkv-green-dark mb-6">
               Dentistas.
             </h2>
-            <p className="text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-10 leading-relaxed text-balance">
-              Tan fácil como elegir tu dentista y pedir cita en su consulta.
-              Seguro que tienes uno cerca de ti.
+            <p className="text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-10 text-balance leading-relaxed">
+              Tan fácil como elegir tu dentista y pedir cita en consulta. Seguro que tienes uno cerca. 
             </p>
-            
-            <Link 
-              href="/dentistas"
-              // CAMBIO ACCESIBILIDAD: De text-lg a text-xl
-              className="inline-flex items-center justify-center rounded-dkv font-fsme font-bold duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-dkv-green text-white hover:bg-dkv-green-hover focus:ring-dkv-green disabled:bg-dkv-gray-disabled shadow-xl hover:scale-105 transition-transform gap-3 text-xl px-8 py-6 h-auto"
-            >
-              <Image 
-                alt="Ubicación" 
-                width={28} 
-                height={28} 
-                className="w-7 h-7 object-contain brightness-0 invert" 
-                src="/icons/location-pin.svg" 
-              />
-              Ver Centros Dentales
-            </Link>
-            
+    
+            {/* AQUÍ INYECTAMOS EL BUSCADOR GIGANTE */}
+            <div className="max-w-4xl mx-auto mb-8">
+              <HeroSearch />
+            </div>
+    
             <p className="text-sm font-medium text-dkv-green-dark mt-6">
-              Busca centros dentales en toda España. <br /> Sin registros previos.
+              Busca centros dentales en toda España. <span className="block mt-1"> Sin registros previos.</span>
             </p>
           </div>
         </section>
+
 
 
         {/* --- SECCIÓN COMENTAR --- */}
