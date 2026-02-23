@@ -6,9 +6,9 @@ import { Search, MapPin, Navigation } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 
 interface SearchItem {
-  n: string; // Nombre
-  t: string; // Tipo
-  s: string; // Slug
+  n: string;
+  t: string;
+  s: string;
 }
 
 export default function HeroSearch() {
@@ -17,7 +17,7 @@ export default function HeroSearch() {
   const [isOpen, setIsOpen] = useState(false);
   const [dictionary, setDictionary] = useState<SearchItem[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLocating, setIsLocating] = useState(false); // 🌟 Nuevo estado
+  const [isLocating, setIsLocating] = useState(false);
   
   const router = useRouter();
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -69,6 +69,7 @@ export default function HeroSearch() {
     router.push(`/dentistas/${slug}`);
   };
 
+  // Mantenemos esta función activa SOLAMENTE para cuando el usuario pulsa la tecla "Enter"
   const handleSearch = () => {
     if (!query) return;
 
@@ -92,7 +93,7 @@ export default function HeroSearch() {
       return;
     }
 
-    setIsLocating(true); // Mostramos feedback visual al instante
+    setIsLocating(true);
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -104,31 +105,23 @@ export default function HeroSearch() {
       (error) => {
         setIsLocating(false);
         console.warn("Error de geolocalización:", error);
-        
-        // 🌟 Manejo de errores específico para móviles
         switch(error.code) {
           case error.PERMISSION_DENIED:
-            alert("📍 No tenemos permiso para ver tu ubicación. Por favor, actívala en los Ajustes de tu iPhone/Móvil para usar esta función.");
+            alert("📍 No tenemos permiso para ver tu ubicación. Por favor, actívala en los Ajustes de tu móvil.");
             break;
           case error.POSITION_UNAVAILABLE:
             alert("📍 La señal del GPS no está disponible en este momento. Inténtalo de nuevo en unos segundos.");
             break;
           case error.TIMEOUT:
-            alert("📍 Hemos tardado demasiado en encontrarte. Por favor, asegúrate de tener buena cobertura.");
+            alert("📍 Hemos tardado demasiado en encontrarte. Asegúrate de tener buena cobertura.");
             break;
           default:
-            alert("📍 Ha ocurrido un error al intentar localizarte. Usa la búsqueda por texto, por favor.");
+            alert("📍 Ha ocurrido un error al intentar localizarte. Usa la búsqueda por texto.");
         }
       },
-      // 🌟 Opciones extra para forzar precisión en móviles
-      {
-        enableHighAccuracy: true, // Fuerza a usar el GPS real, no solo la IP
-        timeout: 10000,           // Espera hasta 10 segundos antes de dar error
-        maximumAge: 0             // No usa caché antigua, busca la posición actual
-      }
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     );
   };
-
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -140,14 +133,12 @@ export default function HeroSearch() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-return (
+  return (
     <div ref={wrapperRef} className="relative w-full max-w-3xl mx-auto z-50 text-left">
       
-      {/* 1. PASTILLA RESPONSIVE (Apilada en móvil, horizontal en PC) */}
-      {/* 1. PASTILLA RESPONSIVE (Apilada en móvil, horizontal en PC) */}
-{/* 1. PASTILLA RESPONSIVE (Apilada en móvil, horizontal en PC) */}
+      {/* 1. PASTILLA ULTRALIMPIA SIN BOTÓN */}
       <div 
-        className={`bg-white rounded-3xl sm:rounded-full shadow-lg border border-gray-200 p-3 sm:p-2 flex flex-col sm:flex-row items-center relative transition-all duration-300 ${isOpen ? 'ring-2 ring-dkv-green/30 shadow-xl' : 'hover:shadow-xl'}`}
+        className={`bg-white rounded-full shadow-lg border border-gray-200 p-2 flex items-center relative transition-all duration-300 ${isOpen ? 'ring-2 ring-dkv-green/30 shadow-xl' : 'hover:shadow-xl'}`}
         onClick={() => {
           setIsOpen(true);
           loadDictionary();
@@ -165,50 +156,30 @@ return (
           }
         }}
       >
-        {/* Fila 1 en móvil / Izquierda en PC: Icono + Input */}
-        <div className="flex items-center w-full">
-          <div className="pl-2 sm:pl-4 pr-2 text-dkv-green">
+        <div className="pl-4 pr-2 text-dkv-green">
+          {isLoading ? (
+            <Search className="w-6 h-6 animate-pulse opacity-50" />
+          ) : (
             <Search className="w-6 h-6" />
-          </div>
-
-          <input
-            type="text"
-            placeholder="Busca por provincia, municipio, barrio..."
-            className="flex-1 w-full bg-transparent border-none focus:ring-0 px-2 py-2 sm:py-3 text-gray-700 text-base sm:text-lg placeholder-gray-400 outline-none"
-            value={query}
-            onChange={handleInputChange}
-            onFocus={() => setIsOpen(true)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-          />
+          )}
         </div>
 
-        {/* 🌟 EL BOTÓN MÁGICO OCULTO 🌟 
-            Usamos max-height para el móvil y max-width para el PC para animar su aparición */}
-        <div 
-          className={`overflow-hidden transition-all duration-500 ease-in-out flex w-full sm:w-auto justify-end
-            ${query.trim().length > 0 
-              ? 'max-h-20 opacity-100 sm:max-w-[200px] mt-2 sm:mt-0 sm:ml-2' 
-              : 'max-h-0 opacity-0 sm:max-w-0'
-            }`}
-        >
-          <button 
-            onClick={(e) => {
-              e.stopPropagation();
-              handleSearch();
-            }} 
-            className="w-full sm:w-auto bg-dkv-green hover:bg-dkv-green-dark text-white font-bold py-3 px-8 rounded-full transition-all text-base sm:text-lg shadow-md flex-shrink-0 whitespace-nowrap"
-          >
-            {isLoading ? "..." : "Buscar"}
-          </button>
-        </div>
+        <input
+          type="text"
+          placeholder="Busca por provincia, municipio, barrio..."
+          className="flex-1 w-full bg-transparent border-none focus:ring-0 px-2 py-3 text-gray-700 text-lg placeholder-gray-400 outline-none"
+          value={query}
+          onChange={handleInputChange}
+          onFocus={() => setIsOpen(true)}
+          // La red de seguridad se mantiene: si pulsa "Ir" o "Enter" en el teclado, busca el mejor resultado
+          onKeyDown={(e) => e.key === 'Enter' && handleSearch()} 
+        />
       </div>
 
-
-      {/* 2. MENÚ DESPLEGABLE (Aparece al hacer Focus) */}
+      {/* 2. MENÚ DESPLEGABLE */}
       {isOpen && (
         <div className="absolute top-full left-0 right-0 mt-4 bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden divide-y divide-gray-50 py-2">
           
-          {/* ESTADO A: Caja Vacía -> Mostramos "Búsqueda Cercana" */}
           {query.length === 0 && (
             <div 
               onClick={handleGeolocate}
@@ -230,8 +201,6 @@ return (
             </div>
           )}
 
-
-          {/* ESTADO B: Escribiendo -> Mostramos Resultados Predictivos */}
           {query.length > 0 && results.length > 0 && results.map((item, idx) => (
             <div 
               key={`${item.s}-${idx}`}
@@ -250,7 +219,6 @@ return (
             </div>
           ))}
 
-          {/* ESTADO C: Escribiendo -> No hay resultados */}
           {query.length > 1 && results.length === 0 && dictionary && (
             <div className="px-6 py-8 text-center text-gray-500">
               <span className="block font-medium text-lg mb-1">No hay resultados para "{query}"</span>
