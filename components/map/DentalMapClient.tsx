@@ -157,6 +157,8 @@ export default function DentalMapClient({
 
   //const tileUrl = `https://{s}.basemaps.cartocdn.com/${tileStyle}/{z}/{x}/{y}{r}.png`;
   // --- CONFIGURACIÓN DE TILES DINÁMICA ---
+
+/* *******************
   const isOSM = tileStyle === 'osm';
   
   const tileUrl = isOSM 
@@ -168,9 +170,37 @@ export default function DentalMapClient({
     ? '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' 
     : '&copy; CARTO';
 
+******************** */
+
+// Usamos Voyager para el callejero (elegante y con colores suaves)
+  const isOSM = tileStyle === 'osm';
+  
+  const tileUrl = isOSM 
+    ? `https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png` 
+    : `https://{s}.basemaps.cartocdn.com/${tileStyle}/{z}/{x}/{y}{r}.png`; 
+    
+  const tileAttribution = '&copy; <a href="https://carto.com/attributions">CARTO</a>';
 
 
+/* ********************
+// Usamos ESRI para el callejero (muy detallado y profesional)
+  const isOSM = tileStyle === 'osm';
+  
+  const tileUrl = isOSM 
+    ? `https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}` 
+    : `https://{s}.basemaps.cartocdn.com/${tileStyle}/{z}/{x}/{y}{r}.png`; 
+    
+  const tileAttribution = isOSM 
+    ? '&copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012' 
+    : '&copy; CARTO';
 
+*************** */
+
+/* *******
+// Usamos el mismo mapa gris (light_all) para todo. Minimalismo puro.
+  const tileUrl = `https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png`; 
+  const tileAttribution = '&copy; <a href="https://carto.com/attributions">CARTO</a>';
+***** */
 
   // --- 5. Efecto para cargar el fichero externo ---
   useEffect(() => {
