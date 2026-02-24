@@ -76,7 +76,9 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
                   className="w-full h-auto object-contain object-left"
                   priority 
                   sizes="(max-width: 768px) 140px, 220px"
-                  style={{ objectFit: 'contain' }}
+                  //style={{ objectFit: 'contain' }}
+                  // ...y lo metemos en el objeto style (Next.js te pide esto literalmente)
+                  style={{ objectFit: 'contain', height: 'auto', width: '100%' }}
                 />
              </div>
            </Link>
