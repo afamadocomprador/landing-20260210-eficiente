@@ -6,6 +6,13 @@ import { useRouter } from "next/navigation";
 import { Search, MapPin, Navigation, Loader2 } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
+
 interface SearchItem {
   n: string;
   t: string;
@@ -26,11 +33,6 @@ export default function HeroSearch() {
   const router = useRouter();
   const wrapperRef = useRef<HTMLDivElement>(null);
   
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
-
   const loadDictionary = async () => {
     if (dictionary || isLoading || isNavigating) return; 
     
