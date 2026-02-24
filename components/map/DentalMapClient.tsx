@@ -1,6 +1,8 @@
 "use client";
 
-import { MapContainer, TileLayer, Marker, useMap, ZoomControl, GeoJSON } from "react-leaflet"; // <--- 1. Importar GeoJSON
+import { MapContainer, TileLayer, Marker, useMap, ZoomControl, GeoJSON, useMapEvents } from "react-leaflet";
+import MarkerClusterGroup from 'react-leaflet-cluster'; // 🌟 1. IMPORTAMOS EL CLUSTER
+
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useEffect, useMemo, useState } from "react";
@@ -28,6 +30,12 @@ interface MapProps {
   onMarkerClick?: (id: string) => void;
   activeBoundaryId?: string; // <--- AÑADIMOS ESTO
   activeCenterExternal?: string | null; // <--- AÑADIR ESTA LÍNEA para detectar click en ficha de centro 
+
+  // 🟠 MODIFICADO: Ahora el mapa nos enviará también el objeto 'bounds' (los límites)
+  // onMapMove?: (newCenter: { lat: number, lng: number }, zoom: number) => void;
+  onMapMove?: (center: { lat: number, lng: number }, zoom: number, bounds: L.LatLngBounds) => void;
+  // 🟢 AÑADIDO: Interruptor para encender/apagar el Clustering
+  enableClustering?: boolean;
 }
 
 
@@ -68,6 +76,43 @@ const createCustomIcon = (count: number, name: string, isActive: boolean = false
     </div>`.replace(/\s+/g, ' ').trim();
     
   return L.divIcon({ className: 'custom-pin', html: htmlContent, iconSize: [80, 75], iconAnchor: [40, 46] });
+};
+
+
+
+
+// 🌟 2. DISEÑO DEL CLUSTER (La burbuja que agrupa)
+const createClusterCustomIcon = function (cluster: any) {
+  const count = cluster.getChildCount(); // Cuántas clínicas hay dentro de este grupo
+  
+  // Hacemos que la burbuja sea un poquito más grande si tiene muchas clínicas
+  const size = count > 50 ? 55 : count > 20 ? 45 : 40; 
+
+  const htmlContent = `
+    <div style="
+      background-color: #033B37; 
+      color: white; 
+      width: ${size}px; 
+      height: ${size}px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      border-radius: 50%; 
+      font-weight: bold; 
+      font-size: 15px;
+      border: 3px solid #849700; 
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+    ">
+      ${count}
+    </div>
+  `;
+
+  return L.divIcon({
+    html: htmlContent,
+    className: 'custom-marker-cluster',
+    iconSize: L.point(size, size, true),
+  });
 };
 
 
@@ -128,6 +173,21 @@ function MapController({ marks, modo, initialCenter, initialZoom, setMapInstance
 
 
 
+// 🟠 MODIFICADO: El espía ahora extrae map.getBounds()
+function MapMoveListener({ onMapMove }: { onMapMove?: (center: {lat: number, lng: number}, zoom: number, bounds: L.LatLngBounds) => void }) {
+  const map = useMapEvents({
+    moveend: () => {
+      if (onMapMove) {
+        const center = map.getCenter();
+        const bounds = map.getBounds(); // 🌟 Extraemos las coordenadas de la pantalla
+        onMapMove({ lat: center.lat, lng: center.lng }, map.getZoom(), bounds);
+      }
+    },
+  });
+  return null;
+}
+
+
 export default function DentalMapClient({ 
   marks = [], 
   initialCenter = [40.41, -3.70],
@@ -137,7 +197,9 @@ export default function DentalMapClient({
   geoJsonUrl = "/maps/autonomous_regions.geojson", // <--- AQUÍ VA EL VALOR POR DEFECTO
   onMarkerClick, // Recibimos la nueva prop
   activeBoundaryId, // <--- LO RECIBIMOS AQUÍ
-  activeCenterExternal // <--- Recibimos la prop aquí
+  activeCenterExternal, // <--- Recibimos la prop aquí
+  onMapMove, // <--- 🌟 AÑADIR AQUÍ
+  enableClustering = false // 🟢 AÑADIDO: Por defecto apagado
 }: MapProps) {
   //const [mapIsReady, setMapIsReady] = useState(false);
   //Para poder manejar el mapa
@@ -404,6 +466,10 @@ export default function DentalMapClient({
       <MapContainer center={initialCenter} zoom={initialZoom} style={{ height: "100%", width: "100%" }} zoomControl={false}>
         {/*  <MapController marks={marks} modo={modo} initialCenter={initialCenter} initialZoom={initialZoom} setReady={setMapIsReady} /> */}
         <MapController marks={marks} modo={modo} initialCenter={initialCenter} initialZoom={initialZoom} setMapInstance={setMapInstance} />
+
+        {/* 🌟 AÑADIMOS EL ESPÍA AQUÍ */}
+        <MapMoveListener onMapMove={onMapMove} />
+
         <ZoomControl position="topright" />
 
         {/* <TileLayer url={tileUrl} attribution='&copy; CARTO' /> */}
@@ -565,12 +631,46 @@ export default function DentalMapClient({
 
 
 
+        {/* --- Renderizado de los Pines Individuales y Clústers --- */}
+
+        {/*  {renderedMarkers} */}
+
+        {/*
+        <MarkerClusterGroup 
+          chunkedLoading 
+          iconCreateFunction={createClusterCustomIcon}
+          maxClusterRadius={50} // Los píxeles de distancia para decidir si dos pines se fusionan
+        >
+          {renderedMarkers}
+        </MarkerClusterGroup>
+        */}
+
+
+        {/* 🟠 MODIFICADO: Renderizado Condicional del Clustering */}
+        {enableClustering ? (
+          <MarkerClusterGroup 
+            chunkedLoading 
+            iconCreateFunction={createClusterCustomIcon}
+            maxClusterRadius={50} 
+          >
+            {renderedMarkers}
+          </MarkerClusterGroup>
+        ) : (
+          <>{renderedMarkers}</>
+        )}
 
 
 
 
 
-        {renderedMarkers}
+
+
+
+
+
+
+
+
       </MapContainer>
     </div>
   );
