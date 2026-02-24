@@ -18,6 +18,7 @@ import PricingCards from '@/components/PricingCards';
 import FooterLegal from '@/components/FooterLegal'; 
 import Archetypes from '@/components/Archetypes'; 
 import HeroSearch from '@/components/home/HeroSearch';
+import ScrollReveal from '@/components/ui/ScrollReveal';
 
 //const LeadForm = dynamic(() => import('@/components/LeadForm'), {
 //  loading: () => <div className="h-96 bg-gray-100 animate-pulse rounded-xl"></div>, 
@@ -195,13 +196,23 @@ export default function LandingPage() {
         {/* --- SECCIÓN TRATAMIENTOS --- */}
         <section className="py-20 bg-white border-t border-dkv-gray-border">
           <div className="container mx-auto px-4 text-center">
+
+           {/* 1. El Título sube primero (delay 0, inmediato) */}
+           <ScrollReveal delay={0}>
             <h2 className="text-4xl font-lemon text-dkv-green-dark mb-6">
               Tratamientos.
             </h2>
+           </ScrollReveal>
+
+           {/* 2. El Párrafo sube un instante después (150ms de retraso) */}
+           <ScrollReveal delay={100}>
             <p className="text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-10 leading-relaxed text-balance">
               Numerosos servicios dentales gratuitos y resto a precios muy inferiores a mercado.
             </p>
-            
+           </ScrollReveal>
+
+           {/* 3. La pastilla del Buscador sube la última, coronando la escena (400ms) */}   
+           <ScrollReveal delay={150}>       
             <Link 
               href="/tratamientos"
               // CAMBIO ACCESIBILIDAD: De text-lg a text-xl para cumplir ratio de contraste
@@ -209,10 +220,12 @@ export default function LandingPage() {
             >
               Ver Tratamientos y Precios
             </Link>
-            
+
             <p className="text-sm font-medium text-dkv-green-dark mt-6">
               Aquí puedes ver los tratamientos y sus precios. <br /> Directamente y sin formularios.
             </p>
+           </ScrollReveal>
+
           </div>
         </section>
 
@@ -223,14 +236,29 @@ export default function LandingPage() {
           id="dentistas" 
           className="py-24 bg-white border-t border-dkv-gray-border relative overflow-visible"
         >
+
           <div className="container mx-auto px-4 text-center relative z-20">
+
+           {/* 1. El Título sube primero (delay 0, inmediato) */}
+           <ScrollReveal delay={0}>
+
             <h2 className="text-4xl md:text-5xl font-lemon text-dkv-green-dark mb-6">
               Dentistas.
             </h2>
+           </ScrollReveal>
+
+           {/* 2. El Párrafo sube un instante después (100ms de retraso) */}
+           <ScrollReveal delay={100}>
+
             <p className="text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-10 text-balance leading-relaxed">
               Tan fácil como elegir tu dentista y pedir cita en consulta. Seguro que tienes uno cerca. 
             </p>
-    
+           </ScrollReveal>
+
+
+           {/* 3. La pastilla del Buscador sube la última, coronando la escena (200ms) */}   
+           <ScrollReveal delay={200}>       
+
             {/* AQUÍ INYECTAMOS EL BUSCADOR GIGANTE */}
             <div className="max-w-4xl mx-auto mb-8">
               <HeroSearch />
@@ -239,6 +267,9 @@ export default function LandingPage() {
             <p className="text-sm font-medium text-dkv-green-dark mt-6">
               Busca centros dentales en toda España. <span className="block mt-1"> Sin registros previos.</span>
             </p>
+           </ScrollReveal>
+
+
           </div>
         </section>
 
@@ -249,6 +280,7 @@ export default function LandingPage() {
           id="información" 
           className="py-20 bg-white border-t border-dkv-gray-border scroll-mt-28"
         >
+         <ScrollReveal>
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-4xl font-lemon text-dkv-green-dark mb-6">
               ¿Algo que comentar?
@@ -269,6 +301,7 @@ export default function LandingPage() {
               No te quedes con la duda. <br /> Respuesta personal.
             </p>
           </div>
+         </ScrollReveal>
         </section>
 
 
