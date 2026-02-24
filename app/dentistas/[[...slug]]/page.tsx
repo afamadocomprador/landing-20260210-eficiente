@@ -380,7 +380,20 @@ const organizationJsonLd = {
 
       </div>
     );
-  } catch (e) {
+
+  //} catch (e) {
+  //  console.error("❌ PAGE ERROR:", e);
+  //  return notFound();
+  //}
+
+  } catch (e: any) {
+
+    // Si entró a "cerca-de-mi" pero no tiene las cookies del GPS, lo mandamos al inicio
+    if (e.message === "NO_COORDS") {
+       const { redirect } = require('next/navigation');
+       redirect('/');
+    }
+    
     console.error("❌ PAGE ERROR:", e);
     return notFound();
   }
