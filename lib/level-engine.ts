@@ -10,6 +10,8 @@ import { getDatosCentrosDeHub } from '@/services/getCentrosDeHubs';
 import { getBreadcrumbTrail } from '@/services/getBreadcrumb';
 import { SITE_CONFIG } from '@/constants/config'; 
 
+import { cookies } from "next/headers";
+
 
 // IMPORTAR EL NUEVO SERVICIO Y TIPOS
 import { getRelatedLinks, RelatedLinksData } from '@/services/getEnlaces';
@@ -24,6 +26,94 @@ export async function getLevelData(
   nivelFinal: string,
   slug: string | ""
 ): Promise<ExtendedNavigationState> {
+
+
+
+  // ====================================================================
+  // 🌟 2. CORTOCIRCUITO MÁGICO PARA "CERCA DE MÍ" (NIVEL 00 / GEO)
+  // ====================================================================
+  if (slug === "cerca-de-mi") {
+    console.log(`\n[DEBUG ENGINE] Activando motor espacial (Nivel 00)`);
+    
+    // Leemos las coordenadas invisibles
+    const cookieStore = cookies();
+    const latStr = cookieStore.get("user_lat")?.value;
+    const lngStr = cookieStore.get("user_lng")?.value;
+
+    // Si alguien entra por URL directa sin ubicación, lanzamos un error especial
+    if (!latStr || !lngStr) {
+      throw new Error("NO_COORDS"); 
+    }
+
+    const lat = parseFloat(latStr);
+    const lng = parseFloat(lngStr);
+
+    // Llamamos a tu nueva función PostGIS
+    const { data: listClinics, error } = await supabase.rpc('get_centros_cercanos', {
+      user_lat: lat,
+      user_lng: lng,
+      radio_km: 25 // 25 kilómetros a la redonda
+    });
+
+    if (error) throw error;
+
+    // Convertimos las clínicas devueltas en marcadores de mapa
+    const markers = (listClinics || []).map((c: any) => ({
+      name: c.name,
+      lat: c.latitude,
+      lng: c.longitude,
+      slug: c.clinic_id, // Usamos ID si no tienes slug en la vista
+      count: c.staff_count,
+      tipo: 'centro',
+      distancia_km: c.distancia_km // <-- Pasamos el dato mágico al front
+    }));
+
+    // Calculamos totales para el Hero
+    const totalCentros = listClinics?.length || 0;
+    const totalDentistas = listClinics?.reduce((acc: number, curr: any) => acc + (Number(curr.staff_count) || 0), 0) || 0;
+
+    // Devolvemos la estructura exacta que espera DentistsContainer
+    return {
+      nivelInicial: "sin informar",
+      nivelFinal: "00", // Nuestro nivel especial
+      entidadId: "cerca-de-mi",
+      codigo_ine: "GPS",
+      mapa: {
+        marks: markers,
+        modo: 'FIT_BOUNDS',
+        centro: [lat, lng],
+        zoom: 12,
+        tileStyle: "osm" // Callejero detallado para ver bien dónde están
+      },
+      lista: {
+        totalDentistas,
+        totalCentros,
+        clinics: listClinics || [],
+        estadoInicial: 'CLOSED' 
+      },
+      seo: {
+        totalDentistasHero: totalDentistas,
+        totalCentrosHero: totalCentros,
+        h1: { dark: "Encuentra tu dentista", normal: "cerca de ti" },
+        breadcrumbs: [{ label: "Cerca de mí", href: "/cerca-de-mi" }],
+        enlacesSugeridos: [],
+        title: "Dentistas cerca de mí | DKV Dentisalud Élite",
+        description: "Encuentra las clínicas dentales DKV más cercanas a tu ubicación actual.",
+        schemaData: null // Omitimos el Schema complejo para ubicaciones efímeras
+      },
+      relatedLinks: { madre: null, hijas: null, hermanas: null, cercanas: null, comarcas: null }
+    };
+  }
+  // ====================================================================
+  // FIN DEL CORTOCIRCUITO (A partir de aquí, el código original sigue intacto)
+  // ====================================================================
+
+
+
+
+
+
+
   
   // 1. NORMALIZACIÓN
   const isProvinciaSlug = slug.endsWith("-provincia");
