@@ -435,7 +435,7 @@ return (
                   <div className="bg-gray-50/80 rounded-xl p-4 border border-dashed border-gray-200 overflow-y-auto max-h-[180px]">
                     <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-3">Equipo Médico disponible:</p>
                     <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-2 gap-x-4">
-                      {selectedClinicData.staff_names.map((doctor: string, i: number) => (
+                      {selectedClinicData.staff_names?.map((doctor: string, i: number) => (
                         <li key={i} className="flex items-start gap-2 text-sm text-gray-700 font-fsme">
                           <div className="w-1.5 h-1.5 rounded-full bg-dkv-green mt-1.5 shrink-0" aria-hidden="true"></div>
                           <span className="line-clamp-1" title={doctor}>{doctor}</span>
