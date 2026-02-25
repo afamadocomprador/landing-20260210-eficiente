@@ -80,9 +80,9 @@ export async function getLevelData(
       codigo_ine: "GPS",
       mapa: {
         marks: markers,
-        modo: 'FIT_BOUNDS',
+        modo: 'CENTER_ZOOM', // 'FIT_BOUNDS',
         centro: [lat, lng],
-        zoom: 12,
+        zoom: 14,
         tileStyle: "osm" // Callejero detallado para ver bien dónde están
       },
       lista: {
