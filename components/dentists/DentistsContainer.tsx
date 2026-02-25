@@ -431,7 +431,7 @@ return (
                 overflow-hidden transition-all duration-500 ease-in-out w-full
                 ${isFloatingDentistsOpen ? 'max-h-[250px] opacity-100 mt-4 mb-1' : 'max-h-0 opacity-0'}
               `}>
-                {selectedClinicData.staff_names?.length > 0 && (
+                {(selectedClinicData.staff_names?.length || 0) > 0 && (
                   <div className="bg-gray-50/80 rounded-xl p-4 border border-dashed border-gray-200 overflow-y-auto max-h-[180px]">
                     <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-3">Equipo Médico disponible:</p>
                     <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-2 gap-x-4">
