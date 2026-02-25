@@ -36,6 +36,8 @@ interface MapProps {
   onMapMove?: (center: { lat: number, lng: number }, zoom: number, bounds: L.LatLngBounds) => void;
   // 🟢 AÑADIDO: Interruptor para encender/apagar el Clustering
   enableClustering?: boolean;
+  // 🟢 AÑADIDO: Detectar clic en el mapa vacío para cerrar la tarjeta flotante
+  onMapClick?: () => void;
 }
 
 
@@ -174,7 +176,19 @@ function MapController({ marks, modo, initialCenter, initialZoom, setMapInstance
 
 
 // 🟠 MODIFICADO: El espía ahora extrae map.getBounds()
-function MapMoveListener({ onMapMove }: { onMapMove?: (center: {lat: number, lng: number}, zoom: number, bounds: L.LatLngBounds) => void }) {
+// 🟠 MODIFICADO: El espía ahora detecta también los clics en el mapa
+//function MapMoveListener({ onMapMove }: { onMapMove?: (center: {lat: number, lng: number}, zoom: number, bounds: L.LatLngBounds) => void }) {
+
+
+function MapMoveListener({ 
+  onMapMove, 
+  onMapClick // <--- 🌟 AÑADIDO: Declaramos que recibimos esta variable
+}: { 
+  onMapMove?: (center: {lat: number, lng: number}, zoom: number, bounds: L.LatLngBounds) => void,
+  onMapClick?: () => void // <--- 🌟 AÑADIDO: Le decimos a TypeScript que es una función sin parámetros
+}) {
+
+
   const map = useMapEvents({
     moveend: () => {
       if (onMapMove) {
@@ -183,6 +197,12 @@ function MapMoveListener({ onMapMove }: { onMapMove?: (center: {lat: number, lng
         onMapMove({ lat: center.lat, lng: center.lng }, map.getZoom(), bounds);
       }
     },
+    // 🟢 AÑADIDO: Si pinchas en el agua o una calle sin pin, avisa al padre
+    click: () => {
+      if (onMapClick) {
+        onMapClick();
+      }
+    }
   });
   return null;
 }
@@ -199,7 +219,8 @@ export default function DentalMapClient({
   activeBoundaryId, // <--- LO RECIBIMOS AQUÍ
   activeCenterExternal, // <--- Recibimos la prop aquí
   onMapMove, // <--- 🌟 AÑADIR AQUÍ
-  enableClustering = false // 🟢 AÑADIDO: Por defecto apagado
+  enableClustering = false, // 🟢 AÑADIDO: Por defecto apagado
+  onMapClick // <--- 🟢 AÑADIDO
 }: MapProps) {
   //const [mapIsReady, setMapIsReady] = useState(false);
   //Para poder manejar el mapa
@@ -304,7 +325,7 @@ export default function DentalMapClient({
       if (targetMark && targetMark.lat != null) {
         setActiveCenter(targetMark.name); 
         
-        const targetZoom = 16; // <--- ZOOM OBJETIVO
+        const targetZoom = 18; // <--- ZOOM OBJETIVO
         const mapHeight = mapInstance.getSize().y;
         
         // 👉 CLAVE: Proyectamos y des-proyectamos usando el zoom 16
@@ -317,6 +338,9 @@ export default function DentalMapClient({
           duration: 0.8 
         });
       }
+    } else if (activeCenterExternal === null) {
+      // 🟢 AÑADIDO: Si el padre nos manda null, deseleccionamos el centro activo
+      setActiveCenter(null);
     }
   }, [activeCenterExternal, mapInstance, marks]);
 
@@ -355,7 +379,7 @@ export default function DentalMapClient({
               onMarkerClick(m.name);
 
               // 2. MAGIA UX: Calculamos el offset para centrar en el 1/3 superior usando zoom 16
-              const targetZoom = 16;
+              const targetZoom = 18;
               const mapHeight = mapInstance.getSize().y;
               
               // Proyectamos el marcador a píxeles absolutos usando el zoom destino
@@ -468,7 +492,9 @@ export default function DentalMapClient({
         <MapController marks={marks} modo={modo} initialCenter={initialCenter} initialZoom={initialZoom} setMapInstance={setMapInstance} />
 
         {/* 🌟 AÑADIMOS EL ESPÍA AQUÍ */}
-        <MapMoveListener onMapMove={onMapMove} />
+        {/* <MapMoveListener onMapMove={onMapMove} /> */}
+        {/* 🟠 MODIFICADO: Pasamos el evento de clic en el mapa */}
+        <MapMoveListener onMapMove={onMapMove} onMapClick={onMapClick} />
 
         <ZoomControl position="topright" />
 
