@@ -101,7 +101,8 @@ export async function getLevelData(
         description: "Encuentra las clínicas dentales DKV más cercanas a tu ubicación actual.",
         schemaData: null // Omitimos el Schema complejo para ubicaciones efímeras
       },
-      relatedLinks: { madre: null, hijas: null, hermanas: null, cercanas: null, comarcas: null }
+      //relatedLinks: { madre: null, hijas: null, hermanas: null, cercanas: null, comarcas: null }
+      relatedLinks: { madre: null, hijas: null, hermanas: null, cercanas: null, comarcas: null, comarcas_sin_dentistas: null }
     };
   }
   // ====================================================================
