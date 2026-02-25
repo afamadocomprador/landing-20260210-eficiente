@@ -417,11 +417,13 @@ return (
                     </button>
                   )}
 
+                  {/* BORRAR O COMENTAR ESTE BLOQUE
                   {selectedClinicData.distancia_km && (
                     <span className="text-xs font-medium text-gray-500">
                       A {selectedClinicData.distancia_km} km
                     </span>
                   )}
+                  */}
                 </div>
               </div>
 
