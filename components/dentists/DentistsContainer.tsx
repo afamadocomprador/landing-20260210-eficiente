@@ -11,7 +11,8 @@ import { useRouter } from "next/navigation";
 //import { ChevronUp, ChevronDown, Stethoscope, Loader2 } from "lucide-react";
 //import { ChevronUp, ChevronDown, Stethoscope, Loader2, X, Phone } from "lucide-react";
 //import { ChevronUp, ChevronDown, Stethoscope, Loader2, X, Phone, Users, Plus, Minus } from "lucide-react";
-import { ChevronUp, ChevronDown, Stethoscope, Loader2, X, Phone, Users, Plus, Minus, MapPin } from "lucide-react";
+//import { ChevronUp, ChevronDown, Stethoscope, Loader2, X, Phone, Users, Plus, Minus, MapPin } from "lucide-react";
+import { ChevronUp, ChevronDown, Stethoscope, Loader2, X, Phone, Users, Plus, Minus, MapPin, Navigation } from "lucide-react";
 // 🟢 AÑADIDO: Importamos el formateador de teléfonos
 import { formatPhoneNumber } from "@/lib/text-formatter";
 import { useNavigation, NavigationState } from "@/context/NavigationContext";
@@ -460,30 +461,40 @@ return (
 
 
 
-              {/* 4. DIRECCIÓN (Ahora es un enlace para iniciar navegación GPS) */}
+              {/* 4. DIRECCIÓN Y RUTA (Nivel Dios UX Mobile) */}
               <a 
+                // 🌟 UX EXTRA: Usamos la API universal oficial para forzar la apertura de la App nativa en iOS/Android
                 href={`https://www.google.com/maps/dir/?api=1&destination=${selectedClinicData.latitude},${selectedClinicData.longitude}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-start gap-3 mb-5 p-2 -ml-2 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer group active:scale-[0.98]"
+                className="flex items-center justify-between gap-2 mb-5 p-2 -mx-2 rounded-xl hover:bg-gray-50 active:bg-gray-100 transition-all cursor-pointer group"
                 aria-label={`Cómo llegar a ${selectedClinicData.name}`}
               >
-                <div className="w-10 h-10 rounded-full bg-dkv-green/5 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-dkv-green/15 transition-colors" aria-hidden="true">
-                    <MapPin className="w-5 h-5 text-dkv-green" />
+                {/* Parte Izquierda: Icono y Textos */}
+                <div className="flex items-center gap-3 overflow-hidden">
+                  <div className="w-10 h-10 rounded-full bg-dkv-green/5 flex items-center justify-center shrink-0 group-hover:bg-dkv-green/15 transition-colors" aria-hidden="true">
+                      <MapPin className="w-5 h-5 text-dkv-green" />
+                  </div>
+                  <div className="flex flex-col font-fsme leading-tight overflow-hidden">
+                    {/* El line-clamp-1 evita que una calle hiper-larga empuje al botón fuera de la pantalla en móviles pequeños */}
+                    <span className="text-gray-800 font-bold text-base mb-0.5 group-hover:text-dkv-green transition-colors line-clamp-1">
+                      {selectedClinicData.address}
+                    </span>
+                    <span className="text-gray-600 font-medium text-sm truncate">
+                      {selectedClinicData.zip_code || ""} {selectedClinicData.city}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex flex-col font-fsme leading-tight">
-                  <span className="text-gray-800 font-bold text-base mb-0.5 group-hover:text-dkv-green transition-colors">{selectedClinicData.address}</span>
-                  <span className="text-gray-600 font-medium text-sm">
-                    {selectedClinicData.zip_code || ""} {selectedClinicData.city}
-                  </span>
-                  
-                  {/* 🌟 UX EXTRA: Un texto pequeñito que asoma al pasar el ratón para indicar que se puede hacer clic */}
-                  <span className="text-[11px] font-bold text-dkv-green uppercase tracking-wider mt-1.5 opacity-0 h-0 group-hover:opacity-100 group-hover:h-auto transition-all">
-                    Cómo llegar ↗
-                  </span>
+                
+                {/* Parte Derecha: El Botón de Acción Nativo */}
+                <div className="flex flex-col items-center shrink-0 pl-3 border-l border-gray-100 ml-1">
+                  <div className="w-9 h-9 rounded-full bg-dkv-green text-white flex items-center justify-center shadow-md group-active:scale-90 transition-transform mb-1.5">
+                    {/* Pequeño ajuste de márgenes en el icono para que visualmente parezca centrado */}
+                    <Navigation className="w-4 h-4 ml-[-2px] mt-[2px]" />
+                  </div>
+                  <span className="text-[9px] font-bold text-dkv-green uppercase tracking-wider">Ruta</span>
                 </div>
-              </a>              
-
+              </a>
 
 
 
