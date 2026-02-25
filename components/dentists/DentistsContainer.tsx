@@ -376,14 +376,25 @@ return (
               className={`absolute left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-[420px] z-40 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 p-5 ${hideListCompletely ? 'bottom-6 md:bottom-8' : 'bottom-[96px]'}`}
             >
               
-              {/* 1. CABECERA: NOMBRE Y BOTÓN CERRAR */}
+              {/* 1. CABECERA: ETIQUETA DKV, NOMBRE Y BOTÓN CERRAR */}
               <div className="flex justify-between items-start gap-4 mb-3">
-                <h4 className="font-lemon text-dkv-green-dark text-xl leading-tight">
-                  {selectedClinicData.name}
-                </h4>
+                <div className="flex flex-col items-start gap-2">
+                  
+                  {/* 🌟 GALLETITA DE CENTRO ÉLITE DKV */}
+                  {selectedClinicData.is_propio && (
+                    <span className="bg-dkv-green text-white text-[10px] font-bold px-3 py-1 rounded-lg uppercase tracking-wide shadow-sm">
+                      Centro Élite DKV
+                    </span>
+                  )}
+
+                  <h4 className="font-lemon text-dkv-green-dark text-xl leading-tight">
+                    {selectedClinicData.name}
+                  </h4>
+                </div>
+                
                 <button 
                   onClick={() => setSelectedClinicId(null)} 
-                  className="text-gray-400 hover:text-dkv-gray bg-gray-50 hover:bg-gray-100 rounded-full p-1.5 transition-colors shrink-0"
+                  className="text-gray-400 hover:text-dkv-gray bg-gray-50 hover:bg-gray-100 rounded-full p-1.5 transition-colors shrink-0 mt-1"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -447,19 +458,33 @@ return (
                 )}
               </div>
 
-              {/* 4. DIRECCIÓN (Con formato idéntico a ClinicCard) */}
-              <div className="flex items-start gap-3 mb-5">
-                <div className="w-10 h-10 rounded-full bg-dkv-green/5 flex items-center justify-center shrink-0 mt-0.5" aria-hidden="true">
+
+
+              {/* 4. DIRECCIÓN (Ahora es un enlace para iniciar navegación GPS) */}
+              <a 
+                href={`https://www.google.com/maps/dir/?api=1&destination=${selectedClinicData.latitude},${selectedClinicData.longitude}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-3 mb-5 p-2 -ml-2 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer group active:scale-[0.98]"
+                aria-label={`Cómo llegar a ${selectedClinicData.name}`}
+              >
+                <div className="w-10 h-10 rounded-full bg-dkv-green/5 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-dkv-green/15 transition-colors" aria-hidden="true">
                     <MapPin className="w-5 h-5 text-dkv-green" />
                 </div>
                 <div className="flex flex-col font-fsme leading-tight">
-                  <span className="text-gray-800 font-bold text-base mb-0.5">{selectedClinicData.address}</span>
+                  <span className="text-gray-800 font-bold text-base mb-0.5 group-hover:text-dkv-green transition-colors">{selectedClinicData.address}</span>
                   <span className="text-gray-600 font-medium text-sm">
                     {selectedClinicData.zip_code || ""} {selectedClinicData.city}
                   </span>
+                  
+                  {/* 🌟 UX EXTRA: Un texto pequeñito que asoma al pasar el ratón para indicar que se puede hacer clic */}
+                  <span className="text-[11px] font-bold text-dkv-green uppercase tracking-wider mt-1.5 opacity-0 h-0 group-hover:opacity-100 group-hover:h-auto transition-all">
+                    Cómo llegar ↗
+                  </span>
                 </div>
-              </div>
-              
+              </a>              
+
+
 
 
               {/* 5. FOOTER: TELÉFONO + BOTÓN "PEDIR CITA" */}
