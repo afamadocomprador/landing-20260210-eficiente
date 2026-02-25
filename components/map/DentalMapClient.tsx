@@ -202,6 +202,12 @@ function MapMoveListener({
       if (onMapClick) {
         onMapClick();
       }
+    },
+    // 🌟 AÑADIDO: Si el usuario "agarra" el mapa para moverlo, también cerramos la tarjeta
+    dragstart: () => {
+      if (onMapClick) {
+        onMapClick();
+      }
     }
   });
   return null;
