@@ -10,7 +10,10 @@ import { useRouter } from "next/navigation";
 //import { ChevronUp, ChevronDown, Stethoscope } from "lucide-react";
 //import { ChevronUp, ChevronDown, Stethoscope, Loader2 } from "lucide-react";
 //import { ChevronUp, ChevronDown, Stethoscope, Loader2, X, Phone } from "lucide-react";
-import { ChevronUp, ChevronDown, Stethoscope, Loader2, X, Phone, Users, Plus, Minus } from "lucide-react";
+//import { ChevronUp, ChevronDown, Stethoscope, Loader2, X, Phone, Users, Plus, Minus } from "lucide-react";
+import { ChevronUp, ChevronDown, Stethoscope, Loader2, X, Phone, Users, Plus, Minus, MapPin } from "lucide-react";
+// 🟢 AÑADIDO: Importamos el formateador de teléfonos
+import { formatPhoneNumber } from "@/lib/text-formatter";
 import { useNavigation, NavigationState } from "@/context/NavigationContext";
 import ClinicList from "@/components/dentists/ClinicList";
 
@@ -369,14 +372,12 @@ return (
               initial={{ opacity: 0, y: 40, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.98, transition: { duration: 0.2 } }}
-              transition={{
-                type: "spring",
-                stiffness: 300, 
-                damping: 25,    
-              }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
               className={`absolute left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-[420px] z-40 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 p-5 ${hideListCompletely ? 'bottom-6 md:bottom-8' : 'bottom-[96px]'}`}
             >
-              <div className="flex justify-between items-start gap-4">
+              
+              {/* 1. CABECERA: NOMBRE Y BOTÓN CERRAR */}
+              <div className="flex justify-between items-start gap-4 mb-3">
                 <h4 className="font-lemon text-dkv-green-dark text-xl leading-tight">
                   {selectedClinicData.name}
                 </h4>
@@ -388,48 +389,48 @@ return (
                 </button>
               </div>
               
-              <p className="text-sm text-dkv-gray mt-2 line-clamp-2">
-                {selectedClinicData.address}, {selectedClinicData.city}
-              </p>
-              
-              <div className="flex justify-between items-center mt-4">
-                <div className="flex items-center gap-2">
-                  
-                  {(selectedClinicData.staff_count ?? 0) > 0 && (
-                    <button 
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation(); 
-                        setIsFloatingDentistsOpen(!isFloatingDentistsOpen);
-                      }}
-                      aria-expanded={isFloatingDentistsOpen}
-                      className={`
-                        inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-all duration-300
-                        ${isFloatingDentistsOpen 
-                          ? 'bg-dkv-green text-white shadow-md' 
-                          : 'bg-dkv-green/10 text-dkv-green-dark hover:bg-dkv-green/20 border border-dkv-green/20'
-                        }
-                      `}
-                    >
-                      <Users className={`w-4 h-4 ${isFloatingDentistsOpen ? 'text-white' : 'text-dkv-green'}`} aria-hidden="true" />
-                      <span>{selectedClinicData.staff_count} Especialistas</span>
-                      {isFloatingDentistsOpen ? <Minus className="w-3.5 h-3.5 ml-1" aria-hidden="true" /> : <Plus className="w-3.5 h-3.5 ml-1" aria-hidden="true" />}
-                    </button>
-                  )}
-
-                  {/* BORRAR O COMENTAR ESTE BLOQUE
-                  {selectedClinicData.distancia_km && (
-                    <span className="text-xs font-medium text-gray-500">
-                      A {selectedClinicData.distancia_km} km
+              {/* 2. BOTÓN DE DENTISTAS (Justo debajo del nombre) */}
+              {(selectedClinicData.staff_count ?? 0) > 0 && (
+                <div className="mb-4">
+                  <motion.button 
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation(); 
+                      setIsFloatingDentistsOpen(!isFloatingDentistsOpen);
+                    }}
+                    aria-expanded={isFloatingDentistsOpen}
+                    
+                    // 🌟 MAGIA 1: Efecto "Respiración" constante si está cerrado
+                    animate={!isFloatingDentistsOpen ? { scale: [1, 1.03, 1] } : { scale: 1 }}
+                    transition={!isFloatingDentistsOpen ? { duration: 2, repeat: Infinity, ease: "easeInOut" } : { duration: 0.2 }}
+                    
+                    // 🌟 MAGIA 2: Efectos físicos de ratón y clic
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    
+                    // ⚠️ NOTA: Cambiamos 'transition-all' por 'transition-colors' para que 
+                    // Tailwind solo controle el color y Framer Motion controle el tamaño.
+                    className={`
+                      inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-colors duration-300 cursor-pointer origin-left
+                      ${isFloatingDentistsOpen 
+                        ? 'bg-dkv-green text-white shadow-md' 
+                        : 'bg-dkv-green/10 text-dkv-green-dark hover:bg-dkv-green/20 border border-dkv-green/20'
+                      }
+                    `}
+                  >
+                    <Users className={`w-4 h-4 ${isFloatingDentistsOpen ? 'text-white' : 'text-dkv-green'}`} aria-hidden="true" />
+                    <span>
+                       {selectedClinicData.staff_count} {selectedClinicData.staff_count === 1 ? 'Especialista' : 'Especialistas'}
                     </span>
-                  )}
-                  */}
+                    {isFloatingDentistsOpen ? <Minus className="w-3.5 h-3.5 ml-1" aria-hidden="true" /> : <Plus className="w-3.5 h-3.5 ml-1" aria-hidden="true" />}
+                  </motion.button>
                 </div>
-              </div>
+              )}
 
+              {/* 3. ACORDEÓN DE DENTISTAS (Se despliega aquí mismo) */}
               <div className={`
                 overflow-hidden transition-all duration-500 ease-in-out w-full
-                ${isFloatingDentistsOpen ? 'max-h-[250px] opacity-100 mt-4 mb-1' : 'max-h-0 opacity-0'}
+                ${isFloatingDentistsOpen ? 'max-h-[250px] opacity-100 mb-4' : 'max-h-0 opacity-0'}
               `}>
                 {(selectedClinicData.staff_names?.length || 0) > 0 && (
                   <div className="bg-gray-50/80 rounded-xl p-4 border border-dashed border-gray-200 overflow-y-auto max-h-[180px]">
@@ -446,18 +447,45 @@ return (
                 )}
               </div>
 
-              <a 
-                href={`tel:${selectedClinicData.phone}`} 
-                className={`${isFloatingDentistsOpen ? 'mt-2' : 'mt-4'} w-full flex items-center justify-center gap-2 bg-dkv-green text-white py-3 rounded-xl font-bold hover:bg-dkv-green-hover transition-colors shadow-md`}
-              >
-                <Phone className="w-4 h-4" />
-                Llamar al centro
-              </a>
+              {/* 4. DIRECCIÓN (Con formato idéntico a ClinicCard) */}
+              <div className="flex items-start gap-3 mb-5">
+                <div className="w-10 h-10 rounded-full bg-dkv-green/5 flex items-center justify-center shrink-0 mt-0.5" aria-hidden="true">
+                    <MapPin className="w-5 h-5 text-dkv-green" />
+                </div>
+                <div className="flex flex-col font-fsme leading-tight">
+                  <span className="text-gray-800 font-bold text-base mb-0.5">{selectedClinicData.address}</span>
+                  <span className="text-gray-600 font-medium text-sm">
+                    {selectedClinicData.zip_code || ""} {selectedClinicData.city}
+                  </span>
+                </div>
+              </div>
+              
+
+
+              {/* 5. FOOTER: TELÉFONO + BOTÓN "PEDIR CITA" */}
+              {selectedClinicData.phone && (
+                <div className="flex items-center justify-between border-t border-gray-100 pt-4 mt-2">
+                  <div className="flex items-center gap-2.5 text-dkv-green-dark font-bold text-[17px]">
+                    <div className="w-8 h-8 rounded-full bg-dkv-green/10 flex items-center justify-center">
+                      <Phone className="w-4 h-4 text-dkv-green" />
+                    </div>
+                    {/* 🟠 MODIFICADO: Aplicamos el formatPhoneNumber aquí */}
+                    <span>{formatPhoneNumber(selectedClinicData.phone)}</span>
+                  </div>
+                  <a 
+                    href={`tel:${selectedClinicData.phone.toString().replace(/\D/g, "")}`} 
+                    className="bg-dkv-green text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-md hover:bg-dkv-green-hover transition-all active:scale-95"
+                  >
+                    Pedir Cita
+                  </a>
+                </div>
+              )}
+
+
             </motion.div>
           )}
         </AnimatePresence>
         {/* ==================================================================== */}
-
 
 
 
