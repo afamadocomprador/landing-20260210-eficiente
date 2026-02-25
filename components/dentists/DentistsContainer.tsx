@@ -12,7 +12,9 @@ import { useRouter } from "next/navigation";
 //import { ChevronUp, ChevronDown, Stethoscope, Loader2, X, Phone } from "lucide-react";
 //import { ChevronUp, ChevronDown, Stethoscope, Loader2, X, Phone, Users, Plus, Minus } from "lucide-react";
 //import { ChevronUp, ChevronDown, Stethoscope, Loader2, X, Phone, Users, Plus, Minus, MapPin } from "lucide-react";
-import { ChevronUp, ChevronDown, Stethoscope, Loader2, X, Phone, Users, Plus, Minus, MapPin, Navigation } from "lucide-react";
+//import { ChevronUp, ChevronDown, Stethoscope, Loader2, X, Phone, Users, Plus, Minus, MapPin, Navigation } from "lucide-react";
+// 🟠 AÑADIMOS 'Share2' a la lista
+import { ChevronUp, ChevronDown, Stethoscope, Loader2, X, Phone, Users, Plus, Minus, MapPin, Navigation, Share2 } from "lucide-react";
 // 🟢 AÑADIDO: Importamos el formateador de teléfonos
 import { formatPhoneNumber } from "@/lib/text-formatter";
 import { useNavigation, NavigationState } from "@/context/NavigationContext";
@@ -376,8 +378,13 @@ return (
               transition={{ type: "spring", stiffness: 300, damping: 25 }}
               className={`absolute left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-[420px] z-40 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 p-5 ${hideListCompletely ? 'bottom-6 md:bottom-8' : 'bottom-[96px]'}`}
             >
+
+
+
+
+
               
-              {/* 1. CABECERA: ETIQUETA DKV, NOMBRE Y BOTÓN CERRAR */}
+{/* 1. CABECERA: ETIQUETA DKV, NOMBRE Y BOTONES (Compartir + Cerrar) */}
               <div className="flex justify-between items-start gap-4 mb-3">
                 <div className="flex flex-col items-start gap-2">
                   
@@ -393,14 +400,48 @@ return (
                   </h4>
                 </div>
                 
-                <button 
-                  onClick={() => setSelectedClinicId(null)} 
-                  className="text-gray-400 hover:text-dkv-gray bg-gray-50 hover:bg-gray-100 rounded-full p-1.5 transition-colors shrink-0 mt-1"
-                >
-                  <X className="w-5 h-5" />
-                </button>
+                {/* 🌟 GRUPO DE BOTONES DE ACCIÓN SUPERIOR */}
+                <div className="flex items-center gap-1.5 shrink-0 mt-1">
+                  
+                  {/* NUEVO BOTÓN NATIVO DE COMPARTIR */}
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      // Si el móvil/navegador soporta compartir nativo...
+                      if (navigator.share) {
+                        navigator.share({
+                          title: `DKV Dentisalud: ${selectedClinicData.name}`,
+                          text: `Mira esta clínica dental: ${selectedClinicData.name} en ${selectedClinicData.city}.`,
+                          url: window.location.href, // Comparte la URL de tu landing
+                        }).catch(console.error);
+                      } else {
+                        // Plan B (para ordenadores viejos): Copiar al portapapeles
+                        navigator.clipboard.writeText(window.location.href);
+                        alert("¡Enlace copiado al portapapeles!");
+                      }
+                    }}
+                    className="text-gray-400 hover:text-dkv-green bg-gray-50 hover:bg-green-50 rounded-full p-1.5 transition-colors"
+                    aria-label="Compartir clínica"
+                  >
+                    <Share2 className="w-5 h-5" />
+                  </button>
+
+                  {/* EL BOTÓN DE CERRAR EXISTENTE */}
+                  <button 
+                    onClick={() => setSelectedClinicId(null)} 
+                    className="text-gray-400 hover:text-dkv-gray bg-gray-50 hover:bg-gray-100 rounded-full p-1.5 transition-colors"
+                    aria-label="Cerrar tarjeta"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
               
+
+
+
+
+
               {/* 2. BOTÓN DE DENTISTAS (Justo debajo del nombre) */}
               {(selectedClinicData.staff_count ?? 0) > 0 && (
                 <div className="mb-4">
@@ -461,51 +502,46 @@ return (
 
 
 
-              {/* 4. DIRECCIÓN Y RUTA (Nivel Dios UX Mobile) */}
+
+
+              {/* 4. DIRECCIÓN Y RUTA (Botón integrado a la izquierda) */}
               <a 
-                // 🌟 UX EXTRA: Usamos la API universal oficial para forzar la apertura de la App nativa en iOS/Android
                 href={`https://www.google.com/maps/dir/?api=1&destination=${selectedClinicData.latitude},${selectedClinicData.longitude}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-between gap-2 mb-5 p-2 -mx-2 rounded-xl hover:bg-gray-50 active:bg-gray-100 transition-all cursor-pointer group"
+                className="flex items-center gap-3 mb-5 p-2 -mx-2 rounded-xl hover:bg-gray-50 active:bg-gray-100 transition-all cursor-pointer group"
                 aria-label={`Cómo llegar a ${selectedClinicData.name}`}
               >
-                {/* Parte Izquierda: Icono y Textos */}
-                <div className="flex items-center gap-3 overflow-hidden">
-                  <div className="w-10 h-10 rounded-full bg-dkv-green/5 flex items-center justify-center shrink-0 group-hover:bg-dkv-green/15 transition-colors" aria-hidden="true">
-                      <MapPin className="w-5 h-5 text-dkv-green" />
-                  </div>
-                  <div className="flex flex-col font-fsme leading-tight overflow-hidden">
-                    {/* El line-clamp-1 evita que una calle hiper-larga empuje al botón fuera de la pantalla en móviles pequeños */}
-                    <span className="text-gray-800 font-bold text-base mb-0.5 group-hover:text-dkv-green transition-colors line-clamp-1">
-                      {selectedClinicData.address}
-                    </span>
-                    <span className="text-gray-600 font-medium text-sm truncate">
-                      {selectedClinicData.zip_code || ""} {selectedClinicData.city}
-                    </span>
-                  </div>
-                </div>
-                
-                {/* Parte Derecha: El Botón de Acción Nativo */}
-                <div className="flex flex-col items-center shrink-0 pl-3 border-l border-gray-100 ml-1">
-                  <div className="w-9 h-9 rounded-full bg-dkv-green text-white flex items-center justify-center shadow-md group-active:scale-90 transition-transform mb-1.5">
-                    {/* Pequeño ajuste de márgenes en el icono para que visualmente parezca centrado */}
-                    <Navigation className="w-4 h-4 ml-[-2px] mt-[2px]" />
+                {/* Icono de Acción (AHORA A LA IZQUIERDA) */}
+                <div className="flex flex-col items-center shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-dkv-green text-white flex items-center justify-center shadow-md group-active:scale-90 transition-transform mb-1">
+                    <Navigation className="w-5 h-5 ml-[-2px] mt-[2px]" />
                   </div>
                   <span className="text-[9px] font-bold text-dkv-green uppercase tracking-wider">Ruta</span>
+                </div>
+
+                {/* Textos de la dirección */}
+                <div className="flex flex-col font-fsme leading-tight overflow-hidden">
+                  <span className="text-gray-800 font-bold text-base mb-0.5 group-hover:text-dkv-green transition-colors line-clamp-1">
+                    {selectedClinicData.address}
+                  </span>
+                  <span className="text-gray-600 font-medium text-sm truncate">
+                    {selectedClinicData.zip_code || ""} {selectedClinicData.city}
+                  </span>
                 </div>
               </a>
 
 
 
+
               {/* 5. FOOTER: TELÉFONO + BOTÓN "PEDIR CITA" */}
+              {/*
               {selectedClinicData.phone && (
                 <div className="flex items-center justify-between border-t border-gray-100 pt-4 mt-2">
                   <div className="flex items-center gap-2.5 text-dkv-green-dark font-bold text-[17px]">
                     <div className="w-8 h-8 rounded-full bg-dkv-green/10 flex items-center justify-center">
                       <Phone className="w-4 h-4 text-dkv-green" />
                     </div>
-                    {/* 🟠 MODIFICADO: Aplicamos el formatPhoneNumber aquí */}
                     <span>{formatPhoneNumber(selectedClinicData.phone)}</span>
                   </div>
                   <a 
@@ -516,6 +552,37 @@ return (
                   </a>
                 </div>
               )}
+              */}
+
+
+
+
+              {/* 5. FOOTER: CALL TO ACTION COMERCIAL (Tu teléfono) */}
+              <div className="border-t border-gray-100 pt-4 mt-2 flex flex-col gap-3">
+                
+                {/* Aviso de exclusividad para justificar la llamada */}
+                <div className="bg-orange-50/80 text-orange-800 text-xs px-3 py-2.5 rounded-lg flex items-start gap-2 border border-orange-100">
+                  <span className="text-orange-500 mt-0.5">ⓘ</span>
+                  <p className="font-medium leading-tight">
+                    Activa <strong className="font-bold">DKV Dentisalud Élite</strong> para pedir cita en este centro con tarifas reducidas.
+                  </p>
+                </div>
+
+                {/* Botón de llamada al agente (AQUÍ PONES TU TELÉFONO) */}
+                <a 
+                  href="tel:+34900000000" // 🔴 CAMBIA ESTO POR TU TELÉFONO REAL
+                  className="w-full flex items-center justify-center gap-2 bg-dkv-green text-white py-3.5 rounded-xl font-bold shadow-md hover:bg-dkv-green-hover transition-all active:scale-95 text-sm"
+                >
+                  <Phone className="w-4 h-4" />
+                  Activar y pedir cita
+                </a>
+              </div>
+
+
+
+
+
+
 
 
             </motion.div>
