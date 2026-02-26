@@ -1,378 +1,464 @@
-// app/(home)/page.tsx
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
+import { notFound } from "next/navigation";
+import { Metadata, Viewport, ResolvingMetadata } from "next";
+import { SITE_CONFIG } from '@/constants/config'; // <--- AÑADIR ESTA LÍNEA
 
-import React from 'react';
-import dynamic from 'next/dynamic'; 
-import Link from 'next/link';   
-import Image from 'next/image'; 
-// Añadimos Viewport
-//import type { Metadata } from 'next';
-import type { Metadata, Viewport } from 'next';
+// Motor de datos
+import { getLevelData } from "@/lib/level-engine";
 
-// --- NUEVOS IMPORTS DE CONFIGURACIÓN ---
-import { SITE_CONFIG } from '@/constants/config';
+// Componentes UI
+import DentistsContainer from "@/components/dentists/DentistsContainer";
+import DentistHero from "@/components/hero/DentistHero";
+import FixedBreadcrumb from "@/components/layout/FixedBreadcrumb";
+import ScrollToMapButton from "@/components/dentists/ScrollToMapButton";
+import RelatedLinks from "@/components/dentists/links/RelatedLinks"; // <--- Componente Nuevo
+import FooterLegal from "@/components/FooterLegal"; // <--- IMPORTACIÓN AÑADIDA
 
-// --- IMPORTACIÓN DE COMPONENTES ---
-// LCP: El hero debe ser cargar estático para que cargue rápido
-import MainHero from '@/components/hero/MainHero'; 
-import PricingCards from '@/components/PricingCards'; 
-import FooterLegal from '@/components/FooterLegal'; 
-import Archetypes from '@/components/Archetypes'; 
-import HeroSearch from '@/components/home/HeroSearch';
-import ScrollReveal from '@/components/ui/ScrollReveal';
+export const dynamic = "force-dynamic";
 
-//const LeadForm = dynamic(() => import('@/components/LeadForm'), {
-//  loading: () => <div className="h-96 bg-gray-100 animate-pulse rounded-xl"></div>, 
-//});
+const baseUrl = SITE_CONFIG.domain;
 
-const CookieBanner = dynamic(() => import('@/components/CookieBanner'), {
-  ssr: false, 
-});
-
-  // 🌟 Usamos tu variable global (cambia el nombre si en tu .env.local se llama distinto)
-  // Si no la encuentra, usa la de Vercel por defecto para que nunca rompa.
-  // const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
-  // Le damos un salvavidas (fallback) para que TypeScript sepa que nunca será 'undefined'
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://landing-20260210-eficiente.vercel.app';
-
-
-
-/* **********************************
-export const metadata: Metadata = {
-  title: 'DKV Dentisalud Élite | Seguro Dental con Precios Pactados',
-  description: 'Contrata tu seguro dental DKV con hasta 40% de descuento. Niños gratis en póliza familiar.',
-  alternates: {
-       canonical: '/',
-  },
-  openGraph: {
-      title: metaTitle,
-      description: metaDesc,
-      url: ciudad ? `/dentistas/${rawSlug}` : '/', // 🔴 Corregido: si no hay ciudad, la canonical es '/'
-      siteName: 'DKV Dentisalud',
-      images: [
-        { 
-          // 🌟 AQUÍ ESTÁ LA MAGIA: Llamamos al nuevo generador
-          url: '/api/og-home', 
-          width: 1200, 
-          height: 630,
-          alt: 'Lo fácil es cuidar tu sonrisa', 
-        }
-      ],
-      type: 'website',
-    },
-};
-
-********************************* */
-
-
-type Props = {
-  params: { slug?: string[] }
-}
-
-export async function generateMetadata(): Promise<Metadata> {
-  // 1. Definimos la URL base aquí dentro de forma segura
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://landing-20260210-eficiente.vercel.app';
-
-  // 2. Textos fijos para la Home (aquí no hay ciudades)
-  const metaTitle = 'DKV Dentisalud Élite | Seguro Dental con Precios Pactados';
-  const metaDesc = 'Contrata tu seguro dental DKV con hasta 40% de descuento. Niños gratis en póliza familiar.';
-
-  return {
-    metadataBase: new URL(baseUrl),
-    title: metaTitle,
-    description: metaDesc,
-    alternates: {
-      canonical: '/',
-    },
-    openGraph: {
-      title: metaTitle,
-      description: metaDesc,
-      url: '/', 
-      siteName: 'DKV Dentisalud',
-      images: [
-        { 
-          // 💥 EL TRUCO MAGISTRAL: Le añadimos ?v=1 a la URL de la imagen. 
-          // Así WhatsApp se cree que es un archivo nuevo que nunca ha visto y lo descarga obligatoriamente.
-          url: '/api/og-home', 
-          width: 1200, 
-          height: 630,
-          alt: 'Lo fácil es cuidar tu sonrisa', 
-        }
-      ],
-      type: 'website',
-    },
-  };
+interface PageProps {
+  params: { slug?: string[] };
+  searchParams?: { [key: string]: string | string[] | undefined }; // Tipado estricto recomendado
 }
 
 
+ // --- 1. HELPER: Obtención de datos centralizada ---
+ // Extraemos esto para usarlo tanto en el SEO (Metadata) como en la UI (Page)
+ async function getPageData(slugArray: string[] | undefined) {
+   const cookieStore = cookies();
+   const supabase = createServerClient(
+     process.env.NEXT_PUBLIC_SUPABASE_URL!,
+     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+     { cookies: { get: (name: string) => cookieStore.get(name)?.value } }
+   );
 
-// --- CONFIGURACIÓN VIEWPORT (Nuevo estándar Next.js 14) ---
-export const viewport: Viewport = {
-   themeColor: [
-     { media: '(prefers-color-scheme: light)', color: '#849700' }, // Verde DKV
-     { media: '(prefers-color-scheme: dark)', color: '#033B37' },  // Verde Oscuro
-   ],
-   width: 'device-width',
-   initialScale: 1,
-};
+   const currentSlug = slugArray && slugArray.length > 0 ? slugArray[0] : "";
+   const level = currentSlug === "" ? "01" : "02"; 
+
+   return await getLevelData(supabase, "sin informar", level, currentSlug);
+ }
 
 
-/**
- * JSON-LD MAESTRO: AUTORIDAD NUCLEAR NACIONAL
- * Este nodo centraliza la identidad legal de Bernardo y su vínculo oficial con DKV.
- */
-const nationalMasterSchema = {
+// --- 2. METADATA DINÁMICA (SEO) ---
+ export async function generateMetadata(
+   { params }: PageProps,
+   parent: ResolvingMetadata
+ ): Promise<Metadata> {
+   try {
+     const navigationData = await getPageData(params.slug);
+     const { seo } = navigationData;
+     // 1. Normalizamos el path para evitar "//" si el slug es undefined o vacío
+     const currentPath = params.slug ? params.slug.join('/') : '';
+     
+     // Aseguramos que no termine en / para consistencia SEO
+     const canonicalUrl = `/dentistas/${currentPath}`.replace(/\/$/, "");
+     const title = seo.title || `Dentistas en ${seo.h1.normal} | DKV Dentisalud Elite`;
+     const description = seo.description || `Cuadro médico DKV en ${seo.h1.normal}.`;
+
+     return {
+       metadataBase: new URL(baseUrl),
+       title: title,
+       description: description,
+       alternates: {
+         canonical: canonicalUrl,
+       },
+       openGraph: {
+         title: title,
+         description: description,
+         url: canonicalUrl,
+         siteName: 'DKV Dentisalud Élite', // Añade el nombre del sitio para OG
+         locale: 'es_ES',
+         type: 'website',
+         images: [
+           {
+             // Genera imagen dinámica: "Dentistas en Zaragoza"
+             url: `/api/og?title=${encodeURIComponent(seo.h1.normal)}&subtitle=Cuadro Médico`,
+             width: 1200,
+             height: 630,
+             alt: `Dentistas DKV en ${seo.h1.normal}`,
+           },
+         ],
+       },
+       robots: {
+         index: true,
+         follow: true,
+       }
+     };
+/* *************************
+   } catch (e) {
+     return {
+       title: 'Buscador de Dentistas | DKV Dentisalud',
+       metadataBase: new URL(baseUrl)
+     };
+   }
+************** */
+
+} catch (e: any) {
+     // 1. Miramos qué ruta exacta estaba intentando leer el robot de WhatsApp
+     const currentPath = params.slug ? params.slug.join('/') : '';
+
+     // 2. CAMINO A: El robot intenta leer "cerca-de-ti" (No tiene cookies, pero le damos la tarjeta correcta)
+     if (currentPath === 'cerca-de-ti' || currentPath === 'cerca-de-mi') {
+       return {
+         metadataBase: new URL(baseUrl),
+         title: '📍 Dentistas DKV Cerca de Ti | ⭐ Valoración Excelente',
+         description: 'Encuentra las clínicas del cuadro médico oficial DKV más cercanas a tu ubicación. Ahorro garantizado.',
+         openGraph: {
+           title: '📍 Dentistas DKV Cerca de Ti | ⭐ Valoración Excelente',
+           description: 'Cuadro médico oficial DKV. Implantes y tratamientos con hasta un 40% de ahorro garantizado. Pide tu cita.',
+           url: `/dentistas/${currentPath}`,
+           siteName: 'DKV Dentisalud Élite',
+           images: [
+             {
+               // 🌟 LLAMAMOS A LA IMAGEN INTELIGENTE DE "CERCA DE TI"
+               url: `/api/og?title=Dentistas%20cerca%20de%20ti&v=3`,
+               width: 1200,
+               height: 630,
+               alt: 'Dentistas cerca de ti',
+             }
+           ],
+           locale: 'es_ES',
+           type: 'website',
+         }
+       };
+     }
+
+     // 3. CAMINO B: Cualquier otro error (Fallo de BD, ciudad no existe, etc.) -> Fallback a la HOME
+     return {
+       metadataBase: new URL(baseUrl),
+       title: 'DKV Dentisalud Élite | Seguro Dental con Precios Pactados',
+       description: 'Contrata tu seguro dental DKV con hasta 40% de descuento. Niños gratis en póliza familiar.',
+       openGraph: {
+         title: 'DKV Dentisalud Élite | Seguro Dental',
+         description: 'Contrata tu seguro dental DKV con hasta 40% de descuento. Niños gratis en póliza familiar.',
+         url: '/', 
+         siteName: 'DKV Dentisalud Élite',
+         images: [
+           {
+             // 🌟 LLAMAMOS A LA IMAGEN DE LA HOME PRINCIPAL (Chica a la izquierda)
+             url: `/api/og-home?v=3`, 
+             width: 1200, 
+             height: 630,
+             alt: 'Lo fácil es cuidar tu sonrisa', 
+           }
+         ],
+         locale: 'es_ES',
+         type: 'website',
+       }
+     };
+   }
+
+
+
+
+
+ }
+
+
+ // --- 3. VIEWPORT (Móvil) ---
+ export const generateViewport = (): Viewport => {
+   return {
+     themeColor: '#849700', // Verde DKV
+     width: 'device-width',
+     initialScale: 1,
+   };
+ };
+
+
+
+
+export default async function DentistasPage({ params }: PageProps) {
+  //const cookieStore = cookies();
+  //const supabase = createServerClient(
+  //  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  //  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  //  { cookies: { get: (name: string) => cookieStore.get(name)?.value } }
+  //);
+  //
+  //const currentSlug = params.slug && params.slug.length > 0 ? params.slug[0] : "";
+  //const level = currentSlug === "" ? "01" : "02"; 
+
+  try {
+    // 1. Obtener datos (Incluye ahora relatedLinks en la respuesta)
+    //const navigationData = await getLevelData(
+    //  supabase,
+    //  "sin informar",
+    //  level,
+    //  currentSlug
+    //);
+
+    // Usamos el helper centralizado
+    const navigationData = await getPageData(params.slug);
+
+
+
+     // --- 4. GENERACIÓN DE JSON-LD DINÁMICO (Nuevo) ---
+     // Esto crea la estructura de datos que Google busca para validar la entidad
+     const locationName = navigationData.seo.h1.normal || "España";
+     
+    // 4.1. BREADCRUMBS OPTIMIZADOS (Soluciona "Elemento sin nombre" y "Thing")
+    const breadcrumbItems = [
+      // --- PASO 1: Inyectamos manualmente la HOME ---
+      // Esto asegura que el primer nivel siempre tenga nombre y evita el error de Google.
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Inicio",
+        "item": {
+          "@type": "WebPage", // <--- Soluciona el tipo "Thing"
+          "@id": baseUrl, // Usa tu dominio final
+          "name": "Inicio"
+        }
+      },
+      // --- PASO 2: Mapeamos los niveles dinámicos ---
+      ...navigationData.seo.breadcrumbs.map((item: any, index: number) => {
+        // Creamos el nombre optimizado: "Dentistas en Zaragoza" en lugar de solo "Zaragoza"
+        const optimizedName = item.label ? `Dentistas en ${item.label}` : "Nivel";
+        
+        return {
+          "@type": "ListItem",
+          "position": index + 2, // Empezamos en 2 porque el 1 es Inicio
+          "name": optimizedName,
+          "item": {
+            "@type": "WebPage", // <--- Soluciona el tipo "Thing"
+            "@id": `${baseUrl}${item.href}`, // Dominio absoluto
+            "name": optimizedName
+          }
+        };
+      })
+    ];
+
+    const breadcrumbJsonLd = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "name": "Ruta de navegación",
+      "description": "Jerarquía de navegación de la página",
+      "numberOfItems": breadcrumbItems.length,
+      "itemListElement": breadcrumbItems
+    };
+
+
+
+
+/* ******** TODO ESTO PASA A level-engine ***********
+
+// 4.2. Entidad Local y Catálogo de Precios (Fusión Estratégica)
+// Reemplaza tu antiguo organizationJsonLd por este:
+const organizationJsonLd = {
   "@context": "https://schema.org",
-  "@graph": [
-    {
-      // --- IDENTIDAD CORE: AGENTE NACIONAL ---
-      "@type": ["InsuranceAgency", "Organization"],
-      "@id": SITE_CONFIG.ids.agent,
-      "name": "Bernardo Sobrecasas - Especialista Nacional DKV Dentisalud",
-      "legalName": "Bernardo Sobrecasas Gallizo",
-      "url": SITE_CONFIG.domain,
-      "telephone": "+34976217463",
-      "priceRange": "124€", // Obligatorio para InsuranceAgency
-      "image": {
-        "@type": "ImageObject",
-        "url": `${SITE_CONFIG.domain}/images/oficina-central-dkv.jpg`
+  "@type": ["InsuranceAgency", "Organization"],
+  "@id": `${baseUrl}${params.slug ? '/dentistas/' + params.slug.join('/') : ''}/#local-agency`,
+  "mainEntityOfPage": `${baseUrl}${params.slug ? '/dentistas/' + params.slug.join('/') : ''}`,
+  
+  // Nombre dinámico: "Clínicas Dentales DKV Zaragoza - Precios Pactados"
+  "name": `Clínicas Dentales DKV ${locationName} - Precios Pactados`,
+  
+  // Cumplimiento Legal (Datos fijos del agente)
+  "legalName": "Bernardo Sobrecasas Gallizo - Agente de Seguros Exclusivo DKV",
+  "identifier": "C016125451380V",
+  
+  "description": `Cuadro médico oficial DKV en ${locationName}. Acceso a la Red Dental Élite con precios máximos garantizados en implantes, ortodoncia e Invisalign para asegurados.`,
+  "url": `${baseUrl}${params.slug ? '/dentistas/' + params.slug.join('/') : ''}`,
+  "telephone": "+34976217463",
+  "priceRange": "124€ (Cuota Anual del Plan)",
+  "logo": `${baseUrl}/images/logo-dkv.png`,
+  "image": `${baseUrl}/api/og?title=${encodeURIComponent(locationName)}&subtitle=Cuadro Médico`,
+
+  // Área Servida Dinámica: Esto le dice a Google que eres la autoridad en esta ciudad/provincia
+  "areaServed": {
+    "@type": "AdministrativeArea",
+    "name": locationName,
+    "containedIn": { "@type": "Country", "name": "ES" }
+  },
+
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Av. César Augusto, 33",
+    "addressLocality": "Zaragoza", // Tu base sigue en Zaragoza
+    "postalCode": "50004",
+    "addressCountry": "ES"
+  },
+
+  "brand": {
+    "@type": "Brand",
+    "name": "DKV Dentisalud",
+    "description": "Seguro dental oficial con baremos franquiciados"
+  },
+
+  // CATÁLOGO DE OFERTAS LOCALES (Lo que roba clics en Google)
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": `Baremos Dentales en ${locationName}`,
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": `Implante Dental en ${locationName}`,
+          "description": `Precio baremado oficial en clínicas de ${locationName}. Incluye cirugía y corona.`,
+          "areaServed": { "@type": "AdministrativeArea", "name": locationName }
+        },
+        "price": "1100.00",
+        "priceCurrency": "EUR"
       },
-      "logo": {
-        "@type": "ImageObject",
-        "url": `${SITE_CONFIG.domain}/images/logo-dkv-dentisalud.png`
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": `Ortodoncia Invisible (Invisalign) en ${locationName}`,
+          "description": "Tratamiento completo con alineadores transparentes y estudio digital incluido.",
+          "areaServed": { "@type": "AdministrativeArea", "name": locationName }
+        },
+        "price": "2950.00",
+        "priceCurrency": "EUR"
       },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Limpieza Dental y Fluoración",
+          "description": "Servicio incluido sin coste adicional para asegurados en la red local.",
+          "areaServed": { "@type": "AdministrativeArea", "name": locationName }
+        },
+        "price": "0.00",
+        "priceCurrency": "EUR"
+      }
+    ]
+  },
 
-      // --- AUTORIDAD DGSFP (CREDENCIAL PROFESIONAL) ---
-      "identifier": {
-        "@type": "PropertyValue",
-        "name": "Registro Oficial de Distribuidores de Seguros (DGSFP)",
-        "propertyID": "DGSFP-MEDIADOR",
-        "value": "C016125451380V",
-        "description": "Inscripción oficial como Agente de Seguros Exclusivo en el Registro de la DGSFP.",
-        "url": "https://rrpp.dgsfp.mineco.es/Mediador"
-      },
-
-      // --- VÍNCULO CORPORATIVO: RED OFICIAL DKV ESPAÑA ---
-      "memberOf": {
-        "@type": "Organization",
-        "@id": "https://dkv.es/#organization",
-        "name": "Red Comercial DKV Seguros España",
-        "parentOrganization": {
-          "@type": "Organization",
-          "name": "DKV Seguros y Reaseguros SAE",
-          "url": "https://dkv.es",
-          "sameAs": [
-            "https://es.wikipedia.org/wiki/DKV_Seguros",
-            "https://www.wikidata.org/wiki/Q1154568"
-          ]
-        }
-      },
-
-      // --- VÍNCULO CON EL PRODUCTO / MARCA ---
-      "brand": {
-        "@type": "Brand",
-        "@id": "https://dkv.es/#brand-dentisalud",
-        "name": "DKV Dentisalud Élite",
-        "alternateName": "Seguro Dental DKV",
-        "logo": "https://dkv.es/sites/default/files/logo-dkv.png"
-      },
-
-      // --- ALCANCE NACIONAL (ÁREA SERVIDA) ---
-      "areaServed": {
-        "@type": "Country",
-        "name": "ES",
-        "containsPlace": "España"
-      },
-
-      // --- SEDE CENTRAL (TRANSPARENCIA) ---
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Av. César Augusto, 33",
-        "addressLocality": "Zaragoza",
-        "postalCode": "50004",
-        "addressCountry": "ES"
-      },
-
-      // --- CONEXIÓN CON LOS CATÁLOGOS DEFINIDOS EN /TRATAMIENTOS ---
-      "hasOfferCatalog": [
-        { "@id": SITE_CONFIG.ids.masterCatalog },
-        { "@id": SITE_CONFIG.ids.packsCatalog }
-      ],
-
-      // --- IPID Y CONDICIONES (COMPLIANCE) ---
-      "publishingPrinciples": [
-        `${SITE_CONFIG.domain}/condiciones-generales.pdf`,
-        `${SITE_CONFIG.domain}/ipid.pdf`
-      ],
-      // LA LLAVE MAESTRA: Decimos que esta agencia es la dueña de esta URL
-      "mainEntityOfPage": { "@id": `${SITE_CONFIG.domain}/#webpage` }
-    },
-
-    // --- NODO WEBSITE: LA FIRMA DE AUTORIDAD DEL DOMINIO ---
-    {
-      "@type": "WebSite",
-      "@id": `${SITE_CONFIG.domain}/#website`,
-      "url": SITE_CONFIG.domain,
-      "name": "DKV Dentisalud Élite Nacional",
-      "publisher": { "@id": SITE_CONFIG.ids.agent }
-    },
-
-    // NODO 3: LA PÁGINA ESPECÍFICA (WebPage)
-    {
-      "@type": "WebPage",
-      "@id": `${SITE_CONFIG.domain}/#webpage`,
-      "url": SITE_CONFIG.domain,
-      "name": "Seguro Dental DKV | Bernardo Sobrecasas",
-      "isPartOf": { "@id": `${SITE_CONFIG.domain}/#website` }
-      // En lugar de "about" (que anida), usamos "mainEntity" para indicar 
-      // que la página REPRESENTA a la agencia.
-      //"mainEntity": { "@id": SITE_CONFIG.ids.agent } 
-    }
+  // Transparencia requerida
+  "publishingPrinciples": [
+    `${baseUrl}/condiciones-generales.pdf`,
+    `${baseUrl}/ipid.pdf`
   ]
 };
 
+*************** HASTA AQUIIII ****** */
 
-export default function LandingPage() {
-  return (
-    <div className="min-h-screen bg-white text-dkv-gray selection:bg-dkv-green selection:text-white">
-      
-      <CookieBanner />
-      
-      <main>
 
-        {/* Script JSON-LD inyectado */}
+    // 4.3. RED DE NAVEGACIÓN SEMÁNTICA CATEGORIZADA
+    const rel = navigationData.relatedLinks || {};
+    
+    // Definimos las categorías que queremos procesar
+    const categories = [
+      { data: rel.madre, role: "ParentHierarchy" },
+      { data: rel.hijas, role: "SubHierarchy" },
+      { data: rel.hermanas, role: "SiblingHierarchy" },
+      { data: rel.cercanas, role: "AdjacentHierarchy" },
+      { data: rel.comarcas, role: "RegionalHierarchy" }
+    ];
+
+    console.log('navigationData.relatedLinks:',navigationData.relatedLinks);
+
+    // Filtramos primero para tener el conteo real de bloques activos
+    const activeCategories = categories.filter(
+      cat => cat.data && cat.data.items && cat.data.items.length > 0
+    );
+
+    // Usamos @graph para definir múltiples intenciones de navegación en un solo bloque
+    const navigationSchema = {
+      "@context": "https://schema.org",
+      "@type": "ItemList", // Lista maestra de bloques
+      "name": `Red de navegación para ${locationName}`,
+      "description": `Enlaces jerárquicos y geográficos para la búsqueda de dentistas en ${locationName}`,
+      "numberOfItems": activeCategories.length, // Conteo total de bloques (Madre, Hijas, etc.)
+      "itemListElement": activeCategories
+        .map((cat: any, blockIndex: number) => ({
+           "@type": "ListItem",
+           "position": blockIndex + 1,
+           "item": {
+              "@type": "ItemList",
+              "name": cat.data?.title || "Relacionados",
+              "numberOfItems": cat.data.items.length, // Conteo de enlaces dentro de este bloque
+              "mainEntityOfPage": {
+                "@type": "SiteNavigationElement",
+                "name": cat.data?.title || "Relacionados",
+                "alternateName": cat.role
+              },
+             "itemListElement": (cat.data?.items || []).map((item: any, index: number) => ({
+                "@type": "ListItem",
+                "position": index + 1,
+                "item": {
+                  "@type": "WebPage",
+                  "@id": `${baseUrl}${item.href}`,
+                  "name": item.label,
+                  "description": `Consulta de cuadro médico dental en ${item.label}`
+                }
+              }))
+            }
+          }))
+    };
+ 
+
+    return (
+      <div className="flex flex-col min-h-screen bg-white font-fsme">
+
+
+{/* 1. Breadcrumbs (La ruta jerárquica lineal) */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(nationalMasterSchema) }} 
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        />
+        
+        {/* 2. Súper-Entidad (Legal + Clínicas + SEO Médico Inyectado desde el Motor) */}
+        {navigationData.seo.schemaData && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(navigationData.seo.schemaData) }}
+          />
+        )}
+
+        {/* 3. Red de Enlaces (La telaraña semántica: Madres, Hermanos e Hijos) */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(navigationSchema) }}
+        />
+ 
+
+        <FixedBreadcrumb items={navigationData.seo.breadcrumbs} />
+
+        <DentistHero 
+          h1={navigationData.seo.h1}
+          totalDentistas={navigationData.seo.totalDentistasHero}
+          totalCentros={navigationData.seo.totalCentrosHero}
         />
 
-
-        <MainHero /> 
-
-        {/* --- SECCIÓN TRATAMIENTOS --- */}
-        <section className="py-20 bg-white border-t border-dkv-gray-border">
-          <div className="container mx-auto px-4 text-center">
-
-           {/* 1. El Título sube primero (delay 0, inmediato) */}
-           <ScrollReveal delay={0}>
-            <h2 className="text-4xl font-lemon text-dkv-green-dark mb-6">
-              Tratamientos.
-            </h2>
-           </ScrollReveal>
-
-           {/* 2. El Párrafo sube un instante después (150ms de retraso) */}
-           <ScrollReveal delay={100}>
-            <p className="text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-10 leading-relaxed text-balance">
-              Numerosos servicios dentales gratuitos y resto a precios muy inferiores a mercado.
-            </p>
-           </ScrollReveal>
-
-           {/* 3. La pastilla del Buscador sube la última, coronando la escena (400ms) */}   
-           <ScrollReveal delay={150}>       
-            <Link 
-              href="/tratamientos"
-              // CAMBIO ACCESIBILIDAD: De text-lg a text-xl para cumplir ratio de contraste
-              className="inline-flex items-center justify-center rounded-dkv font-fsme font-bold duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-dkv-green text-white hover:bg-dkv-green-hover focus:ring-dkv-green shadow-xl hover:scale-105 transition-transform text-xl px-8 py-6 h-auto cursor-pointer"
-            >
-              Ver Tratamientos y Precios
-            </Link>
-
-            <p className="text-sm font-medium text-dkv-green-dark mt-6">
-              Aquí puedes ver los tratamientos y sus precios. <br /> Directamente y sin formularios.
-            </p>
-           </ScrollReveal>
-
-          </div>
-        </section>
-
-
-
-        {/* --- SECCIÓN DENTISTAS --- */}
-        <section 
-          id="dentistas" 
-          className="py-24 bg-white border-t border-dkv-gray-border relative overflow-visible"
-        >
-
-          <div className="container mx-auto px-4 text-center relative z-20">
-
-           {/* 1. El Título sube primero (delay 0, inmediato) */}
-           <ScrollReveal delay={0}>
-
-            <h2 className="text-4xl md:text-5xl font-lemon text-dkv-green-dark mb-6">
-              Dentistas.
-            </h2>
-           </ScrollReveal>
-
-           {/* 2. El Párrafo sube un instante después (100ms de retraso) */}
-           <ScrollReveal delay={100}>
-
-            <p className="text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-10 text-balance leading-relaxed">
-              Tan fácil como elegir tu dentista y pedir cita en consulta. Seguro que tienes uno cerca. 
-            </p>
-           </ScrollReveal>
-
-
-           {/* 3. La pastilla del Buscador sube la última, coronando la escena (200ms) */}   
-           <ScrollReveal delay={200}>       
-
-            {/* AQUÍ INYECTAMOS EL BUSCADOR GIGANTE */}
-            <div className="max-w-4xl mx-auto mb-8">
-              <HeroSearch />
-            </div>
-    
-            <p className="text-sm font-medium text-dkv-green-dark mt-6">
-              Busca centros dentales en toda España. <span className="block mt-1"> Sin registros previos.</span>
-            </p>
-           </ScrollReveal>
-
-
-          </div>
-        </section>
-
-
-
-        {/* --- SECCIÓN COMENTAR --- */}
-        <section 
-          id="información" 
-          className="py-20 bg-white border-t border-dkv-gray-border scroll-mt-28"
-        >
-         <ScrollReveal>
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-4xl font-lemon text-dkv-green-dark mb-6">
-              ¿Algo que comentar?
-            </h2>
-            <p className="text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-10 leading-relaxed text-balance">
-                Plantéanos cualquier duda sobre tus circunstancias y cómo te puedes beneficiar de nuestros tratamientos.
-            </p>
-            
-            <Link 
-              href="/comentarios"
-              className="inline-flex items-center justify-center rounded-dkv font-fsme font-bold duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-dkv-green text-white hover:bg-dkv-green-hover focus:ring-dkv-green disabled:bg-dkv-gray-disabled shadow-xl hover:scale-105 transition-transform gap-3 text-xl px-8 py-6 h-auto"
-            >
-              Plantear Consulta
-            </Link>
-
-           
-            <p className="text-sm font-medium text-dkv-green-dark mt-6">
-              No te quedes con la duda. <br /> Respuesta personal.
-            </p>
-          </div>
-         </ScrollReveal>
-        </section>
-
-
-
-        <Archetypes />
-
-        {/* --- PRICING CARDS --- */}
-        <div id="tratamientos" className="scroll-mt-28">
-          <PricingCards />
+        <div className="pt-10">
+          <ScrollToMapButton />
         </div>
-        
 
+        <section id="mapa-buscador" className="relative flex-1 flex flex-col pt-4">
+          <DentistsContainer initialData={navigationData} />
+        </section>
+
+        {/* 2. NUEVO: Componente de Enlaces Relacionados (datos vienen del engine) */}
+        <RelatedLinks data={navigationData.relatedLinks} />
+
+        {/* --- EL PIE DE PÁGINA AÑADIDO --- */}
         <FooterLegal />
-      </main>
 
-    </div>
-  );
+      </div>
+    );
+
+  //} catch (e) {
+  //  console.error("❌ PAGE ERROR:", e);
+  //  return notFound();
+  //}
+
+  } catch (e: any) {
+
+    // Si entró a "cerca-de-mi" pero no tiene las cookies del GPS, lo mandamos al inicio
+    if (e.message === "NO_COORDS") {
+       const { redirect } = require('next/navigation');
+       redirect('/');
+    }
+    
+    console.error("❌ PAGE ERROR:", e);
+    return notFound();
+  }
+
 }
 
