@@ -28,6 +28,7 @@ const CookieBanner = dynamic(() => import('@/components/CookieBanner'), {
   ssr: false, 
 });
 
+/* **********************************
 export const metadata: Metadata = {
   title: 'DKV Dentisalud Élite | Seguro Dental con Precios Pactados',
   description: 'Contrata tu seguro dental DKV con hasta 40% de descuento. Niños gratis en póliza familiar.',
@@ -49,6 +50,56 @@ export const metadata: Metadata = {
      type: 'website',
    },
 };
+
+********************************* */
+
+
+type Props = {
+  params: { slug?: string[] }
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  // 1. Miramos si en la URL hay una ciudad (ej: /dentistas/zaragoza -> "Zaragoza")
+  const rawSlug = params?.slug?.[0];
+  const ciudad = rawSlug 
+    ? rawSlug.charAt(0).toUpperCase() + rawSlug.slice(1).replace(/-/g, ' ') 
+    : null;
+
+  // 2. Adaptamos los textos. Si hay ciudad, la ponemos. Si no, texto genérico.
+  const metaTitle = ciudad 
+    ? `Dentistas DKV en ${ciudad} | Seguro con Precios Pactados`
+    : 'DKV Dentisalud Élite | Seguro Dental con Precios Pactados';
+    
+  const metaDesc = ciudad
+    ? `Tratamientos dentales en ${ciudad} con hasta 40% de descuento. Niños gratis.`
+    : 'Contrata tu seguro dental DKV con hasta 40% de descuento. Niños gratis en póliza familiar.';
+
+  return {
+    title: metaTitle,
+    description: metaDesc,
+    alternates: {
+      // Actualizamos el canonical para el SEO
+      canonical: ciudad ? `/dentistas/${rawSlug}` : '/dentistas',
+    },
+    openGraph: {
+      title: metaTitle,
+      description: metaDesc,
+      url: 'https://landing-20260210-eficiente.vercel.app', 
+      siteName: 'DKV Dentisalud',
+      images: [
+        { 
+          url: '/images/og-home.jpg', // Se sigue usando tu foto principal
+          width: 1200, 
+          height: 630,
+          alt: 'Cliente sonriendo DKV Dentisalud', 
+        }
+      ],
+      type: 'website',
+    },
+  };
+}
+
+
 
 // --- CONFIGURACIÓN VIEWPORT (Nuevo estándar Next.js 14) ---
 export const viewport: Viewport = {
