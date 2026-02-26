@@ -88,16 +88,19 @@ interface PageProps {
        }
      };
 
+
+/* ********************************
+
    } catch (e) {
      return {
        title: 'Buscador de Dentistas | DKV Dentisalud',
        metadataBase: new URL(baseUrl)
      };
    }
+******************************** */
 
 
 
-/* ********************************
 } catch (e: any) {
      // 1. Miramos qué ruta exacta estaba intentando leer el robot de WhatsApp
      const currentPath = params.slug ? params.slug.join('/') : '';
@@ -153,7 +156,6 @@ interface PageProps {
      };
    }
 
-*********** */
 
  }
 
@@ -459,5 +461,4 @@ const organizationJsonLd = {
     console.error("❌ PAGE ERROR:", e);
     return notFound();
   }
-
 }
