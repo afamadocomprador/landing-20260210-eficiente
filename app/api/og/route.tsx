@@ -9,20 +9,18 @@ export async function GET(request: NextRequest) {
     const url = new URL(request.url);
     const baseUrl = `${url.protocol}//${url.host}`;
 
-    // 1. Recogemos la variable del título (ej: "Dentistas en Zaragoza")
+    // 1. Recogemos la variable del título
     let rawTitle = searchParams.get('title') || 'Dentistas cerca de ti';
     rawTitle = rawTitle.toUpperCase();
 
-    // 2. LÓGICA INTELIGENTE: Separamos "DENTISTAS" del resto para pintarlos en 2 líneas
-    let line1 = 'DENTISTAS';
-    let line2 = 'CERCA DE TI';
-
-    // Si el texto que le pasamos empieza por "DENTISTAS " (ej: DENTISTAS EN ZARAGOZA)
-    if (rawTitle.startsWith('DENTISTAS ')) {
-      line2 = rawTitle.replace('DENTISTAS ', ''); // line2 será "EN ZARAGOZA"
-    } else if (rawTitle !== 'DENTISTAS CERCA DE TI' && rawTitle !== 'DENTISTAS') {
-      // Por si alguna vez le mandas solo la ciudad "ZARAGOZA"
-      line2 = rawTitle; 
+    // 2. LÓGICA INTELIGENTE: Extraemos SOLO el nombre de la ciudad
+    let cityName = 'CERCA DE TI';
+    if (rawTitle.startsWith('DENTISTAS EN ')) {
+      cityName = rawTitle.replace('DENTISTAS EN ', '');
+    } else if (rawTitle.startsWith('DENTISTAS ')) {
+      cityName = rawTitle.replace('DENTISTAS ', '');
+    } else if (rawTitle !== 'DENTISTAS') {
+      cityName = rawTitle; // Por si nos mandan la ciudad suelta
     }
 
     // 3. Misma foto y fuentes
@@ -80,27 +78,35 @@ export async function GET(request: NextRequest) {
                 <div style={{ position: 'absolute', bottom: '-12px', right: '-10px', width: '20px', height: '20px', borderRadius: '50%', border: '4px solid #033B37', backgroundColor: '#ffffff', display: 'flex' }} />
               </div>
 
-              {/* 🌟 TITULAR DINÁMICO GIGANTE A DOS COLORES 🌟 */}
+              {/* 🌟 TITULAR DINÁMICO CONTROLADO 🌟 */}
               <div
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  // He subido el tamaño a 80px porque al ser solo 2 líneas tenemos más espacio
-                  fontSize: 80, 
+                  fontSize: 65, 
                   lineHeight: 1.1,
                   fontFamily: '"LemonMILK"',
                   textTransform: 'uppercase',
+                  maxWidth: '520px', 
                 }}
               >
-                {/* LÍNEA 1: Verde oscuro */}
-                <span style={{ display: 'flex', color: '#033B37' }}>
-                  {line1}
-                </span>
+                {/* LÍNEAS ESTATICAS: Verde oscuro */}
+                <span style={{ display: 'flex', color: '#033B37' }}>ENCUENTRA</span>
+                <span style={{ display: 'flex', color: '#033B37' }}>TU DENTISTA</span>
                 
-                {/* LÍNEA 2: Verde claro pistacho */}
-                <span style={{ display: 'flex', color: '#849700' }}>
-                  {line2}
-                </span>
+                {/* 🌟 LÓGICA AÑADIDA: Oculta "EN" si es "CERCA DE TI" 🌟 */}
+                {cityName !== 'CERCA DE TI' && (
+                  <span style={{ display: 'flex', color: '#033B37' }}>EN</span>
+                )}
+                
+                {/* CIUDAD: Verde claro pistacho */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', color: '#849700', marginTop: '0px' }}>
+                  {cityName.split(' ').map((word, index) => (
+                    <span key={index} style={{ display: 'flex', marginRight: '16px' }}>
+                      {word}
+                    </span>
+                  ))}
+                </div>
               </div>
 
             </div>
