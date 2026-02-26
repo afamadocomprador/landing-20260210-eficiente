@@ -30,7 +30,9 @@ const CookieBanner = dynamic(() => import('@/components/CookieBanner'), {
 
   // 🌟 Usamos tu variable global (cambia el nombre si en tu .env.local se llama distinto)
   // Si no la encuentra, usa la de Vercel por defecto para que nunca rompa.
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  // const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  // Le damos un salvavidas (fallback) para que TypeScript sepa que nunca será 'undefined'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://landing-20260210-eficiente.vercel.app';
 
 
 
