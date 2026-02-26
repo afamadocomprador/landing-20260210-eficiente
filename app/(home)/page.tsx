@@ -68,42 +68,31 @@ type Props = {
   params: { slug?: string[] }
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  // 1. Miramos si en la URL hay una ciudad (ej: /dentistas/zaragoza -> "Zaragoza")
-  const rawSlug = params?.slug?.[0];
-  const ciudad = rawSlug 
-    ? rawSlug.charAt(0).toUpperCase() + rawSlug.slice(1).replace(/-/g, ' ') 
-    : null;
+export async function generateMetadata(): Promise<Metadata> {
+  // 1. Definimos la URL base aquí dentro de forma segura
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://landing-20260210-eficiente.vercel.app';
 
-  // 2. Adaptamos los textos. Si hay ciudad, la ponemos. Si no, texto genérico.
-  const metaTitle = ciudad 
-    ? `Dentistas DKV en ${ciudad} | Seguro con Precios Pactados`
-    : 'DKV Dentisalud Élite | Seguro Dental con Precios Pactados';
-    
-  const metaDesc = ciudad
-    ? `Tratamientos dentales en ${ciudad} con hasta 40% de descuento. Niños gratis.`
-    : 'Contrata tu seguro dental DKV con hasta 40% de descuento. Niños gratis en póliza familiar.';
-
+  // 2. Textos fijos para la Home (aquí no hay ciudades)
+  const metaTitle = 'DKV Dentisalud Élite | Seguro Dental con Precios Pactados';
+  const metaDesc = 'Contrata tu seguro dental DKV con hasta 40% de descuento. Niños gratis en póliza familiar.';
 
   return {
-    // 🌟 AQUÍ APLICAMOS LA VARIABLE GLOBAL
     metadataBase: new URL(baseUrl),
-
     title: metaTitle,
     description: metaDesc,
     alternates: {
-      // Actualizamos el canonical para el SEO
-      canonical: ciudad ? `/dentistas/${rawSlug}` : '/dentistas',
+      canonical: '/',
     },
     openGraph: {
       title: metaTitle,
       description: metaDesc,
-      url: ciudad ? `/dentistas/${rawSlug}` : '/', // 🔴 Corregido: si no hay ciudad, la canonical es '/'
+      url: '/', 
       siteName: 'DKV Dentisalud',
       images: [
         { 
-          // 🌟 AQUÍ ESTÁ LA MAGIA: Llamamos al nuevo generador
-          url: '/api/og-home', 
+          // 💥 EL TRUCO MAGISTRAL: Le añadimos ?v=1 a la URL de la imagen. 
+          // Así WhatsApp se cree que es un archivo nuevo que nunca ha visto y lo descarga obligatoriamente.
+          url: '/api/og-home?v=1', 
           width: 1200, 
           height: 630,
           alt: 'Lo fácil es cuidar tu sonrisa', 
