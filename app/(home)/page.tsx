@@ -92,7 +92,7 @@ export async function generateMetadata(): Promise<Metadata> {
         { 
           // 💥 EL TRUCO MAGISTRAL: Le añadimos ?v=1 a la URL de la imagen. 
           // Así WhatsApp se cree que es un archivo nuevo que nunca ha visto y lo descarga obligatoriamente.
-          url: '/api/og-home?v=1', 
+          url: '/api/og-home', 
           width: 1200, 
           height: 630,
           alt: 'Lo fácil es cuidar tu sonrisa', 
@@ -375,3 +375,4 @@ export default function LandingPage() {
     </div>
   );
 }
+
