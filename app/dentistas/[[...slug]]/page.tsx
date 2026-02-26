@@ -87,12 +87,74 @@ interface PageProps {
          follow: true,
        }
      };
+
    } catch (e) {
      return {
        title: 'Buscador de Dentistas | DKV Dentisalud',
        metadataBase: new URL(baseUrl)
      };
    }
+
+
+
+/* ********************************
+} catch (e: any) {
+     // 1. Miramos qué ruta exacta estaba intentando leer el robot de WhatsApp
+     const currentPath = params.slug ? params.slug.join('/') : '';
+
+     // 2. CAMINO A: El robot intenta leer "cerca-de-ti" (No tiene cookies, pero le damos la tarjeta correcta)
+     if (currentPath === 'cerca-de-ti' || currentPath === 'cerca-de-mi') {
+       return {
+         metadataBase: new URL(baseUrl),
+         title: '📍 Dentistas DKV Cerca de Ti | ⭐ Valoración Excelente',
+         description: 'Encuentra las clínicas del cuadro médico oficial DKV más cercanas a tu ubicación. Ahorro garantizado.',
+         openGraph: {
+           title: '📍 Dentistas DKV Cerca de Ti | ⭐ Valoración Excelente',
+           description: 'Cuadro médico oficial DKV. Implantes y tratamientos con hasta un 40% de ahorro garantizado. Pide tu cita.',
+           url: `/dentistas/${currentPath}`,
+           siteName: 'DKV Dentisalud Élite',
+           images: [
+             {
+               // 🌟 LLAMAMOS A LA IMAGEN INTELIGENTE DE "CERCA DE TI"
+               url: `/api/og?title=Dentistas%20cerca%20de%20ti&v=3`,
+               width: 1200,
+               height: 630,
+               alt: 'Dentistas cerca de ti',
+             }
+           ],
+           locale: 'es_ES',
+           type: 'website',
+         }
+       };
+     }
+
+     // 3. CAMINO B: Cualquier otro error (Fallo de BD, ciudad no existe, etc.) -> Fallback a la HOME
+     return {
+       metadataBase: new URL(baseUrl),
+       title: 'DKV Dentisalud Élite | Seguro Dental con Precios Pactados',
+       description: 'Contrata tu seguro dental DKV con hasta 40% de descuento. Niños gratis en póliza familiar.',
+       openGraph: {
+         title: 'DKV Dentisalud Élite | Seguro Dental',
+         description: 'Contrata tu seguro dental DKV con hasta 40% de descuento. Niños gratis en póliza familiar.',
+         url: '/', 
+         siteName: 'DKV Dentisalud Élite',
+         images: [
+           {
+             // 🌟 LLAMAMOS A LA IMAGEN DE LA HOME PRINCIPAL (Chica a la izquierda)
+             url: `/api/og-home?v=3`, 
+             width: 1200, 
+             height: 630,
+             alt: 'Lo fácil es cuidar tu sonrisa', 
+           }
+         ],
+         locale: 'es_ES',
+         type: 'website',
+       }
+     };
+   }
+
+*********** */
+
  }
 
 
@@ -397,4 +459,5 @@ const organizationJsonLd = {
     console.error("❌ PAGE ERROR:", e);
     return notFound();
   }
+
 }
