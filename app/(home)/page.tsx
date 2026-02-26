@@ -28,6 +28,12 @@ const CookieBanner = dynamic(() => import('@/components/CookieBanner'), {
   ssr: false, 
 });
 
+  // 🌟 Usamos tu variable global (cambia el nombre si en tu .env.local se llama distinto)
+  // Si no la encuentra, usa la de Vercel por defecto para que nunca rompa.
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
+
+
 /* **********************************
 export const metadata: Metadata = {
   title: 'DKV Dentisalud Élite | Seguro Dental con Precios Pactados',
@@ -76,9 +82,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? `Tratamientos dentales en ${ciudad} con hasta 40% de descuento. Niños gratis.`
     : 'Contrata tu seguro dental DKV con hasta 40% de descuento. Niños gratis en póliza familiar.';
 
-  // 🌟 Usamos tu variable global (cambia el nombre si en tu .env.local se llama distinto)
-  // Si no la encuentra, usa la de Vercel por defecto para que nunca rompa.
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
   return {
     // 🌟 AQUÍ APLICAMOS LA VARIABLE GLOBAL
@@ -93,14 +96,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: metaTitle,
       description: metaDesc,
-      url: ciudad ? `/dentistas/${rawSlug}` : '/dentistas',
+      url: ciudad ? `/dentistas/${rawSlug}` : '/', // 🔴 Corregido: si no hay ciudad, la canonical es '/'
       siteName: 'DKV Dentisalud',
       images: [
         { 
-          url: '/images/og-home.jpg', // Se sigue usando tu foto principal
+          // 🌟 AQUÍ ESTÁ LA MAGIA: Llamamos al nuevo generador
+          url: '/api/og-home', 
           width: 1200, 
           height: 630,
-          alt: 'Cliente sonriendo DKV Dentisalud', 
+          alt: 'Lo fácil es cuidar tu sonrisa', 
         }
       ],
       type: 'website',
