@@ -453,12 +453,32 @@ const organizationJsonLd = {
   } catch (e: any) {
 
     // Si entró a "cerca-de-mi" pero no tiene las cookies del GPS, lo mandamos al inicio
+    /* *******
     if (e.message === "NO_COORDS") {
        const { redirect } = require('next/navigation');
        redirect('/');
     }
+    *********** */
+    // Si entró a "cerca-de-mi" pero no tiene las cookies del GPS
+    if (e.message === "NO_COORDS") {
+       // 🌟 MAGIA ANTI-WHATSAPP: Redirección por JavaScript
+       // El robot de WhatsApp (que no lee JS) se quedará aquí y leerá el SEO correctamente.
+       // Los usuarios reales serán expulsados a la Home instantáneamente.
+       return (
+         <div className="min-h-screen flex items-center justify-center bg-white">
+           <p className="text-dkv-gray font-fsme">Comprobando ubicación...</p>
+           {/* Este script ejecuta la redirección en el navegador del usuario */}
+           <script dangerouslySetInnerHTML={{ __html: `window.location.replace("/");` }} />
+         </div>
+       );
+    }
+
+
+
     
     console.error("❌ PAGE ERROR:", e);
     return notFound();
   }
+
+
 }
