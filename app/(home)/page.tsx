@@ -36,19 +36,21 @@ export const metadata: Metadata = {
        canonical: '/',
   },
   openGraph: {
-     title: 'DKV Dentisalud Élite | Precios Pactados con dentistas en toda España',
-     description: 'Tratamientos dentales con hasta 40% de descuento.',
-     url: 'https://landing-20260210-eficiente.vercel.app', // Asegúrate de que coincida con tu dominio real
-     siteName: 'DKV Dentisalud',
-     images: [
-       { url: '/images/og-home.jpg', 
-         width: 1200, 
-         height: 630,
-         alt: 'Cliente sonriendo DKV Dentisalud', 
-       }
-     ],
-     type: 'website',
-   },
+      title: metaTitle,
+      description: metaDesc,
+      url: ciudad ? `/dentistas/${rawSlug}` : '/', // 🔴 Corregido: si no hay ciudad, la canonical es '/'
+      siteName: 'DKV Dentisalud',
+      images: [
+        { 
+          // 🌟 AQUÍ ESTÁ LA MAGIA: Llamamos al nuevo generador
+          url: '/api/og-home', 
+          width: 1200, 
+          height: 630,
+          alt: 'Lo fácil es cuidar tu sonrisa', 
+        }
+      ],
+      type: 'website',
+    },
 };
 
 ********************************* */
@@ -74,7 +76,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? `Tratamientos dentales en ${ciudad} con hasta 40% de descuento. Niños gratis.`
     : 'Contrata tu seguro dental DKV con hasta 40% de descuento. Niños gratis en póliza familiar.';
 
+  // 🌟 Usamos tu variable global (cambia el nombre si en tu .env.local se llama distinto)
+  // Si no la encuentra, usa la de Vercel por defecto para que nunca rompa.
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
   return {
+    // 🌟 AQUÍ APLICAMOS LA VARIABLE GLOBAL
+    metadataBase: new URL(baseUrl),
+
     title: metaTitle,
     description: metaDesc,
     alternates: {
@@ -84,7 +93,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: metaTitle,
       description: metaDesc,
-      url: 'https://landing-20260210-eficiente.vercel.app', 
+      url: ciudad ? `/dentistas/${rawSlug}` : '/dentistas',
       siteName: 'DKV Dentisalud',
       images: [
         { 
