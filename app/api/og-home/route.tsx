@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
 
     // 🔴 IMPORTANTE: Necesitas tener la foto de la chica guardada en tu carpeta public
     // Por ejemplo en: public/images/chica-sonrisa.jpg
-    const imageUrl = `${baseUrl}/images/chica-sonrisa.jpg`; // Cambia el nombre si es otro
+    const imageUrl = `${baseUrl}/images/hero-dkv.webp`; // Cambia el nombre si es otro
 
     return new ImageResponse(
       (
