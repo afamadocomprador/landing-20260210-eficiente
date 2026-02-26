@@ -407,12 +407,17 @@ return (
                   <button 
                     onClick={(e) => {
                       e.stopPropagation();
+
+                      // 🌟 TEXTO ENRIQUECIDO TIPO AIRBNB
+                      const shareText = `📍 ${selectedClinicData.name}\n🏥 ${selectedClinicData.address}, ${selectedClinicData.city}\n\nℹ️ Pide cita en este centro con tarifas reducidas activando DKV Dentisalud Élite.\n\n👇 Mira la ubicación en el mapa:`;
+
+
                       // Si el móvil/navegador soporta compartir nativo...
                       if (navigator.share) {
                         navigator.share({
-                          title: `DKV Dentisalud: ${selectedClinicData.name}`,
-                          text: `Mira esta clínica dental: ${selectedClinicData.name} en ${selectedClinicData.city}.`,
-                          url: window.location.href, // Comparte la URL de tu landing
+                          title: `Clínica Dental: ${selectedClinicData.name}`,
+                          text: shareText,
+                          url: window.location.href,
                         }).catch(console.error);
                       } else {
                         // Plan B (para ordenadores viejos): Copiar al portapapeles
