@@ -99,26 +99,28 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
 
 
   // ====================================================================
-  // 🌟 AÑADIDO: EL LIMPIADOR DE URL (Borrador de 'share-')
+  // 🌟 EL SINCRONIZADOR DE URL EN TIEMPO REAL
   // ====================================================================
   useEffect(() => {
-    // Si la ficha flotante se ha cerrado (selectedClinicId es null)
-    if (!selectedClinicId) {
-      const currentPath = window.location.pathname;
-      
-      // Comprobamos si la URL tiene el rastro del "share-"
+    const currentPath = window.location.pathname;
+    
+    if (selectedClinicId) {
+      // 1. Si ABRIMOS una ficha, le añadimos el /share- al final a la barra del navegador
+      if (!currentPath.includes(`/share-${selectedClinicId}`)) {
+        // Limpiamos cualquier share previo por si ha saltado de un pin a otro
+        const cleanPath = currentPath.split('/share-')[0].replace(/\/$/, "");
+        const newUrl = `${cleanPath}/share-${selectedClinicId}`;
+        window.history.replaceState(null, '', newUrl); // Cambia la URL sin recargar
+      }
+    } else {
+      // 2. Si CERRAMOS la ficha, limpiamos el rastro de la barra del navegador
       if (currentPath.includes('/share-')) {
-        // Cortamos la URL justo antes del "/share-"
-        const cleanPath = currentPath.split('/share-')[0];
-        
-        // 🌟 CORRECCIÓN: Usamos el router de Next.js para que actualice el estado real y el SEO oculto
-        router.replace(cleanPath, { scroll: false });
-
+        const cleanPath = currentPath.split('/share-')[0].replace(/\/$/, "");
+        window.history.replaceState(null, '', cleanPath);
       }
     }
   }, [selectedClinicId]);
   // ====================================================================
-
 
 
 
@@ -259,7 +261,8 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
                     onClick={(e) => {
                       e.stopPropagation();
 
-                      const shareUrl = `${window.location.origin}/dentistas/cerca-de-mi/share-${selectedClinicData.clinic_id}`;
+                      //const shareUrl = `${window.location.origin}/dentistas/cerca-de-mi/share-${selectedClinicData.clinic_id}`;
+                      const shareUrl = window.location.href;
 
                       // Si el móvil/navegador soporta compartir nativo...
                       if (navigator.share) {
