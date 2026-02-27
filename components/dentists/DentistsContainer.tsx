@@ -98,34 +98,43 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
 
 
 
-  // ====================================================================
-  // 🌟 EL SINCRONIZADOR DE URL EN TIEMPO REAL (Corregido para Next.js 14)
+// ====================================================================
+  // 🌟 EL SINCRONIZADOR DE URL EN TIEMPO REAL (Con limpieza SEO para móviles)
   // ====================================================================
   useEffect(() => {
     const currentPath = window.location.pathname;
-    
+    const origin = window.location.origin;
+
+    // Función auxiliar para engañar al botón de compartir nativo del móvil
+    const updateMobileShareTags = (newPath: string) => {
+      const fullUrl = `${origin}${newPath}`;
+      const canonical = document.querySelector('link[rel="canonical"]');
+      if (canonical) canonical.setAttribute('href', fullUrl);
+
+      const ogUrl = document.querySelector('meta[property="og:url"]');
+      if (ogUrl) ogUrl.setAttribute('content', fullUrl);
+    };
+
     if (selectedClinicId) {
-      // 1. Si ABRIMOS una ficha, le añadimos el /share- al final a la barra del navegador
+      // 1. Si ABRIMOS una ficha
       if (!currentPath.includes(`/share-${selectedClinicId}`)) {
-        // Limpiamos cualquier share previo por si ha saltado de un pin a otro
         const cleanPath = currentPath.split('/share-')[0].replace(/\/$/, "");
-        const newUrl = `${cleanPath}/share-${selectedClinicId}`;
+        const newPath = `${cleanPath}/share-${selectedClinicId}`;
         
-        // 🌟 CORRECCIÓN: Usamos window.history.state en lugar de null para no borrarle la memoria a Next.js
-        window.history.replaceState(window.history.state, '', newUrl); 
+        window.history.replaceState(window.history.state, '', newPath); 
+        updateMobileShareTags(newPath); // Actualizamos etiquetas ocultas
       }
     } else {
-      // 2. Si CERRAMOS la ficha, limpiamos el rastro de la barra del navegador
+      // 2. Si CERRAMOS la ficha
       if (currentPath.includes('/share-')) {
         const cleanPath = currentPath.split('/share-')[0].replace(/\/$/, "");
         
-        // 🌟 CORRECCIÓN: Usamos window.history.state en lugar de null
         window.history.replaceState(window.history.state, '', cleanPath);
+        updateMobileShareTags(cleanPath); // Limpiamos etiquetas ocultas
       }
     }
   }, [selectedClinicId]);
   // ====================================================================
-
 
 
 
