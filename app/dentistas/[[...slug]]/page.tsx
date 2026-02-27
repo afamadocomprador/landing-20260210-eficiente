@@ -159,14 +159,19 @@ interface PageProps {
 
            const { data: clinicData } = await supabase
              .from('view_clinics') 
-             .select('name, staff_count, city')
+             // 🌟 AÑADIDO: Traemos también la 'address' de la base de datos
+             .select('name, staff_count, city, address, zip_code')
              .eq('clinic_id', clinicId) 
              .single();
 
            if (clinicData) {
-             const clinicTitle = `📍 ${clinicData.name} | ⭐ Valoración Excelente`;
-             const especialistsText = clinicData.staff_count ? ` con ${clinicData.staff_count} especialistas disponibles.` : '.';
-             const clinicDesc = `Clínica oficial DKV Dentisalud en ${clinicData.city || 'tu zona'}${especialistsText} Ahorro garantizado.`;
+
+             // 🌟 1. EL TEXTO EN NEGRITA DE WHATSAPP (Sintaxis corregida)
+             // Le pongo un pequeño "📍" y unas comas para que quede bonito, y un condicional por si no hay zip_code.
+             const clinicTitle = `📍 ${clinicData.address || ''}, ${clinicData.city || ''} (${clinicData.zip_code || ''})`;
+             
+             // 🌟 2. EL TEXTO GRIS (Sintaxis corregida, sin el '} final)
+             const clinicDesc = `Consulta ubicación, consulta dentistas y pide cita en este centro dental de la red DKV DENTISALUD ÉLITE.`;
 
              // 🌟 EL TRUCO: Le mandamos el texto literal al generador de imágenes
              const ogTitleToRender = `TU CENTRO DENTAL ${clinicData.name}`;
