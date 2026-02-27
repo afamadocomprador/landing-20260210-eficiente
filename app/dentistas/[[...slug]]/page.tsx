@@ -137,61 +137,65 @@ interface PageProps {
      const currentPath = params?.slug ? params.slug.join('/') : '';
      
      // =======================================================================
-     // 🌟 CAMINO ESTRELLA: Si están compartiendo UNA CLÍNICA EXACTA
+     // 🌟 CAMINO ESTRELLA: Si comparten una clínica con prefijo "share-"
      // =======================================================================
      if ((currentPath.includes('cerca-de-ti') || currentPath.includes('cerca-de-mi')) && params?.slug && params.slug.length > 1) {
        
-       const clinicId = params.slug[1]; // El ID o nombre de la clínica
+       const pathSegment = params.slug[1]; 
 
-       try {
-         // Conectamos RÁPIDAMENTE a Supabase para sacar el nombre real
-         const { createServerClient } = require('@supabase/ssr');
-         const { cookies } = require('next/headers');
-         const cookieStore = cookies();
-         const supabase = createServerClient(
-           process.env.NEXT_PUBLIC_SUPABASE_URL!,
-           process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-           { cookies: { get: (name: string) => cookieStore.get(name)?.value } }
-         );
+       // Comprobamos la "contraseña" visual
+       if (pathSegment.startsWith('share-')) {
+         const clinicId = pathSegment.replace('share-', ''); 
 
-         // Buscamos el centro por su ID (He usado tu view_clinics)
-         const { data: clinicData } = await supabase
-           .from('view_clinics') 
-           .select('name, staff_count, city')
-           .eq('clinic_id', clinicId) 
-           .single();
+         try {
+           const { createServerClient } = require('@supabase/ssr');
+           const { cookies } = require('next/headers');
+           const cookieStore = cookies();
+           const supabase = createServerClient(
+             process.env.NEXT_PUBLIC_SUPABASE_URL!,
+             process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+             { cookies: { get: (name: string) => cookieStore.get(name)?.value } }
+           );
 
-         if (clinicData) {
-           const clinicTitle = `📍 ${clinicData.name} | ⭐ Valoración Excelente`;
-           const especialistsText = clinicData.staff_count ? ` con ${clinicData.staff_count} especialistas disponibles.` : '.';
-           const clinicDesc = `Clínica oficial DKV Dentisalud en ${clinicData.city || 'tu zona'}${especialistsText} Ahorro garantizado.`;
+           const { data: clinicData } = await supabase
+             .from('view_clinics') 
+             .select('name, staff_count, city')
+             .eq('clinic_id', clinicId) 
+             .single();
 
-           return {
-             metadataBase: new URL(baseUrl),
-             title: clinicTitle,
-             description: clinicDesc,
-             openGraph: {
+           if (clinicData) {
+             const clinicTitle = `📍 ${clinicData.name} | ⭐ Valoración Excelente`;
+             const especialistsText = clinicData.staff_count ? ` con ${clinicData.staff_count} especialistas disponibles.` : '.';
+             const clinicDesc = `Clínica oficial DKV Dentisalud en ${clinicData.city || 'tu zona'}${especialistsText} Ahorro garantizado.`;
+
+             // 🌟 EL TRUCO: Le mandamos el texto literal al generador de imágenes
+             const ogTitleToRender = `TU CENTRO DENTAL ${clinicData.name}`;
+
+             return {
+               metadataBase: new URL(baseUrl),
                title: clinicTitle,
                description: clinicDesc,
-               url: `/dentistas/${currentPath}`,
-               siteName: 'DKV Dentisalud Élite',
-               images: [
-                 {
-                   // 🌟 CREAMOS LA IMAGEN CON EL NOMBRE DE LA CLÍNICA
-                   url: `/api/og?title=${encodeURIComponent(clinicData.name)}&v=1`,
-                   width: 1200,
-                   height: 630,
-                   alt: clinicData.name,
-                 }
-               ],
-               locale: 'es_ES',
-               type: 'website',
-             }
-           };
+               openGraph: {
+                 title: clinicTitle,
+                 description: clinicDesc,
+                 url: `/dentistas/${currentPath}`,
+                 siteName: 'DKV Dentisalud Élite',
+                 images: [
+                   {
+                     url: `/api/og?title=${encodeURIComponent(ogTitleToRender)}&v=1`,
+                     width: 1200,
+                     height: 630,
+                     alt: clinicData.name,
+                   }
+                 ],
+                 locale: 'es_ES',
+                 type: 'website',
+               }
+             };
+           }
+         } catch (dbError) {
+           console.error("No se pudo cargar info", dbError);
          }
-       } catch (dbError) {
-         console.error("No se pudo cargar info de la clínica para OG", dbError);
-         // Si falla la base de datos, seguimos hacia abajo (Fallback genérico)
        }
      }
 
