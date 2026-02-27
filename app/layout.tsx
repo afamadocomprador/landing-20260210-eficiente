@@ -30,9 +30,9 @@ export const metadata: Metadata = {
 
   icons: {
     // Apuntamos a la carpeta 'images' (omitiendo la palabra 'public')
-    icon: '/images/icon.png',           // Refuerzo en alta calidad para navegadores modernos
-    shortcut: '/images/icon.png',       // Por si guardan tu web en marcadores
-    apple: '/images/apple-icon.png',    // 🌟 EL DIBUJITO PARA WHATSAPP / TELEGRAM / IOS
+    icon: '/icon.png',           // Refuerzo en alta calidad para navegadores modernos
+    shortcut: '/icon.png',       // Por si guardan tu web en marcadores
+    apple: '/apple-icon.png',    // 🌟 EL DIBUJITO PARA WHATSAPP / TELEGRAM / IOS
   },
 };
 
