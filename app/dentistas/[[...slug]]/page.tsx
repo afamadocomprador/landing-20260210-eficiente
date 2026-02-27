@@ -2,7 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { Metadata, Viewport, ResolvingMetadata } from "next";
-import { SITE_CONFIG } from '@/constants/config'; // <--- AÑADIR ESTA LÍNEA
+import { SITE_CONFIG } from '@/constants/config'; 
 
 // Motor de datos
 import { getLevelData } from "@/lib/level-engine";
@@ -12,8 +12,8 @@ import DentistsContainer from "@/components/dentists/DentistsContainer";
 import DentistHero from "@/components/hero/DentistHero";
 import FixedBreadcrumb from "@/components/layout/FixedBreadcrumb";
 import ScrollToMapButton from "@/components/dentists/ScrollToMapButton";
-import RelatedLinks from "@/components/dentists/links/RelatedLinks"; // <--- Componente Nuevo
-import FooterLegal from "@/components/FooterLegal"; // <--- IMPORTACIÓN AÑADIDA
+import RelatedLinks from "@/components/dentists/links/RelatedLinks"; 
+import FooterLegal from "@/components/FooterLegal"; 
 
 export const dynamic = "force-dynamic";
 
@@ -21,13 +21,12 @@ const baseUrl = SITE_CONFIG.domain;
 
 interface PageProps {
   params: { slug?: string[] };
-  searchParams?: { [key: string]: string | string[] | undefined }; // Tipado estricto recomendado
+  searchParams?: { [key: string]: string | string[] | undefined }; 
 }
-
 
  // --- 1. HELPER: Obtención de datos centralizada ---
  // Extraemos esto para usarlo tanto en el SEO (Metadata) como en la UI (Page)
- async function getPageData(slugArray: string[] | undefined) {
+ async function getPageData(slugArray: string[] | undefined, sharedClinicId: string | null = null) {
    const cookieStore = cookies();
    const supabase = createServerClient(
      process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -38,58 +37,8 @@ interface PageProps {
    const currentSlug = slugArray && slugArray.length > 0 ? slugArray[0] : "";
    const level = currentSlug === "" ? "01" : "02"; 
 
-   return await getLevelData(supabase, "sin informar", level, currentSlug);
+   return await getLevelData(supabase, "sin informar", level, currentSlug, sharedClinicId);
  }
-
-
-// --- 2. METADATA DINÁMICA (SEO) ---
-
-/*  *******************************
- export async function generateMetadata(
-   { params }: PageProps,
-   parent: ResolvingMetadata
- ): Promise<Metadata> {
-   try {
-     const navigationData = await getPageData(params.slug);
-     const { seo } = navigationData;
-     // 1. Normalizamos el path para evitar "//" si el slug es undefined o vacío
-     const currentPath = params.slug ? params.slug.join('/') : '';
-     
-     // Aseguramos que no termine en / para consistencia SEO
-     const canonicalUrl = `/dentistas/${currentPath}`.replace(/\/$/, "");
-     const title = seo.title || `Dentistas en ${seo.h1.normal} | DKV Dentisalud Elite`;
-     const description = seo.description || `Cuadro médico DKV en ${seo.h1.normal}.`;
-
-     return {
-       metadataBase: new URL(baseUrl),
-       title: title,
-       description: description,
-       alternates: {
-         canonical: canonicalUrl,
-       },
-       openGraph: {
-         title: title,
-         description: description,
-         url: canonicalUrl,
-         siteName: 'DKV Dentisalud Élite', // Añade el nombre del sitio para OG
-         locale: 'es_ES',
-         type: 'website',
-         images: [
-           {
-             // Genera imagen dinámica: "Dentistas en Zaragoza"
-             url: `/api/og?title=${encodeURIComponent(seo.h1.normal)}&subtitle=Cuadro Médico`,
-             width: 1200,
-             height: 630,
-             alt: `Dentistas DKV en ${seo.h1.normal}`,
-           },
-         ],
-       },
-       robots: {
-         index: true,
-         follow: true,
-       }
-     };
-***************************** */
 
 // --- 2. METADATA DINÁMICA (SEO) ---
  export async function generateMetadata(
@@ -249,73 +198,53 @@ interface PageProps {
      };
    }
  }
+
  // --- 3. VIEWPORT (Móvil) ---
  export const generateViewport = (): Viewport => {
    return {
-     themeColor: '#849700', // Verde DKV
+     themeColor: '#849700', 
      width: 'device-width',
      initialScale: 1,
    };
  };
 
-
-
-
 export default async function DentistasPage({ params }: PageProps) {
-  //const cookieStore = cookies();
-  //const supabase = createServerClient(
-  //  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  //  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  //  { cookies: { get: (name: string) => cookieStore.get(name)?.value } }
-  //);
-  //
-  //const currentSlug = params.slug && params.slug.length > 0 ? params.slug[0] : "";
-  //const level = currentSlug === "" ? "01" : "02"; 
+  let cleanSlug = params?.slug ? [...params.slug] : [];
+  let sharedClinicId = null;
+
+  // Si la URL trae un share, lo guardamos y limpiamos el slug virtualmente
+  if (cleanSlug.length > 0 && cleanSlug[cleanSlug.length - 1].startsWith('share-')) {
+    sharedClinicId = cleanSlug[cleanSlug.length - 1].replace('share-', '');
+    cleanSlug = cleanSlug.slice(0, -1);
+  }
 
   try {
-    // 1. Obtener datos (Incluye ahora relatedLinks en la respuesta)
-    //const navigationData = await getLevelData(
-    //  supabase,
-    //  "sin informar",
-    //  level,
-    //  currentSlug
-    //);
+    // Pasamos el slug limpio y el ID de la clínica compartida (si existe)
+    const navigationData = await getPageData(cleanSlug, sharedClinicId);
 
-    // Usamos el helper centralizado
-    const navigationData = await getPageData(params.slug);
-
-
-
-     // --- 4. GENERACIÓN DE JSON-LD DINÁMICO (Nuevo) ---
-     // Esto crea la estructura de datos que Google busca para validar la entidad
+     // --- 4. GENERACIÓN DE JSON-LD DINÁMICO ---
      const locationName = navigationData.seo.h1.normal || "España";
      
-    // 4.1. BREADCRUMBS OPTIMIZADOS (Soluciona "Elemento sin nombre" y "Thing")
     const breadcrumbItems = [
-      // --- PASO 1: Inyectamos manualmente la HOME ---
-      // Esto asegura que el primer nivel siempre tenga nombre y evita el error de Google.
       {
         "@type": "ListItem",
         "position": 1,
         "name": "Inicio",
         "item": {
-          "@type": "WebPage", // <--- Soluciona el tipo "Thing"
-          "@id": baseUrl, // Usa tu dominio final
+          "@type": "WebPage", 
+          "@id": baseUrl, 
           "name": "Inicio"
         }
       },
-      // --- PASO 2: Mapeamos los niveles dinámicos ---
       ...navigationData.seo.breadcrumbs.map((item: any, index: number) => {
-        // Creamos el nombre optimizado: "Dentistas en Zaragoza" en lugar de solo "Zaragoza"
         const optimizedName = item.label ? `Dentistas en ${item.label}` : "Nivel";
-        
         return {
           "@type": "ListItem",
-          "position": index + 2, // Empezamos en 2 porque el 1 es Inicio
+          "position": index + 2, 
           "name": optimizedName,
           "item": {
-            "@type": "WebPage", // <--- Soluciona el tipo "Thing"
-            "@id": `${baseUrl}${item.href}`, // Dominio absoluto
+            "@type": "WebPage", 
+            "@id": `${baseUrl}${item.href}`, 
             "name": optimizedName
           }
         };
@@ -331,109 +260,7 @@ export default async function DentistasPage({ params }: PageProps) {
       "itemListElement": breadcrumbItems
     };
 
-
-
-
-/* ******** TODO ESTO PASA A level-engine ***********
-
-// 4.2. Entidad Local y Catálogo de Precios (Fusión Estratégica)
-// Reemplaza tu antiguo organizationJsonLd por este:
-const organizationJsonLd = {
-  "@context": "https://schema.org",
-  "@type": ["InsuranceAgency", "Organization"],
-  "@id": `${baseUrl}${params.slug ? '/dentistas/' + params.slug.join('/') : ''}/#local-agency`,
-  "mainEntityOfPage": `${baseUrl}${params.slug ? '/dentistas/' + params.slug.join('/') : ''}`,
-  
-  // Nombre dinámico: "Clínicas Dentales DKV Zaragoza - Precios Pactados"
-  "name": `Clínicas Dentales DKV ${locationName} - Precios Pactados`,
-  
-  // Cumplimiento Legal (Datos fijos del agente)
-  "legalName": "Bernardo Sobrecasas Gallizo - Agente de Seguros Exclusivo DKV",
-  "identifier": "C016125451380V",
-  
-  "description": `Cuadro médico oficial DKV en ${locationName}. Acceso a la Red Dental Élite con precios máximos garantizados en implantes, ortodoncia e Invisalign para asegurados.`,
-  "url": `${baseUrl}${params.slug ? '/dentistas/' + params.slug.join('/') : ''}`,
-  "telephone": "+34976217463",
-  "priceRange": "124€ (Cuota Anual del Plan)",
-  "logo": `${baseUrl}/images/logo-dkv.png`,
-  "image": `${baseUrl}/api/og?title=${encodeURIComponent(locationName)}&subtitle=Cuadro Médico`,
-
-  // Área Servida Dinámica: Esto le dice a Google que eres la autoridad en esta ciudad/provincia
-  "areaServed": {
-    "@type": "AdministrativeArea",
-    "name": locationName,
-    "containedIn": { "@type": "Country", "name": "ES" }
-  },
-
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Av. César Augusto, 33",
-    "addressLocality": "Zaragoza", // Tu base sigue en Zaragoza
-    "postalCode": "50004",
-    "addressCountry": "ES"
-  },
-
-  "brand": {
-    "@type": "Brand",
-    "name": "DKV Dentisalud",
-    "description": "Seguro dental oficial con baremos franquiciados"
-  },
-
-  // CATÁLOGO DE OFERTAS LOCALES (Lo que roba clics en Google)
-  "hasOfferCatalog": {
-    "@type": "OfferCatalog",
-    "name": `Baremos Dentales en ${locationName}`,
-    "itemListElement": [
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": `Implante Dental en ${locationName}`,
-          "description": `Precio baremado oficial en clínicas de ${locationName}. Incluye cirugía y corona.`,
-          "areaServed": { "@type": "AdministrativeArea", "name": locationName }
-        },
-        "price": "1100.00",
-        "priceCurrency": "EUR"
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": `Ortodoncia Invisible (Invisalign) en ${locationName}`,
-          "description": "Tratamiento completo con alineadores transparentes y estudio digital incluido.",
-          "areaServed": { "@type": "AdministrativeArea", "name": locationName }
-        },
-        "price": "2950.00",
-        "priceCurrency": "EUR"
-      },
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Limpieza Dental y Fluoración",
-          "description": "Servicio incluido sin coste adicional para asegurados en la red local.",
-          "areaServed": { "@type": "AdministrativeArea", "name": locationName }
-        },
-        "price": "0.00",
-        "priceCurrency": "EUR"
-      }
-    ]
-  },
-
-  // Transparencia requerida
-  "publishingPrinciples": [
-    `${baseUrl}/condiciones-generales.pdf`,
-    `${baseUrl}/ipid.pdf`
-  ]
-};
-
-*************** HASTA AQUIIII ****** */
-
-
-    // 4.3. RED DE NAVEGACIÓN SEMÁNTICA CATEGORIZADA
     const rel = navigationData.relatedLinks || {};
-    
-    // Definimos las categorías que queremos procesar
     const categories = [
       { data: rel.madre, role: "ParentHierarchy" },
       { data: rel.hijas, role: "SubHierarchy" },
@@ -442,20 +269,16 @@ const organizationJsonLd = {
       { data: rel.comarcas, role: "RegionalHierarchy" }
     ];
 
-    console.log('navigationData.relatedLinks:',navigationData.relatedLinks);
-
-    // Filtramos primero para tener el conteo real de bloques activos
     const activeCategories = categories.filter(
       cat => cat.data && cat.data.items && cat.data.items.length > 0
     );
 
-    // Usamos @graph para definir múltiples intenciones de navegación en un solo bloque
     const navigationSchema = {
       "@context": "https://schema.org",
-      "@type": "ItemList", // Lista maestra de bloques
+      "@type": "ItemList", 
       "name": `Red de navegación para ${locationName}`,
       "description": `Enlaces jerárquicos y geográficos para la búsqueda de dentistas en ${locationName}`,
-      "numberOfItems": activeCategories.length, // Conteo total de bloques (Madre, Hijas, etc.)
+      "numberOfItems": activeCategories.length, 
       "itemListElement": activeCategories
         .map((cat: any, blockIndex: number) => ({
            "@type": "ListItem",
@@ -463,7 +286,7 @@ const organizationJsonLd = {
            "item": {
               "@type": "ItemList",
               "name": cat.data?.title || "Relacionados",
-              "numberOfItems": cat.data.items.length, // Conteo de enlaces dentro de este bloque
+              "numberOfItems": cat.data.items.length, 
               "mainEntityOfPage": {
                 "@type": "SiteNavigationElement",
                 "name": cat.data?.title || "Relacionados",
@@ -483,18 +306,13 @@ const organizationJsonLd = {
           }))
     };
  
-
     return (
       <div className="flex flex-col min-h-screen bg-white font-fsme">
-
-
-{/* 1. Breadcrumbs (La ruta jerárquica lineal) */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
         />
         
-        {/* 2. Súper-Entidad (Legal + Clínicas + SEO Médico Inyectado desde el Motor) */}
         {navigationData.seo.schemaData && (
           <script
             type="application/ld+json"
@@ -502,13 +320,11 @@ const organizationJsonLd = {
           />
         )}
 
-        {/* 3. Red de Enlaces (La telaraña semántica: Madres, Hermanos e Hijos) */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(navigationSchema) }}
         />
  
-
         <FixedBreadcrumb items={navigationData.seo.breadcrumbs} />
 
         <DentistHero 
@@ -525,49 +341,22 @@ const organizationJsonLd = {
           <DentistsContainer initialData={navigationData} />
         </section>
 
-        {/* 2. NUEVO: Componente de Enlaces Relacionados (datos vienen del engine) */}
         <RelatedLinks data={navigationData.relatedLinks} />
 
-        {/* --- EL PIE DE PÁGINA AÑADIDO --- */}
         <FooterLegal />
-
       </div>
     );
 
-  //} catch (e) {
-  //  console.error("❌ PAGE ERROR:", e);
-  //  return notFound();
-  //}
-
   } catch (e: any) {
-
-    // Si entró a "cerca-de-mi" pero no tiene las cookies del GPS, lo mandamos al inicio
-    /* *******
     if (e.message === "NO_COORDS") {
-       const { redirect } = require('next/navigation');
-       redirect('/');
-    }
-    *********** */
-    // Si entró a "cerca-de-mi" pero no tiene las cookies del GPS
-    if (e.message === "NO_COORDS") {
-       // 🌟 MAGIA ANTI-WHATSAPP: Redirección por JavaScript
-       // El robot de WhatsApp (que no lee JS) se quedará aquí y leerá el SEO correctamente.
-       // Los usuarios reales serán expulsados a la Home instantáneamente.
        return (
          <div className="min-h-screen flex items-center justify-center bg-white">
            <p className="text-dkv-gray font-fsme">Comprobando ubicación...</p>
-           {/* Este script ejecuta la redirección en el navegador del usuario */}
            <script dangerouslySetInnerHTML={{ __html: `window.location.replace("/");` }} />
          </div>
        );
     }
-
-
-
-    
     console.error("❌ PAGE ERROR:", e);
     return notFound();
   }
-
-
 }
