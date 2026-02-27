@@ -27,13 +27,6 @@ export const metadata: Metadata = {
   verification: {
     google: 'ZcZv1ys4X1ftnI0uYOf6EfLkxGXAUsuaiK_9h1DaRv0', // Tu código de Search Console
   },
-
-  icons: {
-    // Apuntamos a la carpeta 'images' (omitiendo la palabra 'public')
-    icon: '/icon.png',           // Refuerzo en alta calidad para navegadores modernos
-    shortcut: '/icon.png',       // Por si guardan tu web en marcadores
-    apple: '/apple-icon.png',    // 🌟 EL DIBUJITO PARA WHATSAPP / TELEGRAM / IOS
-  },
 };
 
 export default function RootLayout({
