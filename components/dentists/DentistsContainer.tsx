@@ -96,6 +96,36 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
   }, [localClinics]);
   // ====================================================================
 
+
+
+  // ====================================================================
+  // 🌟 AÑADIDO: EL LIMPIADOR DE URL (Borrador de 'share-')
+  // ====================================================================
+  useEffect(() => {
+    // Si la ficha flotante se ha cerrado (selectedClinicId es null)
+    if (!selectedClinicId) {
+      const currentPath = window.location.pathname;
+      
+      // Comprobamos si la URL tiene el rastro del "share-"
+      if (currentPath.includes('/share-')) {
+        // Cortamos la URL justo antes del "/share-"
+        const cleanPath = currentPath.split('/share-')[0];
+        
+        // Reemplazamos la URL en el navegador de forma invisible (sin recargar la página)
+        window.history.replaceState(null, '', cleanPath);
+      }
+    }
+  }, [selectedClinicId]);
+  // ====================================================================
+
+
+
+
+
+
+
+
+
   const handleMarkerClick = (markerIdentifier: string) => {
     const matchedClinic = localClinics.find((c: any) => c.name === markerIdentifier);
     if (matchedClinic) {
