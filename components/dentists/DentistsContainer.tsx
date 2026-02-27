@@ -1,33 +1,15 @@
 "use client";
 
-// 🟠 MODIFICADO: Añadimos 'useCallback' para memorizar la función del mapa y evitar renders infinitos.
-//import { useEffect, useState, useCallback } from "react";
-// 🟠 MODIFICADO: Añadimos 'useRef' para poder memorizar coordenadas pasadas sin forzar renderizados
 import { useEffect, useState, useCallback, useRef } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-// 🟢 AÑADIDO: Importamos 'Loader2' para el icono de "Buscando..." que gira.
-//import { ChevronUp, ChevronDown, Stethoscope } from "lucide-react";
-//import { ChevronUp, ChevronDown, Stethoscope, Loader2 } from "lucide-react";
-//import { ChevronUp, ChevronDown, Stethoscope, Loader2, X, Phone } from "lucide-react";
-//import { ChevronUp, ChevronDown, Stethoscope, Loader2, X, Phone, Users, Plus, Minus } from "lucide-react";
-//import { ChevronUp, ChevronDown, Stethoscope, Loader2, X, Phone, Users, Plus, Minus, MapPin } from "lucide-react";
-//import { ChevronUp, ChevronDown, Stethoscope, Loader2, X, Phone, Users, Plus, Minus, MapPin, Navigation } from "lucide-react";
-// 🟠 AÑADIMOS 'Share2' a la lista
 import { ChevronUp, ChevronDown, Stethoscope, Loader2, X, Phone, Users, Plus, Minus, MapPin, Navigation, Share2 } from "lucide-react";
-// 🟢 AÑADIDO: Importamos el formateador de teléfonos
 import { formatPhoneNumber } from "@/lib/text-formatter";
 import { useNavigation, NavigationState } from "@/context/NavigationContext";
 import ClinicList from "@/components/dentists/ClinicList";
-
-// 🟢 AÑADIDO: Importamos Supabase para que este componente pueda hablar con la base de datos directamente.
 import { createClient } from "@supabase/supabase-js";
-// 🟢 AÑADIDO: Importamos la librería de animaciones fluidas
 import { motion, AnimatePresence } from "framer-motion";
 
-// 🟢 AÑADIDO: Instanciamos Supabase FUERA del componente. 
-// ¿Por qué fuera? Porque si lo ponemos dentro de la función DentistsContainer, 
-// cada vez que el usuario mueva el mapa, React volvería a crear una conexión nueva a la base de datos, colapsando el navegador.
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -38,254 +20,125 @@ const DentalMapClient = dynamic(() => import("@/components/map/DentalMapClient")
   loading: () => <div className="w-full h-full bg-gray-100 animate-pulse flex items-center justify-center">Cargando mapa...</div>
 });
 
-// EXTRAÍDO: Para evitar Hydration Mismatch y re-instanciación en cada render.
 const formatter = new Intl.NumberFormat('es-ES');
 
 export default function DentistsContainer({ initialData }: { initialData: NavigationState }) {
   const { updateNavigation } = useNavigation();
-
-  // 2. INSTANCIAR EL ROUTER AQUÍ (Al principio del componente)
   const router = useRouter();
 
-  // 🔴 ELIMINADO: Antes leíamos los datos directamente de `initialData`:
-  // const activeMarks = initialData.mapa.marks;
-  // const activeStats = initialData.lista;
-  // ¿Por qué lo quitamos? Porque `initialData` es lo que nos manda el servidor cuando carga la página. 
-  // Si el usuario mueve el mapa, esos datos no nos sirven, necesitamos datos "frescos".
-
-
-  // 🟢 AÑADIDO: Creamos "Estados Locales". 
-  // Copiamos los datos del servidor aquí dentro al arrancar. Así, si el usuario mueve el mapa, 
-  // podemos sobrescribir estos estados con las nuevas clínicas de Supabase sin tener que recargar la página.
   const [localMarks, setLocalMarks] = useState(initialData.mapa.marks);
   const [localClinics, setLocalClinics] = useState(initialData.lista.clinics);
-  const [isUpdatingMap, setIsUpdatingMap] = useState(false); // Controla si mostramos el cartelito de "Buscando..."
-
-
-  // 🟢 AÑADIDO: Creamos un estado para el "Embrague" del mapa.
-  // Empieza con el modo que manda el servidor (ej: 'FIT_BOUNDS').
+  const [isUpdatingMap, setIsUpdatingMap] = useState(false); 
   const [dynamicMapMode, setDynamicMapMode] = useState<any>(initialData.mapa.modo);
 
-
-  // 🟠 MODIFICADO: Tu useEffect original que actualizaba el contexto de navegación.
-  // Ahora, además de actualizar el contexto, le decimos que si el usuario cambia de URL (ej: va de Zaragoza a Madrid),
-  // resetee nuestros estados locales con los nuevos datos que llegan del servidor.
-  //useEffect(() => {
-  //  updateNavigation(initialData);
-  //}, [initialData, updateNavigation]);
-  // 🟠 MODIFICADO: Actualizamos el embrague si el usuario cambia de página completamente
   useEffect(() => {
     updateNavigation(initialData);
     setLocalMarks(initialData.mapa.marks);
     setLocalClinics(initialData.lista.clinics);
-    // 🟢 AÑADIDO: Restauramos el modo automático al cambiar de URL
     setDynamicMapMode(initialData.mapa.modo);
   }, [initialData, updateNavigation]);
 
   const activeMapaConfig = initialData.mapa;
-
-  // 🟢 AÑADIDO: Extraemos el nivel actual para poder hacer los "if" fácilmente
   const currentLevel = initialData.nivelFinal;
 
-
-  // 1. Detección Inteligente del Nivel de Detalle (LOD)
-
-
-  // 🟠 MODIFICADO: Detección Inteligente del Nivel de Detalle (LOD)
-  // Antes usaba 'activeMarks' (fijo). Ahora usa 'localMarks' (dinámico).
-  //const hasComunidades = activeMarks.some((m: any) => m.tipo === 'comunidad');
-  //const hasProvincias = activeMarks.some((m: any) => m.tipo === 'provincia');
-  //const hasMunicipios = activeMarks.some((m: any) => m.tipo === 'municipio'); // O como llames a este nivel
-  // NUEVO: Detectamos si estamos DENTRO de un municipio (Nivel 4)
-  //const isInsideMunicipio = activeMarks.some((m: any) => m.tipo === 'centro' || m.tipo === 'hub');
   const hasComunidades = localMarks.some((m: any) => m.tipo === 'comunidad');
   const hasProvincias = localMarks.some((m: any) => m.tipo === 'provincia');
   const hasMunicipios = localMarks.some((m: any) => m.tipo === 'municipio'); 
   const isInsideMunicipio = localMarks.some((m: any) => m.tipo === 'centro' || m.tipo === 'hub');
 
-
- 
-  // 2. Asignación del GeoJSON correspondiente
-  let mapGeoJsonUrl = undefined; // Por defecto no cargamos contornos (ej. para municipios o clínicas sueltas)
-
-  // 🌟 LA REGLA DE ORO: Si estamos en "Cerca de mí", forzamos que no haya GeoJSON ni fronteras
+  let mapGeoJsonUrl = undefined; 
   if (currentLevel === "00") {
     mapGeoJsonUrl = undefined;
-  } else
-  if (hasComunidades) {
+  } else if (hasComunidades) {
     mapGeoJsonUrl = '/maps/autonomous_regions.geojson';
   } else if (hasProvincias) {
     mapGeoJsonUrl = '/maps/spain-provinces.geojson'; 
   } else if (hasMunicipios || isInsideMunicipio) {
-    // Tanto en Nivel 3 como en Nivel 4, usamos el TopoJSON de municipios
-    mapGeoJsonUrl = '/maps/municipalities.json'; // <--- EL NUEVO ARCHIVO // es un topojson
+    mapGeoJsonUrl = '/maps/municipalities.json'; 
   }
 
-  // 3. Obtenemos el INE del municipio actual. 
-  // (Asumo que lo tienes en initialData.zona.codigo_ine o similar. 
-  // Si no, sácalo del primer marcador si en level-engine le pusiste codigo_ine a los centros).
-  //const currentMunicipioId = isInsideMunicipio ? initialData.zona?.codigo_ine : undefined;
-
-
-  // 🕵️‍♂️ CHIVATO PARA EL CONTENEDOR:
-  console.log("🧠 [CEREBRO] Buscando el ID del municipio en initialData:", initialData);
-
-  // Intenta cogerlo de la zona, del landing, o del primer marcador si es que lo tienen
-  //const currentMunicipioId = isInsideMunicipio 
-  //  ? (initialData.zona?.codigo_ine || initialData.landing?.cod_municipio || activeMarks[0]?.codigo_ine) 
-  //  : undefined;
-  // Buscamos el ID del municipio directamente en la raíz de los datos
-  //const currentMunicipioId = isInsideMunicipio ? initialData.codigo_ine : undefined;
-  // 3. Obtenemos el INE del municipio actual. 
-  // 🌟 OTRA REGLA: Si es Nivel 00, no hay ID de municipio que buscar
-  // 🟠 MODIFICADO: Obtención del ID del municipio.
-  // Tu lógica era: const currentMunicipioId = isInsideMunicipio ? initialData.codigo_ine : undefined;
-  // Le añadimos la condición "&& currentLevel !== '00'" para que si buscamos por GPS, no intente buscar un municipio concreto.
   const currentMunicipioId = (isInsideMunicipio && currentLevel !== "00") ? initialData.codigo_ine : undefined;
 
-
-
-  console.log("🧠 [CEREBRO] ID que le mando al mapa:", currentMunicipioId);
-
-
-
-  // ESTADO ORIGINAL: Controla si la lista está desplegada o colapsada
   const [isListOpen, setIsListOpen] = useState(initialData.lista.estadoInicial !== 'CLOSED');
-
-  // NUEVO ESTADO: Controla qué clínica se ha seleccionado en el mapa
   const [selectedClinicId, setSelectedClinicId] = useState<string | null>(null);
-
-  // NUEVO ESTADO: Controla qué clínica se ha seleccionado en la lista
   const [selectedFromList, setSelectedFromList] = useState<string | null>(null);
-
-
-  // 🟢 AÑADIDO: Controla si la lista de dentistas de la tarjeta flotante está abierta
   const [isFloatingDentistsOpen, setIsFloatingDentistsOpen] = useState(false);
 
-  // 🟢 AÑADIDO: Si cambiamos de clínica, cerramos el desplegable por defecto
   useEffect(() => {
     setIsFloatingDentistsOpen(false);
   }, [selectedClinicId]);
 
+  // ====================================================================
+  // 🌟 AÑADIDO: EL "AUTO-LECTOR" DE ENLACES COMPARTIDOS
+  // Si la URL termina en un ID de clínica al cargar la página, se abre sola
+  // ====================================================================
+  const hasAutoOpened = useRef(false);
 
+  useEffect(() => {
+    if (hasAutoOpened.current || localClinics.length === 0) return;
 
-  //se pasa arriba mejor
-  //const formatter = new Intl.NumberFormat('es-ES');
+    // Miramos el último fragmento de la URL
+    const pathSegments = window.location.pathname.split('/').filter(Boolean);
+    const lastSegment = pathSegments[pathSegments.length - 1];
 
-  // NUEVO HANDLER: Orquesta la interacción Mapa -> Lista 
-  // Si esta función se ejecuta, ES SEGURO que es una clínica gracias a la lógica del mapa.
-  // NUEVO HANDLER: Orquesta la interacción y "traduce" el ID
-  // NUEVO HANDLER: Recibe directamente el nombre de la clínica (o el slug si es región)
-  // 🟠 MODIFICADO: Tu handler de clics en marcadores.
-  // Antes buscaba en `activeStats.clinics` (fijo del servidor). Ahora busca en `localClinics` (que se actualiza al mover el mapa).
-  // 🟠 MODIFICADO: Comportamiento Airbnb al pinchar un pin
+    // Buscamos si coincide con alguna clínica del listado inicial
+    const sharedClinic = localClinics.find((c: any) => c.clinic_id === lastSegment);
+
+    if (sharedClinic) {
+      setSelectedClinicId(sharedClinic.clinic_id);
+      setSelectedFromList(sharedClinic.name); // Esto le grita al mapa: "¡Haz zoom aquí!"
+      setIsListOpen(false); // Ocultamos la lista grande para ver el mapa
+      hasAutoOpened.current = true; // Marcamos para que no se vuelva a ejecutar
+    }
+  }, [localClinics]);
+  // ====================================================================
+
   const handleMarkerClick = (markerIdentifier: string) => {
-    
-    // Buscamos si el identificador coincide con el NOMBRE de alguna clínica de nuestra lista
-    //const matchedClinic = activeStats.clinics.find((c: any) => c.name === markerIdentifier);
     const matchedClinic = localClinics.find((c: any) => c.name === markerIdentifier);
-    
     if (matchedClinic) {
-      // ES UNA CLÍNICA: Pasamos el ID real de la base de datos (el hash) a la lista
       setSelectedClinicId(matchedClinic.clinic_id);
-
-      // 🌟 MAGIA: Si la lista grande estaba abierta, la cerramos para que se vea el mapa y la nueva tarjeta flotante
-      //setIsListOpen(true); 
       setIsListOpen(false);
-
-      // Limpiamos el origen de la lista para no interferir con el mapa
       setSelectedFromList(null);
-
     } else {
-      // NO ES CLÍNICA: Es una región, así que navegamos
       router.push(`/dentistas/${markerIdentifier}`);
     }
   };
 
-  // 🟢 AÑADIDO: Si el usuario pincha en una zona vacía del mapa, ocultamos la tarjeta flotante
   const handleMapClick = useCallback(() => {
     setSelectedClinicId(null);
     setSelectedFromList(null);
   }, []);
 
-
-
-  // 🟢 AÑADIDO: Creamos una "memoria" para guardar el último sitio donde buscamos.
-  // Empieza vacía. Al no ser un 'State', cambiarla no provoca que la web parpadee.
-  //const lastSearchCenter = useRef<{lat: number, lng: number} | null>(null);
-  // 🟠 MODIFICADO: Ahora nuestra memoria guarda el centro Y TAMBIÉN el nivel de zoom
   const lastSearchState = useRef<{lat: number, lng: number, zoom: number} | null>(null);
 
-
-  // ====================================================================
-  // 🟢 AÑADIDO: EL CEREBRO DE RECARGA DINÁMICA (Efecto Airbnb)
-  // Esta es la función que el mapa llama automáticamente cada vez que el usuario suelta el ratón tras arrastrarlo.
-  // ====================================================================
-// 🟠 MODIFICADO: Recibimos los 'bounds' como tercer parámetro
-//const handleMapMove = useCallback(async (newCenter: { lat: number, lng: number }, zoom: number) => {
-const handleMapMove = useCallback(async (newCenter: { lat: number, lng: number }, zoom: number, bounds: any) => {
+  const handleMapMove = useCallback(async (newCenter: { lat: number, lng: number }, zoom: number, bounds: any) => {
     if (currentLevel !== "00") return;
 
-    // ====================================================================
-    // 🟢 AÑADIDO: EL ESCUDO ANTI-BUCLES INFINITOS
-    // ====================================================================
-    //if (lastSearchCenter.current) {
-    // ====================================================================
-    // 🟠 MODIFICADO: EL ESCUDO AHORA RESPETA EL ZOOM
-    // ====================================================================
     if (lastSearchState.current) {
-      // Calculamos cuántos grados de GPS se ha movido el mapa desde la última búsqueda
-      //const latDiff = Math.abs(lastSearchCenter.current.lat - newCenter.lat);
-      //const lngDiff = Math.abs(lastSearchCenter.current.lng - newCenter.lng);
       const latDiff = Math.abs(lastSearchState.current.lat - newCenter.lat);
       const lngDiff = Math.abs(lastSearchState.current.lng - newCenter.lng);
-
-
-      // 🌟 Comparamos si el zoom ha cambiado    
       const zoomChanged = lastSearchState.current.zoom !== zoom;
 
-      // 0.005 grados de latitud/longitud equivalen a unos 500 metros en la vida real.
-      // Si el movimiento es menor a 500 metros, es un re-ajuste del sistema. ¡Lo bloqueamos!
-      //if (latDiff < 0.005 && lngDiff < 0.005) {
-      // Si se mueve menos de 500m Y el zoom NO ha cambiado, lo bloqueamos (era un auto-ajuste).
-      // Pero si el zoom SÍ ha cambiado, dejamos que pase de largo y busque.
       if (latDiff < 0.005 && lngDiff < 0.005 && !zoomChanged) {
         return; 
       }
     }
 
-    // Si ha pasado el escudo (se movió más de 500m), guardamos la nueva coordenada para la próxima vez
-    //lastSearchCenter.current = newCenter;
-    // Guardamos el nuevo centro y el nuevo zoom para la próxima vez
     lastSearchState.current = { lat: newCenter.lat, lng: newCenter.lng, zoom: zoom };
-
-    // Pisamos el embrague para quitar el auto-zoom
-    // ====================================================================
-    // 🟢 LA CORRECCIÓN MÁGICA: Pasamos 'FREE' en lugar de undefined
-    // ====================================================================
     setDynamicMapMode('FREE');
-
     setIsUpdatingMap(true);
 
     try {
-      // ====================================================================
-      // 🌟 LLAMADA TIPO AIRBNB: Le pasamos las 4 esquinas del monitor del usuario
-      // ====================================================================
-      //const { data, error } = await supabase.rpc('get_centros_cercanos', {
       const { data, error } = await supabase.rpc('get_centros_en_bounds', {
-         //user_lat: newCenter.lat,
-         //user_lng: newCenter.lng,
-         //radio_km: 25 
-          sw_lat: bounds.getSouthWest().lat, // Abajo Izquierda (Lat)
-          sw_lng: bounds.getSouthWest().lng, // Abajo Izquierda (Lng)
-          ne_lat: bounds.getNorthEast().lat, // Arriba Derecha (Lat)
-          ne_lng: bounds.getNorthEast().lng, // Arriba Derecha (Lng)
-          center_lat: newCenter.lat,         // Centro (Lat)
-          center_lng: newCenter.lng          // Centro (Lng)
+          sw_lat: bounds.getSouthWest().lat,
+          sw_lng: bounds.getSouthWest().lng,
+          ne_lat: bounds.getNorthEast().lat,
+          ne_lng: bounds.getNorthEast().lng,
+          center_lat: newCenter.lat,         
+          center_lng: newCenter.lng          
       });
 
       if (error) throw error;
-
       setLocalClinics(data || []);
 
       const newMarkers = (data || []).map((c: any) => ({
@@ -306,37 +159,16 @@ const handleMapMove = useCallback(async (newCenter: { lat: number, lng: number }
     }
   }, [currentLevel]);
 
-
-
-
-
-
-
-
-
-  // 🌟 AÑADIDO: Calculamos los dentistas reales sumando el staff_count de la lista viva
   const totalLiveDentists = localClinics.reduce((acc: number, clinic: any) => acc + (Number(clinic.staff_count) || 0), 0);
 
-
-  // 🟢 AÑADIDO: Lógica para saber si debemos mostrar la tarjeta flotante
-  // Se muestra SI hay una clínica seleccionada Y la lista grande está cerrada
   const selectedClinicData = localClinics.find((c: any) => c.clinic_id === selectedClinicId);
   const showFloatingCard = selectedClinicData && !isListOpen;
-
-  // 🌟 MAGIA UX: ¿Ocultamos la lista por completo sacándola de la pantalla?
-  // Solo lo hacemos en "Cerca de mí" (Nivel 00) cuando la tarjeta flotante está visible.
-  //const hideListCompletely = currentLevel === "00" && showFloatingCard;
-  // 🌟 MAGIA UX: ¿Ocultamos la lista por completo sacándola de la pantalla?
-  // Ahora la ocultamos SIEMPRE que estemos en "Cerca de mí" (Nivel 00), 
-  // dejando todo el espacio para el mapa y la ficha flotante.
   const hideListCompletely = currentLevel === "00";
 
-
-return (
+  return (
     <div className="relative w-full h-[85dvh] min-h-[600px] md:h-[80vh] md:min-h-[750px] bg-white flex flex-col pt-4 pb-12 px-4 md:px-10 font-fsme">
       <div className="relative w-full h-full bg-white rounded-[40px] overflow-hidden border-8 border-white shadow-xl z-20">
 
-        {/* CARTELITO DE BUSCANDO */}
         {isUpdatingMap && (
           <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-[2000] bg-white text-dkv-green-dark px-5 py-2.5 rounded-full shadow-lg font-bold text-sm flex items-center gap-2 border border-dkv-green-light transition-all duration-300">
             <Loader2 className="w-4 h-4 animate-spin text-dkv-green" />
@@ -344,7 +176,6 @@ return (
           </div>
         )}
         
-        {/* EL MAPA */}
         <div className="absolute inset-0 z-10">
             <DentalMapClient 
                 marks={localMarks}
@@ -362,12 +193,6 @@ return (
             /> 
         </div>
 
-
-
-
-        {/* ==================================================================== */}
-        {/* 🟢 LA TARJETA FLOTANTE TIPO AIRBNB / IDEALISTA                       */}
-        {/* ==================================================================== */}
         <AnimatePresence>
           {showFloatingCard && (
             <motion.div
@@ -379,49 +204,53 @@ return (
               className={`absolute left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-[420px] z-40 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 p-5 ${hideListCompletely ? 'bottom-6 md:bottom-8' : 'bottom-[96px]'}`}
             >
 
-
-
-
-
-              
-{/* 1. CABECERA: ETIQUETA DKV, NOMBRE Y BOTONES (Compartir + Cerrar) */}
               <div className="flex justify-between items-start gap-4 mb-3">
                 <div className="flex flex-col items-start gap-2">
-                  
-                  {/* 🌟 GALLETITA DE CENTRO ÉLITE DKV */}
                   {selectedClinicData.is_propio && (
                     <span className="bg-dkv-green text-white text-[10px] font-bold px-3 py-1 rounded-lg uppercase tracking-wide shadow-sm">
                       Centro Élite DKV
                     </span>
                   )}
-
                   <h4 className="font-lemon text-dkv-green-dark text-xl leading-tight">
                     {selectedClinicData.name}
                   </h4>
                 </div>
                 
-                {/* 🌟 GRUPO DE BOTONES DE ACCIÓN SUPERIOR */}
                 <div className="flex items-center gap-1.5 shrink-0 mt-1">
                   
-                  {/* NUEVO BOTÓN NATIVO DE COMPARTIR */}
+                  {/* ========================================================= */}
+                  {/* 🌟 BOTÓN DE COMPARTIR CON CONSTRUCCIÓN DE URL INTELIGENTE */}
+                  {/* ========================================================= */}
                   <button 
                     onClick={(e) => {
                       e.stopPropagation();
 
-                      // 🌟 TEXTO ENRIQUECIDO TIPO AIRBNB
+                      // 1. Creamos la URL limpia y perfecta
+                      const pathSegments = window.location.pathname.split('/').filter(Boolean);
+                      const lastSegment = pathSegments[pathSegments.length - 1];
+                      
+                      // Miramos si la ruta actual ya tiene un ID de clínica al final
+                      const isSharedUrl = localClinics.some((c: any) => c.clinic_id === lastSegment);
+                      
+                      // Si ya lo tiene, se lo quitamos para poner el nuevo (evita duplicar)
+                      if (isSharedUrl) {
+                        pathSegments.pop();
+                      }
+                      
+                      const cleanPath = '/' + pathSegments.join('/');
+                      const shareUrl = `${window.location.origin}${cleanPath}/${selectedClinicData.clinic_id}`;
+
+                      // 2. Texto enriquecido para WhatsApp
                       const shareText = `📍 ${selectedClinicData.name}\n🏥 ${selectedClinicData.address}, ${selectedClinicData.city}\n\nℹ️ Pide cita en este centro con tarifas reducidas activando DKV Dentisalud Élite.\n\n👇 Mira la ubicación en el mapa:`;
 
-
-                      // Si el móvil/navegador soporta compartir nativo...
                       if (navigator.share) {
                         navigator.share({
                           title: `Clínica Dental: ${selectedClinicData.name}`,
                           text: shareText,
-                          url: window.location.href,
+                          url: shareUrl,
                         }).catch(console.error);
                       } else {
-                        // Plan B (para ordenadores viejos): Copiar al portapapeles
-                        navigator.clipboard.writeText(window.location.href);
+                        navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
                         alert("¡Enlace copiado al portapapeles!");
                       }
                     }}
@@ -431,7 +260,6 @@ return (
                     <Share2 className="w-5 h-5" />
                   </button>
 
-                  {/* EL BOTÓN DE CERRAR EXISTENTE */}
                   <button 
                     onClick={() => setSelectedClinicId(null)} 
                     className="text-gray-400 hover:text-dkv-gray bg-gray-50 hover:bg-gray-100 rounded-full p-1.5 transition-colors"
@@ -442,12 +270,6 @@ return (
                 </div>
               </div>
               
-
-
-
-
-
-              {/* 2. BOTÓN DE DENTISTAS (Justo debajo del nombre) */}
               {(selectedClinicData.staff_count ?? 0) > 0 && (
                 <div className="mb-4">
                   <motion.button 
@@ -457,17 +279,10 @@ return (
                       setIsFloatingDentistsOpen(!isFloatingDentistsOpen);
                     }}
                     aria-expanded={isFloatingDentistsOpen}
-                    
-                    // 🌟 MAGIA 1: Efecto "Respiración" constante si está cerrado
                     animate={!isFloatingDentistsOpen ? { scale: [1, 1.03, 1] } : { scale: 1 }}
                     transition={!isFloatingDentistsOpen ? { duration: 2, repeat: Infinity, ease: "easeInOut" } : { duration: 0.2 }}
-                    
-                    // 🌟 MAGIA 2: Efectos físicos de ratón y clic
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    
-                    // ⚠️ NOTA: Cambiamos 'transition-all' por 'transition-colors' para que 
-                    // Tailwind solo controle el color y Framer Motion controle el tamaño.
                     className={`
                       inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-colors duration-300 cursor-pointer origin-left
                       ${isFloatingDentistsOpen 
@@ -485,7 +300,6 @@ return (
                 </div>
               )}
 
-              {/* 3. ACORDEÓN DE DENTISTAS (Se despliega aquí mismo) */}
               <div className={`
                 overflow-hidden transition-all duration-500 ease-in-out w-full
                 ${isFloatingDentistsOpen ? 'max-h-[250px] opacity-100 mb-4' : 'max-h-0 opacity-0'}
@@ -505,11 +319,6 @@ return (
                 )}
               </div>
 
-
-
-
-
-              {/* 4. DIRECCIÓN Y RUTA (Botón integrado a la izquierda) */}
               <a 
                 href={`https://www.google.com/maps/dir/?api=1&destination=${selectedClinicData.latitude},${selectedClinicData.longitude}`}
                 target="_blank"
@@ -517,7 +326,6 @@ return (
                 className="flex items-center gap-3 mb-5 p-2 -mx-2 rounded-xl hover:bg-gray-50 active:bg-gray-100 transition-all cursor-pointer group"
                 aria-label={`Cómo llegar a ${selectedClinicData.name}`}
               >
-                {/* Icono de Acción (AHORA A LA IZQUIERDA) */}
                 <div className="flex flex-col items-center shrink-0">
                   <div className="w-10 h-10 rounded-full bg-dkv-green text-white flex items-center justify-center shadow-md group-active:scale-90 transition-transform mb-1">
                     <Navigation className="w-5 h-5 ml-[-2px] mt-[2px]" />
@@ -525,7 +333,6 @@ return (
                   <span className="text-[9px] font-bold text-dkv-green uppercase tracking-wider">Ruta</span>
                 </div>
 
-                {/* Textos de la dirección */}
                 <div className="flex flex-col font-fsme leading-tight overflow-hidden">
                   <span className="text-gray-800 font-bold text-base mb-0.5 group-hover:text-dkv-green transition-colors line-clamp-1">
                     {selectedClinicData.address}
@@ -536,36 +343,7 @@ return (
                 </div>
               </a>
 
-
-
-
-              {/* 5. FOOTER: TELÉFONO + BOTÓN "PEDIR CITA" */}
-              {/*
-              {selectedClinicData.phone && (
-                <div className="flex items-center justify-between border-t border-gray-100 pt-4 mt-2">
-                  <div className="flex items-center gap-2.5 text-dkv-green-dark font-bold text-[17px]">
-                    <div className="w-8 h-8 rounded-full bg-dkv-green/10 flex items-center justify-center">
-                      <Phone className="w-4 h-4 text-dkv-green" />
-                    </div>
-                    <span>{formatPhoneNumber(selectedClinicData.phone)}</span>
-                  </div>
-                  <a 
-                    href={`tel:${selectedClinicData.phone.toString().replace(/\D/g, "")}`} 
-                    className="bg-dkv-green text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-md hover:bg-dkv-green-hover transition-all active:scale-95"
-                  >
-                    Pedir Cita
-                  </a>
-                </div>
-              )}
-              */}
-
-
-
-
-              {/* 5. FOOTER: CALL TO ACTION COMERCIAL (Tu teléfono) */}
               <div className="border-t border-gray-100 pt-4 mt-2 flex flex-col gap-3">
-                
-                {/* Aviso de exclusividad para justificar la llamada */}
                 <div className="bg-orange-50/80 text-orange-800 text-xs px-3 py-2.5 rounded-lg flex items-start gap-2 border border-orange-100">
                   <span className="text-orange-500 mt-0.5">ⓘ</span>
                   <p className="font-medium leading-tight">
@@ -573,33 +351,18 @@ return (
                   </p>
                 </div>
 
-                {/* Botón de llamada al agente (AQUÍ PONES TU TELÉFONO) */}
                 <a 
-                  href="tel:+34900000000" // 🔴 CAMBIA ESTO POR TU TELÉFONO REAL
+                  href="tel:+34900000000"
                   className="w-full flex items-center justify-center gap-2 bg-dkv-green text-white py-3.5 rounded-xl font-bold shadow-md hover:bg-dkv-green-hover transition-all active:scale-95 text-sm"
                 >
                   <Phone className="w-4 h-4" />
                   Activar y pedir cita
                 </a>
               </div>
-
-
-
-
-
-
-
-
             </motion.div>
           )}
         </AnimatePresence>
-        {/* ==================================================================== */}
 
-
-
-
-
-        {/* 🟢 LA LISTA INFERIOR DESLIZANTE */}
         <div className={`absolute bottom-0 left-0 right-0 z-30 bg-white transition-all duration-500 flex flex-col ${isListOpen ? 'h-[70%]' : 'h-[80px]'} ${hideListCompletely ? 'translate-y-full' : 'translate-y-0'}`}>
           <button onClick={() => setIsListOpen(!isListOpen)} className="h-[80px] px-6 flex items-center justify-between cursor-pointer border-b shrink-0">
             <div className="flex items-center gap-4">
