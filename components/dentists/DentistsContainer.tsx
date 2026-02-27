@@ -69,73 +69,52 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
   }, [selectedClinicId]);
 
   // ====================================================================
-  // 🌟 AÑADIDO: EL "AUTO-LECTOR" DE ENLACES COMPARTIDOS
-  // Si la URL termina en un ID de clínica al cargar la página, se abre sola
+  // 🌟 EL AUTO-LECTOR "KAMIKAZE" (Lee, Abre y Limpia al instante)
   // ====================================================================
   const hasAutoOpened = useRef(false);
 
+  // Función auxiliar para mantener limpio el SEO oculto del móvil
+  const updateMobileShareTags = useCallback((newPath: string) => {
+    const fullUrl = `${window.location.origin}${newPath}`;
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.setAttribute('href', fullUrl);
+
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) ogUrl.setAttribute('content', fullUrl);
+  }, []);
+
   useEffect(() => {
+    // Si ya hemos hecho la auto-apertura o no hay clínicas cargadas, no hacemos nada
     if (hasAutoOpened.current || localClinics.length === 0) return;
 
-    // Miramos el último fragmento de la URL
-    const pathSegments = window.location.pathname.split('/').filter(Boolean);
+    const currentPath = window.location.pathname;
+    const pathSegments = currentPath.split('/').filter(Boolean);
     const lastSegment = pathSegments[pathSegments.length - 1];
 
-    // 🌟 AÑADIDO: Si la URL termina en "share-...", lo limpiamos para buscar el ID real
+    // ¿La URL trae una instrucción de compartir?
     if (lastSegment && lastSegment.startsWith('share-')) {
       const realClinicId = lastSegment.replace('share-', '');
       const sharedClinic = localClinics.find((c: any) => c.clinic_id === realClinicId);
 
+      // 1. Si encontramos la clínica, la abrimos
       if (sharedClinic) {
         setSelectedClinicId(sharedClinic.clinic_id);
         setSelectedFromList(sharedClinic.name); 
         setIsListOpen(false); 
-        hasAutoOpened.current = true; 
       }
+      
+      // Marcamos que ya hemos leído la URL para no repetir el proceso
+      hasAutoOpened.current = true; 
+
+      // 2. 🌟 MAGIA: Limpiamos la URL y el SEO INMEDIATAMENTE
+      const cleanPath = currentPath.split('/share-')[0].replace(/\/$/, "");
+      const finalPath = cleanPath === '' ? '/' : cleanPath;
+      
+      window.history.replaceState(window.history.state, '', finalPath);
+      updateMobileShareTags(finalPath);
     }
-  }, [localClinics]);
+  }, [localClinics, updateMobileShareTags]);
   // ====================================================================
-
-
-
-// ====================================================================
-  // 🌟 EL SINCRONIZADOR DE URL EN TIEMPO REAL (Con limpieza SEO para móviles)
-  // ====================================================================
-  useEffect(() => {
-    const currentPath = window.location.pathname;
-    const origin = window.location.origin;
-
-    // Función auxiliar para engañar al botón de compartir nativo del móvil
-    const updateMobileShareTags = (newPath: string) => {
-      const fullUrl = `${origin}${newPath}`;
-      const canonical = document.querySelector('link[rel="canonical"]');
-      if (canonical) canonical.setAttribute('href', fullUrl);
-
-      const ogUrl = document.querySelector('meta[property="og:url"]');
-      if (ogUrl) ogUrl.setAttribute('content', fullUrl);
-    };
-
-    if (selectedClinicId) {
-      // 1. Si ABRIMOS una ficha
-      if (!currentPath.includes(`/share-${selectedClinicId}`)) {
-        const cleanPath = currentPath.split('/share-')[0].replace(/\/$/, "");
-        const newPath = `${cleanPath}/share-${selectedClinicId}`;
-        
-        window.history.replaceState(window.history.state, '', newPath); 
-        updateMobileShareTags(newPath); // Actualizamos etiquetas ocultas
-      }
-    } else {
-      // 2. Si CERRAMOS la ficha
-      if (currentPath.includes('/share-')) {
-        const cleanPath = currentPath.split('/share-')[0].replace(/\/$/, "");
-        
-        window.history.replaceState(window.history.state, '', cleanPath);
-        updateMobileShareTags(cleanPath); // Limpiamos etiquetas ocultas
-      }
-    }
-  }, [selectedClinicId]);
-  // ====================================================================
-
 
 
 
