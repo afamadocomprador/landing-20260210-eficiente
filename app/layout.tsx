@@ -27,9 +27,12 @@ export const metadata: Metadata = {
   verification: {
     google: 'ZcZv1ys4X1ftnI0uYOf6EfLkxGXAUsuaiK_9h1DaRv0', // Tu código de Search Console
   },
+
   icons: {
-    icon: '/images/favicon.ico',        // Para la pestaña del navegador normal
-    apple: '/images/apple-icon.png',    // Para WhatsApp, iPhone y Telegram
+    // Apuntamos a la carpeta 'images' (omitiendo la palabra 'public')
+    icon: '/images/icon.png',           // Refuerzo en alta calidad para navegadores modernos
+    shortcut: '/images/icon.png',       // Por si guardan tu web en marcadores
+    apple: '/images/apple-icon.png',    // 🌟 EL DIBUJITO PARA WHATSAPP / TELEGRAM / IOS
   },
 };
 
