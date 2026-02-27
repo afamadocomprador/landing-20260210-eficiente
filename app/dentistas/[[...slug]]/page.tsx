@@ -135,14 +135,11 @@ interface PageProps {
 
    } catch (e: any) {
      const currentPath = params?.slug ? params.slug.join('/') : '';
+     const lastSegment = params?.slug ? params.slug[params.slug.length - 1] : '';
      
-
-// =======================================================================
+     // =======================================================================
      // 🌟 CAMINO ESTRELLA: Si comparten una clínica con "share-" (EN CUALQUIER RUTA)
      // =======================================================================
-     // Cogemos siempre el ÚLTIMO trozo de la URL, estemos en la ciudad que estemos
-     const lastSegment = params?.slug ? params.slug[params.slug.length - 1] : '';
-
      if (lastSegment && lastSegment.startsWith('share-')) {
        
        const clinicId = lastSegment.replace('share-', ''); 
@@ -199,10 +196,6 @@ interface PageProps {
        }
      }
 
-
-
-   }
-
      // =======================================================================
      // 📍 CAMINO A: "Cerca de ti" genérico (Sin clínica específica)
      // =======================================================================
@@ -256,7 +249,6 @@ interface PageProps {
      };
    }
  }
-
  // --- 3. VIEWPORT (Móvil) ---
  export const generateViewport = (): Viewport => {
    return {
@@ -569,9 +561,13 @@ const organizationJsonLd = {
          </div>
        );
     }
-   
+
+
+
+    
     console.error("❌ PAGE ERROR:", e);
     return notFound();
   }
+
 
 }
