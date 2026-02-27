@@ -111,8 +111,9 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
         // Cortamos la URL justo antes del "/share-"
         const cleanPath = currentPath.split('/share-')[0];
         
-        // Reemplazamos la URL en el navegador de forma invisible (sin recargar la página)
-        window.history.replaceState(null, '', cleanPath);
+        // 🌟 CORRECCIÓN: Usamos el router de Next.js para que actualice el estado real y el SEO oculto
+        router.replace(cleanPath, { scroll: false });
+
       }
     }
   }, [selectedClinicId]);
@@ -280,7 +281,12 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
                   </button>
 
                   <button 
-                    onClick={() => setSelectedClinicId(null)} 
+                    onClick={() => {
+                      setSelectedClinicId(null);
+                      setSelectedFromList(null); // 🌟 ESTO APAGA EL PIN DEL MAPA
+                    }}
+
+
                     className="text-gray-400 hover:text-dkv-gray bg-gray-50 hover:bg-gray-100 rounded-full p-1.5 transition-colors"
                     aria-label="Cerrar tarjeta"
                   >
