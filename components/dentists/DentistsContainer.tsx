@@ -252,12 +252,10 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
                   <button 
                     onClick={(e) => {
                       e.stopPropagation();
-
-                      // 1. Cogemos la ruta base limpia en la que estamos (ej: /dentistas/cerca-de-mi o /dentistas/zaragoza)
-                      const cleanPath = window.location.pathname.replace(/\/$/, "");
                       
-                      // 2. CONSTRUIMOS EL ENLACE DE COMPARTIR A LA FUERZA PEGÁNDOLE EL ID
-                      const shareUrl = `${window.location.origin}${cleanPath}/share-${selectedClinicData.clinic_id}`;
+                      // CONSTRUIMOS EL ENLACE FORZANDO SIEMPRE "CERCA DE MI"
+                      // Da igual si el usuario está en /dentistas/zaragoza, el enlace que enviará será universal.
+                      const shareUrl = `${window.location.origin}/dentistas/cerca-de-mi/share-${selectedClinicData.clinic_id}`;
 
                       // Si el móvil/navegador soporta compartir nativo...
                       if (navigator.share) {
@@ -276,6 +274,7 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
                   >
                     <Share2 className="w-5 h-5" />
                   </button>
+
 
 
                   <button 
