@@ -136,77 +136,72 @@ interface PageProps {
    } catch (e: any) {
      const currentPath = params?.slug ? params.slug.join('/') : '';
      
+
+// =======================================================================
+     // 🌟 CAMINO ESTRELLA: Si comparten una clínica con "share-" (EN CUALQUIER RUTA)
      // =======================================================================
-     // 🌟 CAMINO ESTRELLA: Si comparten una clínica con prefijo "share-"
-     // =======================================================================
-     if ((currentPath.includes('cerca-de-ti') || currentPath.includes('cerca-de-mi')) && params?.slug && params.slug.length > 1) {
+     // Cogemos siempre el ÚLTIMO trozo de la URL, estemos en la ciudad que estemos
+     const lastSegment = params?.slug ? params.slug[params.slug.length - 1] : '';
+
+     if (lastSegment && lastSegment.startsWith('share-')) {
        
-       const pathSegment = params.slug[1]; 
+       const clinicId = lastSegment.replace('share-', ''); 
 
-       // Comprobamos la "contraseña" visual
-       if (pathSegment.startsWith('share-')) {
-         const clinicId = pathSegment.replace('share-', ''); 
+       try {
+         const { createServerClient } = require('@supabase/ssr');
+         const { cookies } = require('next/headers');
+         const cookieStore = cookies();
+         const supabase = createServerClient(
+           process.env.NEXT_PUBLIC_SUPABASE_URL!,
+           process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+           { cookies: { get: (name: string) => cookieStore.get(name)?.value } }
+         );
 
-         try {
-           const { createServerClient } = require('@supabase/ssr');
-           const { cookies } = require('next/headers');
-           const cookieStore = cookies();
-           const supabase = createServerClient(
-             process.env.NEXT_PUBLIC_SUPABASE_URL!,
-             process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-             { cookies: { get: (name: string) => cookieStore.get(name)?.value } }
-           );
+         const { data: clinicData } = await supabase
+           .from('view_clinics') 
+           .select('name, staff_count, city, address, zip_code')
+           .eq('clinic_id', clinicId) 
+           .single();
 
-           const { data: clinicData } = await supabase
-             .from('view_clinics') 
-             // 🌟 AÑADIDO: Traemos también la 'address' de la base de datos
-             .select('name, staff_count, city, address, zip_code')
-             .eq('clinic_id', clinicId) 
-             .single();
+         if (clinicData) {
+           const formattedZip = clinicData.zip_code 
+             ? String(clinicData.zip_code).padStart(5, '0').replace(/(\d{2})(\d{3})/, '$1.$2') 
+             : '';
 
-           if (clinicData) {
+           const clinicTitle = `📍 ${clinicData.address || ''}, ${formattedZip ? formattedZip + ' - ' : ''}${clinicData.city || ''}`;
+           const clinicDesc = `Consulta ubicación, consulta dentistas y pide cita en este centro dental de la red DKV DENTISALUD ÉLITE.`;
+           const ogTitleToRender = `TU CENTRO DENTAL ${clinicData.name}`;
 
-             // 🌟 TRUCO: Formateamos el CP con punto de miles manteniendo los 5 dígitos (ej: 50.004)
-             const formattedZip = clinicData.zip_code 
-               ? String(clinicData.zip_code).padStart(5, '0').replace(/(\d{2})(\d{3})/, '$1.$2') 
-               : '';
-
-             // 🌟 1. EL TEXTO EN NEGRITA DE WHATSAPP (CP antes de la ciudad con guion)
-             const clinicTitle = `📍 ${clinicData.address || ''}, ${formattedZip ? formattedZip + ' - ' : ''}${clinicData.city || ''}`;
-             
-             // 🌟 2. EL TEXTO GRIS (Solo la dirección)
-             const clinicDesc = `Consulta ubicación, consulta dentistas y pide cita en este centro dental de la red DKV DENTISALUD ÉLITE.`;
-
-             // 🌟 EL TRUCO: Le mandamos el texto literal al generador de imágenes
-             const ogTitleToRender = `TU CENTRO DENTAL ${clinicData.name}`;
-
-             return {
-               metadataBase: new URL(baseUrl),
+           return {
+             metadataBase: new URL(baseUrl),
+             title: clinicTitle,
+             description: clinicDesc,
+             openGraph: {
                title: clinicTitle,
                description: clinicDesc,
-               openGraph: {
-                 title: clinicTitle,
-                 description: clinicDesc,
-                 url: `/dentistas/${currentPath}`,
-                 siteName: 'DKV Dentisalud Élite',
-                 images: [
-                   {
-                     url: `/api/og?title=${encodeURIComponent(ogTitleToRender)}&v=1`,
-                     width: 1200,
-                     height: 630,
-                     alt: clinicData.name,
-                   }
-                 ],
-                 locale: 'es_ES',
-                 type: 'website',
-               }
-             };
-           }
-         } catch (dbError) {
-           console.error("No se pudo cargar info", dbError);
+               url: `/dentistas/${currentPath}`,
+               siteName: 'DKV Dentisalud Élite',
+               images: [
+                 {
+                   url: `/api/og?title=${encodeURIComponent(ogTitleToRender)}&v=1`,
+                   width: 1200,
+                   height: 630,
+                   alt: clinicData.name,
+                 }
+               ],
+               locale: 'es_ES',
+               type: 'website',
+             }
+           };
          }
+       } catch (dbError) {
+         console.error("No se pudo cargar info", dbError);
        }
      }
+
+
+
+   }
 
      // =======================================================================
      // 📍 CAMINO A: "Cerca de ti" genérico (Sin clínica específica)
@@ -574,13 +569,9 @@ const organizationJsonLd = {
          </div>
        );
     }
-
-
-
-    
+   
     console.error("❌ PAGE ERROR:", e);
     return notFound();
   }
-
 
 }
