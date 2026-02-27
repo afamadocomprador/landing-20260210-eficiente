@@ -229,36 +229,38 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
                       e.stopPropagation();
 
                       // 1. Creamos la URL limpia y perfecta
-                      const pathSegments = window.location.pathname.split('/').filter(Boolean);
-                      const lastSegment = pathSegments[pathSegments.length - 1];
-                      
-                      // Miramos si la ruta actual ya tiene un ID de clínica al final
-                      //const isSharedUrl = localClinics.some((c: any) => c.clinic_id === lastSegment);
-                      
+                      //const pathSegments = window.location.pathname.split('/').filter(Boolean);
+                      //const lastSegment = pathSegments[pathSegments.length - 1];
+                                           
                       // Si ya lo tiene, se lo quitamos para poner el nuevo (evita duplicar)
-                      //if (isSharedUrl) {
                       // Limpiamos si ya había un share- previo
-                      if (lastSegment && lastSegment.startsWith('share-')) {
-                        pathSegments.pop();
-                      }
+                      //if (lastSegment && lastSegment.startsWith('share-')) {
+                      //  pathSegments.pop();
+                      //}
                       
-                      const cleanPath = '/' + pathSegments.join('/');
-                      //const shareUrl = `${window.location.origin}${cleanPath}/${selectedClinicData.clinic_id}`;
+                      //const cleanPath = '/' + pathSegments.join('/');
                       // 🌟 AÑADIDO: Construimos la URL con el prefijo "share-"
-                      const shareUrl = `${window.location.origin}${cleanPath}/share-${selectedClinicData.clinic_id}`;
+                      //const shareUrl = `${window.location.origin}${cleanPath}/share-${selectedClinicData.clinic_id}`;
 
-
+                      // 1. FORZAMOS QUE LA URL SIEMPRE SEA "cerca-de-mi"
+                      // Da igual si el usuario estaba en /dentistas/zaragoza, el enlace siempre será universal
+                      const shareUrl = `${window.location.origin}/dentistas/cerca-de-mi/share-${selectedClinicData.clinic_id}`;
 
                       // 2. Texto enriquecido para WhatsApp
-                      const shareText = `📍 ${selectedClinicData.name}\n🏥 ${selectedClinicData.address}, ${selectedClinicData.city}\n\nℹ️ Pide cita en este centro con tarifas reducidas activando DKV Dentisalud Élite.\n\n👇 Mira la ubicación en el mapa:`;
+                      //const shareText = `📍 ${selectedClinicData.name}\n🏥 ${selectedClinicData.address}, ${selectedClinicData.city}\n\nℹ️ Pide cita en este centro con tarifas reducidas activando DKV Dentisalud Élite.\n\n👇 Mira la ubicación en el mapa:`;
+                      // 2. TEXTO DEL CHAT SÚPER LIMPIO 
+                      // Solo un Call To Action (CTA). El nombre y dirección ya salen en la tarjeta grande (OG)
+                      const shareText = `ℹ️ Pide cita en este centro con tarifas reducidas activando DKV Dentisalud Élite.\n\n👇 Mira la ubicación en el mapa:`;
 
+                      // Si el móvil/navegador soporta compartir nativo...
                       if (navigator.share) {
                         navigator.share({
-                          title: `Clínica Dental: ${selectedClinicData.name}`,
+                          title: `Centro dental DKV en ${selectedClinicData.city}`,
                           text: shareText,
                           url: shareUrl,
                         }).catch(console.error);
                       } else {
+                        // Plan B (para ordenadores): Copiar al portapapeles
                         navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
                         alert("¡Enlace copiado al portapapeles!");
                       }
