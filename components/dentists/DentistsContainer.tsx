@@ -269,7 +269,7 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
                         }).catch(console.error);
                       } else {
                         // Plan B (para ordenadores): Copiar al portapapeles
-                        navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
+                        navigator.clipboard.writeText(shareUrl);
                         alert("¡Enlace copiado al portapapeles!");
                       }
                     }}
