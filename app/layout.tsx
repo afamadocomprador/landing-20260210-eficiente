@@ -5,6 +5,7 @@ import "./globals.css";
 // Importamos el Header migrado
 import Header from "@/components/layout/Header";
 
+
 // Configuración de Fuentes Corporativas (Mismo setup V2, mapeado a V1)
 const lemonMilk = localFont({
   src: "./fonts/LemonMilkPro-Bold.woff2",
@@ -22,9 +23,13 @@ const fsMe = localFont({
 
 export const metadata: Metadata = {
   title: "DKV Dentisalud Élite | Bernardo Sobrecasas",
-  description: "Seguro dental DKV con precios pactados. Implantes a 1.200€ y menores incluidos.",
+  description: "Tratamientos dentales con precios pactados. Implantes a 1.200€ y menores incluidos.",
   verification: {
     google: 'ZcZv1ys4X1ftnI0uYOf6EfLkxGXAUsuaiK_9h1DaRv0', // Tu código de Search Console
+  },
+  icons: {
+    icon: '/images/favicon.ico',        // Para la pestaña del navegador normal
+    apple: '/images/apple-icon.png',    // Para WhatsApp, iPhone y Telegram
   },
 };
 
