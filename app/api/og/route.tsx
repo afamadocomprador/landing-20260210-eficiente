@@ -13,6 +13,7 @@ export async function GET(request: NextRequest) {
     let rawTitle = searchParams.get('title') || 'Dentistas cerca de ti';
     rawTitle = rawTitle.toUpperCase();
 
+    /* *************************** 
     // 2. LÓGICA INTELIGENTE: Extraemos SOLO el nombre de la ciudad
     let cityName = 'CERCA DE TI';
     if (rawTitle.startsWith('DENTISTAS EN ')) {
@@ -21,6 +22,30 @@ export async function GET(request: NextRequest) {
       cityName = rawTitle.replace('DENTISTAS ', '');
     } else if (rawTitle !== 'DENTISTAS') {
       cityName = rawTitle; // Por si nos mandan la ciudad suelta
+    }
+    ************************* */
+
+    // 2. LÓGICA SEMÁNTICA (Sin necesidad de parámetros extra)
+    let line1 = 'ENCUENTRA';
+    let line2 = 'TU DENTISTA';
+    let showEn = true;
+    let mainText = 'CERCA DE TI';
+
+    if (rawTitle.startsWith('TU CENTRO DENTAL ')) {
+      line1 = 'TU CENTRO';
+      line2 = 'DENTAL';
+      showEn = false;
+      mainText = rawTitle.replace('TU CENTRO DENTAL ', '');
+    } else if (rawTitle.startsWith('DENTISTAS EN ')) {
+      mainText = rawTitle.replace('DENTISTAS EN ', '');
+    } else if (rawTitle.startsWith('DENTISTAS ')) {
+      mainText = rawTitle.replace('DENTISTAS ', '');
+    } else if (rawTitle !== 'DENTISTAS') {
+      mainText = rawTitle;
+    }
+
+    if (mainText === 'CERCA DE TI') {
+       showEn = false;
     }
 
     // 3. Misma foto y fuentes
@@ -90,18 +115,16 @@ export async function GET(request: NextRequest) {
                   maxWidth: '520px', 
                 }}
               >
-                {/* LÍNEAS ESTATICAS: Verde oscuro */}
-                <span style={{ display: 'flex', color: '#033B37' }}>ENCUENTRA</span>
-                <span style={{ display: 'flex', color: '#033B37' }}>TU DENTISTA</span>
-                
-                {/* 🌟 LÓGICA AÑADIDA: Oculta "EN" si es "CERCA DE TI" 🌟 */}
-                {cityName !== 'CERCA DE TI' && (
+                {/* LÍNEAS ESTATICAS DINÁMICAS */}
+                <span style={{ display: 'flex', color: '#033B37' }}>{line1}</span>
+                <span style={{ display: 'flex', color: '#033B37' }}>{line2}</span>
+                {showEn && (
                   <span style={{ display: 'flex', color: '#033B37' }}>EN</span>
                 )}
                 
-                {/* CIUDAD: Verde claro pistacho */}
+                {/* CIUDAD O CENTRO: Verde claro pistacho */}
                 <div style={{ display: 'flex', flexWrap: 'wrap', color: '#849700', marginTop: '0px' }}>
-                  {cityName.split(' ').map((word, index) => (
+                  {mainText.split(' ').map((word, index) => (
                     <span key={index} style={{ display: 'flex', marginRight: '16px' }}>
                       {word}
                     </span>
