@@ -73,7 +73,6 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
   // ====================================================================
   const hasAutoOpened = useRef(false);
 
-  // Función auxiliar para mantener limpio el SEO oculto del móvil
   const updateMobileShareTags = useCallback((newPath: string) => {
     const fullUrl = `${window.location.origin}${newPath}`;
     const canonical = document.querySelector('link[rel="canonical"]');
@@ -84,29 +83,24 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
   }, []);
 
   useEffect(() => {
-    // Si ya hemos hecho la auto-apertura o no hay clínicas cargadas, no hacemos nada
     if (hasAutoOpened.current || localClinics.length === 0) return;
 
     const currentPath = window.location.pathname;
     const pathSegments = currentPath.split('/').filter(Boolean);
     const lastSegment = pathSegments[pathSegments.length - 1];
 
-    // ¿La URL trae una instrucción de compartir?
     if (lastSegment && lastSegment.startsWith('share-')) {
       const realClinicId = lastSegment.replace('share-', '');
       const sharedClinic = localClinics.find((c: any) => c.clinic_id === realClinicId);
 
-      // 1. Si encontramos la clínica, la abrimos
       if (sharedClinic) {
         setSelectedClinicId(sharedClinic.clinic_id);
         setSelectedFromList(sharedClinic.name); 
         setIsListOpen(false); 
       }
       
-      // Marcamos que ya hemos leído la URL para no repetir el proceso
       hasAutoOpened.current = true; 
 
-      // 2. 🌟 MAGIA: Limpiamos la URL y el SEO INMEDIATAMENTE
       const cleanPath = currentPath.split('/share-')[0].replace(/\/$/, "");
       const finalPath = cleanPath === '' ? '/' : cleanPath;
       
@@ -115,11 +109,6 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
     }
   }, [localClinics, updateMobileShareTags]);
   // ====================================================================
-
-
-
-
-
 
   const handleMarkerClick = (markerIdentifier: string) => {
     const matchedClinic = localClinics.find((c: any) => c.name === markerIdentifier);
@@ -245,26 +234,18 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
                 </div>
                 
                 <div className="flex items-center gap-1.5 shrink-0 mt-1">
-                  
-                  {/* ========================================================= */}
-                  {/* 🌟 BOTÓN DE COMPARTIR CON CONSTRUCCIÓN DE URL INTELIGENTE */}
-                  {/* ========================================================= */}
                   <button 
                     onClick={(e) => {
                       e.stopPropagation();
                       
-                      // CONSTRUIMOS EL ENLACE FORZANDO SIEMPRE "CERCA DE MI"
-                      // Da igual si el usuario está en /dentistas/zaragoza, el enlace que enviará será universal.
                       const shareUrl = `${window.location.origin}/dentistas/cerca-de-mi/share-${selectedClinicData.clinic_id}`;
 
-                      // Si el móvil/navegador soporta compartir nativo...
                       if (navigator.share) {
                         navigator.share({
                           title: `Centro dental DKV en ${selectedClinicData.city}`,
                           url: shareUrl, 
                         }).catch(console.error);
                       } else {
-                        // Plan B (para ordenadores): Copiar al portapapeles
                         navigator.clipboard.writeText(shareUrl);
                         alert("¡Enlace copiado al portapapeles!");
                       }
@@ -275,15 +256,11 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
                     <Share2 className="w-5 h-5" />
                   </button>
 
-
-
                   <button 
                     onClick={() => {
                       setSelectedClinicId(null);
-                      setSelectedFromList(null); // 🌟 ESTO APAGA EL PIN DEL MAPA
+                      setSelectedFromList(null);
                     }}
-
-
                     className="text-gray-400 hover:text-dkv-gray bg-gray-50 hover:bg-gray-100 rounded-full p-1.5 transition-colors"
                     aria-label="Cerrar tarjeta"
                   >
