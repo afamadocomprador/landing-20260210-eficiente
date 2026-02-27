@@ -166,11 +166,15 @@ interface PageProps {
 
            if (clinicData) {
 
-             // 🌟 1. EL TEXTO EN NEGRITA DE WHATSAPP (Sintaxis corregida)
-             // Le pongo un pequeño "📍" y unas comas para que quede bonito, y un condicional por si no hay zip_code.
-             const clinicTitle = `📍 ${clinicData.address || ''}, ${clinicData.city || ''} (${clinicData.zip_code || ''})`;
+             // 🌟 TRUCO: Formateamos el CP con punto de miles manteniendo los 5 dígitos (ej: 50.004)
+             const formattedZip = clinicData.zip_code 
+               ? String(clinicData.zip_code).padStart(5, '0').replace(/(\d{2})(\d{3})/, '$1.$2') 
+               : '';
+
+             // 🌟 1. EL TEXTO EN NEGRITA DE WHATSAPP (CP antes de la ciudad con guion)
+             const clinicTitle = `📍 ${clinicData.address || ''}, ${formattedZip ? formattedZip + ' - ' : ''}${clinicData.city || ''}`;
              
-             // 🌟 2. EL TEXTO GRIS (Sintaxis corregida, sin el '} final)
+             // 🌟 2. EL TEXTO GRIS (Solo la dirección)
              const clinicDesc = `Consulta ubicación, consulta dentistas y pide cita en este centro dental de la red DKV DENTISALUD ÉLITE.`;
 
              // 🌟 EL TRUCO: Le mandamos el texto literal al generador de imágenes
