@@ -43,6 +43,8 @@ interface PageProps {
 
 
 // --- 2. METADATA DINÁMICA (SEO) ---
+
+/*  *******************************
  export async function generateMetadata(
    { params }: PageProps,
    parent: ResolvingMetadata
@@ -87,26 +89,116 @@ interface PageProps {
          follow: true,
        }
      };
+***************************** */
 
-
-/* ********************************
-
-   } catch (e) {
-     return {
-       title: 'Buscador de Dentistas | DKV Dentisalud',
-       metadataBase: new URL(baseUrl)
-     };
-   }
-******************************** */
-
-
-
-} catch (e: any) {
-     // 1. Miramos qué ruta exacta estaba intentando leer el robot de WhatsApp
+// --- 2. METADATA DINÁMICA (SEO) ---
+ export async function generateMetadata(
+   { params }: PageProps,
+   parent: ResolvingMetadata
+ ): Promise<Metadata> {
+   try {
+     const navigationData = await getPageData(params.slug);
+     const { seo } = navigationData;
      const currentPath = params.slug ? params.slug.join('/') : '';
+     const canonicalUrl = `/dentistas/${currentPath}`.replace(/\/$/, "");
+     const title = seo.title || `Dentistas en ${seo.h1.normal} | DKV Dentisalud Elite`;
+     const description = seo.description || `Cuadro médico DKV en ${seo.h1.normal}.`;
 
-     // 2. CAMINO A: El robot intenta leer "cerca-de-ti" (No tiene cookies, pero le damos la tarjeta correcta)
-     if (currentPath === 'cerca-de-ti' || currentPath === 'cerca-de-mi') {
+     return {
+       metadataBase: new URL(baseUrl),
+       title: title,
+       description: description,
+       alternates: {
+         canonical: canonicalUrl,
+       },
+       openGraph: {
+         title: title,
+         description: description,
+         url: canonicalUrl,
+         siteName: 'DKV Dentisalud Élite',
+         locale: 'es_ES',
+         type: 'website',
+         images: [
+           {
+             url: `/api/og?title=${encodeURIComponent(seo.h1.normal)}&subtitle=Cuadro Médico`,
+             width: 1200,
+             height: 630,
+             alt: `Dentistas DKV en ${seo.h1.normal}`,
+           },
+         ],
+       },
+       robots: {
+         index: true,
+         follow: true,
+       }
+     };
+
+   } catch (e: any) {
+     const currentPath = params?.slug ? params.slug.join('/') : '';
+     
+     // =======================================================================
+     // 🌟 CAMINO ESTRELLA: Si están compartiendo UNA CLÍNICA EXACTA
+     // =======================================================================
+     if ((currentPath.includes('cerca-de-ti') || currentPath.includes('cerca-de-mi')) && params?.slug && params.slug.length > 1) {
+       
+       const clinicId = params.slug[1]; // El ID o nombre de la clínica
+
+       try {
+         // Conectamos RÁPIDAMENTE a Supabase para sacar el nombre real
+         const { createServerClient } = require('@supabase/ssr');
+         const { cookies } = require('next/headers');
+         const cookieStore = cookies();
+         const supabase = createServerClient(
+           process.env.NEXT_PUBLIC_SUPABASE_URL!,
+           process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+           { cookies: { get: (name: string) => cookieStore.get(name)?.value } }
+         );
+
+         // Buscamos el centro por su ID (He usado tu view_clinics)
+         const { data: clinicData } = await supabase
+           .from('view_clinics') 
+           .select('name, staff_count, city')
+           .eq('clinic_id', clinicId) 
+           .single();
+
+         if (clinicData) {
+           const clinicTitle = `📍 ${clinicData.name} | ⭐ Valoración Excelente`;
+           const especialistsText = clinicData.staff_count ? ` con ${clinicData.staff_count} especialistas disponibles.` : '.';
+           const clinicDesc = `Clínica oficial DKV Dentisalud en ${clinicData.city || 'tu zona'}${especialistsText} Ahorro garantizado.`;
+
+           return {
+             metadataBase: new URL(baseUrl),
+             title: clinicTitle,
+             description: clinicDesc,
+             openGraph: {
+               title: clinicTitle,
+               description: clinicDesc,
+               url: `/dentistas/${currentPath}`,
+               siteName: 'DKV Dentisalud Élite',
+               images: [
+                 {
+                   // 🌟 CREAMOS LA IMAGEN CON EL NOMBRE DE LA CLÍNICA
+                   url: `/api/og?title=${encodeURIComponent(clinicData.name)}&v=1`,
+                   width: 1200,
+                   height: 630,
+                   alt: clinicData.name,
+                 }
+               ],
+               locale: 'es_ES',
+               type: 'website',
+             }
+           };
+         }
+       } catch (dbError) {
+         console.error("No se pudo cargar info de la clínica para OG", dbError);
+         // Si falla la base de datos, seguimos hacia abajo (Fallback genérico)
+       }
+     }
+
+     // =======================================================================
+     // 📍 CAMINO A: "Cerca de ti" genérico (Sin clínica específica)
+     // =======================================================================
+     if (currentPath.includes('cerca-de-ti') || currentPath.includes('cerca-de-mi')) {
        return {
          metadataBase: new URL(baseUrl),
          title: '📍 Dentistas DKV Cerca de Ti | ⭐ Valoración Excelente',
@@ -118,7 +210,6 @@ interface PageProps {
            siteName: 'DKV Dentisalud Élite',
            images: [
              {
-               // 🌟 LLAMAMOS A LA IMAGEN INTELIGENTE DE "CERCA DE TI"
                url: `/api/og?title=Dentistas%20cerca%20de%20ti&v=3`,
                width: 1200,
                height: 630,
@@ -131,7 +222,9 @@ interface PageProps {
        };
      }
 
-     // 3. CAMINO B: Cualquier otro error (Fallo de BD, ciudad no existe, etc.) -> Fallback a la HOME
+     // =======================================================================
+     // 🏠 CAMINO B: Cualquier otro error -> Fallback a la HOME
+     // =======================================================================
      return {
        metadataBase: new URL(baseUrl),
        title: 'DKV Dentisalud Élite | Seguro Dental con Precios Pactados',
@@ -143,7 +236,6 @@ interface PageProps {
          siteName: 'DKV Dentisalud Élite',
          images: [
            {
-             // 🌟 LLAMAMOS A LA IMAGEN DE LA HOME PRINCIPAL (Chica a la izquierda)
              url: `/api/og-home?v=3`, 
              width: 1200, 
              height: 630,
@@ -155,10 +247,7 @@ interface PageProps {
        }
      };
    }
-
-
  }
-
 
  // --- 3. VIEWPORT (Móvil) ---
  export const generateViewport = (): Viewport => {
