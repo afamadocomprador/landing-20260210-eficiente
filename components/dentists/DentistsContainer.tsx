@@ -99,7 +99,7 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
 
 
   // ====================================================================
-  // 🌟 EL SINCRONIZADOR DE URL EN TIEMPO REAL
+  // 🌟 EL SINCRONIZADOR DE URL EN TIEMPO REAL (Corregido para Next.js 14)
   // ====================================================================
   useEffect(() => {
     const currentPath = window.location.pathname;
@@ -110,13 +110,17 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
         // Limpiamos cualquier share previo por si ha saltado de un pin a otro
         const cleanPath = currentPath.split('/share-')[0].replace(/\/$/, "");
         const newUrl = `${cleanPath}/share-${selectedClinicId}`;
-        window.history.replaceState(null, '', newUrl); // Cambia la URL sin recargar
+        
+        // 🌟 CORRECCIÓN: Usamos window.history.state en lugar de null para no borrarle la memoria a Next.js
+        window.history.replaceState(window.history.state, '', newUrl); 
       }
     } else {
       // 2. Si CERRAMOS la ficha, limpiamos el rastro de la barra del navegador
       if (currentPath.includes('/share-')) {
         const cleanPath = currentPath.split('/share-')[0].replace(/\/$/, "");
-        window.history.replaceState(null, '', cleanPath);
+        
+        // 🌟 CORRECCIÓN: Usamos window.history.state en lugar de null
+        window.history.replaceState(window.history.state, '', cleanPath);
       }
     }
   }, [selectedClinicId]);
