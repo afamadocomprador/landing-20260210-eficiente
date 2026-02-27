@@ -41,6 +41,8 @@ interface PageProps {
  }
 
 // --- 2. METADATA DINÁMICA (SEO) ---
+
+// --- 2. METADATA DINÁMICA (SEO) ---
  export async function generateMetadata(
    { params }: PageProps,
    parent: ResolvingMetadata
@@ -50,8 +52,22 @@ interface PageProps {
      const { seo } = navigationData;
      const currentPath = params.slug ? params.slug.join('/') : '';
      const canonicalUrl = `/dentistas/${currentPath}`.replace(/\/$/, "");
+     
+     // 1. SEO PARA GOOGLE (Mantenemos el clásico para no perder posicionamiento)
      const title = seo.title || `Dentistas en ${seo.h1.normal} | DKV Dentisalud Elite`;
      const description = seo.description || `Cuadro médico DKV en ${seo.h1.normal}.`;
+
+     // 2. 🌟 SEO PARA WHATSAPP / REDES SOCIALES (Textos dinámicos con singular/plural)
+     const formatter = new Intl.NumberFormat('es-ES');
+     const numDentistas = seo.totalDentistasHero || 0;
+     const numCentros = seo.totalCentrosHero || 0;
+     
+     // Evaluamos singular y plural
+     const palabraDentistas = numDentistas === 1 ? "dentista" : "dentistas";
+     const palabraCentros = numCentros === 1 ? "centro" : "centros";
+     
+     const ogTitle = `${formatter.format(numDentistas)} ${palabraDentistas} en ${formatter.format(numCentros)} ${palabraCentros} a tu disposición`;
+     const ogDesc = "Lo fácil es elegir el dentista que te va a atender como DKV DENTISALUD ELITE";
 
      return {
        metadataBase: new URL(baseUrl),
@@ -61,8 +77,8 @@ interface PageProps {
          canonical: canonicalUrl,
        },
        openGraph: {
-         title: title,
-         description: description,
+         title: ogTitle,        // 🌟 Aquí inyectamos la negrita dinámica para WhatsApp
+         description: ogDesc,   // 🌟 Aquí inyectamos el texto gris para WhatsApp
          url: canonicalUrl,
          siteName: 'DKV Dentisalud Élite',
          locale: 'es_ES',
@@ -115,7 +131,7 @@ interface PageProps {
              : '';
 
            const clinicTitle = `📍 ${clinicData.address || ''}, ${formattedZip ? formattedZip + ' - ' : ''}${clinicData.city || ''}`;
-           const clinicDesc = `Consulta ubicación, consulta dentistas y pide cita en este centro dental de la red DKV DENTISALUD ÉLITE.`;
+           const clinicDesc = `Consulta la ubicación, los dentistas y los precios de cada tratamiento en este centro dental de la red DKV DENTISALUD ÉLITE antes de asociarte y concertar una cita directa.`;
            const ogTitleToRender = `TU CENTRO DENTAL ${clinicData.name}`;
 
            return {
@@ -198,6 +214,11 @@ interface PageProps {
      };
    }
  }
+
+
+
+
+
 
  // --- 3. VIEWPORT (Móvil) ---
  export const generateViewport = (): Viewport => {
