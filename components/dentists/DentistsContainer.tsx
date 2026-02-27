@@ -81,14 +81,17 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
     const pathSegments = window.location.pathname.split('/').filter(Boolean);
     const lastSegment = pathSegments[pathSegments.length - 1];
 
-    // Buscamos si coincide con alguna clínica del listado inicial
-    const sharedClinic = localClinics.find((c: any) => c.clinic_id === lastSegment);
+    // 🌟 AÑADIDO: Si la URL termina en "share-...", lo limpiamos para buscar el ID real
+    if (lastSegment && lastSegment.startsWith('share-')) {
+      const realClinicId = lastSegment.replace('share-', '');
+      const sharedClinic = localClinics.find((c: any) => c.clinic_id === realClinicId);
 
-    if (sharedClinic) {
-      setSelectedClinicId(sharedClinic.clinic_id);
-      setSelectedFromList(sharedClinic.name); // Esto le grita al mapa: "¡Haz zoom aquí!"
-      setIsListOpen(false); // Ocultamos la lista grande para ver el mapa
-      hasAutoOpened.current = true; // Marcamos para que no se vuelva a ejecutar
+      if (sharedClinic) {
+        setSelectedClinicId(sharedClinic.clinic_id);
+        setSelectedFromList(sharedClinic.name); 
+        setIsListOpen(false); 
+        hasAutoOpened.current = true; 
+      }
     }
   }, [localClinics]);
   // ====================================================================
@@ -230,15 +233,21 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
                       const lastSegment = pathSegments[pathSegments.length - 1];
                       
                       // Miramos si la ruta actual ya tiene un ID de clínica al final
-                      const isSharedUrl = localClinics.some((c: any) => c.clinic_id === lastSegment);
+                      //const isSharedUrl = localClinics.some((c: any) => c.clinic_id === lastSegment);
                       
                       // Si ya lo tiene, se lo quitamos para poner el nuevo (evita duplicar)
-                      if (isSharedUrl) {
+                      //if (isSharedUrl) {
+                      // Limpiamos si ya había un share- previo
+                      if (lastSegment && lastSegment.startsWith('share-')) {
                         pathSegments.pop();
                       }
                       
                       const cleanPath = '/' + pathSegments.join('/');
-                      const shareUrl = `${window.location.origin}${cleanPath}/${selectedClinicData.clinic_id}`;
+                      //const shareUrl = `${window.location.origin}${cleanPath}/${selectedClinicData.clinic_id}`;
+                      // 🌟 AÑADIDO: Construimos la URL con el prefijo "share-"
+                      const shareUrl = `${window.location.origin}${cleanPath}/share-${selectedClinicData.clinic_id}`;
+
+
 
                       // 2. Texto enriquecido para WhatsApp
                       const shareText = `📍 ${selectedClinicData.name}\n🏥 ${selectedClinicData.address}, ${selectedClinicData.city}\n\nℹ️ Pide cita en este centro con tarifas reducidas activando DKV Dentisalud Élite.\n\n👇 Mira la ubicación en el mapa:`;
