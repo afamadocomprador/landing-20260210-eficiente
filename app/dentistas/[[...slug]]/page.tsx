@@ -131,7 +131,7 @@ interface PageProps {
              : '';
 
            const clinicTitle = `📍 ${clinicData.address || ''}, ${formattedZip ? formattedZip + ' - ' : ''}${clinicData.city || ''}`;
-           const clinicDesc = `Consulta la ubicación, los dentistas y los precios de cada tratamiento en este centro dental de la red DKV DENTISALUD ÉLITE antes de asociarte y concertar una cita directa.`;
+           const clinicDesc = `Consulta ubicación, dentistas y precios de tratamientos en este centro dental DKV DENTISALUD ÉLITE. Pide cita directa.`;
            const ogTitleToRender = `TU CENTRO DENTAL ${clinicData.name}`;
 
            return {
