@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Search, Loader2, Sparkles } from "lucide-react";
+import { Search, Loader2 } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
@@ -11,10 +11,9 @@ const supabase = createClient(
 );
 
 interface TreatmentItem {
-  id: string; // O el slug del tratamiento si lo tienes en la tabla
-  nombre: string;
-  categoria: string;
-  // Añade aquí más campos de tu tabla "banana" si los necesitas
+  n: string;
+  t: string;
+  s: string;
 }
 
 export default function TreatmentSearch() {
@@ -28,16 +27,14 @@ export default function TreatmentSearch() {
   const router = useRouter();
   const wrapperRef = useRef<HTMLDivElement>(null);
   
-  // Cargamos el diccionario predictivo desde tu tabla (sustituye 'banana' por tu tabla real)
   const loadDictionary = async () => {
     if (dictionary || isLoading || isNavigating) return; 
     
     setIsLoading(true);
     try {
-      // 🌟 CAMBIA 'banana' POR EL NOMBRE REAL DE TU TABLA/VISTA CUANDO LA CREES
       const { data, error } = await supabase
-        .from('banana') 
-        .select('id, nombre, categoria'); // Ajusta las columnas según necesites
+        .from('vw_search_treatments') 
+        .select('n, t, s');
 
       if (error) throw error;
       setDictionary(data as TreatmentItem[]);
@@ -53,14 +50,13 @@ export default function TreatmentSearch() {
     const value = e.target.value;
     setQuery(value);
 
-    // Búsqueda predictiva local si hay más de 2 caracteres
     if (value.length >= 2 && dictionary) {
       const searchWord = value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       
       const filtered = dictionary.filter(item => {
-        const itemName = item.nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const itemName = item.n.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         return itemName.includes(searchWord);
-      }).slice(0, 6); // Limitamos a 6 resultados para no saturar
+      }).slice(0, 6);
 
       setResults(filtered);
     } else {
@@ -68,7 +64,6 @@ export default function TreatmentSearch() {
     }
   };
 
-  // Función para navegar tanto a intenciones como a resultados específicos
   const handleSelect = (urlDestino: string, displayName: string) => {
     setQuery(displayName);
     setIsOpen(false);
@@ -80,17 +75,15 @@ export default function TreatmentSearch() {
     if (!query || isNavigating) return;
 
     if (results.length > 0) {
-      // Si hay resultados predictivos, vamos al primero
-      handleSelect(`/tratamientos/${results[0].id}`, results[0].nombre); 
+      handleSelect(`/tratamientos/${results[0].s}`, results[0].n); 
     } else if (dictionary) {
-      // Si no, buscamos coincidencia exacta en el diccionario
       const searchWord = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       const match = dictionary.find(item => 
-        item.nombre.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(searchWord)
+        item.n.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(searchWord)
       );
       
       if (match) {
-        handleSelect(`/tratamientos/${match.id}`, match.nombre);
+        handleSelect(`/tratamientos/${match.s}`, match.n);
       }
     }
   };
@@ -108,7 +101,7 @@ export default function TreatmentSearch() {
   return (
     <div ref={wrapperRef} className="relative w-full max-w-4xl mx-auto z-50 text-left font-fsme">
       
-      {/* --- PASTILLA DEL BUSCADOR (Idéntica al HeroSearch) --- */}
+      {/* PASTILLA BUSCADOR */}
       <div 
         className={`bg-white rounded-full border p-2 flex items-center relative transition-all duration-300 
           ${isNavigating 
@@ -125,12 +118,9 @@ export default function TreatmentSearch() {
           if (wrapperRef.current) {
             const headerElement = document.querySelector('header'); 
             const headerHeight = headerElement ? headerElement.offsetHeight : 90;
-            const breathingRoom = 24; 
-            const yOffset = -(headerHeight + breathingRoom); 
-            
+            const yOffset = -(headerHeight + 24); 
             const element = wrapperRef.current;
             const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
-            
             window.scrollTo({ top: y, behavior: 'smooth' });
           }
         }}
@@ -161,21 +151,17 @@ export default function TreatmentSearch() {
         />
       </div>
 
-
-      {/* --- MENÚ DESPLEGABLE --- */}
+      {/* MENÚ DESPLEGABLE */}
       {isOpen && !isNavigating && (
         <div className="absolute top-full left-0 right-0 mt-4 bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden divide-y divide-gray-50 py-2">
           
-          {/* ESTADO 1: REPOSO (Mostrar las 5 intenciones) */}
+          {/* ESTADO 1: INTENCIONES (Reposo) */}
           {query.length === 0 && (
             <div className="flex flex-col">
-                
-                {/* 1. Dolor Agudo */}
                 <div 
-                  onClick={() => handleSelect('/tratamientos/dolor', 'Tengo dolor agudo')}
+                  onClick={() => handleSelect('/tratamientos/endodoncias-extracciones-curas', 'Tengo dolor agudo')}
                   className="px-6 py-4 hover:bg-orange-50/50 cursor-pointer flex items-center gap-5 group transition-colors"
                 >
-                  {/* ICONO: Rayo ⚡ */}
                   <div className="w-12 h-12 flex-shrink-0 transition-transform group-hover:scale-110 group-hover:rotate-3">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
                       <defs>
@@ -194,12 +180,10 @@ export default function TreatmentSearch() {
                   </div>
                 </div>
 
-                {/* 2. Faltan Piezas */}
                 <div 
-                  onClick={() => handleSelect('/tratamientos/implantes-protesis', 'Me faltan piezas')}
+                  onClick={() => handleSelect('/tratamientos/implantes-protesis-reconstrucciones', 'Me faltan piezas')}
                   className="px-6 py-4 hover:bg-blue-50/50 cursor-pointer flex items-center gap-5 group transition-colors"
                 >
-                  {/* ICONO: Diente 🦷 con tornillo */}
                   <div className="w-12 h-12 flex-shrink-0 transition-transform group-hover:scale-110 group-hover:-rotate-6">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
                       <defs>
@@ -218,12 +202,10 @@ export default function TreatmentSearch() {
                   </div>
                 </div>
 
-                {/* 3. Estética */}
                 <div 
                   onClick={() => handleSelect('/tratamientos/ortodoncia-estetica', 'Mejorar mi sonrisa')}
                   className="px-6 py-4 hover:bg-purple-50/50 cursor-pointer flex items-center gap-5 group transition-colors"
                 >
-                  {/* ICONO: Chispas ✨ */}
                   <div className="w-12 h-12 flex-shrink-0 transition-transform group-hover:scale-110">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
                       <defs>
@@ -243,12 +225,10 @@ export default function TreatmentSearch() {
                   </div>
                 </div>
 
-                {/* 4. Prevención */}
                 <div 
                   onClick={() => handleSelect('/tratamientos/prevencion', 'Quiero prevenir')}
                   className="px-6 py-4 hover:bg-[#F4F8F1] cursor-pointer flex items-center gap-5 group transition-colors"
                 >
-                  {/* ICONO: Escudo DKV 🛡️ */}
                   <div className="w-12 h-12 flex-shrink-0 transition-transform group-hover:scale-110 group-hover:translate-y-1">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
                       <defs>
@@ -267,12 +247,10 @@ export default function TreatmentSearch() {
                   </div>
                 </div>
 
-                {/* 5. Infantil */}
                 <div 
                   onClick={() => handleSelect('/tratamientos/odontopediatria', 'Odontopediatría')}
                   className="px-6 py-4 hover:bg-yellow-50/50 cursor-pointer flex items-center gap-5 group transition-colors"
                 >
-                  {/* ICONO: Osito 🧸 */}
                   <div className="w-12 h-12 flex-shrink-0 transition-transform group-hover:scale-110 group-hover:-rotate-6">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
                       <defs>
@@ -299,25 +277,30 @@ export default function TreatmentSearch() {
             </div>
           )}
 
-          {/* ESTADO 2: RESULTADOS PREDICTIVOS (Cuando el usuario escribe) */}
+
+          {/* ESTADO 2: RESULTADOS PREDICTIVOS (Corregido para móvil y textos largos) */}
           {query.length > 0 && results.length > 0 && results.map((item, idx) => (
             <div 
-              key={`${item.id}-${idx}`}
-              // Ajusta la URL destino según cómo montes tu routing de tratamientos específicos
-              onClick={() => handleSelect(`/tratamientos/${item.id}`, item.nombre)}
-              className="px-6 py-4 hover:bg-gray-50 cursor-pointer flex items-center justify-between group transition-colors"
+              key={`${item.s}-${idx}`}
+              onClick={() => handleSelect(`/tratamientos/${item.s}`, item.n)}
+              className="px-6 py-4 hover:bg-gray-50 cursor-pointer flex items-center justify-between group transition-colors gap-4"
             >
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-green-50 transition-colors flex-shrink-0">
-                  <Sparkles className="w-5 h-5 text-gray-400 group-hover:text-dkv-green transition-colors" />
-                </div>
-                <span className="text-gray-800 font-medium text-base sm:text-lg">{item.nombre}</span>
-              </div>
-              <span className="text-xs font-bold uppercase tracking-wider text-gray-500 bg-gray-100 px-3 py-1 rounded-full group-hover:bg-green-50 group-hover:text-dkv-green transition-colors whitespace-nowrap ml-2 hidden sm:block">
-                {item.categoria}
+              {/* Texto a la izquierda: Permitimos que ocupe varias líneas si es muy largo */}
+              <span className="text-gray-800 font-medium text-base sm:text-lg leading-tight pl-2">
+                {item.n}
+              </span>
+              
+              {/* Etiqueta a la derecha: 
+                  1. Quitamos 'hidden sm:block' para que se vea en móviles.
+                  2. Añadimos 'shrink-0' para que el texto largo no la aplaste.
+                  3. Copiamos los colores exactos de HeroSearch (gris -> verde al hacer hover).
+              */}
+              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-gray-500 bg-gray-100 px-3 py-1 rounded-full group-hover:bg-green-50 group-hover:text-dkv-green transition-colors whitespace-nowrap shrink-0">
+                {item.t}
               </span>
             </div>
           ))}
+
 
           {/* ESTADO 3: SIN RESULTADOS */}
           {query.length > 1 && results.length === 0 && dictionary && (
