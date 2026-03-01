@@ -18,6 +18,7 @@ import PricingCards from '@/components/PricingCards';
 import FooterLegal from '@/components/FooterLegal'; 
 import Archetypes from '@/components/Archetypes'; 
 import HeroSearch from '@/components/home/HeroSearch';
+import TreatmentSearch from '@/components/home/TreatmentSearch';
 import ScrollReveal from '@/components/ui/ScrollReveal';
 
 //const LeadForm = dynamic(() => import('@/components/LeadForm'), {
@@ -249,7 +250,8 @@ export default function LandingPage() {
         <MainHero /> 
 
         {/* --- SECCIÓN TRATAMIENTOS --- */}
-        <section className="py-20 bg-white border-t border-dkv-gray-border">
+        {/* 🌟 MAGIA Z-INDEX: Le ponemos relative y z-40 para que aplaste al z-20 de Dentistas */}
+        <section className="py-20 bg-white border-t border-dkv-gray-border relative z-40">
           <div className="container mx-auto px-4 text-center">
 
            {/* 1. El Título sube primero (delay 0, inmediato) */}
@@ -268,13 +270,11 @@ export default function LandingPage() {
 
            {/* 3. La pastilla del Buscador sube la última, coronando la escena (400ms) */}   
            <ScrollReveal delay={150}>       
-            <Link 
-              href="/tratamientos"
-              // CAMBIO ACCESIBILIDAD: De text-lg a text-xl para cumplir ratio de contraste
-              className="inline-flex items-center justify-center rounded-dkv font-fsme font-bold duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-dkv-green text-white hover:bg-dkv-green-hover focus:ring-dkv-green shadow-xl hover:scale-105 transition-transform text-xl px-8 py-6 h-auto cursor-pointer"
-            >
-              Ver Tratamientos y Precios
-            </Link>
+            
+            {/* 🌟 AQUÍ INYECTAMOS EL NUEVO BUSCADOR (Sustituye al botón) */}
+            <div className="max-w-4xl mx-auto mb-8">
+              <TreatmentSearch />
+            </div>
 
             <p className="text-sm font-medium text-dkv-green-dark mt-6">
               Aquí puedes ver los tratamientos y sus precios. <br /> Directamente y sin formularios.
@@ -282,9 +282,7 @@ export default function LandingPage() {
            </ScrollReveal>
 
           </div>
-        </section>
-
-
+          </section>
 
         {/* --- SECCIÓN DENTISTAS --- */}
         <section 
@@ -375,4 +373,3 @@ export default function LandingPage() {
     </div>
   );
 }
-
