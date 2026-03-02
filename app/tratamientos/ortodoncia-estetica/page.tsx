@@ -8,16 +8,16 @@ import ScrollReveal from '@/components/ui/ScrollReveal'; // Importamos tu animad
 // Array de datos adaptado (Imágenes .png y badges corporativos)
 const tratamientos = [
   {
-    id: 'invisible',
-    titulo: 'Ortodoncia Invisible',
-    subtitulo: 'La opción más estética y cómoda',
-    imagen: '/images/tratamientos/ortodoncia-invisalign.png',
-    descripcion: "Alineadores transparentes hechos a medida que se cambian cada pocas semanas. Prácticamente invisibles, removibles para comer y cepillarse los dientes.",
-    ventajas: ['100% Estético', 'Removible', 'Menos visitas a la clínica'],
-    precioMercado: '3.500€',
-    precioDKV: '2.450€',
-    badge: 'Más Popular',
-    badgeColor: 'bg-dkv-green text-white' 
+    id: 'metalica',
+    titulo: 'Brackets Metálicos',
+    subtitulo: 'El estándar de resistencia y eficacia',
+    imagen: '/images/tratamientos/ortodoncia-standard.png', 
+    descripcion: "El sistema tradicional más robusto y económico. Perfecto para corregir cualquier tipo de maloclusión, muy utilizado en adolescentes por su durabilidad.",
+    ventajas: ['Máxima resistencia', 'Tratamiento rápido', 'La opción más económica'],
+    precioMercado: '2.200€',
+    precioDKV: '1.450€',
+    badge: 'Mejor Precio',
+    badgeColor: 'bg-gray-100 text-dkv-gray' 
   },
   {
     id: 'estetica',
@@ -44,16 +44,16 @@ const tratamientos = [
     badgeColor: 'bg-dkv-green-dark text-white' 
   },
   {
-    id: 'metalica',
-    titulo: 'Brackets Metálicos',
-    subtitulo: 'El estándar de resistencia y eficacia',
-    imagen: '/images/tratamientos/ortodoncia-standard.png', 
-    descripcion: "El sistema tradicional más robusto y económico. Perfecto para corregir cualquier tipo de maloclusión, muy utilizado en adolescentes por su durabilidad.",
-    ventajas: ['Máxima resistencia', 'Tratamiento rápido', 'La opción más económica'],
-    precioMercado: '2.200€',
-    precioDKV: '1.450€',
-    badge: 'Mejor Precio',
-    badgeColor: 'bg-gray-100 text-dkv-gray' 
+    id: 'invisible',
+    titulo: 'Ortodoncia Invisible',
+    subtitulo: 'La opción más estética y cómoda',
+    imagen: '/images/tratamientos/ortodoncia-invisalign.png',
+    descripcion: "Alineadores transparentes hechos a medida que se cambian cada pocas semanas. Prácticamente invisibles, removibles para comer y cepillarse los dientes.",
+    ventajas: ['100% Estético', 'Removible', 'Menos visitas a la clínica'],
+    precioMercado: '3.500€',
+    precioDKV: '2.450€',
+    badge: 'Más Popular',
+    badgeColor: 'bg-dkv-green text-white' 
   },
   {
     id: 'removible',
@@ -90,7 +90,7 @@ export default function OrtodonciaEsteticaPage() {
 
           <ScrollReveal delay={100}>
             <p className="text-xl text-dkv-gray font-fsme leading-relaxed text-balance max-w-3xl mx-auto">
-              Alinea tu sonrisa con la última tecnología. Compara los tratamientos, descubre cuál se adapta a ti y ahorra hasta un <strong className="text-dkv-green-dark font-black">40% de descuento</strong> con tu seguro DKV Dentisalud Élite.
+              Alinea tu sonrisa con la última tecnología. Compara los tratamientos, descubre cuál se adapta a ti y ahorra hasta un <strong className="text-dkv-green-dark font-black">40% de descuento</strong> con DKV Dentisalud Élite.
             </p>
           </ScrollReveal>
 
