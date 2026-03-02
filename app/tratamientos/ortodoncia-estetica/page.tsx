@@ -3,9 +3,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Check, ChevronRight, Info } from 'lucide-react';
 import FooterLegal from '@/components/FooterLegal';
-import ScrollReveal from '@/components/ui/ScrollReveal'; // Importamos tu animador
+import ScrollReveal from '@/components/ui/ScrollReveal';
 
-// Array de datos adaptado (Imágenes .png y badges corporativos)
+// Array de datos adaptado con el nuevo tratamiento de Carillas
 const tratamientos = [
   {
     id: 'metalica',
@@ -65,7 +65,31 @@ const tratamientos = [
     precioMercado: '600€',
     precioDKV: '350€',
     badge: 'Infantil',
-    badgeColor: 'bg-[#FFF8F0] text-[#EA580C] border border-orange-200' // Naranja sutil corporativo para infantil
+    badgeColor: 'bg-[#FFF8F0] text-[#EA580C] border border-orange-200' 
+  },
+  {
+    id: 'blanqueamiento-laser',
+    titulo: 'Blanqueamiento Dental Láser',
+    subtitulo: 'Una sonrisa luminosa en una sola sesión',
+    imagen: '/images/tratamientos/estetica-blanqueamiento-laser.png', 
+    descripcion: "Tratamiento estético profesional rápido y seguro que aclara varios tonos el color del esmalte. Utiliza un gel blanqueador activado por luz láser para resultados inmediatos, sin dañar la estructura dental.",
+    ventajas: ['Resultados en 1 sola sesión', 'Protege el esmalte', 'Efecto duradero'],
+    precioMercado: '350€',
+    precioDKV: '180€',
+    badge: 'Estética Flash',
+    badgeColor: 'bg-white text-dkv-green border border-dkv-green/30 shadow-sm'
+  },
+  {
+    id: 'carillas-disilicato',
+    titulo: 'Carillas de Porcelana / Disilicato',
+    subtitulo: 'Diseño de sonrisa premium y natural',
+    imagen: '/images/tratamientos/estetica-carilla-disilicato.png', 
+    descripcion: "Láminas ultrafinas de alta resistencia (como el disilicato de litio) que revisten la cara frontal del diente. Corrigen al instante alteraciones de color, forma o posición con un resultado translúcido 100% natural.",
+    ventajas: ['Mínimamente invasivo', 'Alta resistencia a fracturas', 'Estética natural insuperable'],
+    precioMercado: '450€ x pieza',
+    precioDKV: '260€',
+    badge: 'Sonrisa Perfecta',
+    badgeColor: 'bg-gray-900 text-white shadow-sm'
   }
 ];
 
@@ -73,7 +97,7 @@ export default function OrtodonciaEsteticaPage() {
   return (
     <div className="min-h-screen bg-white text-dkv-gray font-fsme selection:bg-dkv-green selection:text-white">
       
-      {/* HEADER / HERO SECTION (Alineado con la Home) */}
+      {/* HEADER / HERO SECTION */}
       <section className="pt-16 pb-12 bg-white relative z-10">
         <div className="container mx-auto px-4 text-center max-w-4xl">
           
@@ -112,7 +136,6 @@ export default function OrtodonciaEsteticaPage() {
                       {trat.badge}
                     </span>
                   </div>
-                  {/* Como son PNGs, usamos contain simple para que luzcan perfectos */}
                   <Image 
                     src={trat.imagen} 
                     alt={trat.titulo}
@@ -149,7 +172,7 @@ export default function OrtodonciaEsteticaPage() {
                   <div className="pt-6 border-t border-dkv-gray-border flex flex-col sm:flex-row sm:items-end justify-between gap-6">
                     <div>
                       <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">
-                        Tratamiento completo desde:
+                        Tratamiento {trat.id.includes('carillas') ? 'estimado' : 'completo'} desde:
                       </span>
                       <div className="flex items-end gap-3">
                         <span className="text-xl text-gray-400 line-through font-medium mb-1 decoration-gray-300">
@@ -160,13 +183,12 @@ export default function OrtodonciaEsteticaPage() {
                             {trat.precioDKV}
                           </span>
                           <span className="text-[10px] font-bold text-dkv-green uppercase tracking-widest mt-1">
-                            Con DKV Élite
+                            Con DKV Élite {trat.id.includes('carillas') ? 'x pieza' : ''}
                           </span>
                         </div>
                       </div>
                     </div>
                     
-                    {/* BOTÓN ESTILO HOME */}
                     <Link 
                       href="/dentistas/cerca-de-mi"
                       className="inline-flex items-center justify-center rounded-dkv font-fsme font-bold duration-300 focus:outline-none bg-dkv-green text-white hover:bg-dkv-green-hover shadow-xl hover:scale-105 transition-transform px-8 py-4 text-base w-full sm:w-auto text-center"
@@ -183,7 +205,7 @@ export default function OrtodonciaEsteticaPage() {
         </div>
       </section>
 
-      {/* NOTA ACLARATORIA (Integrada orgánicamente) */}
+      {/* NOTA ACLARATORIA */}
       <section className="py-12 bg-white relative z-20">
         <ScrollReveal>
           <div className="container mx-auto px-4 max-w-4xl border-t border-dkv-gray-border pt-12">
