@@ -198,7 +198,7 @@ export default function TreatmentSearch() {
                   </div>
                   <div>
                     <span className="text-gray-900 font-bold text-lg block leading-tight">Me faltan piezas</span>
-                    <span className="text-gray-500 text-sm block mt-0.5">Implantes, prótesis y postizos</span>
+                    <span className="text-gray-500 text-sm block mt-0.5">Implantes, prótesis, postizos y fundas</span>
                   </div>
                 </div>
 
