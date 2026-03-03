@@ -8,6 +8,8 @@ import Image from 'next/image';
 //import type { Metadata } from 'next';
 import type { Metadata, Viewport } from 'next';
 
+import { Smile, Zap, Stethoscope } from "lucide-react";
+
 // --- NUEVOS IMPORTS DE CONFIGURACIÓN ---
 import { SITE_CONFIG } from '@/constants/config';
 
@@ -249,46 +251,90 @@ export default function LandingPage() {
 
         <MainHero /> 
 
-        {/* --- SECCIÓN TRATAMIENTOS --- */}
-        <section className="py-20 bg-white border-t border-dkv-gray-border relative z-40">
+
+
+{/* --- SECCIÓN TRATAMIENTOS --- */}
+        <section className="py-20 bg-white border-t border-dkv-gray-border relative z-40 scroll-mt-28">
           <div className="container mx-auto px-4 text-center">
 
-            {/* 1. El Título sube primero (delay 0, inmediato) */}
+            {/* 1. Título */}
             <ScrollReveal delay={0}>
               <h2 className="text-4xl md:text-5xl font-lemon text-dkv-green-dark mb-6">
                 Tratamientos.
               </h2>
             </ScrollReveal>
 
-            {/* 2. El Párrafo fusionado (Centrado, max-w-3xl para que quiebre bonito) */}
+            {/* 2. Párrafo 1 (Beneficio Económico) */}
             <ScrollReveal delay={100}>
-              <p className="text-lg md:text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-3 leading-relaxed text-left pl-4 pr-4">
-                <strong> Tan fácil </strong> como consultar el precio de tu tratamiento al instante. 
-
+              <p className="text-xl md:text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-6 leading-relaxed text-left px-4">
+                Ofrecemos servicios básicos gratuitos, y el resto, a <strong>precios inferiores a mercado</strong>.
               </p>
-
             </ScrollReveal>
 
-            <ScrollReveal delay={120}>       
-
-
-              <p className="text-lg md:text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-4 leading-relaxed text-left pl-4 pr-4">
-
-Ofrecemos servicios básicos gratuitos y el <strong> resto con precios inferiores a mercado </strong>.
+            {/* 3. Párrafo 2 (Llamada a la acción del Buscador) */}
+            <ScrollReveal delay={120}>
+              <p className="text-xl md:text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-4 leading-relaxed text-left px-4">
+                Consulta el precio de tu tratamiento al instante, sin formularios.
               </p>
-
             </ScrollReveal>
 
-            {/* 3. El Buscador (Coronando la escena) */}   
+            {/* 4. Buscador Predictivo (Ahora más ligero) */}   
             <ScrollReveal delay={150}>       
-              <div className="max-w-4xl mx-auto mb-8 w-full">
+              <div className="max-w-4xl mx-auto mb-10 w-full relative z-50 px-4">
                 <TreatmentSearch />
               </div>
-              {/* ⚡️ El texto inferior pequeñito está eliminado. Fricción cero. */}
+            </ScrollReveal>
+
+            {/* 5. Título de las Categorías */}
+            <ScrollReveal delay={200}>
+              <p className="text-xl md:text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-4 leading-relaxed text-left px-4">
+                O bien, consulta la solución a tu problema dental.
+              </p>
+
+
+            </ScrollReveal>
+
+            {/* 6. Enlaces SEO Directos (El Bento Grid expuesto) */}
+            <ScrollReveal delay={250}>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto relative z-40">
+                
+                <Link href="/categorias/odontologia-general" className="flex items-center p-5 rounded-2xl border border-gray-200 shadow-sm transition-all hover:border-dkv-green hover:shadow-md hover:-translate-y-1 text-left bg-white group">
+                  <div className="mr-4 text-dkv-green transition-transform group-hover:scale-110 shrink-0">
+                    <Zap className="w-8 h-8" strokeWidth={1.5} />
+                  </div>
+                  <div className="flex flex-col justify-center">
+                    <span className="block font-bold text-dkv-green-dark text-lg leading-tight mb-1">Tengo dolor</span>
+                    <span className="text-sm text-gray-500 leading-snug">Caries, endodoncia...</span>
+                  </div>
+                </Link>
+
+                <Link href="/categorias/implantes" className="flex items-center p-5 rounded-2xl border border-gray-200 shadow-sm transition-all hover:border-dkv-green hover:shadow-md hover:-translate-y-1 text-left bg-white group">
+                  <div className="mr-4 text-dkv-green transition-transform group-hover:scale-110 shrink-0">
+                    <Stethoscope className="w-8 h-8" strokeWidth={1.5} />
+                  </div>
+                  <div className="flex flex-col justify-center">
+                    <span className="block font-bold text-dkv-green-dark text-lg leading-tight mb-1">Me faltan piezas</span>
+                    <span className="text-sm text-gray-500 leading-snug">Implantes, puentes...</span>
+                  </div>
+                </Link>
+
+                <Link href="/categorias/ortodoncia" className="flex items-center p-5 rounded-2xl border border-gray-200 shadow-sm transition-all hover:border-dkv-green hover:shadow-md hover:-translate-y-1 text-left bg-white group">
+                  <div className="mr-4 text-dkv-green transition-transform group-hover:scale-110 shrink-0">
+                    <Smile className="w-8 h-8" strokeWidth={1.5} />
+                  </div>
+                  <div className="flex flex-col justify-center">
+                    <span className="block font-bold text-dkv-green-dark text-lg leading-tight mb-1">Necesito mejorar mi sonrisa</span>
+                    <span className="text-sm text-gray-500 leading-snug">Ortodoncia, estética...</span>
+                  </div>
+                </Link>
+
+              </div>
             </ScrollReveal>
 
           </div>
         </section>
+
+
 
 
 
