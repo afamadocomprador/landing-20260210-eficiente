@@ -250,39 +250,53 @@ export default function LandingPage() {
         <MainHero /> 
 
         {/* --- SECCIÓN TRATAMIENTOS --- */}
-        {/* 🌟 MAGIA Z-INDEX: Le ponemos relative y z-40 para que aplaste al z-20 de Dentistas */}
         <section className="py-20 bg-white border-t border-dkv-gray-border relative z-40">
           <div className="container mx-auto px-4 text-center">
 
-           {/* 1. El Título sube primero (delay 0, inmediato) */}
-           <ScrollReveal delay={0}>
-            <h2 className="text-4xl font-lemon text-dkv-green-dark mb-6">
-              Tratamientos.
-            </h2>
-           </ScrollReveal>
+            {/* 1. El Título sube primero (delay 0, inmediato) */}
+            <ScrollReveal delay={0}>
+              <h2 className="text-4xl md:text-5xl font-lemon text-dkv-green-dark mb-6">
+                Tratamientos.
+              </h2>
+            </ScrollReveal>
 
-           {/* 2. El Párrafo sube un instante después (150ms de retraso) */}
-           <ScrollReveal delay={100}>
-            <p className="text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-10 leading-relaxed text-balance">
-              Numerosos servicios dentales gratuitos y resto a precios muy inferiores a mercado.
-            </p>
-           </ScrollReveal>
+            {/* 2. El Párrafo fusionado (Centrado, max-w-3xl para que quiebre bonito) */}
+            <ScrollReveal delay={100}>
+              <p className="text-lg md:text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-3 leading-relaxed text-left pl-4 pr-4">
+                <strong> Tan fácil </strong> como consultar el precio de tu tratamiento al instante. 
 
-           {/* 3. La pastilla del Buscador sube la última, coronando la escena (400ms) */}   
-           <ScrollReveal delay={150}>       
-            
-            {/* 🌟 AQUÍ INYECTAMOS EL NUEVO BUSCADOR (Sustituye al botón) */}
-            <div className="max-w-4xl mx-auto mb-8">
-              <TreatmentSearch />
-            </div>
+              </p>
 
-            <p className="text-sm font-medium text-dkv-green-dark mt-6">
-              Aquí puedes ver los tratamientos y sus precios. <br /> Directamente y sin formularios.
-            </p>
-           </ScrollReveal>
+            </ScrollReveal>
+
+            <ScrollReveal delay={120}>       
+
+
+              <p className="text-lg md:text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-4 leading-relaxed text-left pl-4 pr-4">
+
+Ofrecemos servicios básicos gratuitos y el <strong> resto con precios inferiores a mercado </strong>.
+              </p>
+
+            </ScrollReveal>
+
+            {/* 3. El Buscador (Coronando la escena) */}   
+            <ScrollReveal delay={150}>       
+              <div className="max-w-4xl mx-auto mb-8 w-full">
+                <TreatmentSearch />
+              </div>
+              {/* ⚡️ El texto inferior pequeñito está eliminado. Fricción cero. */}
+            </ScrollReveal>
 
           </div>
-          </section>
+        </section>
+
+
+
+
+
+
+
+
 
         {/* --- SECCIÓN DENTISTAS --- */}
         <section 
