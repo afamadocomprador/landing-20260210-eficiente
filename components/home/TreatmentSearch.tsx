@@ -2,8 +2,9 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Search, Loader2 } from "lucide-react";
+import { Search, Loader2, Smile, Zap, ArrowRight, ShieldCheck, Stethoscope } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
+import { motion, AnimatePresence } from "framer-motion";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -16,302 +17,254 @@ interface TreatmentItem {
   s: string;
 }
 
+const PLACEHOLDERS = [
+  "empaste",
+  "funda",
+  "matar un nervio",
+  "dentadura postiza",
+  "invisalign",
+  "bruxismo"
+];
+
 export default function TreatmentSearch() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<TreatmentItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [dictionary, setDictionary] = useState<TreatmentItem[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isNavigating, setIsNavigating] = useState(false);
+  const [phIndex, setPhIndex] = useState(0); 
   
   const router = useRouter();
   const wrapperRef = useRef<HTMLDivElement>(null);
-  
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (query === "") { 
+        setPhIndex((prev) => (prev + 1) % PLACEHOLDERS.length);
+      }
+    }, 2000); 
+    return () => clearInterval(interval);
+  }, [query]); 
+
   const loadDictionary = async () => {
-    if (dictionary || isLoading || isNavigating) return; 
-    
+    if (dictionary || isLoading) return; 
     setIsLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('vw_search_treatments') 
-        .select('n, t, s');
-
+      const { data, error } = await supabase.from('vw_search_treatments').select('n, t, s');
       if (error) throw error;
       setDictionary(data as TreatmentItem[]);
     } catch (error) {
-      console.error("Error cargando el diccionario de tratamientos:", error);
+      console.error("Error:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (isNavigating) return;
-    const value = e.target.value;
-    setQuery(value);
-
-    if (value.length >= 2 && dictionary) {
-      const searchWord = value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      
-      const filtered = dictionary.filter(item => {
-        const itemName = item.n.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        return itemName.includes(searchWord);
-      }).slice(0, 6);
-
+  useEffect(() => {
+    if (query.length >= 2 && dictionary) {
+      const searchWord = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      const filtered = dictionary.filter(item => 
+        item.n.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(searchWord)
+      ).slice(0, 6); 
       setResults(filtered);
     } else {
       setResults([]);
     }
+  }, [query, dictionary]);
+
+  const handleFocus = () => {
+    setIsOpen(true);
+    loadDictionary();
+    
+    setTimeout(() => {
+      wrapperRef.current?.scrollIntoView({ 
+        behavior: "smooth", 
+        block: "start" 
+      });
+    }, 150);
   };
 
-  const handleSelect = (urlDestino: string, displayName: string) => {
-    setQuery(displayName);
+  // ⚡️ NUEVA FUNCIÓN: Restauración de contexto Nivel Dios
+  const handleClose = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setIsOpen(false);
-    setIsNavigating(true); 
-    router.push(urlDestino);
+    
+    // Le damos un respiro al DOM para que empiece a colapsar y luego subimos
+    setTimeout(() => {
+      // Busca la sección padre automáticamente
+      const parentSection = wrapperRef.current?.closest('section');
+      if (parentSection) {
+        parentSection.scrollIntoView({ 
+          behavior: "smooth", 
+          block: "start" 
+        });
+      }
+    }, 50);
   };
 
-  const handleSearch = () => {
-    if (!query || isNavigating) return;
-
-    if (results.length > 0) {
-      handleSelect(`/tratamientos/${results[0].s}`, results[0].n); 
-    } else if (dictionary) {
-      const searchWord = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-      const match = dictionary.find(item => 
-        item.n.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(searchWord)
-      );
-      
-      if (match) {
-        handleSelect(`/tratamientos/${match.s}`, match.n);
-      }
+  const categories = [
+    { 
+      name: "Tengo dolor", 
+      desc: <>Caries, endodoncia...</>, 
+      icon: <Zap className="w-6 h-6" />, 
+      slug: "odontologia-general" 
+    },
+    { 
+      name: "Me faltan piezas", 
+      desc: <><span className="font-bold text-dkv-green bg-dkv-green/10 px-1.5 py-0.5 rounded">Implantes</span>, puentes...</>, 
+      icon: <Stethoscope className="w-6 h-6" />, 
+      slug: "implantes" 
+    },
+    { 
+      name: "Quiero mejorar mi sonrisa", 
+      desc: <><span className="font-bold text-dkv-green bg-dkv-green/10 px-1.5 py-0.5 rounded">Ortodoncia</span>, estética...</>, 
+      icon: <Smile className="w-6 h-6" />, 
+      slug: "ortodoncia" 
     }
+  ];
+
+  const handleSelect = (url: string) => {
+    setIsOpen(false);
+    router.push(url);
   };
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   return (
-    <div ref={wrapperRef} className="relative w-full max-w-4xl mx-auto z-50 text-left font-fsme">
+    <div ref={wrapperRef} className="w-full relative z-50 scroll-mt-28">
       
-      {/* PASTILLA BUSCADOR */}
       <div 
-        className={`bg-white rounded-full border p-2 flex items-center relative transition-all duration-300 
-          ${isNavigating 
-            ? 'border-dkv-green/50 ring-2 ring-dkv-green/20 bg-gray-50/50 cursor-wait shadow-inner' 
-            : isOpen 
-              ? 'border-gray-200 ring-2 ring-dkv-green/30 shadow-xl' 
-              : 'border-gray-200 shadow-lg hover:shadow-xl'
-          }`}
-        onClick={() => {
-          if (isNavigating) return;
-          setIsOpen(true);
-          loadDictionary();
-          
-          if (wrapperRef.current) {
-            const headerElement = document.querySelector('header'); 
-            const headerHeight = headerElement ? headerElement.offsetHeight : 90;
-            const yOffset = -(headerHeight + 24); 
-            const element = wrapperRef.current;
-            const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
-            window.scrollTo({ top: y, behavior: 'smooth' });
-          }
-        }}
+        className={`bg-white rounded-3xl transition-all duration-300 ease-out border overflow-hidden ${
+          isOpen ? 'shadow-[0_20px_60px_-15px_rgba(132,151,0,0.15)] border-dkv-green' : 'shadow-xl border-gray-100'
+        }`}
       >
-        <div className="pl-4 pr-2 text-dkv-green">
-          {isNavigating ? (
-            <Loader2 className="w-6 h-6 animate-spin text-dkv-green" />
-          ) : isLoading ? (
-            <Search className="w-6 h-6 animate-pulse opacity-50" />
-          ) : (
-            <Search className="w-6 h-6" />
-          )}
-        </div>
-
-        <input
-          type="text"
-          placeholder="¿Qué tratamiento necesitas? (Ej: Implantes, Endodoncia...)"
-          className={`flex-1 w-full bg-transparent border-none focus:ring-0 px-2 py-4 text-lg outline-none transition-colors
-            ${isNavigating ? 'text-gray-400 placeholder-gray-300 cursor-wait' : 'text-gray-700 placeholder-gray-400'}
-          `}
-          value={query}
-          readOnly={isNavigating}
-          onChange={handleInputChange}
-          onFocus={() => {
-            if(!isNavigating) setIsOpen(true);
-          }}
-          onKeyDown={(e) => e.key === 'Enter' && handleSearch()} 
-        />
-      </div>
-
-      {/* MENÚ DESPLEGABLE */}
-      {isOpen && !isNavigating && (
-        <div className="absolute top-full left-0 right-0 mt-4 bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden divide-y divide-gray-50 py-2">
+        {/* CAJA DE BÚSQUEDA */}
+        <div className="relative flex items-center p-2 bg-white z-20">
+          <div className="absolute left-4 text-dkv-green z-20">
+            {isLoading ? <Loader2 className="w-6 h-6 animate-spin" /> : <Search className="w-5 h-5 md:w-6 md:h-6" />}
+          </div>
           
-          {/* ESTADO 1: INTENCIONES (Reposo) */}
-          {query.length === 0 && (
-            <div className="flex flex-col">
-                <div 
-                  onClick={() => handleSelect('/tratamientos/endodoncias-extracciones-curas', 'Tengo dolor agudo')}
-                  className="px-6 py-4 hover:bg-orange-50/50 cursor-pointer flex items-center gap-5 group transition-colors"
-                >
-                  <div className="w-12 h-12 flex-shrink-0 transition-transform group-hover:scale-110 group-hover:rotate-3">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
-                      <defs>
-                        <linearGradient id="iconDolor" x1="50%" y1="0%" x2="50%" y2="100%">
-                          <stop offset="0%" stopColor="#FFD231" />
-                          <stop offset="100%" stopColor="#EA580C" />
-                        </linearGradient>
-                      </defs>
-                      <path d="M13 2.5L6 13H11.5L10.5 21.5L18 11H12.5L13 2.5Z" fill="url(#iconDolor)" stroke="#B45309" strokeWidth="0.5" strokeLinejoin="round"/>
-                      <path d="M13 3.5L7.2 12.5H12L11 19.5L16.8 11H12L13 3.5Z" fill="white" fillOpacity="0.35"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <span className="text-gray-900 font-bold text-lg block leading-tight">Tengo dolor agudo</span>
-                    <span className="text-gray-500 text-sm block mt-0.5">Endodoncias, Extracciones y Curas</span>
-                  </div>
-                </div>
-
-                <div 
-                  onClick={() => handleSelect('/tratamientos/implantes-protesis-reconstrucciones', 'Me faltan piezas')}
-                  className="px-6 py-4 hover:bg-blue-50/50 cursor-pointer flex items-center gap-5 group transition-colors"
-                >
-                  <div className="w-12 h-12 flex-shrink-0 transition-transform group-hover:scale-110 group-hover:-rotate-6">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
-                      <defs>
-                        <linearGradient id="iconDiente" x1="50%" y1="0%" x2="50%" y2="100%">
-                          <stop offset="0%" stopColor="#FFFFFF" />
-                          <stop offset="100%" stopColor="#BFDBFE" />
-                        </linearGradient>
-                      </defs>
-                      <path d="M16 3C14 3 13 4 12 5C11 4 10 3 8 3C5.5 3 4 5 4 8C4 11 6 15 8 18C9 19.5 10 21 12 21C14 21 15 19.5 16 18C18 15 20 11 20 8C20 5 18.5 3 16 3Z" fill="url(#iconDiente)" stroke="#1E3A8A" strokeWidth="0.5" strokeLinejoin="round"/>
-                      <path d="M12 21V23 M10 23H14 M11 22H13" stroke="#94A3B8" strokeWidth="1" strokeLinecap="round"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <span className="text-gray-900 font-bold text-lg block leading-tight">Me faltan piezas</span>
-                    <span className="text-gray-500 text-sm block mt-0.5">Implantes, prótesis, postizos y fundas</span>
-                  </div>
-                </div>
-
-                <div 
-                  onClick={() => handleSelect('/tratamientos/ortodoncia-estetica', 'Mejorar mi sonrisa')}
-                  className="px-6 py-4 hover:bg-purple-50/50 cursor-pointer flex items-center gap-5 group transition-colors"
-                >
-                  <div className="w-12 h-12 flex-shrink-0 transition-transform group-hover:scale-110">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
-                      <defs>
-                        <linearGradient id="iconEstetica" x1="50%" y1="0%" x2="50%" y2="100%">
-                          <stop offset="0%" stopColor="#E9D5FF" />
-                          <stop offset="100%" stopColor="#A855F7" />
-                        </linearGradient>
-                      </defs>
-                      <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="url(#iconEstetica)" stroke="#581C87" strokeWidth="0.5" strokeLinejoin="round"/>
-                      <circle cx="18" cy="5" r="2" fill="#D8B4FE" />
-                      <circle cx="5" cy="18" r="1.5" fill="#D8B4FE" />
-                    </svg>
-                  </div>
-                  <div>
-                    <span className="text-gray-900 font-bold text-lg block leading-tight">Mejorar mi sonrisa</span>
-                    <span className="text-gray-500 text-sm block mt-0.5">Ortodoncia y Estética</span>
-                  </div>
-                </div>
-
-                <div 
-                  onClick={() => handleSelect('/tratamientos/prevencion', 'Quiero prevenir')}
-                  className="px-6 py-4 hover:bg-[#F4F8F1] cursor-pointer flex items-center gap-5 group transition-colors"
-                >
-                  <div className="w-12 h-12 flex-shrink-0 transition-transform group-hover:scale-110 group-hover:translate-y-1">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
-                      <defs>
-                        <linearGradient id="iconEscudo" x1="50%" y1="0%" x2="50%" y2="100%">
-                          <stop offset="0%" stopColor="#C6FF00" />
-                          <stop offset="100%" stopColor="#849700" />
-                        </linearGradient>
-                      </defs>
-                      <path d="M12 2L3 6V11C3 16.5 7 21.5 12 23C17 21.5 21 16.5 21 11V6L12 2Z" fill="url(#iconEscudo)" stroke="#3D4500" strokeWidth="0.5" strokeLinejoin="round"/>
-                      <path d="M12 3.5L4.5 7V11C4.5 15.5 8 19.5 12 21C16 19.5 19.5 15.5 19.5 11V7L12 3.5Z" fill="white" fillOpacity="0.25"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <span className="text-gray-900 font-bold text-lg block leading-tight">Quiero prevenir</span>
-                    <span className="text-gray-500 text-sm block mt-0.5">Limpiezas, Radiografías y Diagnóstico</span>
-                  </div>
-                </div>
-
-                <div 
-                  onClick={() => handleSelect('/tratamientos/odontopediatria', 'Odontopediatría')}
-                  className="px-6 py-4 hover:bg-yellow-50/50 cursor-pointer flex items-center gap-5 group transition-colors"
-                >
-                  <div className="w-12 h-12 flex-shrink-0 transition-transform group-hover:scale-110 group-hover:-rotate-6">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
-                      <defs>
-                        <linearGradient id="iconOso" x1="50%" y1="0%" x2="50%" y2="100%">
-                          <stop offset="0%" stopColor="#FEF08A" />
-                          <stop offset="100%" stopColor="#EAB308" />
-                        </linearGradient>
-                      </defs>
-                      <circle cx="12" cy="12" r="7" fill="url(#iconOso)" stroke="#854D0E" strokeWidth="0.5"/>
-                      <circle cx="6" cy="7" r="3" fill="url(#iconOso)" stroke="#854D0E" strokeWidth="0.5"/>
-                      <circle cx="18" cy="7" r="3" fill="url(#iconOso)" stroke="#854D0E" strokeWidth="0.5"/>
-                      <circle cx="10" cy="11" r="1" fill="#854D0E" />
-                      <circle cx="14" cy="11" r="1" fill="#854D0E" />
-                      <ellipse cx="12" cy="14" rx="2" ry="1.5" fill="#FEF9C3" stroke="#854D0E" strokeWidth="0.5"/>
-                      <path d="M12 13.5V14.5" stroke="#854D0E" strokeLinecap="round"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <span className="text-gray-900 font-bold text-lg block leading-tight">Odontopediatría</span>
-                    <span className="text-gray-500 text-sm block mt-0.5">Cobertura total para menores de 15 años</span>
-                  </div>
-                </div>
-
+          <div className="relative w-full flex items-center h-[56px] md:h-[64px]">
+            {query === "" && (
+              <div className="absolute left-11 right-28 pointer-events-none flex items-center h-full overflow-hidden">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={phIndex}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -15 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    className="text-gray-400/80 text-lg md:text-2xl font-fsme italic truncate block"
+                  >
+                    {PLACEHOLDERS[phIndex]}
+                  </motion.span>
+                </AnimatePresence>
+              </div>
+            )}
+            
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onFocus={handleFocus}
+              className="w-full pl-11 pr-24 py-4 md:py-5 bg-transparent text-lg md:text-2xl font-fsme text-dkv-green-dark focus:outline-none relative z-10"
+            />
+          </div>
+          
+          {!isOpen && (
+            <div className="absolute right-4 hidden md:flex items-center gap-1.5 text-xs font-bold text-dkv-green bg-dkv-green/10 px-3 py-1.5 rounded-full z-20">
+              <ShieldCheck className="w-4 h-4" />
+              <span>Precios al instante</span>
             </div>
           )}
 
-
-          {/* ESTADO 2: RESULTADOS PREDICTIVOS (Corregido para móvil y textos largos) */}
-          {query.length > 0 && results.length > 0 && results.map((item, idx) => (
-            <div 
-              key={`${item.s}-${idx}`}
-              onClick={() => handleSelect(`/tratamientos/${item.s}`, item.n)}
-              className="px-6 py-4 hover:bg-gray-50 cursor-pointer flex items-center justify-between group transition-colors gap-4"
+          {isOpen && (
+            // ⚡️ Aplicamos el handleClose aquí
+            <button 
+              onClick={handleClose}
+              className="absolute right-3 text-xs font-bold text-dkv-green bg-dkv-green/10 border border-dkv-green/20 hover:bg-dkv-green hover:text-white transition-colors px-4 py-2 rounded-full uppercase tracking-wider z-20"
             >
-              {/* Texto a la izquierda: Permitimos que ocupe varias líneas si es muy largo */}
-              <span className="text-gray-800 font-medium text-base sm:text-lg leading-tight pl-2">
-                {item.n}
-              </span>
-              
-              {/* Etiqueta a la derecha: 
-                  1. Quitamos 'hidden sm:block' para que se vea en móviles.
-                  2. Añadimos 'shrink-0' para que el texto largo no la aplaste.
-                  3. Copiamos los colores exactos de HeroSearch (gris -> verde al hacer hover).
-              */}
-              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-gray-500 bg-gray-100 px-3 py-1 rounded-full group-hover:bg-green-50 group-hover:text-dkv-green transition-colors whitespace-nowrap shrink-0">
-                {item.t}
-              </span>
-            </div>
-          ))}
-
-
-          {/* ESTADO 3: SIN RESULTADOS */}
-          {query.length > 1 && results.length === 0 && dictionary && (
-            <div className="px-6 py-8 text-center text-gray-500">
-              <span className="block font-medium text-lg mb-1">No hemos encontrado "{query}"</span>
-              <span className="text-sm">Prueba a buscar por especialidad (ej. Ortodoncia).</span>
-            </div>
+              Cerrar
+            </button>
           )}
-          
         </div>
-      )}
+
+        {/* ÁREA DE EXPANSIÓN INFERIOR */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div 
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.35, ease: [0.25, 1, 0.5, 1] }} 
+              className="border-t-2 border-gray-100 bg-gray-50/80 pt-4 relative z-10"
+            >
+              <div className="p-4 md:p-6 pt-0 md:pt-2 rounded-b-3xl">
+                
+                {query.length < 2 ? (
+                  <div className="space-y-4">
+                    <div className="px-1 md:px-2 mb-4">
+                      <h3 className="text-lg md:text-xl font-lemon text-dkv-green-dark text-left">
+                        Si dudas ... ¡selecciona tu problema dental!
+                      </h3>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {categories.map((cat, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => handleSelect(`/categorias/${cat.slug}`)}
+                          className="flex items-center p-4 rounded-2xl border border-gray-200 shadow-sm transition-all hover:border-dkv-green hover:shadow-md text-left bg-white group"
+                        >
+                          <div className="mr-4 text-dkv-green transition-transform group-hover:scale-110 shrink-0">
+                            {cat.icon}
+                          </div>
+                          <div className="flex flex-col justify-center h-full overflow-hidden">
+                            <span className="block font-bold text-dkv-green-dark text-lg leading-tight mb-1 truncate">{cat.name}</span>
+                            <span className="text-base text-gray-500 leading-snug truncate w-full">{cat.desc}</span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <p className="text-xs font-bold text-gray-400 uppercase tracking-widest px-2 mb-3">
+                      Resultados para "{query}"
+                    </p>
+                    {results.length > 0 ? (
+                      results.map((item, idx) => (
+                        <button 
+                          key={`${item.s}-${idx}`}
+                          onClick={() => handleSelect(`/tratamientos/${item.s}`)}
+                          className="w-full flex items-center justify-between p-4 rounded-xl bg-white border border-gray-200 shadow-sm hover:border-dkv-green hover:shadow-md transition-all group active:scale-[0.98]"
+                        >
+                          <div className="flex flex-col text-left pr-4">
+                            <span className="font-bold text-dkv-green-dark text-base md:text-lg group-hover:text-dkv-green transition-colors line-clamp-1">
+                              {item.n}
+                            </span>
+                            <span className="text-[11px] font-bold text-gray-400 uppercase mt-1">
+                              {item.t}
+                            </span>
+                          </div>
+                          
+                          <div className="flex items-center gap-1.5 shrink-0 bg-dkv-green/5 text-dkv-green px-3 py-1.5 rounded-full group-hover:bg-dkv-green group-hover:text-white transition-colors">
+                            <span className="font-bold text-xs">Ver precio</span>
+                            <ArrowRight className="w-3.5 h-3.5" />
+                          </div>
+                        </button>
+                      ))
+                    ) : (
+                      <div className="py-8 text-center bg-white rounded-2xl border border-dashed border-gray-300">
+                        <p className="text-gray-500 font-fsme text-lg">No encontramos "{query}".</p>
+                        <p className="text-dkv-green font-bold mt-2 text-sm">Prueba con "Implante", "Funda" o "Limpieza"</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
