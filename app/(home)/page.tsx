@@ -101,7 +101,7 @@ export default function LandingPage() {
         
         <MainHero /> 
 
-        <section className="py-20 bg-[#F0F0F0] border-t border-dkv-gray-border relative z-40 scroll-mt-28">
+        <section  id="tratamientos" className="py-20 bg-[#F0F0F0] border-t border-dkv-gray-border relative z-40 ">
           <div className="container mx-auto px-4 text-center">
 
             <ScrollReveal delay={0}>
@@ -265,7 +265,7 @@ export default function LandingPage() {
 
         <Archetypes />
 
-        <div id="tratamientos" className="scroll-mt-28">
+        <div className="scroll-mt-28">
           <PricingCards />
         </div>
         
