@@ -130,12 +130,11 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
               ))}
             </nav>
             
-            {/* --- BOTÓN CTA DESKTOP (STICKY) --- */}
             <div 
               className={`transition-all duration-500 ease-out transform hidden md:block ${
                 showCta 
                   ? "opacity-100 translate-y-0 pointer-events-auto" 
-                  : "opacity-0 translate-y-4 pointer-none"
+                  : "opacity-0 translate-y-4 pointer-events-none"
               }`}
               aria-hidden={!showCta}
             >
@@ -151,18 +150,15 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
                   flex items-center justify-center
                   uppercase font-bold
                 "
-                aria-label="Ir a calculadora de precios"
               >
                 Calcula tu precio
               </Link>
             </div>
 
-            {/* --- BOTÓN MENÚ MÓVIL (Hamburguesa / Cerrar) --- */}
             <button
               className="md:hidden text-white p-2 -mr-2 flex items-center justify-center transition-transform duration-300 active:scale-90"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú de navegación"}
-              aria-expanded={isMobileMenuOpen}
             >
               <div className={`transition-all duration-300 transform ${isMobileMenuOpen ? 'rotate-90' : 'rotate-0'}`}>
                 {isMobileMenuOpen ? <X size={32} /> : <Menu size={32} />}
@@ -177,10 +173,9 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
         className={`
           md:hidden fixed inset-0 z-[1010] bg-dkv-green/98 backdrop-blur-xl 
           transition-all duration-400 ease-out flex flex-col justify-center px-6 pb-20 pt-28 overflow-hidden
-          ${isMobileMenuOpen ? "opacity-100 pointer-events-auto translate-y-0" : "opacity-0 pointer-none -translate-y-4"}
+          ${isMobileMenuOpen ? "opacity-100 pointer-events-auto translate-y-0" : "opacity-0 pointer-events-none -translate-y-4"}
         `}
       >
-        {/* 🌟 PANEL UNIFICADO DE NAVEGACIÓN (INTEGRANDO LA ILUSTRACIÓN DENTAL) */}
         <div 
           style={{ transitionDelay: '100ms' }}
           className={`
@@ -189,20 +184,20 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
             ${isMobileMenuOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'}
           `}
         >
-          {/* 🌟 COLUMNA IZQUIERDA: La franja de utensilios dentales */}
+          {/* COLUMNA IZQUIERDA: Ilustración */}
           <div className="w-[28%] border-r border-dkv-green/5 relative overflow-hidden bg-dkv-green/5 p-3 flex flex-col justify-end">
             <div className={`absolute inset-0 transition-all duration-1000 ${isMobileMenuOpen ? 'scale-100 opacity-60' : 'scale-110 opacity-0'}`}>
                 <Image 
-                    src="/images/utensilios-dental.png" // Asegúrate de tener la imagen en esta ruta
-                    alt="Utensilios dentales de línea"
+                    src="/images/utensilios-dental.png" 
+                    alt="Utensilios dentales"
                     fill
-                    className="object-cover object-bottom pt-8 pb-4" // Se ajusta al fondo y se recorta por arriba si es necesario
+                    className="object-cover object-bottom pt-8 pb-4"
                     priority
                 />
             </div>
           </div>
 
-          {/* 🌟 COLUMNA DERECHA: El menú de navegación */}
+          {/* COLUMNA DERECHA: Menú con texto secundario mejorado */}
           <nav className="flex-1 flex flex-col p-2 pl-1">
             {NAV_ITEMS.map((item, index) => {
               const Icon = item.icon;
@@ -213,19 +208,20 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
                   href={isHome ? item.href : `/${item.href}`}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`
-                    group p-4 pr-3 flex items-center gap-3.5 rounded-2xl hover:bg-gray-50 active:scale-[0.98] transition-all duration-200
+                    group p-4 pr-3 flex items-center gap-4 rounded-2xl hover:bg-gray-50 active:scale-[0.98] transition-all duration-200
                     ${!isLast ? 'border-b border-gray-100 rounded-b-none' : ''} 
                     ${index === 0 ? 'rounded-t-2xl' : ''}
                   `}
                 >
-                  <div className="w-9 h-9 rounded-full bg-dkv-green/5 text-dkv-green flex items-center justify-center shrink-0">
-                    <Icon className="w-4.5 h-4.5" />
+                  <div className="w-10 h-10 rounded-full bg-dkv-green/5 text-dkv-green flex items-center justify-center shrink-0">
+                    <Icon className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="block text-dkv-green-dark font-lemon text-base font-bold tracking-wider uppercase mb-0.5">
+                    <span className="block text-dkv-green-dark font-lemon text-base font-bold tracking-wider uppercase mb-0.5 leading-tight">
                       {item.label}
                     </span>
-                    <span className="block text-gray-500 text-xs font-fsme leading-tight">
+                    {/* 🌟 AJUSTE: Texto secundario más grande (text-sm) y con mejor contraste (text-gray-600) */}
+                    <span className="block text-gray-600 text-sm font-fsme leading-tight">
                       {item.subLabel}
                     </span>
                   </div>
@@ -235,7 +231,7 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
           </nav>
         </div>
 
-        {/* --- CTA BOTTOM FIJO --- */}
+        {/* --- CTA BOTTOM --- */}
         <div 
           style={{ transitionDelay: '250ms' }}
           className={`
