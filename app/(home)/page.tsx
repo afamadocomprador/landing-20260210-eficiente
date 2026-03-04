@@ -88,7 +88,7 @@ const nationalMasterSchema = {
 
 export default function LandingPage() {
   
-  // ⚡️ TUS NUEVAS VARIABLES DE SOMBRA
+  // ⚡️ Variables de sombra EXACTAS
   const neumorphicBase = "shadow-[8px_8px_12px_#033b3720,-5px_-5px_10px_#ffffff]";
   const neumorphicActive = "active:shadow-[inset_4px_4px_8px_#033b3730,inset_-4px_-4px_8px_#ffffff]";
 
@@ -111,18 +111,167 @@ export default function LandingPage() {
             </ScrollReveal>
 
             <ScrollReveal delay={100}>
-              <p className="text-xl md:text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-16 leading-relaxed text-left md:text-center px-4 md:px-0">
+              <p className="text-xl md:text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-10 md:mb-12 leading-relaxed text-left md:text-center px-4 md:px-0">
                 Ofrecemos servicios básicos gratuitos, y el resto, a <strong>precios inferiores a mercado</strong>.
               </p>
             </ScrollReveal>
 
-            <div className="max-w-4xl mx-auto space-y-16 md:space-y-20">
+            <div className="max-w-4xl mx-auto">
               
-              <ScrollReveal delay={150}>
-                <div className="relative z-40 px-2 md:px-0 pt-2">
+              <div className="relative z-40 px-2 md:px-0">
+                
+                <div className="grid grid-cols-2 gap-5 md:gap-10 pb-6">
                   
-                  <div className="grid grid-cols-2 gap-5 md:gap-10 pb-6">
-                    
-                    {/* FICHA 1: DOLOR */}
+                  {/* FICHA 1: DOLOR */}
+                  <ScrollReveal delay={200}>
                     <Link 
-                      href="/categorias/odontologia-general"
+                      href="/categorias/odontologia-general" 
+                      className={`h-full relative flex flex-col items-center text-center p-5 md:p-8 rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ${neumorphicBase} ${neumorphicActive} hover:scale-[1.02] active:scale-[0.98]`}
+                    >
+                      <div className="absolute top-4 right-4 md:top-5 md:right-5 text-dkv-green-dark opacity-70 group-hover:opacity-100 group-hover:text-dkv-green transition-all duration-300 group-hover:translate-x-1">
+                        <ArrowRight className="w-5 h-5 md:w-6 md:h-6" strokeWidth={2.5} />
+                      </div>
+
+                      <div className="mb-4 md:mb-6 flex items-center justify-center text-dkv-green transition-transform group-hover:scale-110 group-hover:-translate-y-1 duration-300">
+                        <Zap className="w-10 h-10 md:w-12 md:h-12" strokeWidth={1.5} />
+                      </div>
+                      <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-lg md:text-2xl leading-tight mb-2">
+                        Tengo dolor
+                      </span>
+                      {/* ⚡️ Fuente corregida a text-sm md:text-base */}
+                      <span className="text-sm md:text-base text-gray-500 leading-snug max-w-[150px] md:max-w-none mt-1">
+                        Caries, endodoncia...
+                      </span>
+                    </Link>
+                  </ScrollReveal>
+
+                  {/* FICHA 2: HIGIENE */}
+                  <ScrollReveal delay={300}>
+                    <Link 
+                      href="/categorias/higiene-y-prevencion" 
+                      className={`h-full relative flex flex-col items-center text-center p-5 md:p-8 rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ${neumorphicBase} ${neumorphicActive} hover:scale-[1.02] active:scale-[0.98]`}
+                    >
+                      <div className="absolute top-4 right-4 md:top-5 md:right-5 text-dkv-green-dark opacity-70 group-hover:opacity-100 group-hover:text-dkv-green transition-all duration-300 group-hover:translate-x-1">
+                        <ArrowRight className="w-5 h-5 md:w-6 md:h-6" strokeWidth={2.5} />
+                      </div>
+
+                      <div className="mb-4 md:mb-6 flex items-center justify-center text-dkv-green transition-transform group-hover:scale-110 group-hover:-translate-y-1 duration-300">
+                        <Sparkles className="w-10 h-10 md:w-12 md:h-12" strokeWidth={1.5} />
+                      </div>
+                      <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-lg md:text-2xl leading-tight mb-2">
+                        Limpieza
+                      </span>
+                      {/* ⚡️ Fuente corregida a text-sm md:text-base */}
+                      <span className="text-sm md:text-base text-gray-500 leading-snug max-w-[150px] md:max-w-none mt-1">
+                        Higiene, diagnóstico...
+                      </span>
+                    </Link>
+                  </ScrollReveal>
+
+                  {/* FICHA 3: PIEZAS */}
+                  <ScrollReveal delay={400}>
+                    <Link 
+                      href="/categorias/implantes" 
+                      className={`h-full relative flex flex-col items-center text-center p-5 md:p-8 rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ${neumorphicBase} ${neumorphicActive} hover:scale-[1.02] active:scale-[0.98]`}
+                    >
+                      <div className="absolute top-4 right-4 md:top-5 md:right-5 text-dkv-green-dark opacity-70 group-hover:opacity-100 group-hover:text-dkv-green transition-all duration-300 group-hover:translate-x-1">
+                        <ArrowRight className="w-5 h-5 md:w-6 md:h-6" strokeWidth={2.5} />
+                      </div>
+
+                      <div className="mb-4 md:mb-6 flex items-center justify-center text-dkv-green transition-transform group-hover:scale-110 group-hover:-translate-y-1 duration-300">
+                        <Stethoscope className="w-10 h-10 md:w-12 md:h-12" strokeWidth={1.5} />
+                      </div>
+                      <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-lg md:text-2xl leading-tight mb-2">
+                        Faltan piezas
+                      </span>
+                      {/* ⚡️ Fuente corregida a text-sm md:text-base */}
+                      <span className="text-sm md:text-base text-gray-500 leading-snug max-w-[150px] md:max-w-none mt-1">
+                        Implantes, puentes...
+                      </span>
+                    </Link>
+                  </ScrollReveal>
+
+                  {/* FICHA 4: SONRISA */}
+                  <ScrollReveal delay={500}>
+                    <Link 
+                      href="/categorias/ortodoncia" 
+                      className={`h-full relative flex flex-col items-center text-center p-5 md:p-8 rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ${neumorphicBase} ${neumorphicActive} hover:scale-[1.02] active:scale-[0.98]`}
+                    >
+                      <div className="absolute top-4 right-4 md:top-5 md:right-5 text-dkv-green-dark opacity-70 group-hover:opacity-100 group-hover:text-dkv-green transition-all duration-300 group-hover:translate-x-1">
+                        <ArrowRight className="w-5 h-5 md:w-6 md:h-6" strokeWidth={2.5} />
+                      </div>
+
+                      <div className="mb-4 md:mb-6 flex items-center justify-center text-dkv-green transition-transform group-hover:scale-110 group-hover:-translate-y-1 duration-300">
+                        <Smile className="w-10 h-10 md:w-12 md:h-12" strokeWidth={1.5} />
+                      </div>
+                      <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-lg md:text-2xl leading-tight mb-2">
+                        Mejorar sonrisa
+                      </span>
+                      {/* ⚡️ Fuente corregida a text-sm md:text-base */}
+                      <span className="text-sm md:text-base text-gray-500 leading-snug max-w-[150px] md:max-w-none mt-1">
+                        Ortodoncia, estética...
+                      </span>
+                    </Link>
+                  </ScrollReveal>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        {/* --- SECCIÓN DENTISTAS --- */}
+        <section id="dentistas" className="py-24 bg-white border-t border-dkv-gray-border relative overflow-visible">
+          <div className="container mx-auto px-4 text-center relative z-20">
+           <ScrollReveal delay={0}>
+            <h2 className="text-4xl md:text-5xl font-lemon text-dkv-green-dark mb-6">Dentistas.</h2>
+           </ScrollReveal>
+           <ScrollReveal delay={100}>
+            <p className="text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-10 text-balance leading-relaxed">
+              Tan fácil como elegir tu dentista y pedir cita en consulta. Seguro que tienes uno cerca. 
+            </p>
+           </ScrollReveal>
+           <ScrollReveal delay={200}>       
+            <div className="max-w-4xl mx-auto mb-8">
+              <HeroSearch />
+            </div>
+            <p className="text-sm font-medium text-dkv-green-dark mt-6">
+              Busca centros dentales en toda España. <span className="block mt-1"> Sin registros previos.</span>
+            </p>
+           </ScrollReveal>
+          </div>
+        </section>
+
+        {/* --- SECCIÓN COMENTAR --- */}
+        <section id="información" className="py-20 bg-white border-t border-dkv-gray-border scroll-mt-28">
+         <ScrollReveal>
+          <div className="container mx-auto px-4 text-center">
+            <h2 className="text-4xl font-lemon text-dkv-green-dark mb-6">¿Algo que comentar?</h2>
+            <p className="text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-10 leading-relaxed text-balance">
+                Plantéanos cualquier duda sobre tus circunstancias y cómo te puedes beneficiar de nuestros tratamientos.
+            </p>
+            <Link 
+              href="/comentarios"
+              className="inline-flex items-center justify-center rounded-dkv font-fsme font-bold duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-dkv-green text-white hover:bg-dkv-green-hover focus:ring-dkv-green disabled:bg-dkv-gray-disabled shadow-xl hover:scale-105 transition-transform gap-3 text-xl px-8 py-6 h-auto"
+            >
+              Plantear Consulta
+            </Link>
+            <p className="text-sm font-medium text-dkv-green-dark mt-6">
+              No te quedes con la duda. <br /> Respuesta personal.
+            </p>
+          </div>
+         </ScrollReveal>
+        </section>
+
+        <Archetypes />
+
+        <div id="tratamientos" className="scroll-mt-28">
+          <PricingCards />
+        </div>
+        
+        <FooterLegal />
+      </main>
+    </div>
+  );
+}
