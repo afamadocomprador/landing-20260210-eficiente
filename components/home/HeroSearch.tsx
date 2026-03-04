@@ -64,7 +64,7 @@ export default function HeroSearch() {
 
         if (text === fullText) {
           state = 'PAUSED';
-          timerId = setTimeout(loop, 2500); // Pausa de 2.5s con la palabra completa
+          timerId = setTimeout(loop, 1.750); // Pausa de 1.75s con la palabra completa
         } else {
           timerId = setTimeout(loop, 120); // Velocidad de tecleo
         }
