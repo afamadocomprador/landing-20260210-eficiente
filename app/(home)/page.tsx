@@ -254,7 +254,7 @@ export default function LandingPage() {
 
 
 {/* --- SECCIÓN TRATAMIENTOS --- */}
-        <section className="py-20 bg-white border-t border-dkv-gray-border relative z-40 scroll-mt-28">
+        <section className="py-20 bg-[#F0F0F0] border-t border-dkv-gray-border relative z-40 scroll-mt-28">
           <div className="container mx-auto px-4 text-center">
 
             {/* 1. Título */}
@@ -266,75 +266,72 @@ export default function LandingPage() {
 
             {/* 2. Párrafo 1 (Beneficio Económico) */}
             <ScrollReveal delay={100}>
-              <p className="text-xl md:text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-6 leading-relaxed text-left px-4">
+              <p className="text-xl md:text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-12 leading-relaxed text-left px-4">
                 Ofrecemos servicios básicos gratuitos, y el resto, a <strong>precios inferiores a mercado</strong>.
               </p>
             </ScrollReveal>
 
-            {/* 3. Párrafo 2 (Llamada a la acción del Buscador) */}
-            <ScrollReveal delay={120}>
-              <p className="text-xl md:text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-4 leading-relaxed text-left px-4">
-                Consulta el precio de tu tratamiento al instante, sin formularios.
-              </p>
-            </ScrollReveal>
-
-            {/* 4. Buscador Predictivo (Ahora más ligero) */}   
-            <ScrollReveal delay={150}>       
-              <div className="max-w-4xl mx-auto mb-10 w-full relative z-50 px-4">
-                <TreatmentSearch />
-              </div>
-            </ScrollReveal>
-
-            {/* 5. Título de las Categorías */}
-            <ScrollReveal delay={200}>
-              <p className="text-xl md:text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-4 leading-relaxed text-left px-4">
-                O bien, consulta la solución a tu problema dental.
-              </p>
-
-
-            </ScrollReveal>
-
-            {/* 6. Enlaces SEO Directos (El Bento Grid expuesto) */}
-            <ScrollReveal delay={250}>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto relative z-40">
-                
-                <Link href="/categorias/odontologia-general" className="flex items-center p-5 rounded-2xl border border-gray-200 shadow-sm transition-all hover:border-dkv-green hover:shadow-md hover:-translate-y-1 text-left bg-white group">
-                  <div className="mr-4 text-dkv-green transition-transform group-hover:scale-110 shrink-0">
-                    <Zap className="w-8 h-8" strokeWidth={1.5} />
+            <div className="max-w-4xl mx-auto space-y-12">
+              
+              {/* AGRUPACIÓN 1: Neomórfica - Buscador Predictivo */}
+              <ScrollReveal delay={150}>
+                {/* ⚡️ Contenedor Neomórfico (Elevado) */}
+                {/* MODIFICACIÓN: Reducimos el blur de 24px a 16px para hacer la sombra blanca más visible */}
+                <div className="bg-[#F0F0F0] rounded-[2.5rem] p-8 md:p-12 shadow-[12px_12px_16px_#cccccc,-12px_-12px_16px_#ffffff]">
+                  <p className="text-xl md:text-2xl text-dkv-green-dark font-lemon mb-8 leading-relaxed text-center">
+                    Consulta el precio de tu tratamiento al instante, sin formularios.
+                  </p>
+                  
+                  {/* MODIFICACIÓN: Envolvemos el buscador en un contenedor con efecto hundido ("tallado") */}
+                  <div className="w-full relative z-50 overflow-hidden rounded-full shadow-[inset_6px_6px_12px_#cccccc,inset_-6px_-6px_12px_#ffffff]">
+                    <TreatmentSearch />
                   </div>
-                  <div className="flex flex-col justify-center">
-                    <span className="block font-bold text-dkv-green-dark text-lg leading-tight mb-1">Tengo dolor</span>
-                    <span className="text-sm text-gray-500 leading-snug">Caries, endodoncia...</span>
-                  </div>
-                </Link>
+                </div>
+              </ScrollReveal>
 
-                <Link href="/categorias/implantes" className="flex items-center p-5 rounded-2xl border border-gray-200 shadow-sm transition-all hover:border-dkv-green hover:shadow-md hover:-translate-y-1 text-left bg-white group">
-                  <div className="mr-4 text-dkv-green transition-transform group-hover:scale-110 shrink-0">
-                    <Stethoscope className="w-8 h-8" strokeWidth={1.5} />
-                  </div>
-                  <div className="flex flex-col justify-center">
-                    <span className="block font-bold text-dkv-green-dark text-lg leading-tight mb-1">Me faltan piezas</span>
-                    <span className="text-sm text-gray-500 leading-snug">Implantes, puentes...</span>
-                  </div>
-                </Link>
+              {/* AGRUPACIÓN 2: Neomórfica - Opciones Guiadas */}
+              <ScrollReveal delay={250}>
+                 {/* ⚡️ Contenedor Neomórfico (Elevado) */}
+                 {/* MODIFICACIÓN: Reducimos el blur de 24px a 16px para hacer la sombra blanca más visible */}
+                <div className="bg-[#F0F0F0] rounded-[2.5rem] p-8 md:p-12 shadow-[12px_12px_16px_#cccccc,-12px_-12px_16px_#ffffff] relative z-40">
+                  <p className="text-xl md:text-2xl text-dkv-green-dark font-lemon mb-8 leading-relaxed text-center">
+                    O bien, consulta la solución a tu problema dental.
+                  </p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    
+                    {/* Botones interiores: Mantenemos el efecto hover hundido, que ahora es coherente con el buscador */}
+                    <Link href="/categorias/odontologia-general" className="flex flex-col items-center justify-center p-6 rounded-2xl transition-all text-center bg-[#F0F0F0] group hover:shadow-[inset_4px_4px_8px_#cccccc,inset_-4px_-4px_8px_#ffffff]">
+                      <div className="mb-4 text-dkv-green transition-transform group-hover:scale-110">
+                        <Zap className="w-10 h-10" strokeWidth={1.5} />
+                      </div>
+                      <span className="block font-bold text-dkv-green-dark text-lg leading-tight mb-2">Tengo dolor</span>
+                      <span className="text-sm text-gray-500 leading-snug">Caries, endodoncia...</span>
+                    </Link>
 
-                <Link href="/categorias/ortodoncia" className="flex items-center p-5 rounded-2xl border border-gray-200 shadow-sm transition-all hover:border-dkv-green hover:shadow-md hover:-translate-y-1 text-left bg-white group">
-                  <div className="mr-4 text-dkv-green transition-transform group-hover:scale-110 shrink-0">
-                    <Smile className="w-8 h-8" strokeWidth={1.5} />
-                  </div>
-                  <div className="flex flex-col justify-center">
-                    <span className="block font-bold text-dkv-green-dark text-lg leading-tight mb-1">Necesito mejorar mi sonrisa</span>
-                    <span className="text-sm text-gray-500 leading-snug">Ortodoncia, estética...</span>
-                  </div>
-                </Link>
+                    <Link href="/categorias/implantes" className="flex flex-col items-center justify-center p-6 rounded-2xl transition-all text-center bg-[#F0F0F0] group hover:shadow-[inset_4px_4px_8px_#cccccc,inset_-4px_-4px_8px_#ffffff]">
+                      <div className="mb-4 text-dkv-green transition-transform group-hover:scale-110">
+                        <Stethoscope className="w-10 h-10" strokeWidth={1.5} />
+                      </div>
+                      <span className="block font-bold text-dkv-green-dark text-lg leading-tight mb-2">Me faltan piezas</span>
+                      <span className="text-sm text-gray-500 leading-snug">Implantes, puentes...</span>
+                    </Link>
 
-              </div>
-            </ScrollReveal>
+                    <Link href="/categorias/ortodoncia" className="flex flex-col items-center justify-center p-6 rounded-2xl transition-all text-center bg-[#F0F0F0] group hover:shadow-[inset_4px_4px_8px_#cccccc,inset_-4px_-4px_8px_#ffffff]">
+                      <div className="mb-4 text-dkv-green transition-transform group-hover:scale-110">
+                        <Smile className="w-10 h-10" strokeWidth={1.5} />
+                      </div>
+                      <span className="block font-bold text-dkv-green-dark text-lg leading-tight mb-2">Mejorar mi sonrisa</span>
+                      <span className="text-sm text-gray-500 leading-snug">Ortodoncia, estética...</span>
+                    </Link>
 
+                  </div>
+                </div>
+              </ScrollReveal>
+
+            </div>
           </div>
         </section>
-
-
 
 
 
