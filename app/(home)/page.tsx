@@ -228,17 +228,16 @@ export default function LandingPage() {
             <h2 className="text-4xl md:text-5xl font-lemon text-dkv-green-dark mb-6">Dentistas.</h2>
            </ScrollReveal>
            <ScrollReveal delay={100}>
-            <p className="text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-10 text-balance leading-relaxed">
-              Tan fácil como elegir tu dentista y pedir cita en consulta. Seguro que tienes uno cerca. 
+            {/* ⚡️ TEXTO MODIFICADO CON ESTILOS MOBILE-FIRST (mb-6, px-4, text-left) */}
+            <p className="text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-6 md:mb-10 px-4 md:px-0 text-left md:text-center leading-relaxed">
+              Nuestra red está formada por más de 2.600 dentistas en más de 1.450 centros dentales en toda España. Seguro que tienes uno cerca. Encuentra el tuyo.
             </p>
            </ScrollReveal>
            <ScrollReveal delay={200}>       
             <div className="max-w-4xl mx-auto mb-8">
               <HeroSearch />
             </div>
-            <p className="text-sm font-medium text-dkv-green-dark mt-6">
-              Busca centros dentales en toda España. <span className="block mt-1"> Sin registros previos.</span>
-            </p>
+            {/* ⚡️ ELIMINADO EL TEXTO INFERIOR SOBRE LOS REGISTROS PREVIOS */}
            </ScrollReveal>
           </div>
         </section>
