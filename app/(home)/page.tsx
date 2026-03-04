@@ -140,7 +140,7 @@ export default function LandingPage() {
                       </span>
                       {/* ⚡️ Fuente corregida a text-sm md:text-base */}
                       <span className="text-sm md:text-base text-gray-500 leading-snug max-w-[150px] md:max-w-none mt-1">
-                        Caries, endodoncia...
+                        Caries, <span className="text-dkv-green font-bold">endodoncia</span>...
                       </span>
                     </Link>
                   </ScrollReveal>
@@ -163,7 +163,7 @@ export default function LandingPage() {
                       </span>
                       {/* ⚡️ Fuente corregida a text-sm md:text-base */}
                       <span className="text-sm md:text-base text-gray-500 leading-snug max-w-[150px] md:max-w-none mt-1">
-                        Higiene, diagnóstico...
+                        <span className="text-dkv-green font-bold">Limpieza</span>, diagnóstico...
                       </span>
                     </Link>
                   </ScrollReveal>
@@ -186,7 +186,7 @@ export default function LandingPage() {
                       </span>
                       {/* ⚡️ Fuente corregida a text-sm md:text-base */}
                       <span className="text-sm md:text-base text-gray-500 leading-snug max-w-[150px] md:max-w-none mt-1">
-                        Implantes, puentes...
+                        <span className="text-dkv-green font-bold">Implantes</span>, puentes...
                       </span>
                     </Link>
                   </ScrollReveal>
@@ -209,7 +209,7 @@ export default function LandingPage() {
                       </span>
                       {/* ⚡️ Fuente corregida a text-sm md:text-base */}
                       <span className="text-sm md:text-base text-gray-500 leading-snug max-w-[150px] md:max-w-none mt-1">
-                        Ortodoncia, estética...
+                        <span className="text-dkv-green font-bold">Ortodoncia</span>, estética...
                       </span>
                     </Link>
                   </ScrollReveal>
