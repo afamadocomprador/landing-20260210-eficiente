@@ -125,7 +125,7 @@ export default function LandingPage() {
                   {/* FICHA 1: DOLOR */}
                   <ScrollReveal delay={200}>
                     <Link 
-                      href="/categorias/odontologia-general" 
+                      href="/tratamientos/endodoncias-extracciones-curas" 
                       className={`h-full relative flex flex-col items-center text-center p-5 md:p-8 rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ${neumorphicBase} ${neumorphicActive} hover:scale-[1.02] active:scale-[0.98]`}
                     >
                       <div className="absolute top-4 right-4 md:top-5 md:right-5 text-dkv-green-dark opacity-70 group-hover:opacity-100 group-hover:text-dkv-green transition-all duration-300 group-hover:translate-x-1">
@@ -194,7 +194,7 @@ export default function LandingPage() {
                   {/* FICHA 4: SONRISA */}
                   <ScrollReveal delay={500}>
                     <Link 
-                      href="/categorias/ortodoncia" 
+                      href="/tratamientos/ortodoncia-estetica" 
                       className={`h-full relative flex flex-col items-center text-center p-5 md:p-8 rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ${neumorphicBase} ${neumorphicActive} hover:scale-[1.02] active:scale-[0.98]`}
                     >
                       <div className="absolute top-4 right-4 md:top-5 md:right-5 text-dkv-green-dark opacity-70 group-hover:opacity-100 group-hover:text-dkv-green transition-all duration-300 group-hover:translate-x-1">
@@ -223,6 +223,7 @@ export default function LandingPage() {
 
         {/* --- SECCIÓN DENTISTAS --- */}
         <section id="dentistas" className="py-24 bg-white border-t border-dkv-gray-border relative overflow-visible">
+        {/*<section id="dentistas" className="py-24 bg-[url('/images/utensilios.png')] bg-cover bg-center bg-no-repeat border-t border-dkv-gray-border relative overflow-visible">*/}
           <div className="container mx-auto px-4 text-center relative z-20">
            <ScrollReveal delay={0}>
             <h2 className="text-4xl md:text-5xl font-lemon text-dkv-green-dark mb-6">Dentistas.</h2>
