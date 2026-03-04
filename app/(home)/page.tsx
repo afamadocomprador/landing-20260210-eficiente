@@ -89,8 +89,8 @@ const nationalMasterSchema = {
 
 export default function LandingPage() {
   
-  // ⚡️ VARIABLES NEOMÓRFICAS (Las sombras tintadas que creaste)
-  const neumorphicBase = "shadow-[8px_8px_12px_#033b3720,-2px_-2px_2px_#ffffff90]";
+  // ⚡️ TUS NUEVAS VARIABLES DE SOMBRA
+  const neumorphicBase = "shadow-[8px_8px_12px_#033b3720,-5px_-5px_10px_#ffffff]";
   const neumorphicActive = "active:shadow-[inset_4px_4px_8px_#033b3730,inset_-4px_-4px_8px_#ffffff]";
 
   return (
@@ -102,7 +102,6 @@ export default function LandingPage() {
         
         <MainHero /> 
 
-        {/* ⚡️ FONDO APLICADO: bg-[#F0F0F0] (RGB 240,240,240) */}
         <section className="py-20 bg-[#F0F0F0] border-t border-dkv-gray-border relative z-40 scroll-mt-28">
           <div className="container mx-auto px-4 text-center">
 
@@ -118,7 +117,7 @@ export default function LandingPage() {
               </p>
             </ScrollReveal>
 
-            <div className="max-w-4xl mx-auto space-y-20">
+            <div className="max-w-4xl mx-auto space-y-16 md:space-y-20">
               
               <ScrollReveal delay={150}>
                 <div className="relative z-50 px-2 md:px-0">
@@ -129,17 +128,14 @@ export default function LandingPage() {
               </ScrollReveal>
 
               <ScrollReveal delay={250}>
-                <div className="relative z-40 px-2 md:px-0">
-                  <h3 className="text-xl md:text-2xl text-dkv-green-dark font-lemon mb-10 text-left md:text-center">
-                    O bien, consulta la solución a tu problema dental...
-                  </h3>
+                {/* ⚡️ Eliminado el H3 y ajustado el padding superior sutilmente */}
+                <div className="relative z-40 px-2 md:px-0 pt-2">
                   
                   <div className="grid grid-cols-2 gap-5 md:gap-10 pb-6">
                     
                     {/* FICHA 1: DOLOR */}
                     <Link 
                       href="/categorias/odontologia-general" 
-                      // ⚡️ bg-[#F0F0F0]
                       className={`relative flex flex-col items-center text-center p-5 md:p-8 rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ${neumorphicBase} ${neumorphicActive} hover:scale-[1.02] active:scale-[0.98]`}
                     >
                       <div className="absolute top-4 right-4 md:top-5 md:right-5 text-dkv-green-dark opacity-70 group-hover:opacity-100 group-hover:text-dkv-green transition-all duration-300 group-hover:translate-x-1">
@@ -152,7 +148,8 @@ export default function LandingPage() {
                       <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-lg md:text-2xl leading-tight mb-2">
                         Tengo dolor
                       </span>
-                      <span className="text-xs md:text-sm text-gray-500 leading-snug max-w-[140px] md:max-w-none">
+                      {/* ⚡️ Cambiado a text-sm md:text-base (14px / 16px) */}
+                      <span className="text-sm md:text-base text-gray-500 leading-snug max-w-[150px] md:max-w-none">
                         Caries, endodoncia...
                       </span>
                     </Link>
@@ -160,7 +157,6 @@ export default function LandingPage() {
                     {/* FICHA 2: HIGIENE */}
                     <Link 
                       href="/categorias/higiene-y-prevencion" 
-                      // ⚡️ bg-[#F0F0F0]
                       className={`relative flex flex-col items-center text-center p-5 md:p-8 rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ${neumorphicBase} ${neumorphicActive} hover:scale-[1.02] active:scale-[0.98]`}
                     >
                       <div className="absolute top-4 right-4 md:top-5 md:right-5 text-dkv-green-dark opacity-70 group-hover:opacity-100 group-hover:text-dkv-green transition-all duration-300 group-hover:translate-x-1">
@@ -173,7 +169,8 @@ export default function LandingPage() {
                       <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-lg md:text-2xl leading-tight mb-2">
                         Limpieza
                       </span>
-                      <span className="text-xs md:text-sm text-gray-500 leading-snug max-w-[140px] md:max-w-none">
+                      {/* ⚡️ Cambiado a text-sm md:text-base (14px / 16px) */}
+                      <span className="text-sm md:text-base text-gray-500 leading-snug max-w-[150px] md:max-w-none">
                         Higiene, diagnóstico...
                       </span>
                     </Link>
@@ -181,7 +178,6 @@ export default function LandingPage() {
                     {/* FICHA 3: PIEZAS */}
                     <Link 
                       href="/categorias/implantes" 
-                      // ⚡️ bg-[#F0F0F0]
                       className={`relative flex flex-col items-center text-center p-5 md:p-8 rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ${neumorphicBase} ${neumorphicActive} hover:scale-[1.02] active:scale-[0.98]`}
                     >
                       <div className="absolute top-4 right-4 md:top-5 md:right-5 text-dkv-green-dark opacity-70 group-hover:opacity-100 group-hover:text-dkv-green transition-all duration-300 group-hover:translate-x-1">
@@ -194,7 +190,8 @@ export default function LandingPage() {
                       <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-lg md:text-2xl leading-tight mb-2">
                         Faltan piezas
                       </span>
-                      <span className="text-xs md:text-sm text-gray-500 leading-snug max-w-[140px] md:max-w-none">
+                      {/* ⚡️ Cambiado a text-sm md:text-base (14px / 16px) */}
+                      <span className="text-sm md:text-base text-gray-500 leading-snug max-w-[150px] md:max-w-none">
                         Implantes, puentes...
                       </span>
                     </Link>
@@ -202,7 +199,6 @@ export default function LandingPage() {
                     {/* FICHA 4: SONRISA */}
                     <Link 
                       href="/categorias/ortodoncia" 
-                      // ⚡️ bg-[#F0F0F0]
                       className={`relative flex flex-col items-center text-center p-5 md:p-8 rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ${neumorphicBase} ${neumorphicActive} hover:scale-[1.02] active:scale-[0.98]`}
                     >
                       <div className="absolute top-4 right-4 md:top-5 md:right-5 text-dkv-green-dark opacity-70 group-hover:opacity-100 group-hover:text-dkv-green transition-all duration-300 group-hover:translate-x-1">
@@ -215,7 +211,8 @@ export default function LandingPage() {
                       <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-lg md:text-2xl leading-tight mb-2">
                         Mejorar sonrisa
                       </span>
-                      <span className="text-xs md:text-sm text-gray-500 leading-snug max-w-[140px] md:max-w-none">
+                      {/* ⚡️ Cambiado a text-sm md:text-base (14px / 16px) */}
+                      <span className="text-sm md:text-base text-gray-500 leading-snug max-w-[150px] md:max-w-none">
                         Ortodoncia, estética...
                       </span>
                     </Link>
