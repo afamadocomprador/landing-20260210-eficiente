@@ -1,23 +1,24 @@
+// components/home/HeroSearch.tsx
 "use client";
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-// 🌟 1. AÑADIMOS Loader2 a los iconos
 import { Search, MapPin, Navigation, Loader2 } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
-
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-
 interface SearchItem {
   n: string;
   t: string;
   s: string;
 }
+
+// 🌟 CIUDADES EN MINÚSCULAS
+const PLACEHOLDER_CITIES = ["calatayud", "huesca", "almendralejo", "sitges", "eibar"];
 
 export default function HeroSearch() {
   const [query, setQuery] = useState("");
@@ -27,11 +28,75 @@ export default function HeroSearch() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
   
-  // 🌟 2. NUEVO ESTADO: Para saber si estamos viajando a otra página
   const [isNavigating, setIsNavigating] = useState(false);
   
   const router = useRouter();
   const wrapperRef = useRef<HTMLDivElement>(null);
+
+  // 🌟 ESTADOS PARA EL PLACEHOLDER ANIMADO
+  const [typedPlaceholder, setTypedPlaceholder] = useState("");
+  const [isAnimatingUp, setIsAnimatingUp] = useState(false);
+
+  // 🌟 LÓGICA MAESTRA: TECLEO Y ANIMACIÓN HACIA ARRIBA
+  useEffect(() => {
+    // Si el usuario hace clic o escribe, vaciamos todo para dejar el campo en blanco
+    if (isOpen || query.length > 0 || isNavigating) {
+      setTypedPlaceholder("");
+      setIsAnimatingUp(false);
+      return;
+    }
+
+    let isMounted = true;
+    let cityIdx = 0;
+    let text = '';
+    let timerId: NodeJS.Timeout;
+    
+    // Máquina de estados: TYPING -> PAUSED -> ANIMATING_UP -> WAITING_NEXT
+    let state = 'TYPING'; 
+
+    const loop = () => {
+      if (!isMounted) return;
+      const fullText = PLACEHOLDER_CITIES[cityIdx];
+
+      if (state === 'TYPING') {
+        text = fullText.substring(0, text.length + 1);
+        setTypedPlaceholder(text);
+
+        if (text === fullText) {
+          state = 'PAUSED';
+          timerId = setTimeout(loop, 2500); // Pausa de 2.5s con la palabra completa
+        } else {
+          timerId = setTimeout(loop, 120); // Velocidad de tecleo
+        }
+      } 
+      else if (state === 'PAUSED') {
+        // Disparamos la animación CSS hacia arriba
+        setIsAnimatingUp(true);
+        state = 'ANIMATING_UP';
+        timerId = setTimeout(loop, 300); // Esperamos a que acabe la transición CSS
+      } 
+      else if (state === 'ANIMATING_UP') {
+        // Limpiamos el texto invisible y reseteamos la posición
+        text = '';
+        setTypedPlaceholder('');
+        setIsAnimatingUp(false);
+        cityIdx = (cityIdx + 1) % PLACEHOLDER_CITIES.length; // Pasamos a la siguiente ciudad
+        state = 'WAITING_NEXT';
+        timerId = setTimeout(loop, 300); // Pausa con el campo vacío antes de empezar
+      } 
+      else if (state === 'WAITING_NEXT') {
+        state = 'TYPING';
+        loop();
+      }
+    };
+
+    timerId = setTimeout(loop, 500);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timerId);
+    };
+  }, [isOpen, query, isNavigating]);
   
   const loadDictionary = async () => {
     if (dictionary || isLoading || isNavigating) return; 
@@ -52,7 +117,7 @@ export default function HeroSearch() {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (isNavigating) return; // Bloqueamos si ya está viajando
+    if (isNavigating) return; 
     const value = e.target.value;
     setQuery(value);
 
@@ -73,7 +138,6 @@ export default function HeroSearch() {
   const handleSelect = (slug: string, name: string) => {
     setQuery(name);
     setIsOpen(false);
-    // 🌟 3. ACTIVAMOS EL FEEDBACK VISUAL ANTES DE VIAJAR
     setIsNavigating(true); 
     router.push(`/dentistas/${slug}`);
   };
@@ -103,19 +167,17 @@ export default function HeroSearch() {
 
     setIsLocating(true);
 
-navigator.geolocation.getCurrentPosition(
+    navigator.geolocation.getCurrentPosition(
       (position) => {
         setIsLocating(false);
         setIsOpen(false);
-        setIsNavigating(true); // Arrancamos la animación de viajar
+        setIsNavigating(true); 
         
         const { latitude, longitude } = position.coords;
         
-        // 🌟 MAGIA: Guardamos las coordenadas en cookies temporales (Max-Age=3600 es 1 hora)
         document.cookie = `user_lat=${latitude}; path=/; max-age=3600; SameSite=Strict`;
         document.cookie = `user_lng=${longitude}; path=/; max-age=3600; SameSite=Strict`;
         
-        // Viajamos a una URL totalmente limpia
         router.push(`/dentistas/cerca-de-mi`);
       },
       (error) => {
@@ -152,7 +214,6 @@ navigator.geolocation.getCurrentPosition(
   return (
     <div ref={wrapperRef} className="relative w-full max-w-3xl mx-auto z-50 text-left">
       
-      {/* 🌟 5. APLICAMOS LOS ESTILOS DE TRANSICIÓN A LA PASTILLA */}
       <div 
         className={`bg-white rounded-full border p-2 flex items-center relative transition-all duration-300 
           ${isNavigating 
@@ -162,7 +223,7 @@ navigator.geolocation.getCurrentPosition(
               : 'border-gray-200 shadow-lg hover:shadow-xl'
           }`}
         onClick={() => {
-          if (isNavigating) return; // Si está viajando, bloqueamos clics
+          if (isNavigating) return; 
           setIsOpen(true);
           loadDictionary();
           
@@ -180,7 +241,6 @@ navigator.geolocation.getCurrentPosition(
         }}
       >
         <div className="pl-4 pr-2 text-dkv-green">
-          {/* 🌟 6. EL ICONO CAMBIA SEGÚN EL ESTADO */}
           {isNavigating ? (
             <Loader2 className="w-6 h-6 animate-spin text-dkv-green" />
           ) : isLoading ? (
@@ -190,24 +250,38 @@ navigator.geolocation.getCurrentPosition(
           )}
         </div>
 
-        <input
-          type="text"
-          placeholder="Busca por provincia, municipio, barrio..."
-          // 🌟 7. EL TEXTO SE VUELVE OPACADO AL VIAJAR Y SE BLOQUEA
-          className={`flex-1 w-full bg-transparent border-none focus:ring-0 px-2 py-3 text-lg outline-none transition-colors
-            ${isNavigating ? 'text-gray-400 placeholder-gray-300 cursor-wait' : 'text-gray-700 placeholder-gray-400'}
-          `}
-          value={query}
-          readOnly={isNavigating} // Evita que se despliegue el teclado del móvil otra vez
-          onChange={handleInputChange}
-          onFocus={() => {
-            if(!isNavigating) setIsOpen(true);
-          }}
-          onKeyDown={(e) => e.key === 'Enter' && handleSearch()} 
-        />
+        {/* 🌟 CONTENEDOR RELATIVO PARA EL INPUT Y EL PLACEHOLDER FALSO */}
+        <div className="relative flex-1 flex items-center h-full overflow-hidden">
+          
+          {/* PLACEHOLDER FALSO ANIMADO */}
+          {!isOpen && query.length === 0 && !isNavigating && (
+            <span 
+              className={`absolute left-2 text-gray-400 italic text-lg pointer-events-none transition-all duration-300 ${
+                isAnimatingUp ? '-translate-y-4 opacity-0' : 'translate-y-0 opacity-100'
+              }`}
+            >
+              {typedPlaceholder}
+            </span>
+          )}
+
+          <input
+            type="text"
+            placeholder="" // Siempre vacío. Si hacen clic, queda inmaculado.
+            className={`w-full bg-transparent border-none focus:ring-0 px-2 py-3 text-lg outline-none transition-colors
+              ${isNavigating ? 'text-gray-400 cursor-wait' : 'text-gray-700'}
+            `}
+            value={query}
+            readOnly={isNavigating} 
+            onChange={handleInputChange}
+            onFocus={() => {
+              if(!isNavigating) setIsOpen(true);
+            }}
+            onKeyDown={(e) => e.key === 'Enter' && handleSearch()} 
+          />
+        </div>
       </div>
 
-      {/* MENÚ DESPLEGABLE (Se oculta automáticamente al viajar porque setIsOpen pasa a false) */}
+      {/* MENÚ DESPLEGABLE */}
       {isOpen && !isNavigating && (
         <div className="absolute top-full left-0 right-0 mt-4 bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden divide-y divide-gray-50 py-2">
           
