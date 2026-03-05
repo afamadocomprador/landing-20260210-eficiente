@@ -125,7 +125,7 @@ export default function LandingPage() {
                   {/* FICHA 1: DOLOR */}
                   <ScrollReveal delay={200}>
                     <Link 
-                      href="/tratamientos/endodoncias-extracciones-curas" 
+                      href="/tratamientos/odontologia-conservadora" 
                       className={`h-full relative flex flex-col items-center text-center p-5 md:p-8 rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ${neumorphicBase} ${neumorphicActive} hover:scale-[1.02] active:scale-[0.98]`}
                     >
                       <div className="absolute top-4 right-4 md:top-5 md:right-5 text-dkv-green-dark opacity-70 group-hover:opacity-100 group-hover:text-dkv-green transition-all duration-300 group-hover:translate-x-1">
@@ -275,3 +275,4 @@ export default function LandingPage() {
     </div>
   );
 }
+
