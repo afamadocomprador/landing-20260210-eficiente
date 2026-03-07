@@ -2,12 +2,21 @@
 
 import React, { useState, useEffect } from 'react';
 
+
+// ⚡️ LA SOLUCIÓN ESTÁ AQUÍ: Añadir 'id: string;' al SubTreatment
+interface SubTreatment {
+  id: string; // <--- ESTO EVITA EL ERROR DE COMPILACIÓN
+  name: string;
+  price?: string;
+}
+
+
 // Actualizamos la interfaz para permitir anidación (3er nivel)
 interface Treatment {
   id: string;
   name: string;
   price?: string;
-  subTreatments?: { name: string; price?: string }[]; // El tercer nivel
+  subTreatments?: SubTreatment[]; // Referenciamos la nueva interfaz
 }
 
 interface TocData {
