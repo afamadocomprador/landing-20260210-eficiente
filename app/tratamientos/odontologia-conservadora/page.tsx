@@ -1,164 +1,246 @@
-import React from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Check, ChevronRight, Info } from 'lucide-react';
-import FooterLegal from '@/components/FooterLegal';
-import ScrollReveal from '@/components/ui/ScrollReveal';
+import { Metadata } from "next";
+import React from "react";
 
-// Array de datos. Iremos añadiendo aquí las extracciones y curas más adelante.
-const tratamientos = [
+// Componentes reales extraídos de tu proyecto
+import Header from "@/components/layout/Header";
+import FooterLegal from "@/components/FooterLegal";
+import CookieBanner from "@/components/CookieBanner";
+import FixedBreadcrumb from "@/components/layout/FixedBreadcrumb";
+import LeadForm from "@/components/LeadForm";
+import { CheckCircle2, AlertCircle, Info, Stethoscope } from "lucide-react";
+
+// Importamos nuestro Índice Nivel Dios (Ajusta la ruta según donde lo hayas guardado)
+import { GodLevelTOC } from "@/components/ui/GodLevelTOC"; 
+
+export const metadata: Metadata = {
+  title: "Salvando piezas - Odontología conservadora | DKV Dentisalud",
+  description: "Guía de tratamientos conservadores para preservar tu dentadura natural: empastes, endodoncias y reconstrucciones con precios cerrados.",
+};
+
+// --- DATA ESTRUCTURADA PARA EL ÍNDICE ---
+// Esto le dice al índice flotante exactamente qué IDs buscar para hacer el scroll.
+const tocData = [
   {
-    id: 'endodoncia',
-    titulo: 'Endodoncia (Tratamiento de conductos)',
-    subtitulo: 'Salva tu diente y elimina el dolor de raíz',
-    imagen: '/images/tratamientos/endodoncias-1C-2C-3C.png', 
-    descripcion: "Conocido popularmente como 'matar el nervio'. Es un procedimiento indoloro para eliminar el tejido infectado del interior del diente, limpiarlo y sellarlo. Evita la extracción de la pieza y fulmina el dolor agudo al instante. Precios fijos y cerrados según la anatomía de tu diente.",
-    ventajas: [
-      '1 Conducto (Incisivos/Caninos) - DKV: 85€ (Mercado: ~160€)', 
-      '2 Conductos (Premolares) - DKV: 105€ (Mercado: ~210€)', 
-      '3 Conductos (Molares) - DKV: 145€ (Mercado: ~260€)'
-    ],
-    // Mostramos el precio "Desde" (1 conducto) en el bloque grande
-    precioMercado: '160€',
-    precioDKV: '85€',
-    badge: 'Alivio Inmediato',
-    // Usamos el tono naranja corporativo de DKV para "Urgencia / Dolor"
-    badgeColor: 'bg-[#FFF8F0] text-[#EA580C] border border-orange-200'
+    level: { id: "nivel-1", number: "Nivel 1", title: "El nervio sobrevive" },
+    treatments: [
+      { id: "empaste", name: "Obturación (empaste) con o sin recubrimiento pulpar" },
+      { id: "bioactivo", name: "Sustitutivo dentinario bioactivo" },
+      { id: "reconstruccion", name: "Gran reconstrucción" }
+    ]
+  },
+  {
+    level: { id: "nivel-2", number: "Nivel 2", title: "Dolor agudo e intolerable (Urgencia)" },
+    treatments: [
+      { id: "urgencia", name: "Pulpectomía de urgencias" }
+    ]
+  },
+  {
+    level: { id: "nivel-3", number: "Nivel 3", title: "Infección total y pérdida crítica" },
+    treatments: [
+      { id: "endodoncia", name: "Endodoncia Completa" }
+    ]
+  },
+  {
+    level: { id: "nivel-4", number: "Niveles 4 y 5", title: "Casos Complejos y Cirugía" },
+    treatments: [
+      { id: "reendodoncia", name: "Reendodoncia (1, 2 o 3 conductos)" },
+      { id: "apicoformacion", name: "Apicoformación" },
+      { id: "cirugia", name: "Apicectomía o Cirugía Periapical" },
+      { id: "reimplante", name: "Reimplante de pieza dental" }
+    ]
   }
 ];
 
-export default function EndodonciasCurasPage() {
+// --- Componentes de UI ---
+const TreatmentRow = ({ id, name, price, children }: { id: string, name: string, price: string, children: React.ReactNode }) => (
+  <div id={id} className="py-8 border-b border-dkv-gray-border last:border-0 group scroll-mt-[130px]">
+    <h2 className="flex flex-col md:flex-row md:justify-between md:items-baseline gap-2 mb-4 text-lg md:text-xl font-bold font-lemon text-dkv-green-dark leading-tight uppercase group-hover:text-dkv-green transition-colors">
+      <span>{name}</span>
+      <span className="flex items-center gap-2 shrink-0 text-2xl font-lemon font-bold text-dkv-green normal-case">
+        {price}
+      </span>
+    </h2>
+    <div className="text-dkv-gray font-fsme leading-relaxed text-sm md:text-base space-y-3">
+      {children}
+    </div>
+  </div>
+);
+
+const LevelTitle = ({ id, number, title, description }: { id: string, number: string, title: string, description?: string }) => (
+  <div id={id} className="mt-16 mb-8 scroll-mt-[130px]">
+    <span className="text-dkv-green font-bold text-xs uppercase tracking-[0.2em] font-fsme">{number}</span>
+    <p className="text-2xl md:text-3xl font-bold font-lemon text-dkv-green-dark border-b-2 border-dkv-green pb-3 inline-block w-full mt-2 uppercase tracking-wide">
+      {title}
+    </p>
+    {description && <p className="text-dkv-gray mt-4 font-fsme text-lg">{description}</p>}
+  </div>
+);
+
+export default function OdontologiaConservadoraPage() {
+  const breadcrumbs = [
+    { label: "Inicio", href: "/" },
+    { label: "Tratamientos", href: "/tratamientos" },
+    { label: "Odontología Conservadora", href: "#" }
+  ];
+
   return (
-    <div className="min-h-screen bg-white text-dkv-gray font-fsme selection:bg-dkv-green selection:text-white">
-      
-      {/* HEADER / HERO SECTION */}
-      <section className="pt-16 pb-12 bg-white relative z-10">
-        <div className="container mx-auto px-4 text-center max-w-4xl">
-          
-          <ScrollReveal delay={0}>
-            <Link href="/" className="inline-flex items-center justify-center text-sm font-bold text-dkv-gray hover:text-dkv-green transition-colors mb-8">
-              <ChevronRight className="w-4 h-4 rotate-180 mr-1" />
-              Volver al inicio
-            </Link>
-            
-            <div className="flex justify-center mb-4">
-              <div className="inline-block bg-[#FFF8F0] text-[#EA580C] px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest border border-orange-200 shadow-sm">
-                Tengo dolor agudo
-              </div>
-            </div>
+    <div className="min-h-screen bg-white font-fsme text-dkv-gray selection:bg-dkv-green selection:text-white">
+      <CookieBanner />
+      <Header />
 
-            <h1 className="text-4xl md:text-5xl font-lemon text-dkv-green-dark mb-6">
-              Endodoncias, Extracciones y <span className="text-dkv-green">Curas</span>
+      <main className="pt-[110px]">
+        <FixedBreadcrumb items={breadcrumbs} />
+
+        {/* HERO SECCIÓN */}
+        <section className="bg-dkv-gray-border/30 py-16 md:py-24 border-b border-dkv-gray-border relative overflow-hidden">
+          <div className="container mx-auto px-4 relative z-10 max-w-4xl">
+            <span className="inline-block py-1 px-3 bg-dkv-green/10 text-dkv-green-dark font-bold text-xs uppercase tracking-wider rounded-full font-fsme mb-6">
+              Guía de Tratamientos y Presupuestos
+            </span>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-lemon text-dkv-green-dark leading-tight mb-6">
+              SALVANDO PIEZAS <br />
+              <span className="text-dkv-green">ODONTOLOGÍA CONSERVADORA</span>
             </h1>
-          </ScrollReveal>
-
-          <ScrollReveal delay={100}>
-            <p className="text-xl text-dkv-gray font-fsme leading-relaxed text-balance max-w-3xl mx-auto">
-              Tratamientos diseñados para aliviar el dolor, curar infecciones y salvar tus piezas dentales con la máxima urgencia y cuidado. Ahorra hasta un <strong className="text-dkv-green-dark font-black">40% de descuento</strong> con DKV Dentisalud Élite.
+            <p className="text-lg text-dkv-gray font-fsme leading-relaxed">
+              Cuando un dolor dental interrumpe tu rutina diaria, hay que evitar la extracción en lo posible.
             </p>
-          </ScrollReveal>
+            <p className="text-lg text-dkv-gray font-fsme leading-relaxed mt-4">
+              La pérdida de una pieza dental implica <strong>una inversión de tiempo y dinero mucho mayor a futuro</strong> para recuperar la capacidad de masticar. 
+            </p>
+            <p className="text-lg text-dkv-gray font-fsme leading-relaxed mt-4">
+              La odontología conservadora moderna ofrece un abanico de soluciones diseñadas para frenar la enfermedad en cualquier estadio, preservando siempre la estructura de su diente natural.
+            </p>
+          </div>
+        </section>
 
-        </div>
-      </section>
+        {/* CUERPO DE CONTENIDO SIN RUIDO COGNITIVO */}
+        <section className="py-12 md:py-20">
+          <div className="container mx-auto px-4 max-w-4xl">
+            
+            {/* --- CONTENIDO DETALLADO --- */}
 
-      {/* LISTA DE TRATAMIENTOS */}
-      <section className="py-12 bg-white relative z-20">
-        <div className="container mx-auto px-4 max-w-4xl flex flex-col gap-10">
-          
-          {tratamientos.map((trat, index) => (
-            <ScrollReveal key={trat.id} delay={index * 100}>
-              <article className="bg-white border border-dkv-gray-border rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-8 hover:shadow-xl transition-shadow duration-300">
-                
-                {/* IMAGEN DEL TRATAMIENTO */}
-                <div className="relative w-full md:w-2/5 h-64 bg-white rounded-2xl overflow-hidden flex-shrink-0 flex items-center justify-center">
-                  <div className="absolute top-2 left-2 z-10">
-                    <span className={`px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest ${trat.badgeColor}`}>
-                      {trat.badge}
-                    </span>
-                  </div>
-                  <Image 
-                    src={trat.imagen} 
-                    alt={trat.titulo}
-                    fill
-                    className="object-contain p-2 transition-transform duration-500 hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 400px"
-                  />
-                </div>
+            {/* NIVEL 1 */}
+            <LevelTitle 
+              id="nivel-1"
+              number="Nivel 1" 
+              title="El nervio sobrevive" 
+              description="La caries hace acto de presencia, pero el nervio aún no está afectado o su inflamación es reversible. El objetivo prioritario es restaurar la anatomía evitando la endodoncia."
+            />
+            
+            <TreatmentRow id="empaste" name="Obturación (empaste) con o sin recubrimiento pulpar" price="29€">
+              <p><strong>El problema:</strong> Pérdida de tejido dental de leve a moderada.</p>
+              <p><strong>Diferencia clínica:</strong> Si la caries es moderada, se realiza directamente sobre el tejido sano. Si la caries roza el nervio, se realiza con <em>recubrimiento pulpar</em> (capa de medicamento aislante). Ambos procedimientos cuestan lo mismo porque el objetivo de la cita es idéntico.</p>
+              <p className="flex items-center gap-2 text-dkv-green-dark font-bold mt-2"><CheckCircle2 className="w-4 h-4 text-dkv-green" /> Detiene el avance bacteriano y devuelve la función al diente.</p>
+            </TreatmentRow>
 
-                {/* CONTENIDO Y PRECIOS */}
-                <div className="w-full md:w-3/5 flex flex-col h-full justify-between">
-                  <div>
-                    <h2 className="text-2xl md:text-3xl font-lemon text-dkv-green-dark mb-2">
-                      {trat.titulo}
-                    </h2>
-                    <p className="text-sm font-bold text-dkv-green mb-4">
-                      {trat.subtitulo}
-                    </p>
-                    <p className="text-base text-dkv-gray leading-relaxed mb-6">
-                      {trat.descripcion}
-                    </p>
+            <TreatmentRow id="bioactivo" name="Sustitutivo dentinario bioactivo" price="70€">
+              <p><strong>El problema:</strong> La lesión es extrema y queda a escasas micras de exponer el nervio, pero este aún está vital.</p>
+              <p><strong>En qué consiste:</strong> Base cavitaria de biocerámica. Libera minerales que calman el nervio y estimulan su regeneración.</p>
+              <div className="mt-3 p-3 bg-dkv-gray-light border-l-2 border-dkv-green text-sm italic rounded-r-lg">
+                <strong>Importante:</strong> Actúa solo como escudo interno. La cavidad exterior siempre se sella con el empaste definitivo (composite) para aportar dureza.
+              </div>
+            </TreatmentRow>
 
-                    {/* Lista de ventajas (Aquí listamos los precios fijos de 1, 2 y 3 conductos) */}
-                    <ul className="space-y-3 mb-8">
-                      {trat.ventajas.map((vent, i) => (
-                        <li key={i} className="flex items-start text-sm font-medium text-dkv-gray">
-                          <Check className="w-4 h-4 text-dkv-green mr-3 mt-0.5 flex-shrink-0" />
-                          <span className="leading-tight">{vent}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+            <TreatmentRow id="reconstruccion" name="Gran reconstrucción" price="40€">
+              <p><strong>El problema:</strong> El diente ha perdido una porción enorme de su corona, pero el nervio sigue intacto y sano.</p>
+              <p>Esculpimos el diente devolviéndole su tamaño, cúspides y puntos de contacto originales con resinas de alta resistencia. Incluye recubrimiento pulpar si es necesario.</p>
+            </TreatmentRow>
 
-                  {/* BLOQUE DE PRECIO Y CTA */}
-                  <div className="pt-6 border-t border-dkv-gray-border flex flex-col sm:flex-row sm:items-end justify-between gap-6">
-                    <div>
-                      <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">
-                        Tratamiento base desde:
-                      </span>
-                      <div className="flex items-end gap-3">
-                        <span className="text-xl text-gray-400 line-through font-medium mb-1 decoration-gray-300">
-                          {trat.precioMercado}
-                        </span>
-                        <div className="flex flex-col">
-                          <span className="text-3xl md:text-4xl font-lemon text-dkv-green-dark leading-none">
-                            {trat.precioDKV}
-                          </span>
-                          <span className="text-[10px] font-bold text-dkv-green uppercase tracking-widest mt-1">
-                            Con DKV Élite (1 Conducto)
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <Link 
-                      href="/dentistas/cerca-de-mi"
-                      className="inline-flex items-center justify-center rounded-dkv font-fsme font-bold duration-300 focus:outline-none bg-dkv-green text-white hover:bg-dkv-green-hover shadow-xl hover:scale-105 transition-transform px-8 py-4 text-base w-full sm:w-auto text-center"
-                    >
-                      Buscar clínicas
-                    </Link>
-                  </div>
-                </div>
-                
-              </article>
-            </ScrollReveal>
-          ))}
+            {/* NIVEL 2 */}
+            <LevelTitle 
+              id="nivel-2"
+              number="Nivel 2" 
+              title="Dolor agudo e intolerable (Urgencia)" 
+              description="El daño bacteriano o traumático ya ha alcanzado la pulpa, generando una inflamación severa dentro del diente que causa un dolor punzante y constante."
+            />
 
-        </div>
-      </section>
+            <TreatmentRow id="urgencia" name="Pulpectomía de urgencias" price="30€">
+              <p><strong>El problema:</strong> Dolor agudo que requiere alivio drástico e inmediato.</p>
+              <p>Bajo anestesia local, se extirpa la porción del nervio inflamado. El precio incluye la medicación calmante/desinfectante dentro de los conductos y el sellado temporal.</p>
+              <div className="mt-3 flex items-start gap-2 text-sm">
+                <Info className="w-4 h-4 text-dkv-green shrink-0 mt-0.5" />
+                <span>Tarifa plana de urgencia sin importar si el diente tiene una o tres raíces.</span>
+              </div>
+            </TreatmentRow>
 
-      {/* NOTA ACLARATORIA */}
-      <section className="py-12 bg-white relative z-20">
-        <ScrollReveal>
-          <div className="container mx-auto px-4 max-w-4xl border-t border-dkv-gray-border pt-12">
-            <div className="flex gap-4 text-dkv-gray text-sm leading-relaxed">
-              <Info className="w-6 h-6 flex-shrink-0 text-dkv-green" />
-              <p>
-                <strong className="text-dkv-green-dark">Aviso Legal y Médico:</strong> Los precios mostrados son estimaciones del tratamiento e incluyen la instrumentación y sellado de los conductos radiculares. En función del nivel de infección, el odontólogo podría requerir pruebas diagnósticas adicionales (como radiografías periapicales, habitualmente gratuitas con DKV Dentisalud) o reconstrucciones posteriores de la corona dental que se presupuestarán por separado en tu primera visita.
+            {/* NIVEL 3 */}
+            <LevelTitle 
+              id="nivel-3"
+              number="Nivel 3" 
+              title="Infección total y pérdida crítica" 
+              description="El tejido interno está irreversiblemente dañado o infectado, y el diente ha quedado estructuralmente debilitado."
+            />
+
+            <TreatmentRow id="endodoncia" name="Endodoncia Completa" price="Según raíces">
+              <p>Se extrae todo el tejido enfermo hasta la punta de las raíces, se limpian los conductos y se sellan tridimensionalmente para aislar el medio interno.</p>
+            </TreatmentRow>
+
+            {/* NIVELES 4 Y 5 */}
+            <LevelTitle 
+              id="nivel-4"
+              number="Niveles 4 y 5" 
+              title="Casos Complejos y Cirugía" 
+              description="Fracasos de tratamientos anteriores, raíces inmaduras o lesiones crónicas instaladas directamente en el hueso."
+            />
+
+            <TreatmentRow id="reendodoncia" name="Reendodoncia (1, 2 o 3 conductos)" price="130€">
+              <p>Desmontar la restauración, retirar el material antiguo contaminado, volver a desinfectar exhaustivamente el sistema de conductos y sellarlo de nuevo.</p>
+            </TreatmentRow>
+
+            <TreatmentRow id="apicoformacion" name="Apicoformación" price="54€">
+              <p>Utilización de materiales biocerámicos especiales para crear una barrera artificial dura en la punta de una raíz "abierta" (inmadura).</p>
+              <p className="text-sm italic text-dkv-gray/80">Precio por sesión clínica.</p>
+            </TreatmentRow>
+
+            <TreatmentRow id="cirugia" name="Apicectomía o Cirugía Periapical" price="38€">
+              <p>Acceso quirúrgico directo al hueso para extirpar la punta de la raíz infectada y sellar desde fuera un quiste que no responde a la endodoncia convencional.</p>
+            </TreatmentRow>
+
+            <TreatmentRow id="reimplante" name="Reimplante de pieza dental" price="Incluido">
+              <p>Reposicionamiento de urgencia de un diente que ha salido expulsado completamente tras un impacto severo.</p>
+            </TreatmentRow>
+
+            {/* ADVERTENCIA CLÍNICA Y CIERRE */}
+            <div className="mt-16 bg-dkv-gray-light p-6 md:p-8 rounded-xl border border-dkv-gray-border font-fsme text-dkv-gray">
+              <h4 className="font-bold text-dkv-green-dark mb-3 uppercase tracking-wide font-lemon text-sm">El factor de adaptación</h4>
+              <p className="text-sm md:text-base leading-relaxed">
+                Es fundamental mantener expectativas realistas. Después de intervenciones profundas como una endodoncia, reendodoncia o cirugía periapical, es normal experimentar inflamación local, sensibilidad o molestias al masticar durante los primeros 3 a 7 días. Durante las primeras semanas, y estrictamente hasta que su diente reciba la reconstrucción o corona definitiva, <strong>deberá evitar masticar alimentos duros por ese lado</strong> para proteger la estructura en su fase más vulnerable.
               </p>
             </div>
+
+            <div className="mt-20 p-8 md:p-12 rounded-3xl bg-dkv-green-dark text-white text-center shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-dkv-green opacity-20 blur-3xl rounded-full"></div>
+              <div className="absolute bottom-0 left-0 w-32 h-32 bg-dkv-green opacity-20 blur-3xl rounded-full"></div>
+              <AlertCircle className="w-12 h-12 mx-auto mb-6 text-dkv-green" />
+              <p className="text-xl md:text-2xl font-medium leading-relaxed italic font-fsme max-w-3xl mx-auto relative z-10">
+                "Agotar las opciones clínicas y restauradoras para preservar su dentadura natural siempre será la alternativa biológica, estética y económicamente más inteligente frente a la extracción y los implantes."
+              </p>
+            </div>
+
           </div>
-        </ScrollReveal>
-      </section>
+        </section>
+
+        {/* CTA FORMULARIO */}
+        <section className="py-20 bg-dkv-gray-border border-y border-dkv-gray/10">
+          <div className="container mx-auto px-4 max-w-5xl">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <h2 className="text-3xl font-lemon text-dkv-green-dark mb-4">Planifique su tratamiento</h2>
+                <p className="text-lg text-dkv-gray mb-6">
+                  Le invitamos a solicitar una cita de valoración gratuita en nuestra clínica para estudiar su caso y ofrecerle el plan exacto que requiere para salvar su diente.
+                </p>
+              </div>
+              <div className="relative">
+                 <LeadForm />
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      {/* AQUÍ ESTÁ LA MAGIA: Inyectamos el componente interactivo flotante */}
+      <GodLevelTOC tocData={tocData} />
 
       <FooterLegal />
     </div>
