@@ -2,9 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 
+// Actualizamos la interfaz para permitir anidación (3er nivel)
+interface Treatment {
+  id: string;
+  name: string;
+  price?: string;
+  subTreatments?: { name: string; price?: string }[]; // El tercer nivel
+}
+
 interface TocData {
   level: { id: string; number: string; title: string };
-  treatments?: { id: string; name: string; price?: string }[];
+  treatments?: Treatment[];
 }
 
 export const GodLevelTOC = ({ tocData }: { tocData: TocData[] }) => {
@@ -14,7 +22,6 @@ export const GodLevelTOC = ({ tocData }: { tocData: TocData[] }) => {
 
   useEffect(() => {
     setMounted(true);
-
     const handleScroll = () => {
       const totalScroll = document.documentElement.scrollTop;
       const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -42,16 +49,13 @@ export const GodLevelTOC = ({ tocData }: { tocData: TocData[] }) => {
 
   return (
     <>
-      {/* ⚡️ EL BOTÓN: Le añadimos text-dkv-green para que el currentColor lea tu color de marca */}
       <button 
         onClick={() => setIsOpen(!isOpen)}
         className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-black text-dkv-green rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
         style={{
-          // Usamos currentColor. Así Tailwind y el estilo en línea se dan la mano.
           background: `conic-gradient(from 0deg, currentColor ${scrollProgress * 360}deg, #000 ${scrollProgress * 360}deg)`
         }}
       >
-        {/* Forzamos text-white aquí dentro para que el icono del aspa/hamburguesa siga siendo blanco y no verde */}
         <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center text-white">
           <svg className={`w-6 h-6 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             {isOpen ? (
@@ -71,14 +75,14 @@ export const GodLevelTOC = ({ tocData }: { tocData: TocData[] }) => {
 
         <div className={`relative w-full sm:w-[450px] max-h-[85vh] bg-white/95 backdrop-blur-xl border border-white/20 shadow-2xl sm:rounded-3xl rounded-t-3xl p-6 pointer-events-auto overflow-y-auto transform transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${isOpen ? 'translate-y-0' : 'translate-y-full'}`}>
           <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-6 sm:hidden" />
-              <p className="text-2xl font-bold tracking-tight text-gray-900 mb-6 font-lemon uppercase">
-  Índice de Tratamientos
+          <p className="text-2xl font-bold tracking-tight text-gray-900 mb-6 font-lemon uppercase">
+            Índice de Tratamientos
           </p>
           
           <nav className="space-y-6">
             {tocData?.map((section, index) => (
               <div key={index} className="animate-fade-in-up">
-                {/* NIVEL 1: Actualizado a hover:text-dkv-green */}
+                {/* NIVEL 1 */}
                 <a 
                   href={`#${section.level.id}`} 
                   onClick={(e) => handleScrollToSection(e, section.level.id)} 
@@ -92,7 +96,7 @@ export const GodLevelTOC = ({ tocData }: { tocData: TocData[] }) => {
                 {section.treatments && section.treatments.length > 0 && (
                   <ul className="mt-3 ml-7 space-y-2 border-l-2 border-gray-100 pl-4">
                     {section.treatments.map((treatment, tIdx) => (
-                      <li key={tIdx}>
+                      <li key={tIdx} className="space-y-1">
                         <a 
                           href={`#${treatment.id}`} 
                           onClick={(e) => handleScrollToSection(e, treatment.id)} 
@@ -101,13 +105,42 @@ export const GodLevelTOC = ({ tocData }: { tocData: TocData[] }) => {
                           <span className="text-base font-medium text-gray-500 group-hover/item:text-gray-900 transition-colors pr-4">
                             {treatment.name}
                           </span>
-                          {/* ⚡️ EL PRECIO: Aplicado text-dkv-green directamente */}
                           {treatment.price && (
                             <span className="text-sm font-bold text-dkv-green font-lemon shrink-0 opacity-80 group-hover/item:opacity-100 transition-opacity">
                               {treatment.price}
                             </span>
                           )}
                         </a>
+
+                        {/* NIVEL 3 (Sub-tratamientos anidados con mismo tamaño que Nivel 2) */}
+                        {treatment.subTreatments && treatment.subTreatments.length > 0 && (
+                          <ul className="ml-4 mt-2 space-y-2 border-l border-gray-100 pl-4 pb-2">
+                            {treatment.subTreatments.map((sub, sIdx) => (
+
+
+                                <li key={sIdx}>
+                                        <a 
+                                          href={`#${sub.id}`} 
+                                          onClick={(e) => handleScrollToSection(e, sub.id)} 
+                                          className="group/sub flex items-baseline justify-between py-1 cursor-pointer"
+                                                                        >
+                                          <span className="text-base font-medium text-gray-500 group-hover/sub:text-dkv-green transition-colors pr-4">
+                                            {sub.name}
+                                          </span>
+                                          {sub.price && (
+                                            <span className="text-sm font-bold text-dkv-green font-lemon shrink-0 opacity-80 group-hover/sub:opacity-100 transition-opacity">
+                                              {sub.price}
+                                            </span>
+                                          )}
+                                        </a>
+                                      </li>
+
+
+
+                            ))}
+                          </ul>
+                        )}
+
                       </li>
                     ))}
                   </ul>
