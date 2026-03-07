@@ -71,7 +71,9 @@ export const GodLevelTOC = ({ tocData }: { tocData: TocData[] }) => {
 
         <div className={`relative w-full sm:w-[450px] max-h-[85vh] bg-white/95 backdrop-blur-xl border border-white/20 shadow-2xl sm:rounded-3xl rounded-t-3xl p-6 pointer-events-auto overflow-y-auto transform transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${isOpen ? 'translate-y-0' : 'translate-y-full'}`}>
           <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-6 sm:hidden" />
-          <h3 className="text-2xl font-bold tracking-tight text-gray-900 mb-6 font-lemon uppercase">Índice de Tratamientos</h3>
+              <p className="text-2xl font-bold tracking-tight text-gray-900 mb-6 font-lemon uppercase">
+  Índice de Tratamientos
+          </p>
           
           <nav className="space-y-6">
             {tocData?.map((section, index) => (
