@@ -60,7 +60,7 @@ export const GodLevelTOC = ({ tocData }: { tocData: TocData[] }) => {
     <>
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-black text-dkv-green rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
+        className="fixed bottom-6 right-6 z-[999] w-14 h-14 bg-black text-dkv-green rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
         style={{
           background: `conic-gradient(from 0deg, currentColor ${scrollProgress * 360}deg, #000 ${scrollProgress * 360}deg)`
         }}
@@ -76,11 +76,11 @@ export const GodLevelTOC = ({ tocData }: { tocData: TocData[] }) => {
         </div>
       </button>
 
-      <div className={`fixed inset-0 z-40 flex items-end sm:items-center justify-center pointer-events-none transition-opacity duration-500 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
-        <div 
-          className={`absolute inset-0 bg-black/20 backdrop-blur-md pointer-events-auto transition-opacity duration-500 ${isOpen ? 'opacity-100' : 'opacity-0'}`}
-          onClick={() => setIsOpen(false)}
-        />
+      <div className={`fixed inset-0 z-[990] flex items-end sm:items-center justify-center pointer-events-none transition-opacity duration-500 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
+          <div 
+    className={`absolute inset-0 bg-black/20 backdrop-blur-md transition-opacity duration-500 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+    onClick={() => setIsOpen(false)}
+           />
 
         <div className={`relative w-full sm:w-[450px] max-h-[85vh] bg-white/95 backdrop-blur-xl border border-white/20 shadow-2xl sm:rounded-3xl rounded-t-3xl p-6 pointer-events-auto overflow-y-auto transform transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${isOpen ? 'translate-y-0' : 'translate-y-full'}`}>
           <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-6 sm:hidden" />
