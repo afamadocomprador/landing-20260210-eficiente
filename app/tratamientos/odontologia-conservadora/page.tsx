@@ -13,6 +13,8 @@ import { CheckCircle2, AlertCircle, Info, Stethoscope, ArrowRight } from "lucide
 import { GodLevelTOC } from "@/components/ui/GodLevelTOC"; 
 
 import TreatmentsHero from "@/components/hero/TreatmentsHero";
+import HeroSearch from '@/components/home/HeroSearch';
+
 
 export const metadata: Metadata = {
   title: "Salvando tu diente - Odontología conservadora | DKV Dentisalud",
@@ -23,7 +25,7 @@ export const metadata: Metadata = {
 // --- DATA ESTRUCTURADA PARA EL ÍNDICE (CON 3 NIVELES DE ANIDACIÓN) ---
 const tocData = [
   {
-    level: { id: "nivel-1", number: "Nivel 1", title: "A tiempo de salvar el nervio" },
+    level: { id: "nivel-1", number: "Fase 1", title: "A tiempo de salvar el nervio" },
     treatments: [
       { id: "empaste", name: "Obturación (empaste)", price: "29 €" },
       { id: "reconstruccion", name: "Gran reconstrucción", price: "40 €" },
@@ -31,7 +33,7 @@ const tocData = [
     ]
   },
   {
-    level: { id: "nivel-2", number: "Nivel 2", title: "Infección y dolor intolerable" },
+    level: { id: "nivel-2", number: "Fase 2", title: "Infección y dolor intolerable" },
     treatments: [
       { 
         id: "urgencia", 
@@ -47,18 +49,23 @@ const tocData = [
           { id: "endodoncia", name: "Endodoncia multirradicular", price: "123 €" },
           { id: "endodoncia", name: "Suplemento Rotatorio", price: "15 €" }
         ]
-      }
+      },
+      { 
+        id: "poste", 
+        name: "Poste o pin (por unidad)", 
+        price: "8 €" 
+      },
     ]
   },
   {
-    level: { id: "nivel-3", number: "Nivel 3", title: "Fracaso de tratto. anterior" },
+    level: { id: "nivel-3", number: "Fase 3", title: "Fracaso de tratto. anterior" },
     treatments: [
       { id: "reendodoncia", name: "Reendodoncia", price: "130 €" },
       { id: "apicoformacion", name: "Apicoformación", price: "54 €" }
     ]
   },
   {
-    level: { id: "nivel-4", number: "Nivel 4", title: "Infección supera a la raíz" },
+    level: { id: "nivel-4", number: "Fase 4", title: "Infección supera a la raíz" },
     treatments: [
       { id: "cirugia", name: "Apicectomía", price: "38 €" },
       { id: "reimplante", name: "Reimplante dental", price: "Incluido" }
@@ -139,15 +146,15 @@ export default function OdontologiaConservadoraPage() {
             {/* NIVEL 1 */}
             <LevelTitle 
               id="nivel-1"
-              number="Nivel 1" 
+              number="Fase 1 de evolución" 
               title="A tiempo de salvar el nervio" 
               description="Aparece la caries, pero el nervio aún no está afectado, o su inflamación es reversible. El objetivo prioritario es restaurar la anatomía evitando la endodoncia."
             />
             
             <div className="space-y-6"> {/* ⚡️ Separación vertical entre tarjetas */}
               <TreatmentRow id="empaste" name="Obturación (empaste) con o sin recubrimiento pulpar" price="29 €">
-                <p><strong>El problema:</strong> Pérdida de tejido dental leve.</p>
-                <p><strong>Diferencia clínica:</strong> Si la caries es moderada, se coloca la resina directamente sobre el tejido sano. Si la caries roza el nervio, se aplica primero <em>recubrimiento pulpar</em> (capa de medicamento aislante y protector) antes del empaste definitivo.</p>
+                <p>El dentista raspa la caries superficial produciéndose una pérdida de tejido dental leve. </p>
+                <p><strong>Diferencia clínica:</strong> Si la caries es moderada, se coloca la resina directamente sobre el tejido sano. Si la caries es más profunda, se aplica primero <em>recubrimiento pulpar</em> (capa de medicamento aislante y protector) antes del empaste definitivo.</p>
                 <p className="flex items-center gap-2 text-dkv-green-dark font-bold mt-2"><CheckCircle2 className="w-4 h-4 text-dkv-green" /> Detiene el avance bacteriano y devuelve la función al diente.</p>
               </TreatmentRow>
 
@@ -158,7 +165,7 @@ export default function OdontologiaConservadoraPage() {
 
               <TreatmentRow id="bioactivo" name="Sustitutivo dentinario bioactivo" price="70 €">
                 <p><strong>El problema:</strong> La lesión es extrema y queda a escasas micras de exponer el nervio, pero este aún está vital.</p>
-                <p><strong>En qué consiste: </strong> Uso de materiales de vanguardia llamados biocerámicas. Son bioactivas y promueven regeneración de la dentina interior.</p>
+                <p><strong>En qué consiste: </strong> Uso de materiales de vanguardia llamados <em> biocerámicas </em>. Son bioactivos y promueven la regeneración de la dentina interior.</p>
                 <div className="mt-3 p-3 bg-dkv-gray-light border-l-2 border-dkv-green text-sm italic rounded-r-lg">
                   <strong>Importante:</strong> Actúa solo como escudo interno. La cavidad exterior siempre se sella con el empaste definitivo (composite) para aportar dureza.
                 </div>
@@ -168,7 +175,7 @@ export default function OdontologiaConservadoraPage() {
             {/* NIVEL 2 */}
             <LevelTitle 
               id="nivel-2"
-              number="Nivel 2" 
+              number="Fase 2 de evolución" 
               title="Infección y dolor intolerable" 
               description="El daño ha alcanzado la pulpa, generando una inflamación severa dentro del diente que causa un dolor punzante y constante. El tejido interno está irreversiblemente dañado o infectado."
             />
@@ -230,23 +237,31 @@ export default function OdontologiaConservadoraPage() {
                     </div>
                   </div>
                 </div>
-
-                <div className="mt-3 flex items-start gap-2 text-sm">
-                  <Info className="w-4 h-4 text-dkv-green shrink-0 mt-0.5" />
-                  <span>Tras endodoncia, para dejar el diente operativo, suele proceder una gran reconstruccion y/o corona (ver prótesis).</span>
-                </div>
-
-
-
               </TreatmentRow>
             </div>
+
+            <div className="space-y-6"> {/* ⚡️ Separación vertical entre tarjetas */}
+              <TreatmentRow id="poste" name="Poste o pin (por unidad)" price="8 €">
+                <p>Tras la endodoncia de un molar es muy frecuente tener que colocar una corona completa sobre el diente para protegerlo (ver <em> prótesis </em>). </p>
+                <p> El dentista moldea con material el muñón sobre el que desacansará dicha corona. Para dar fortaleza a la nueva estructura, el muñon se confecciona alrededor de un poste o pin inserto en una de las cavidades radiculares sanadas por la <em> endodoncia </em>.</p>
+              </TreatmentRow>
+            </div>
+
+
+
+
+
+
+
+
+
 
             {/* NIVEL 3*/}
             <LevelTitle 
               id="nivel-3"
-              number="Nivel 3" 
+              number="Fase 3 de evolución" 
               title="Fracaso tratamiento anterior o anatomía inmadura" 
-              description="Fracasos de tratamientos anteriores o raíces inmaduras sin cerrar"
+              description="Fracasos de tratamientos anteriores (ej filtraciones por corona movida) o raíces inmaduras sin cerrar (desde la infancia por un golpe)"
             />
             
             <div className="space-y-6"> {/* ⚡️ Separación vertical entre tarjetas */}
@@ -265,7 +280,7 @@ export default function OdontologiaConservadoraPage() {
             {/* NIVEL 4*/}
             <LevelTitle 
               id="nivel-4"
-              number="Nivel 4" 
+              number="Fase 4 de evolución" 
               title="Infección supera a la raíz" 
               description="Infección enquistada en el hueso y traumatismos severos."
             />
@@ -309,29 +324,26 @@ export default function OdontologiaConservadoraPage() {
               
               {/* Columna de Texto y Botón */}
               <div>
-                <h2 className="text-3xl font-lemon text-dkv-green-dark mb-4">Planifique su tratamiento</h2>
-                <p className="text-lg text-dkv-gray mb-6">
-                  Le invitamos a solicitar una cita de valoración gratuita en nuestra clínica para estudiar su caso y ofrecerle el plan exacto que requiere para salvar su diente.
-                </p>
-
+                <h2 className="text-3xl font-lemon text-dkv-green-dark mb-4">Planifica tu tratamiento</h2>
                 {/* Caja de Aviso Médico Integrada */}
                 <div className="bg-dkv-gray-light p-4 rounded-xl border border-dkv-gray-border/50 mb-8 flex items-start gap-3">
                   <Info className="w-5 h-5 text-dkv-green shrink-0 mt-0.5" />
-                  <p className="text-sm text-dkv-gray font-fsme leading-relaxed">
-                    Esta información tiene un carácter meramente informativo. El diagnóstico médico exacto solo te lo puede proporcionar el dentista en clínica.
+                  <p className="text-lg text-dkv-gray font-fsme leading-relaxed">
+                    La información reflejada en esta página tiene mero carácter orientativo. El diagnóstico profesional que necesitas únicamente te lo podrá proporcionar un dentista en su consulta. Los precios serán fieles a los indicados.
                   </p>
                 </div>
 
-                {/* Botón de Acción Principal */}
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <a 
-                    href="/cuadro-medico" 
-                    className="inline-flex items-center justify-center bg-dkv-green text-white font-bold font-fsme py-3.5 px-8 rounded-full hover:bg-dkv-green-dark transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                  >
-                    Buscar dentista
-                    <ArrowRight className="w-5 h-5 ml-2" />
-                  </a>
+
+                <p className="text-lg text-dkv-gray mb-6">
+                  Te invitamos a solicitar una cita de valoración en uno de nuestros centros dentales para estudiar tu caso, y ofrecerte el plan exacto que se requiere para salvar tu/s diente/s. Encuentra tu centro:
+                </p>
+
+
+                <div className="max-w-4xl mx-auto mb-24">
+                    <HeroSearch />
                 </div>
+
+
               </div>
 
               {/* Columna del Formulario */}
