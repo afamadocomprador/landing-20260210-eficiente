@@ -87,7 +87,7 @@ const TreatmentRow = ({ id, name, price, titleTag = "h2", children }: { id: stri
         )}
       </Tag>
       
-      <div className="text-dkv-gray font-fsme leading-relaxed text-base md:text-lg space-y-4">
+      <div className="text-dkv-gray font-fsme leading-relaxed text-lg md:text-lg space-y-4">
         {children}
       </div>
     </div>
