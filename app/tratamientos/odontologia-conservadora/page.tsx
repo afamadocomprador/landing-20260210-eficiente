@@ -87,16 +87,18 @@ const TreatmentRow = ({ id, name, price, titleTag = "h2", children }: { id: stri
         )}
       </Tag>
       
-      <div className="text-dkv-gray font-fsme leading-relaxed text-sm md:text-base space-y-3">
+      <div className="text-dkv-gray font-fsme leading-relaxed text-base space-y-3">
         {children}
       </div>
+
+
     </div>
   );
 };
 
 const LevelTitle = ({ id, number, title, description }: { id: string, number: string, title: string, description?: string }) => (
   <div id={id} className="mt-16 mb-8 scroll-mt-[130px] md:scroll-mt-[150px]">
-    <span className="text-dkv-green font-bold text-xs uppercase tracking-[0.2em] font-fsme">{number}</span>
+    <span className="text-dkv-green font-bold text-base uppercase tracking-[0.2em] font-fsme">{number}</span>
     <p className="text-2xl md:text-3xl font-bold font-lemon text-dkv-green-dark border-b-2 border-dkv-green pb-3 inline-block w-full mt-2 uppercase tracking-wide">
       {title}
     </p>
@@ -195,21 +197,21 @@ export default function OdontologiaConservadoraPage() {
                         <span className="font-bold text-dkv-gray text-base md:text-lg leading-tight">Endodoncia de un conducto</span>
                         <span className="font-lemon text-lg md:text-xl text-dkv-green-dark font-bold shrink-0 mt-0.5">80 €</span>
                       </h2>
-                      <p className="text-sm md:text-base text-dkv-gray/80 italic pr-12">Dientes con 1 solo conducto (ej. incisivos)</p>
+                      <p className="text-base text-dkv-gray/80 italic pr-12">Dientes con 1 solo conducto (ej. incisivos)</p>
                     </li>
                     <li className="pb-4 border-b border-dkv-gray-border/50">
                       <h2 className="flex flex-row justify-between items-start gap-4 mb-1.5">
                         <span className="font-bold text-dkv-gray text-base md:text-lg leading-tight">Endodoncia de dos conductos</span>
                         <span className="font-lemon text-lg md:text-xl text-dkv-green-dark font-bold shrink-0 mt-0.5">94 €</span>
                       </h2>
-                      <p className="text-sm md:text-base text-dkv-gray/80 italic pr-12">Dientes con 2 conductos (ej. premolares)</p>
+                      <p className="text-base text-dkv-gray/80 italic pr-12">Dientes con 2 conductos (ej. premolares)</p>
                     </li>
                     <li>
                       <h2 className="flex flex-row justify-between items-start gap-4 mb-1.5">
                         <span className="font-bold text-dkv-gray text-base md:text-lg leading-tight">Endodoncia Multirradicular</span>
                         <span className="font-lemon text-lg md:text-xl text-dkv-green-dark font-bold shrink-0 mt-0.5">123 €</span>
                       </h2>
-                      <p className="text-sm md:text-base text-dkv-gray/80 italic pr-12">Dientes con 3 o más conductos (ej. molares)</p>
+                      <p className="text-base text-dkv-gray/80 italic pr-12">Dientes con 3 o más conductos (ej. molares)</p>
                     </li>
                   </ul>
                   
@@ -222,7 +224,7 @@ export default function OdontologiaConservadoraPage() {
                         </span>
                         <span className="font-lemon text-lg md:text-xl text-dkv-green font-bold shrink-0 mt-0.5">15 €</span>
                       </h2>
-                      <p className="text-sm md:text-base text-dkv-gray leading-relaxed pl-7">Uso de tecnología mecanizada para una limpieza de los conductos extremadamente precisa y rápida.</p>
+                      <p className="text-base text-dkv-gray leading-relaxed pl-7">Uso de tecnología mecanizada para una limpieza de los conductos extremadamente precisa y rápida.</p>
                     </div>
                   </div>
                 </div>
