@@ -79,11 +79,13 @@ const tocData = [
 
 // --- Componentes de UI ---
 
+
 const TreatmentRow = ({ id, name, price, image, imageAlt, titleTag = "h2", children }: { id: string, name: string, price?: string, image?: string, imageAlt?: string, titleTag?: "h2" | "p" | "h3", children: React.ReactNode }) => {
   const Tag = titleTag; 
 
   return (
-    <div id={id} className="bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-sm border border-dkv-gray-border/50 hover:shadow-md transition-all duration-300 group scroll-mt-[130px] md:scroll-mt-[150px]">
+    <div id={id} className="bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-md border border-dkv-gray-border/80 hover:shadow-xl hover:border-dkv-green/40 hover:-translate-y-1 transition-all duration-300 group scroll-mt-[130px] md:scroll-mt-[150px]">
+
      
       <Tag className="flex flex-col md:flex-row md:justify-between md:items-start gap-3 md:gap-4 mb-5 text-lg md:text-xl font-bold font-lemon text-dkv-green-dark leading-snug uppercase">
         <span className="pr-4 mt-1">{name}</span>
@@ -171,7 +173,7 @@ export default function OdontologiaConservadoraPage() {
             </ScrollReveal>
             
             <div className="space-y-6"> {/* ⚡️ Separación vertical entre tarjetas */}
-              <ScrollReveal delay={100}>
+              <ScrollReveal delay={100} direction="left">
                 <TreatmentRow 
                     id="empaste" 
                     name="Obturación (empaste) con o sin recubrimiento pulpar" 
@@ -186,14 +188,14 @@ export default function OdontologiaConservadoraPage() {
                 </TreatmentRow>
               </ScrollReveal>
 
-              <ScrollReveal delay={100}>
+              <ScrollReveal delay={100} direction="left">
                 <TreatmentRow id="reconstruccion" name="Gran reconstrucción" price="40 €">
                   <p><strong>El problema:</strong> El diente ha perdido una porción de su corona, pero el nervio sigue intacto y sano.</p>
                   <p><strong>Tratamiento: </strong>Se esculpe el diente devolviéndole su tamaño, cúspides y puntos de contacto originales con resinas de alta resistencia.</p>
                 </TreatmentRow>
               </ScrollReveal>
 
-              <ScrollReveal delay={100}>
+              <ScrollReveal delay={100} direction="left">
                 <TreatmentRow id="bioactivo" name="Sustitutivo dentinario bioactivo" price="70 €">
                   <p><strong>El problema:</strong> La lesión es extrema y queda a escasas micras de exponer el nervio, pero este aún está vital.</p>
                   <p><strong>En qué consiste: </strong> Uso de materiales de vanguardia llamados <em> biocerámicas </em>. Son bioactivos y promueven la regeneración de la dentina interior.</p>
@@ -215,7 +217,7 @@ export default function OdontologiaConservadoraPage() {
             </ScrollReveal>
             
             <div className="space-y-6"> {/* ⚡️ Separación vertical entre tarjetas */}
-              <ScrollReveal delay={100}>
+              <ScrollReveal delay={100} direction="left">
                 <TreatmentRow id="urgencia" name="Pulpectomía de urgencias" price="30 €">
                   <p><strong>El problema:</strong> Dolor agudo que requiere alivio drástico e inmediato.</p>
                   <p><strong>Tratamiento: </strong>Bajo anestesia local, se extirpa la porción del nervio inflamado, se aplica medicacion calmante/desinfectante dentro de los conductos y se sellan temporalmente.</p>
@@ -230,7 +232,7 @@ export default function OdontologiaConservadoraPage() {
             {/* AQUÍ ESTABA LA CAJA DEL NIVEL 3 EN TUS CÓDIGOS ANTERIORES. RESPETAMOS TU VERSIÓN ACTUAL Y NO LO AÑADIMOS. */}
             
             <div className="space-y-6"> {/* ⚡️ Separación vertical entre tarjetas */}
-              <ScrollReveal delay={100}>
+              <ScrollReveal delay={100} direction="left">
                 <TreatmentRow 
                     id="endodoncia" 
                     name="Endodoncia Completa" 
@@ -286,7 +288,7 @@ export default function OdontologiaConservadoraPage() {
             </div>
 
             <div className="space-y-6"> {/* ⚡️ Separación vertical entre tarjetas */}
-              <ScrollReveal delay={100}>
+              <ScrollReveal delay={100} direction="left">
                 <TreatmentRow id="poste" name="Poste o pin (por unidad)" price="8 €">
                   <p>Tras la endodoncia de un molar es muy frecuente tener que colocar una corona completa sobre el diente para protegerlo (ver <em> prótesis </em>). </p>
                   <p> El dentista moldea con material el muñón sobre el que descansará dicha corona. Para dar fortaleza a la nueva estructura, el muñon se confecciona alrededor de un poste o pin inserto en una de las cavidades radiculares sanadas por la <em> endodoncia </em>.</p>
@@ -305,13 +307,13 @@ export default function OdontologiaConservadoraPage() {
             </ScrollReveal>
             
             <div className="space-y-6"> {/* ⚡️ Separación vertical entre tarjetas */}
-              <ScrollReveal delay={100}>
+              <ScrollReveal delay={100} direction="left">
                 <TreatmentRow id="reendodoncia" name="Reendodoncia (1, 2 o 3 conductos)" price="130 €">
                   <p>Desmontar la restauración, retirar el material antiguo contaminado, volver a desinfectar exhaustivamente el sistema de conductos y sellarlo de nuevo.</p>
                 </TreatmentRow>
               </ScrollReveal>
 
-              <ScrollReveal delay={100}>
+              <ScrollReveal delay={100} direction="left">
                 <TreatmentRow id="apicoformacion" name="Apicoformación" price="54 €">
                   <p>Utilización de materiales biocerámicos especiales para crear una barrera artificial dura en la punta de una raíz "abierta" (inmadura).</p>
                   <p className="text-sm italic text-dkv-gray/80">Precio por sesión clínica.</p>
@@ -331,7 +333,7 @@ export default function OdontologiaConservadoraPage() {
             
             <div className="space-y-6"> {/* ⚡️ Separación vertical entre tarjetas */}
 
-              <ScrollReveal delay={100}>
+              <ScrollReveal delay={100} direction="left">
                 <TreatmentRow 
                     id="cirugia" 
                     name="Apicectomía o Cirugía Periapical" 
@@ -344,7 +346,7 @@ export default function OdontologiaConservadoraPage() {
                 </TreatmentRow>
               </ScrollReveal>
 
-              <ScrollReveal delay={100}>
+              <ScrollReveal delay={100} direction="left">
                 <TreatmentRow id="reimplante" name="Reimplante de pieza dental" price="Incluido">
                   <p>Reposicionamiento de urgencia de un diente que ha salido expulsado completamente tras un impacto severo.</p>
                 </TreatmentRow>
