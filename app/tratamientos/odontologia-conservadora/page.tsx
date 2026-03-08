@@ -77,14 +77,12 @@ const tocData = [
 
 // --- Componentes de UI ---
 
-
-
-const TreatmentRow = ({ id, name, price, titleTag = "h2", children }: { id: string, name: string, price?: string, titleTag?: "h2" | "p" | "h3", children: React.ReactNode }) => {
+const TreatmentRow = ({ id, name, price, image, imageAlt, titleTag = "h2", children }: { id: string, name: string, price?: string, image?: string, imageAlt?: string, titleTag?: "h2" | "p" | "h3", children: React.ReactNode }) => {
   const Tag = titleTag; 
 
   return (
     <div id={id} className="bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-sm border border-dkv-gray-border/50 hover:shadow-md transition-all duration-300 group scroll-mt-[130px] md:scroll-mt-[150px]">
-      
+     
       <Tag className="flex flex-col md:flex-row md:justify-between md:items-start gap-3 md:gap-4 mb-5 text-lg md:text-xl font-bold font-lemon text-dkv-green-dark leading-snug uppercase">
         <span className="pr-4 mt-1">{name}</span>
         {price && (
@@ -93,6 +91,23 @@ const TreatmentRow = ({ id, name, price, titleTag = "h2", children }: { id: stri
           </span>
         )}
       </Tag>
+
+      {/* 2. ⚡️ AÑADIMOS ESTE BLOQUE COMPLETO JUSTO AQUÍ ⚡️ */}
+      {image && (
+        <div className="mb-6 w-full overflow-hidden rounded-xl border border-gray-100">
+          <img 
+            src={image} 
+            alt={imageAlt || name} 
+            className="w-full h-auto object-cover max-h-[250px] md:max-h-[350px] transition-transform duration-700 group-hover:scale-105"
+            loading="lazy"
+          />
+        </div>
+      )}
+      {/* ------------------------------------------------ */}
+
+
+
+
       
       <div className="text-dkv-gray font-fsme leading-relaxed text-lg md:text-lg space-y-4">
         {children}
@@ -152,7 +167,14 @@ export default function OdontologiaConservadoraPage() {
             />
             
             <div className="space-y-6"> {/* ⚡️ Separación vertical entre tarjetas */}
-              <TreatmentRow id="empaste" name="Obturación (empaste) con o sin recubrimiento pulpar" price="29 €">
+              <TreatmentRow 
+                  id="empaste" 
+                  name="Obturación (empaste) con o sin recubrimiento pulpar" 
+                  price="29 €"
+                  image="/images/empaste.png" 
+                  imageAlt="Esquema visual de un empaste dental o obturación"
+                >
+
                 <p>El dentista raspa la caries superficial produciéndose una pérdida de tejido dental leve. </p>
                 <p><strong>Diferencia clínica:</strong> Si la caries es moderada, se coloca la resina directamente sobre el tejido sano. Si la caries es más profunda, se aplica primero <em>recubrimiento pulpar</em> (capa de medicamento aislante y protector) antes del empaste definitivo.</p>
                 <p className="flex items-center gap-2 text-dkv-green-dark font-bold mt-2"><CheckCircle2 className="w-4 h-4 text-dkv-green" /> Detiene el avance bacteriano y devuelve la función al diente.</p>
@@ -194,7 +216,14 @@ export default function OdontologiaConservadoraPage() {
             {/* AQUÍ ESTABA LA CAJA DEL NIVEL 3 EN TUS CÓDIGOS ANTERIORES. RESPETAMOS TU VERSIÓN ACTUAL Y NO LO AÑADIMOS. */}
             
             <div className="space-y-6"> {/* ⚡️ Separación vertical entre tarjetas */}
-              <TreatmentRow id="endodoncia" name="Endodoncia Completa" titleTag="p">
+              <TreatmentRow 
+                  id="endodoncia" 
+                  name="Endodoncia Completa" 
+                  titleTag="p"
+                  image="/images/endodoncia.png" // ⚡️ AÑADIDO
+                  imageAlt="Esquema de una endodoncia completa en un diente" // ⚡️ AÑADIDO
+                >
+
                 <p className="mb-6">
                   Se vacían todos los conductos radiculares del diente, se rellenan de un material especial y se sellan.
                 </p>
@@ -243,7 +272,7 @@ export default function OdontologiaConservadoraPage() {
             <div className="space-y-6"> {/* ⚡️ Separación vertical entre tarjetas */}
               <TreatmentRow id="poste" name="Poste o pin (por unidad)" price="8 €">
                 <p>Tras la endodoncia de un molar es muy frecuente tener que colocar una corona completa sobre el diente para protegerlo (ver <em> prótesis </em>). </p>
-                <p> El dentista moldea con material el muñón sobre el que desacansará dicha corona. Para dar fortaleza a la nueva estructura, el muñon se confecciona alrededor de un poste o pin inserto en una de las cavidades radiculares sanadas por la <em> endodoncia </em>.</p>
+                <p> El dentista moldea con material el muñón sobre el que descansará dicha corona. Para dar fortaleza a la nueva estructura, el muñon se confecciona alrededor de un poste o pin inserto en una de las cavidades radiculares sanadas por la <em> endodoncia </em>.</p>
               </TreatmentRow>
             </div>
 
@@ -287,7 +316,14 @@ export default function OdontologiaConservadoraPage() {
             
             <div className="space-y-6"> {/* ⚡️ Separación vertical entre tarjetas */}
 
-              <TreatmentRow id="cirugia" name="Apicectomía o Cirugía Periapical" price="38 €">
+              <TreatmentRow 
+                  id="cirugia" 
+                  name="Apicectomía o Cirugía Periapical" 
+                  price="38 €"
+                  image="/images/apicectomia.png"
+                  imageAlt="Ilustración visual de una apicectomía o cirugía periapical"
+                >
+
                 <p>Acceso quirúrgico directo al hueso para extirpar la punta de la raíz infectada y sellar desde fuera un quiste que no responde a la endodoncia convencional.</p>
               </TreatmentRow>
 
