@@ -70,32 +70,35 @@ const tocData = [
 
 // --- Componentes de UI ---
 
+
+
 const TreatmentRow = ({ id, name, price, titleTag = "h2", children }: { id: string, name: string, price?: string, titleTag?: "h2" | "p" | "h3", children: React.ReactNode }) => {
   const Tag = titleTag; 
 
   return (
-    <div id={id} className="py-6 md:py-8 border-b border-dkv-gray-border last:border-0 group scroll-mt-[130px] md:scroll-mt-[150px]">
-      <Tag className="flex flex-col md:flex-row md:justify-between md:items-baseline gap-1 md:gap-2 mb-3 md:mb-4 text-base md:text-lg font-bold font-lemon text-dkv-green-dark leading-snug uppercase group-hover:text-dkv-green transition-colors">
-        <span className="pr-4">{name}</span>
+    <div id={id} className="bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-sm border border-dkv-gray-border/50 hover:shadow-md transition-all duration-300 group scroll-mt-[130px] md:scroll-mt-[150px]">
+      
+      <Tag className="flex flex-col md:flex-row md:justify-between md:items-start gap-3 md:gap-4 mb-5 text-lg md:text-xl font-bold font-lemon text-dkv-green-dark leading-snug uppercase">
+        <span className="pr-4 mt-1">{name}</span>
         {price && (
-          <span className="flex items-center gap-2 shrink-0 text-xl md:text-2xl font-lemon font-bold text-dkv-green normal-case mt-1 md:mt-0">
+          <span className="inline-flex items-center justify-center bg-dkv-green/10 px-4 py-1.5 rounded-full shrink-0 text-2xl font-lemon font-bold text-dkv-green normal-case mt-2 md:mt-0">
             {price}
           </span>
         )}
       </Tag>
       
-      <div className="text-dkv-gray font-fsme leading-relaxed text-base space-y-3">
+      <div className="text-dkv-gray font-fsme leading-relaxed text-base md:text-lg space-y-4">
         {children}
       </div>
-
-
     </div>
   );
 };
 
+
+
 const LevelTitle = ({ id, number, title, description }: { id: string, number: string, title: string, description?: string }) => (
   <div id={id} className="mt-16 mb-8 scroll-mt-[130px] md:scroll-mt-[150px]">
-    <span className="text-dkv-green font-bold text-base uppercase tracking-[0.2em] font-fsme">{number}</span>
+    <span className="text-dkv-green font-bold lg uppercase tracking-[0.2em] font-fsme">{number}</span>
     <p className="text-2xl md:text-3xl font-bold font-lemon text-dkv-green-dark border-b-2 border-dkv-green pb-3 inline-block w-full mt-2 uppercase tracking-wide">
       {title}
     </p>
@@ -123,7 +126,7 @@ export default function OdontologiaConservadoraPage() {
           title={{ dark: "A TIEMPO DE", normal: "SALVAR TU DIENTE" }} 
           description={[
             "Tratar de <strong> salvar tu diente </strong> natural siempre será la alternativa económica, estética y biológica más inteligente.",
-            "Para conseguirlo, es necesario tomar medidas <strong> lo antes posible </strong>.",
+            "Para conseguirlo, es necesario tomar medidas <strong> lo antes posible</strong>.",
 
           ]}
         />
@@ -138,10 +141,10 @@ export default function OdontologiaConservadoraPage() {
               id="nivel-1"
               number="Nivel 1" 
               title="A tiempo de salvar el nervio" 
-              description="Aparece la caries, pero el nervio aún no está afectado o su inflamación es reversible. El objetivo prioritario es restaurar la anatomía evitando la endodoncia."
+              description="Aparece la caries, pero el nervio aún no está afectado, o su inflamación es reversible. El objetivo prioritario es restaurar la anatomía evitando la endodoncia."
             />
             
-            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-dkv-gray-border/50">
+            <div className="space-y-6"> {/* ⚡️ Separación vertical entre tarjetas */}
               <TreatmentRow id="empaste" name="Obturación (empaste) con o sin recubrimiento pulpar" price="29 €">
                 <p><strong>El problema:</strong> Pérdida de tejido dental leve.</p>
                 <p><strong>Diferencia clínica:</strong> Si la caries es moderada, se coloca la resina directamente sobre el tejido sano. Si la caries roza el nervio, se aplica primero <em>recubrimiento pulpar</em> (capa de medicamento aislante y protector) antes del empaste definitivo.</p>
@@ -149,7 +152,7 @@ export default function OdontologiaConservadoraPage() {
               </TreatmentRow>
 
               <TreatmentRow id="reconstruccion" name="Gran reconstrucción" price="40 €">
-                <p><strong>El problema:</strong> El diente ha perdido una porción importante de su corona, pero el nervio sigue intacto y sano.</p>
+                <p><strong>El problema:</strong> El diente ha perdido una porción de su corona, pero el nervio sigue intacto y sano.</p>
                 <p><strong>Tratamiento: </strong>Se esculpe el diente devolviéndole su tamaño, cúspides y puntos de contacto originales con resinas de alta resistencia.</p>
               </TreatmentRow>
 
@@ -170,7 +173,7 @@ export default function OdontologiaConservadoraPage() {
               description="El daño ha alcanzado la pulpa, generando una inflamación severa dentro del diente que causa un dolor punzante y constante. El tejido interno está irreversiblemente dañado o infectado."
             />
             
-            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-dkv-gray-border/50">
+            <div className="space-y-6"> {/* ⚡️ Separación vertical entre tarjetas */}
               <TreatmentRow id="urgencia" name="Pulpectomía de urgencias" price="30 €">
                 <p><strong>El problema:</strong> Dolor agudo que requiere alivio drástico e inmediato.</p>
                 <p><strong>Tratamiento: </strong>Bajo anestesia local, se extirpa la porción del nervio inflamado, se aplica medicacion calmante/desinfectante dentro de los conductos y se sellan temporalmente.</p>
@@ -183,7 +186,7 @@ export default function OdontologiaConservadoraPage() {
 
             {/* AQUÍ ESTABA LA CAJA DEL NIVEL 3 EN TUS CÓDIGOS ANTERIORES. RESPETAMOS TU VERSIÓN ACTUAL Y NO LO AÑADIMOS. */}
             
-            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-dkv-gray-border/50">
+            <div className="space-y-6"> {/* ⚡️ Separación vertical entre tarjetas */}
               <TreatmentRow id="endodoncia" name="Endodoncia Completa" titleTag="p">
                 <p className="mb-6">
                   Se vacían todos los conductos radiculares del diente, se rellenan de un material especial y se sellan.
@@ -196,21 +199,21 @@ export default function OdontologiaConservadoraPage() {
                         <span className="font-bold text-dkv-gray text-base md:text-lg leading-tight">Endodoncia de un conducto</span>
                         <span className="font-lemon text-lg md:text-xl text-dkv-green-dark font-bold shrink-0 mt-0.5">80 €</span>
                       </h2>
-                      <p className="text-base text-dkv-gray/80 italic pr-12">Dientes con 1 solo conducto (ej. incisivos)</p>
+                      <p className="text-lg text-dkv-gray/80 italic pr-12">Dientes con 1 solo conducto (ej. incisivos)</p>
                     </li>
                     <li className="pb-4 border-b border-dkv-gray-border/50">
                       <h2 className="flex flex-row justify-between items-start gap-4 mb-1.5">
                         <span className="font-bold text-dkv-gray text-base md:text-lg leading-tight">Endodoncia de dos conductos</span>
                         <span className="font-lemon text-lg md:text-xl text-dkv-green-dark font-bold shrink-0 mt-0.5">94 €</span>
                       </h2>
-                      <p className="text-base text-dkv-gray/80 italic pr-12">Dientes con 2 conductos (ej. premolares)</p>
+                      <p className="text-lg text-dkv-gray/80 italic pr-12">Dientes con 2 conductos (ej. premolares)</p>
                     </li>
                     <li>
                       <h2 className="flex flex-row justify-between items-start gap-4 mb-1.5">
                         <span className="font-bold text-dkv-gray text-base md:text-lg leading-tight">Endodoncia Multirradicular</span>
                         <span className="font-lemon text-lg md:text-xl text-dkv-green-dark font-bold shrink-0 mt-0.5">123 €</span>
                       </h2>
-                      <p className="text-base text-dkv-gray/80 italic pr-12">Dientes con 3 o más conductos (ej. molares)</p>
+                      <p className="text-lg text-dkv-gray/80 italic pr-12">Dientes con 3 o más conductos (ej. molares)</p>
                     </li>
                   </ul>
                   
@@ -223,7 +226,7 @@ export default function OdontologiaConservadoraPage() {
                         </span>
                         <span className="font-lemon text-lg md:text-xl text-dkv-green font-bold shrink-0 mt-0.5">15 €</span>
                       </h2>
-                      <p className="text-base text-dkv-gray leading-relaxed pl-7">Uso de tecnología mecanizada para una limpieza de los conductos extremadamente precisa y rápida.</p>
+                      <p className="text-lg text-dkv-gray leading-relaxed pl-7">Uso de tecnología mecanizada para una limpieza de los conductos extremadamente precisa y rápida.</p>
                     </div>
                   </div>
                 </div>
@@ -246,7 +249,7 @@ export default function OdontologiaConservadoraPage() {
               description="Fracasos de tratamientos anteriores o raíces inmaduras sin cerrar"
             />
             
-            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-dkv-gray-border/50">
+            <div className="space-y-6"> {/* ⚡️ Separación vertical entre tarjetas */}
               <TreatmentRow id="reendodoncia" name="Reendodoncia (1, 2 o 3 conductos)" price="130 €">
                 <p>Desmontar la restauración, retirar el material antiguo contaminado, volver a desinfectar exhaustivamente el sistema de conductos y sellarlo de nuevo.</p>
               </TreatmentRow>
@@ -267,7 +270,7 @@ export default function OdontologiaConservadoraPage() {
               description="Infección enquistada en el hueso y traumatismos severos."
             />
             
-            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-dkv-gray-border/50">
+            <div className="space-y-6"> {/* ⚡️ Separación vertical entre tarjetas */}
 
               <TreatmentRow id="cirugia" name="Apicectomía o Cirugía Periapical" price="38 €">
                 <p>Acceso quirúrgico directo al hueso para extirpar la punta de la raíz infectada y sellar desde fuera un quiste que no responde a la endodoncia convencional.</p>
