@@ -63,8 +63,6 @@ const tocData = [
   {
     level: { id: "nivel-4", number: "Nivel 4", title: "Infección supera a la raíz" },
     treatments: [
-      { id: "reendodoncia", name: "Reendodoncia", price: "130 €" },
-      { id: "apicoformacion", name: "Apicoformación", price: "54 €" },
       { id: "cirugia", name: "Apicectomía", price: "38 €" },
       { id: "reimplante", name: "Reimplante dental", price: "Incluido" }
     ]
