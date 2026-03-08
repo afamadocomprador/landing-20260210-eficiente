@@ -15,18 +15,15 @@ import { GodLevelTOC } from "@/components/ui/GodLevelTOC";
 import TreatmentsHero from "@/components/hero/TreatmentsHero";
 
 export const metadata: Metadata = {
-  title: "Salvando piezas - Odontología conservadora | DKV Dentisalud",
-  description: "Guía de tratamientos conservadores para preservar tu dentadura natural: empastes, endodoncias y reconstrucciones con precios cerrados.",
+  title: "Salvando tu diente - Odontología conservadora | DKV Dentisalud",
+  description: "Guía de tratamientos conservadores para preservar tu dentadura natural: Empastes, reconstrucciones y endodoncias con precios cerrados en toda España.",
 };
 
 
-
-
-// --- DATA ESTRUCTURADA PARA EL ÍNDICE (REGENERADA Y CORREGIDA) ---
 // --- DATA ESTRUCTURADA PARA EL ÍNDICE (CON 3 NIVELES DE ANIDACIÓN) ---
 const tocData = [
   {
-    level: { id: "nivel-1", number: "Nivel 1", title: "Salvando el nervio" },
+    level: { id: "nivel-1", number: "Nivel 1", title: "A tiempo de salvar el nervio" },
     treatments: [
       { id: "empaste", name: "Obturación (empaste)", price: "29 €" },
       { id: "reconstruccion", name: "Gran reconstrucción", price: "40 €" },
@@ -123,9 +120,11 @@ export default function OdontologiaConservadoraPage() {
 
         <TreatmentsHero 
           badgeText="Guía de Tratamientos y Presupuestos"
-          title={{ dark: "SALVANDO PIEZAS", normal: "ODONTOLOGÍA CONSERVADORA" }}
+          title={{ dark: "A TIEMPO DE", normal: "SALVAR TU DIENTE" }} 
           description={[
-            "Tratar de salvar tu diente natural siempre será la alternativa económica, estética y biológica más inteligente.",
+            "Tratar de <strong> salvar tu diente </strong> natural siempre será la alternativa económica, estética y biológica más inteligente.",
+            "Para conseguirlo, es necesario tomar medidas <strong> lo antes posible </strong>.",
+
           ]}
         />
 
@@ -138,7 +137,7 @@ export default function OdontologiaConservadoraPage() {
             <LevelTitle 
               id="nivel-1"
               number="Nivel 1" 
-              title="Salvando el nervio" 
+              title="A tiempo de salvar el nervio" 
               description="Aparece la caries, pero el nervio aún no está afectado o su inflamación es reversible. El objetivo prioritario es restaurar la anatomía evitando la endodoncia."
             />
             
@@ -177,7 +176,7 @@ export default function OdontologiaConservadoraPage() {
                 <p><strong>Tratamiento: </strong>Bajo anestesia local, se extirpa la porción del nervio inflamado, se aplica medicacion calmante/desinfectante dentro de los conductos y se sellan temporalmente.</p>
                 <div className="mt-3 flex items-start gap-2 text-sm">
                   <Info className="w-4 h-4 text-dkv-green shrink-0 mt-0.5" />
-                  <span>Medida de urgencia previa a endodoncia completa.</span>
+                  <span>Se trata de una medida de urgencia previa a la endodoncia completa.</span>
                 </div>
               </TreatmentRow>
             </div>
@@ -228,6 +227,14 @@ export default function OdontologiaConservadoraPage() {
                     </div>
                   </div>
                 </div>
+
+                <div className="mt-3 flex items-start gap-2 text-sm">
+                  <Info className="w-4 h-4 text-dkv-green shrink-0 mt-0.5" />
+                  <span>Tras endodoncia, para dejar el diente operativo, suele proceder una gran reconstruccion y/o corona (ver prótesis).</span>
+                </div>
+
+
+
               </TreatmentRow>
             </div>
 
