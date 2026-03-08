@@ -212,7 +212,7 @@ export default function HeroSearch() {
   }, []);
 
   return (
-    <div ref={wrapperRef} className="relative w-full max-w-3xl mx-auto z-50 text-left">
+    <div ref={wrapperRef} className="relative w-full max-w-3xl mx-auto z-40 text-left">
       
       <div 
         className={`bg-white rounded-full border p-2 flex items-center relative transition-all duration-300 
@@ -283,7 +283,7 @@ export default function HeroSearch() {
 
       {/* MENÚ DESPLEGABLE */}
       {isOpen && !isNavigating && (
-        <div className="absolute top-full left-0 right-0 mt-4 bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden divide-y divide-gray-50 py-2">
+        <div className="absolute z-40 top-full left-0 right-0 mt-4 bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden divide-y divide-gray-50 py-2">
           
           {query.length === 0 && (
             <div 
