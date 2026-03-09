@@ -19,7 +19,6 @@ export default function ShareButton({ id, title }: { id: string; title: string }
       try {
         await navigator.share({
           title: `Tratamiento: ${title} | DKV Dentisalud`,
-          text: `Mira la información y el precio de este tratamiento: ${title}`,
           url: url,
         });
       } catch (error) {
