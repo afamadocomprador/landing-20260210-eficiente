@@ -9,6 +9,10 @@ import FixedBreadcrumb from "@/components/layout/FixedBreadcrumb";
 import LeadForm from "@/components/LeadForm";
 import { CheckCircle2, AlertCircle, Info, Stethoscope, ArrowRight } from "lucide-react"; // Añadido ArrowRight para el botón
 
+// ⚡️ 1. AÑADE ESTAS DOS LÍNEAS AQUÍ:
+import { SITE_CONFIG } from '@/constants/config';
+export const dynamic = "force-dynamic";
+
 // Importamos nuestro Índice Nivel Dios
 import { GodLevelTOC } from "@/components/ui/GodLevelTOC"; 
 
@@ -73,14 +77,15 @@ const tocData = [
 
 
 // ⚡️ METADATA DINÁMICA: Detecta si alguien ha compartido un tratamiento por URL
+// ⚡️ METADATA DINÁMICA CORREGIDA
 export async function generateMetadata(
   { searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const shareId = searchParams?.share as string;
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://tudominio.com'; // O usa tu SITE_CONFIG.domain si lo tienes importado
+  // Usamos tu config real como en la página de dentistas
+  const baseUrl = SITE_CONFIG.domain || process.env.NEXT_PUBLIC_SITE_URL || 'https://www.dkvdentisalud.es'; 
 
-  // 1. Si hay un ID compartido por URL, buscamos el tratamiento
   if (shareId) {
     let foundTreatment = null;
     for (const section of tocData) {
@@ -89,20 +94,21 @@ export async function generateMetadata(
     }
 
     if (foundTreatment) {
-      // Formateamos para la imagen generada por tu /api/og
       const ogTitleToRender = foundTreatment.name.toUpperCase();
       const ogSubtitleToRender = foundTreatment.price ? `Precio cerrado: ${foundTreatment.price}` : 'Odontología Conservadora';
 
       return {
+        metadataBase: new URL(baseUrl), // ⚡️ CRUCIAL PARA WHATSAPP
         title: `${foundTreatment.name} | DKV Dentisalud`,
         description: `Consulta el precio y detalles de la ${foundTreatment.name}. Precios cerrados para asegurados DKV.`,
         openGraph: {
           title: `${foundTreatment.name} | DKV Dentisalud`,
           description: `Consulta en qué consiste y el precio de: ${foundTreatment.name}`,
-          url: `${baseUrl}/tratamientos/odontologia-conservadora?share=${shareId}#${shareId}`,
+          url: `/tratamientos/odontologia-conservadora?share=${shareId}#${shareId}`,
           siteName: 'DKV Dentisalud Élite',
           images: [
             {
+              // Next.js ahora sumará el baseUrl automáticamente a esta ruta
               url: `/api/og?title=${encodeURIComponent(ogTitleToRender)}&subtitle=${encodeURIComponent(ogSubtitleToRender)}&v=1`,
               width: 1200,
               height: 630,
@@ -116,12 +122,32 @@ export async function generateMetadata(
     }
   }
 
-  // 2. SEO por defecto si nadie está compartiendo nada específico
+  // SEO por defecto
   return {
+    metadataBase: new URL(baseUrl), // ⚡️ CRUCIAL PARA WHATSAPP
     title: "Salvando tu diente - Odontología conservadora | DKV Dentisalud",
     description: "Guía de tratamientos conservadores para preservar tu dentadura natural: Empastes, reconstrucciones y endodoncias con precios cerrados en toda España.",
+    openGraph: {
+      title: "Salvando tu diente - Odontología conservadora | DKV",
+      description: "Empastes, reconstrucciones y endodoncias con precios cerrados en toda España.",
+      url: `/tratamientos/odontologia-conservadora`,
+      siteName: 'DKV Dentisalud Élite',
+      images: [
+        {
+          url: `/api/og?title=${encodeURIComponent("ODONTOLOGÍA CONSERVADORA")}&subtitle=${encodeURIComponent("Salvando tu diente")}&v=1`,
+          width: 1200,
+          height: 630,
+          alt: "Odontología conservadora",
+        }
+      ],
+      locale: 'es_ES',
+      type: 'website',
+    }
   };
 }
+
+
+
 
 
 // --- Componentes de UI ---
@@ -132,22 +158,20 @@ const TreatmentRow = ({ id, name, price, image, imageAlt, titleTag = "h2", child
   return (
     <div id={id} className="bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-md border border-dkv-gray-border/80 hover:shadow-xl hover:border-dkv-green/40 hover:-translate-y-1 transition-all duration-300 group scroll-mt-[130px] md:scroll-mt-[150px]">
 
-      
       <Tag className="flex flex-col md:flex-row md:justify-between md:items-start gap-3 md:gap-4 mb-5 text-lg md:text-xl font-bold font-lemon text-dkv-green-dark leading-snug uppercase">
         <span className="pr-4 mt-1">{name}</span>
         
-        {/* ⚡️ CONTENEDOR FLEX DEL PRECIO Y EL BOTÓN DE COMPARTIR */}
-        <div className="flex items-center gap-3 self-end md:self-auto mt-2 md:mt-0">
+        {/* ⚡️ LA SOLUCIÓN: Cambiamos este contenedor a un <span> para evitar el error de hidratación */}
+        <span className="flex items-center gap-3 self-end md:self-auto mt-2 md:mt-0">
           {price && (
             <span className="inline-flex items-center justify-center bg-dkv-green/10 px-4 py-1.5 rounded-full shrink-0 text-2xl font-lemon font-bold text-dkv-green normal-case">
               {price}
             </span>
           )}
           <ShareButton id={id} title={name} />
-        </div>
+        </span>
       </Tag>
 
-      {/* 2. ⚡️ AÑADIMOS ESTE BLOQUE COMPLETO JUSTO AQUÍ ⚡️ */}
       {image && (
         <div className="mb-6 w-full overflow-hidden rounded-xl border border-gray-100">
           <img 
@@ -158,8 +182,6 @@ const TreatmentRow = ({ id, name, price, image, imageAlt, titleTag = "h2", child
           />
         </div>
       )}
-      {/* ------------------------------------------------ */}
-
       
       <div className="text-dkv-gray font-fsme leading-relaxed text-lg md:text-lg space-y-4">
         {children}
