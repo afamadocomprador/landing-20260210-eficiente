@@ -96,23 +96,36 @@ export async function generateMetadata(
     }
 
     if (foundTreatment) {
-      const ogTitleToRender = foundTreatment.name.toUpperCase();
-      const ogSubtitleToRender = foundTreatment.price ? `Precio cerrado: ${foundTreatment.price}` : 'Odontología Conservadora';
+      //const ogTitleToRender = foundTreatment.name.toUpperCase();
+      const ogTitleToRender = foundTreatment.price 
+        ? `${foundTreatment.name} ${foundTreatment.price}`.toUpperCase() 
+        : foundTreatment.name.toUpperCase();
+
+      //const ogSubtitleToRender = foundTreatment.price ? `Precio cerrado: ${foundTreatment.price}` : 'Odontología Conservadora';
+
+      // 2. Preparamos el TÍTULO EN NEGRITA que leerá WhatsApp debajo de la imagen
+      const boldSnippetTitle = foundTreatment.price
+        ? `${foundTreatment.name} por solo ${foundTreatment.price} - Precio cerrado DKV`
+        : `${foundTreatment.name} - Exclusivo en Clínicas DKV`;
+
+
+
 
       return {
         metadataBase: new URL(baseUrl), // ⚡️ CRUCIAL PARA WHATSAPP
-        title: `${foundTreatment.name} | DKV Dentisalud`,
+        title: boldSnippetTitle,
         description: `Consulta el precio y detalles de la ${foundTreatment.name}. Precios cerrados para asegurados DKV.`,
         openGraph: {
-          title: `${foundTreatment.name} | DKV Dentisalud`,
-          description: `Consulta en qué consiste y el precio de: ${foundTreatment.name}`,
+          title: boldSnippetTitle,
+          description: `Consulta en qué consiste y el precio de este tratamiento.`,
           url: `/tratamientos/odontologia-conservadora?share=${shareId}#${shareId}`,
           siteName: 'DKV Dentisalud Élite',
           images: [
             {
               // ⚡️ AÑADIDO:               &type=tratamiento
               // Next.js ahora sumará el baseUrl automáticamente a esta ruta
-              url: `/api/og?title=${encodeURIComponent(ogTitleToRender)}&subtitle=${encodeURIComponent(ogSubtitleToRender)}&type=tratamiento&v=1`,
+              //url: `/api/og?title=${encodeURIComponent(ogTitleToRender)}&subtitle=${encodeURIComponent(ogSubtitleToRender)}&type=tratamiento&v=1`,
+              url: `/api/og?title=${encodeURIComponent(ogTitleToRender)}&type=tratamiento&v=1`,
               width: 1200,
               height: 630,
               alt: foundTreatment.name,
