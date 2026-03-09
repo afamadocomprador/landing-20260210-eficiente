@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
     // 1. Recogemos las variables de la URL
     let rawTitle = searchParams.get('title') || 'Dentistas cerca de ti';
     rawTitle = rawTitle.toUpperCase();
-
+    
     // ⚡️ NUEVAS VARIABLES PARA EL MOTOR DINÁMICO
     const type = searchParams.get('type'); // Puede ser 'tratamiento' o 'categoria'
     const subtitle = searchParams.get('subtitle'); // Para pasar el precio u otro texto
@@ -33,6 +33,7 @@ export async function GET(request: NextRequest) {
     let mainText = 'CERCA DE TI';
 
     // ⚡️ LÓGICA DE ENRUTAMIENTO DE 4 VÍAS
+    
     if (type === 'tratamiento') {
       // CASO 1: Tratamiento concreto (Ej: Empaste)
       line1 = 'TRATAMIENTO:';
@@ -77,33 +78,26 @@ export async function GET(request: NextRequest) {
             padding: '60px 80px',
           }}
         >
-          {/* ========================================== */}
           {/* COLUMNA IZQUIERDA: Texto y Decoración (60%) */}
-          {/* ========================================== */}
           <div
             style={{
               display: 'flex',
               flexDirection: 'column',
               width: '60%',
               justifyContent: 'center', 
-              // 🌟 CLAVE: Esto hace que el contenedor abrace el texto exactamente
               alignItems: 'flex-start',
-              // Movido un pelín más a la izquierda (antes estaba en 80/50, lo dejamos en 65)
               paddingLeft: '65px', 
             }}
           >
-            {/* CONTENEDOR RELATIVO DEL TEXTO */}
             <div style={{ display: 'flex', position: 'relative' }}>
               
-              {/* 🌟 LA LÍNEA DECORATIVA CON MÁRGENES MATEMÁTICAMENTE EXACTOS 🌟 */}
+              {/* LA LÍNEA DECORATIVA */}
               <div
                 style={{
                   position: 'absolute',
-                  // Distancia superior, izquierda e inferior EXACTAMENTE IGUALES (45px)
                   top: '-45px',         
                   left: '-45px',     
                   bottom: '-45px',   
-                  // Se estira hacia la derecha para recoger el punto final
                   right: '-15px',      
                   borderLeft: '4px solid #033B37', 
                   borderBottom: '4px solid #033B37',
@@ -111,53 +105,21 @@ export async function GET(request: NextRequest) {
                   display: 'flex',
                 }}
               >
-                {/* Círculo Superior Izquierdo */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '-10px',      
-                    left: '-12px',     
-                    width: '20px',
-                    height: '20px',
-                    borderRadius: '50%',
-                    border: '4px solid #033B37',
-                    backgroundColor: '#ffffff',
-                    display: 'flex',
-                  }}
-                />
-                {/* Círculo Inferior Derecho (abrazando el punto) */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    bottom: '-12px',   
-                    right: '-10px',    
-                    width: '20px',
-                    height: '20px',
-                    borderRadius: '50%',
-                    border: '4px solid #033B37',
-                    backgroundColor: '#ffffff',
-                    display: 'flex',
-                  }}
-                />
+                <div style={{ position: 'absolute', top: '-10px', left: '-12px', width: '20px', height: '20px', borderRadius: '50%', border: '4px solid #033B37', backgroundColor: '#ffffff', display: 'flex' }} />
+                <div style={{ position: 'absolute', bottom: '-12px', right: '-10px', width: '20px', height: '20px', borderRadius: '50%', border: '4px solid #033B37', backgroundColor: '#ffffff', display: 'flex' }} />
               </div>
 
-              {/* TITULAR GIGANTE */}
+              {/* TITULARES DINÁMICOS */}
               <div
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  fontSize: 70, 
+                  fontSize: 55, // Ligeramente ajustado para textos largos de tratamientos
                   color: '#033B37', 
-                  lineHeight: 1.2,
+                  lineHeight: 1.1,
                   fontFamily: '"LemonMILK"',
                 }}
               >
-                {/* <span style={{ display: 'flex' }}>LO FÁCIL ES</span> */}
-                {/* <span style={{ display: 'flex' }}>CUIDAR</span> */}
-                {/* <span style={{ display: 'flex', color: '#849700' }}>TU SONRISA.</span> */}
-
-
-
                 {line1 && <span style={{ display: 'flex' }}>{line1}</span>}
                 {line2 && <span style={{ display: 'flex' }}>{line2}</span>}
                 {showEn && <span style={{ display: 'flex' }}>EN</span>}
@@ -169,38 +131,16 @@ export async function GET(request: NextRequest) {
                     {subtitle}
                   </span>
                 )}
-
-
-
               </div>
 
             </div>
           </div>
 
-          {/* ========================================== */}
-          {/* COLUMNA DERECHA: La foto circular (40%)      */}
-          {/* ========================================== */}
-          <div
-            style={{
-              display: 'flex',
-              width: '40%',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                width: '450px',
-                height: '450px',
-                borderRadius: '50%', 
-                overflow: 'hidden',
-                boxShadow: '0 25px 50px rgba(0,0,0,0.15)', 
-                border: '12px solid white', 
-              }}
-            >
+          {/* COLUMNA DERECHA: La foto circular (40%) */}
+          <div style={{ display: 'flex', width: '40%', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', width: '450px', height: '450px', borderRadius: '50%', overflow: 'hidden', boxShadow: '0 25px 50px rgba(0,0,0,0.15)', border: '12px solid white' }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={imageUrl} width="100%" height="100%" style={{ objectFit: 'cover' }} alt="Chica sonriendo" />
+              <img src={imageUrl} width="100%" height="100%" style={{ objectFit: 'cover' }} alt="Dentista DKV" />
             </div>
           </div>
         </div>
@@ -209,16 +149,8 @@ export async function GET(request: NextRequest) {
         width: 1200,
         height: 630,
         fonts: [
-          {
-            name: 'LemonMILK', 
-            data: lemonFont,
-            style: 'normal',
-          },
-          {
-            name: 'FSME', 
-            data: fsmeFont,
-            style: 'normal',
-          },
+          { name: 'LemonMILK', data: lemonFont, style: 'normal' },
+          { name: 'FSME', data: fsmeFont, style: 'normal' },
         ],
       }
     );
