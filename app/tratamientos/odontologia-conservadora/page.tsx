@@ -105,8 +105,8 @@ export async function generateMetadata(
 
       // 2. Preparamos el TÍTULO EN NEGRITA que leerá WhatsApp debajo de la imagen
       const boldSnippetTitle = foundTreatment.price
-        ? `${foundTreatment.name} por solo ${foundTreatment.price} - Precio cerrado DKV`
-        : `${foundTreatment.name} - Exclusivo en Clínicas DKV`;
+        ? `${foundTreatment.name} por solo ${foundTreatment.price} - Precio cerrado DKV DENTISALUD ELITE`
+        : `${foundTreatment.name} - Con DKV DENTISALUD ELITE`;
 
 
 
@@ -114,10 +114,10 @@ export async function generateMetadata(
       return {
         metadataBase: new URL(baseUrl), // ⚡️ CRUCIAL PARA WHATSAPP
         title: boldSnippetTitle,
-        description: `Consulta el precio y detalles de la ${foundTreatment.name}. Precios cerrados para asegurados DKV.`,
+        description: `Consulta el precio y detalles de la ${foundTreatment.name}. Precios cerrados para DKV DENTISALUD ELITE.`,
         openGraph: {
           title: boldSnippetTitle,
-          description: `Consulta en qué consiste y el precio de este tratamiento.`,
+          description: `Consulta en qué consiste y donde puedes realizarte este tratamiento.`,
           url: `/tratamientos/odontologia-conservadora?share=${shareId}#${shareId}`,
           siteName: 'DKV Dentisalud Élite',
           images: [
@@ -146,7 +146,7 @@ export async function generateMetadata(
     description: "Guía de tratamientos conservadores para preservar tu dentadura natural: Empastes, reconstrucciones y endodoncias con precios cerrados en toda España.",
     openGraph: {
       title: "Odontología conservadora | DKV",
-      description: "Empastes, reconstrucciones y endodoncias con precios cerrados en toda España.",
+      description: "El objetivo es salvar tu diente. Empastes, reconstrucciones y endodoncias con precios cerrados en toda España.",
       url: `/tratamientos/odontologia-conservadora`,
       siteName: 'DKV Dentisalud Élite',
       images: [
