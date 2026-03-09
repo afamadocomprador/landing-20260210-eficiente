@@ -18,7 +18,7 @@ export default function ShareButton({ id, title }: { id: string; title: string }
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `Tratamiento: ${title} | DKV Dentisalud`,
+          title: `Tratamiento ${title} | DKV Dentisalud`,
           url: url,
         });
       } catch (error) {
