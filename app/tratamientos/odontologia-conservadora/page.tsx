@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import { Metadata, ResolvingMetadata } from "next";
 import React from "react";
 
 // Componentes reales extraídos de tu proyecto
@@ -14,14 +14,10 @@ import { GodLevelTOC } from "@/components/ui/GodLevelTOC";
 
 import TreatmentsHero from "@/components/hero/TreatmentsHero";
 import HeroSearch from '@/components/home/HeroSearch';
-// ⚡️ NUEVA IMPORTACIÓN: Tu componente de animación
+// ⚡️ IMPORTACIÓN: Tu componente de animación
 import ScrollReveal from "@/components/ui/ScrollReveal";
-
-
-export const metadata: Metadata = {
-  title: "Salvando tu diente - Odontología conservadora | DKV Dentisalud",
-  description: "Guía de tratamientos conservadores para preservar tu dentadura natural: Empastes, reconstrucciones y endodoncias con precios cerrados en toda España.",
-};
+// ⚡️ NUEVA IMPORTACIÓN: El botón de compartir
+import ShareButton from "@/components/ui/ShareButton";
 
 
 // --- DATA ESTRUCTURADA PARA EL ÍNDICE (CON 3 NIVELES DE ANIDACIÓN) ---
@@ -76,9 +72,59 @@ const tocData = [
 ];
 
 
+// ⚡️ METADATA DINÁMICA: Detecta si alguien ha compartido un tratamiento por URL
+export async function generateMetadata(
+  { searchParams }: { searchParams?: { [key: string]: string | string[] | undefined } },
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const shareId = searchParams?.share as string;
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://tudominio.com'; // O usa tu SITE_CONFIG.domain si lo tienes importado
+
+  // 1. Si hay un ID compartido por URL, buscamos el tratamiento
+  if (shareId) {
+    let foundTreatment = null;
+    for (const section of tocData) {
+      const match = section.treatments?.find(t => t.id === shareId);
+      if (match) { foundTreatment = match; break; }
+    }
+
+    if (foundTreatment) {
+      // Formateamos para la imagen generada por tu /api/og
+      const ogTitleToRender = foundTreatment.name.toUpperCase();
+      const ogSubtitleToRender = foundTreatment.price ? `Precio cerrado: ${foundTreatment.price}` : 'Odontología Conservadora';
+
+      return {
+        title: `${foundTreatment.name} | DKV Dentisalud`,
+        description: `Consulta el precio y detalles de la ${foundTreatment.name}. Precios cerrados para asegurados DKV.`,
+        openGraph: {
+          title: `${foundTreatment.name} | DKV Dentisalud`,
+          description: `Consulta en qué consiste y el precio de: ${foundTreatment.name}`,
+          url: `${baseUrl}/tratamientos/odontologia-conservadora?share=${shareId}#${shareId}`,
+          siteName: 'DKV Dentisalud Élite',
+          images: [
+            {
+              url: `/api/og?title=${encodeURIComponent(ogTitleToRender)}&subtitle=${encodeURIComponent(ogSubtitleToRender)}&v=1`,
+              width: 1200,
+              height: 630,
+              alt: foundTreatment.name,
+            }
+          ],
+          locale: 'es_ES',
+          type: 'website',
+        }
+      };
+    }
+  }
+
+  // 2. SEO por defecto si nadie está compartiendo nada específico
+  return {
+    title: "Salvando tu diente - Odontología conservadora | DKV Dentisalud",
+    description: "Guía de tratamientos conservadores para preservar tu dentadura natural: Empastes, reconstrucciones y endodoncias con precios cerrados en toda España.",
+  };
+}
+
 
 // --- Componentes de UI ---
-
 
 const TreatmentRow = ({ id, name, price, image, imageAlt, titleTag = "h2", children }: { id: string, name: string, price?: string, image?: string, imageAlt?: string, titleTag?: "h2" | "p" | "h3", children: React.ReactNode }) => {
   const Tag = titleTag; 
@@ -86,14 +132,19 @@ const TreatmentRow = ({ id, name, price, image, imageAlt, titleTag = "h2", child
   return (
     <div id={id} className="bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-md border border-dkv-gray-border/80 hover:shadow-xl hover:border-dkv-green/40 hover:-translate-y-1 transition-all duration-300 group scroll-mt-[130px] md:scroll-mt-[150px]">
 
-     
+      
       <Tag className="flex flex-col md:flex-row md:justify-between md:items-start gap-3 md:gap-4 mb-5 text-lg md:text-xl font-bold font-lemon text-dkv-green-dark leading-snug uppercase">
         <span className="pr-4 mt-1">{name}</span>
-        {price && (
-          <span className="inline-flex items-center justify-center bg-dkv-green/10 px-4 py-1.5 rounded-full shrink-0 text-2xl font-lemon font-bold text-dkv-green normal-case mt-2 md:mt-0">
-            {price}
-          </span>
-        )}
+        
+        {/* ⚡️ CONTENEDOR FLEX DEL PRECIO Y EL BOTÓN DE COMPARTIR */}
+        <div className="flex items-center gap-3 self-end md:self-auto mt-2 md:mt-0">
+          {price && (
+            <span className="inline-flex items-center justify-center bg-dkv-green/10 px-4 py-1.5 rounded-full shrink-0 text-2xl font-lemon font-bold text-dkv-green normal-case">
+              {price}
+            </span>
+          )}
+          <ShareButton id={id} title={name} />
+        </div>
       </Tag>
 
       {/* 2. ⚡️ AÑADIMOS ESTE BLOQUE COMPLETO JUSTO AQUÍ ⚡️ */}
@@ -108,9 +159,6 @@ const TreatmentRow = ({ id, name, price, image, imageAlt, titleTag = "h2", child
         </div>
       )}
       {/* ------------------------------------------------ */}
-
-
-
 
       
       <div className="text-dkv-gray font-fsme leading-relaxed text-lg md:text-lg space-y-4">
@@ -190,8 +238,8 @@ export default function OdontologiaConservadoraPage() {
 
               <ScrollReveal delay={100} direction="left">
                 <TreatmentRow id="reconstruccion" name="Gran reconstrucción" price="40 €">
-                  <p><strong>El problema:</strong> El diente ha perdido una porción de su corona, pero el nervio sigue intacto y sano.</p>
-                  <p><strong>Tratamiento: </strong>Se esculpe el diente devolviéndole su tamaño, cúspides y puntos de contacto originales con resinas de alta resistencia.</p>
+                  <p><strong>El problema:</strong> El diente ha perdido una porción de su corona.</p>
+                  <p><strong>Tratamiento: </strong>Se esculpe el diente devolviéndole su tamaño, cúspides y puntos de contacto originales con resinas de alta resistencia. Tras endodoncias es factible recurrir a <em> postes o pines </em> para dar fortaleza a la estructura.</p>
                 </TreatmentRow>
               </ScrollReveal>
 
