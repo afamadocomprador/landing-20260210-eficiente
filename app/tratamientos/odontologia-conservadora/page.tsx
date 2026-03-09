@@ -86,6 +86,8 @@ export async function generateMetadata(
   // Usamos tu config real como en la página de dentistas
   const baseUrl = SITE_CONFIG.domain || process.env.NEXT_PUBLIC_SITE_URL || 'https://www.dkvdentisalud.es'; 
 
+ 
+  // CASO A: Alguien ha pulsado "Compartir" en una tarjeta de tratamiento
   if (shareId) {
     let foundTreatment = null;
     for (const section of tocData) {
@@ -108,8 +110,9 @@ export async function generateMetadata(
           siteName: 'DKV Dentisalud Élite',
           images: [
             {
+              // ⚡️ AÑADIDO:               &type=tratamiento
               // Next.js ahora sumará el baseUrl automáticamente a esta ruta
-              url: `/api/og?title=${encodeURIComponent(ogTitleToRender)}&subtitle=${encodeURIComponent(ogSubtitleToRender)}&v=1`,
+              url: `/api/og?title=${encodeURIComponent(ogTitleToRender)}&subtitle=${encodeURIComponent(ogSubtitleToRender)}&type=tratamiento&v=1`,
               width: 1200,
               height: 630,
               alt: foundTreatment.name,
@@ -123,18 +126,20 @@ export async function generateMetadata(
   }
 
   // SEO por defecto
+  // CASO B: Alguien comparte la URL genérica del nivel superior (La página completa)
   return {
     metadataBase: new URL(baseUrl), // ⚡️ CRUCIAL PARA WHATSAPP
     title: "Salvando tu diente - Odontología conservadora | DKV Dentisalud",
     description: "Guía de tratamientos conservadores para preservar tu dentadura natural: Empastes, reconstrucciones y endodoncias con precios cerrados en toda España.",
     openGraph: {
-      title: "Salvando tu diente - Odontología conservadora | DKV",
+      title: "Odontología conservadora | DKV",
       description: "Empastes, reconstrucciones y endodoncias con precios cerrados en toda España.",
       url: `/tratamientos/odontologia-conservadora`,
       siteName: 'DKV Dentisalud Élite',
       images: [
         {
-          url: `/api/og?title=${encodeURIComponent("ODONTOLOGÍA CONSERVADORA")}&subtitle=${encodeURIComponent("Salvando tu diente")}&v=1`,
+          // ⚡️ AÑADIDO: &type=categoria
+          url: `/api/og?title=${encodeURIComponent("ODONTOLOGÍA CONSERVADORA")}&subtitle=${encodeURIComponent("Salvando tu diente")}&type=categoria&v=1`,
           width: 1200,
           height: 630,
           alt: "Odontología conservadora",
