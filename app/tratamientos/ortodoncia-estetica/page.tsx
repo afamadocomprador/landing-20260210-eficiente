@@ -63,7 +63,9 @@ export async function generateMetadata(
   const baseUrl = SITE_CONFIG?.domain || process.env.NEXT_PUBLIC_SITE_URL || 'https://www.dkvdentisalud.es'; 
 
   if (shareId) {
-    let foundTreatment = null;
+    // ⚡️ SOLUCIÓN: Le decimos a TypeScript que el objeto puede tener cualquier estructura
+    let foundTreatment: any = null;
+
     for (const section of tocData) {
       const match = section.treatments?.find(t => t.id === shareId);
       if (match) { foundTreatment = match; break; }
