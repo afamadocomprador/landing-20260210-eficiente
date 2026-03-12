@@ -62,14 +62,14 @@ const nationalMasterSchema = {
 // --- DATA: 8 TRATAMIENTOS ---
 // ⚡️ AÑADIDO: Propiedad 'image' en la ficha 4 (Ortodoncia)
 const tratamientosList = [
-  { id: 1, href: "/tratamientos/odontologia-conservadora#dolor", icon: Zap, image: "/images/apicectomia.png", title: "Tengo dolor", descMain: "Caries, ", descBold: "endodoncia", descEnd: "..." },
-  { id: 2, href: "/categorias/higiene-y-prevencion#higiene", icon: Sparkles, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "Limpieza", descMain: "", descBold: "Limpieza", descEnd: ", diagnóstico..." },
-  { id: 3, href: "/categorias/implantes#implantes", icon: Stethoscope, image: "/images/tratamientos/implantologia.png", title: "Faltan piezas", descMain: "", descBold: "Implantes", descEnd: ", puentes..." },
-  { id: 4, href: "/tratamientos/ortodoncia-estetica#sonrisa", icon: Smile, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "Sonrisa", descMain: "", descBold: "Ortodoncia", descEnd: ", estética..." },
-  { id: 5, href: "/tratamientos/odontopediatria#infantil", icon: Baby, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "Infantil", descMain: "Cuidado ", descBold: "dental", descEnd: " niños" },
-  { id: 6, href: "/tratamientos/periodoncia#encias", icon: HeartPulse, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "Encías", descMain: "Salud ", descBold: "periodontal", descEnd: "..." },
-  { id: 7, href: "/#dentistas", icon: Activity, title: "Urgencias", image: "/images/tratamientos/ferula.png", descMain: "Atención ", descBold: "rápida", descEnd: " 24h" },
-  { id: 8, href: "/categorias/higiene-y-prevencion#prevencion", icon: ShieldCheck, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "Prevención", descMain: "Revisiones, ", descBold: "sellados", descEnd: "..." },
+  { id: 1, href: "/categorias/implantes#implantes", icon: Stethoscope, image: "/images/tratamientos/implantes.png", title: "Implantes", descMain: "Garantía y ", descBold: "calidad", descEnd: "" },
+  { id: 2, href: "/tratamientos/estetica", icon: Baby, image: "/images/tratamientos/estetica.png", title: "Estética", descMain: "Cuidado ", descBold: "dental", descEnd: " niños" },
+  { id: 3, href: "/tratamientos/ortodoncia-estetica#sonrisa", icon: Sparkles, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "Ortodoncia", descMain: "Convencional, ", descBold: "Estética", descEnd: "..." },
+  { id: 4, href: "/tratamientos/odontopediatría", icon: Smile, image: "/images/tratamientos/odontopediatria.png", title: "Infantil", descMain: "Cuidado", descBold: "dental", descEnd: " niños" },
+  { id: 5, href: "/tratamientos/odontologia-conservadora#dolor", icon: Zap, image: "/images/tratamientos/endodoncia.png", title: "Salvar piezas", descMain: "Caries, ", descBold: "endodoncia", descEnd: "..." },
+  { id: 6, href: "/tratamientos/periodoncia#encias", icon: HeartPulse, image: "/images/tratamientos/general.png", title: "Encías", descMain: "Salud ", descBold: "periodontal", descEnd: "..." },
+  { id: 7, href: "/tratamientos/odontologia-protesis", icon: Activity, title: "Prótesis", image: "/images/tratamientos/protesis.png", descMain: "Puentes ", descBold: "dentaduras", descEnd: "..." },
+  { id: 8, href: "/categorias/higiene-y-prevencion#prevencion", icon: ShieldCheck, image: "/images/tratamientos/ferula.png", title: "Prevención", descMain: "Revisiones, ", descBold: "sellados", descEnd: "..." },
 ];
 
 export default function LandingPage() {
