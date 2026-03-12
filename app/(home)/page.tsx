@@ -1,11 +1,13 @@
 // app/(home)/page.tsx
 
-import React from 'react';
+"use client"; // ⚡️ IMPORTANTE: Necesitamos interactividad
+
+import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic'; 
 import Link from 'next/link';   
 import type { Metadata, Viewport } from 'next';
 
-import { Smile, Zap, Stethoscope, Sparkles, ArrowRight } from "lucide-react"; 
+import { Smile, Zap, Stethoscope, Sparkles, ArrowRight, Baby, HeartPulse, Activity, ShieldCheck, ChevronRight, ChevronLeft } from "lucide-react"; 
 
 import { SITE_CONFIG } from '@/constants/config';
 import MainHero from '@/components/hero/MainHero'; 
@@ -20,35 +22,6 @@ const CookieBanner = dynamic(() => import('@/components/CookieBanner'), {
 });
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://landing-20260210-eficiente.vercel.app';
-
-export async function generateMetadata(): Promise<Metadata> {
-  const metaTitle = 'DKV Dentisalud Élite | Seguro Dental con Precios Pactados';
-  const metaDesc = 'Contrata tu seguro dental DKV con hasta 40% de descuento. Niños gratis en póliza familiar.';
-
-  return {
-    metadataBase: new URL(baseUrl),
-    title: metaTitle,
-    description: metaDesc,
-    alternates: {
-      canonical: '/',
-    },
-    openGraph: {
-      title: metaTitle,
-      description: metaDesc,
-      url: '/', 
-      siteName: 'DKV Dentisalud',
-      images: [
-        { 
-          url: '/api/og-home?v=1', 
-          width: 1200, 
-          height: 630,
-          alt: 'Lo fácil es cuidar tu sonrisa', 
-        }
-      ],
-      type: 'website',
-    },
-  };
-}
 
 export const viewport: Viewport = {
    themeColor: [
@@ -86,14 +59,44 @@ const nationalMasterSchema = {
   ]
 };
 
+// --- DATA: 8 TRATAMIENTOS ---
+// ⚡️ AÑADIDO: Propiedad 'image' en la ficha 4 (Ortodoncia)
+const tratamientosList = [
+  { id: 1, href: "/tratamientos/odontologia-conservadora#dolor", icon: Zap, image: "/images/apicectomia.png", title: "Tengo dolor", descMain: "Caries, ", descBold: "endodoncia", descEnd: "..." },
+  { id: 2, href: "/categorias/higiene-y-prevencion#higiene", icon: Sparkles, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "Limpieza", descMain: "", descBold: "Limpieza", descEnd: ", diagnóstico..." },
+  { id: 3, href: "/categorias/implantes#implantes", icon: Stethoscope, image: "/images/tratamientos/implantologia.png", title: "Faltan piezas", descMain: "", descBold: "Implantes", descEnd: ", puentes..." },
+  { id: 4, href: "/tratamientos/ortodoncia-estetica#sonrisa", icon: Smile, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "Sonrisa", descMain: "", descBold: "Ortodoncia", descEnd: ", estética..." },
+  { id: 5, href: "/tratamientos/odontopediatria#infantil", icon: Baby, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "Infantil", descMain: "Cuidado ", descBold: "dental", descEnd: " niños" },
+  { id: 6, href: "/tratamientos/periodoncia#encias", icon: HeartPulse, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "Encías", descMain: "Salud ", descBold: "periodontal", descEnd: "..." },
+  { id: 7, href: "/#dentistas", icon: Activity, title: "Urgencias", image: "/images/tratamientos/ferula.png", descMain: "Atención ", descBold: "rápida", descEnd: " 24h" },
+  { id: 8, href: "/categorias/higiene-y-prevencion#prevencion", icon: ShieldCheck, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "Prevención", descMain: "Revisiones, ", descBold: "sellados", descEnd: "..." },
+];
+
 export default function LandingPage() {
   
-  // ⚡️ Variables de sombra EXACTAS
+  const [isAllPanelOpen, setAllPanelOpen] = useState(false);
+
+  // Variables de sombra EXACTAS
   const neumorphicBase = "shadow-[8px_8px_12px_#033b3720,-5px_-5px_10px_#ffffff]";
   const neumorphicActive = "active:shadow-[inset_4px_4px_8px_#033b3730,inset_-4px_-4px_8px_#ffffff]";
 
+  const RightArrowIcon = ({ className = "" }) => (
+    <div className={`absolute top-3 right-3 md:top-4 md:right-4 text-dkv-green-dark opacity-70 group-hover:opacity-100 group-hover:text-dkv-green transition-all duration-300 group-hover:translate-x-1 z-10 ${className}`}>
+      <ArrowRight className="w-4 h-4 md:w-5 md:h-5" strokeWidth={2.5} />
+    </div>
+  );
+
+  useEffect(() => {
+    if (isAllPanelOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; }; 
+  }, [isAllPanelOpen]);
+
   return (
-    <div className="min-h-screen bg-white text-dkv-gray selection:bg-dkv-green selection:text-white">
+    <div className="min-h-screen bg-white text-dkv-gray selection:bg-dkv-green selection:text-white relative">
       <CookieBanner />
       
       <main>
@@ -101,135 +104,96 @@ export default function LandingPage() {
         
         <MainHero /> 
 
-        <section  id="tratamientos" className="py-20 bg-[#F0F0F0] border-t border-dkv-gray-border relative z-40 ">
-          <div className="container mx-auto px-4 text-center">
+        <section id="tratamientos" className="py-20 bg-[#F0F0F0] border-t border-dkv-gray-border relative z-40 overflow-hidden">
+          <div className="container mx-auto max-w-5xl">
 
             <ScrollReveal delay={0}>
-              <h2 className="text-4xl md:text-5xl font-lemon text-dkv-green-dark mb-6">
+              <h2 className="text-4xl md:text-5xl font-lemon text-dkv-green-dark mb-6 px-8 text-left md:text-center uppercase tracking-wide">
                 Tratamientos.
               </h2>
             </ScrollReveal>
 
             <ScrollReveal delay={100}>
-              <p className="text-xl md:text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-10 md:mb-12 leading-relaxed text-left md:text-center px-4 md:px-0">
+              <p className="text-xl md:text-xl text-dkv-gray font-fsme max-w-3xl mb-10 md:mb-12 leading-relaxed text-left md:text-center px-8 relative">
                 Ofrecemos servicios básicos gratuitos, y el resto, a <strong>precios inferiores a mercado</strong>.
               </p>
             </ScrollReveal>
 
-            <div className="max-w-4xl mx-auto">
-              
-              <div className="relative z-40 px-2 md:px-0">
-                
-                <div className="grid grid-cols-2 gap-5 md:gap-10 pb-6">
-                  
-                  {/* FICHA 1: DOLOR */}
-                  <ScrollReveal delay={200}>
-                    <Link 
-                      href="/tratamientos/odontologia-conservadora" 
-                      className={`h-full relative flex flex-col items-center text-center p-5 md:p-8 rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ${neumorphicBase} ${neumorphicActive} hover:scale-[1.02] active:scale-[0.98]`}
-                    >
-                      <div className="absolute top-4 right-4 md:top-5 md:right-5 text-dkv-green-dark opacity-70 group-hover:opacity-100 group-hover:text-dkv-green transition-all duration-300 group-hover:translate-x-1">
-                        <ArrowRight className="w-5 h-5 md:w-6 md:h-6" strokeWidth={2.5} />
-                      </div>
+            <ScrollReveal delay={150}>
+              <div className="flex justify-end mb-6 px-8 md:hidden relative z-50">
+                <button 
+                  onClick={() => setAllPanelOpen(true)} 
+                  className="flex items-center gap-1.5 text-dkv-green font-bold hover:text-dkv-green-dark transition-colors text-lg pb-1"
+                >
+                  Mostrar todos <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+            </ScrollReveal>
 
-                      <div className="mb-4 md:mb-6 flex items-center justify-center text-dkv-green transition-transform group-hover:scale-110 group-hover:-translate-y-1 duration-300">
-                        <Zap className="w-10 h-10 md:w-12 md:h-12" strokeWidth={1.5} />
-                      </div>
-                      <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-lg md:text-2xl leading-tight mb-2">
-                        Tengo dolor
-                      </span>
-                      {/* ⚡️ Fuente corregida a text-sm md:text-base */}
-                      <span className="text-sm md:text-base text-gray-500 leading-snug max-w-[150px] md:max-w-none mt-1">
-                        Caries, <span className="text-dkv-green font-bold">endodoncia</span>...
-                      </span>
-                    </Link>
-                  </ScrollReveal>
+            <ScrollReveal delay={200}>
+              <div className="relative z-40 px-0 md:px-8">
+                <div 
+                  className="w-full overflow-x-auto md:overflow-visible snap-x snap-mandatory pt-4 pb-12 md:pb-16 px-8 md:px-0 scroll-pl-8" 
+                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                >
+                  <style dangerouslySetInnerHTML={{__html: `::-webkit-scrollbar { display: none; }`}} />
 
-                  {/* FICHA 2: HIGIENE */}
-                  <ScrollReveal delay={300}>
-                    <Link 
-                      href="/categorias/higiene-y-prevencion" 
-                      className={`h-full relative flex flex-col items-center text-center p-5 md:p-8 rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ${neumorphicBase} ${neumorphicActive} hover:scale-[1.02] active:scale-[0.98]`}
-                    >
-                      <div className="absolute top-4 right-4 md:top-5 md:right-5 text-dkv-green-dark opacity-70 group-hover:opacity-100 group-hover:text-dkv-green transition-all duration-300 group-hover:translate-x-1">
-                        <ArrowRight className="w-5 h-5 md:w-6 md:h-6" strokeWidth={2.5} />
-                      </div>
+                  <div className="grid grid-rows-2 grid-flow-col md:grid-rows-none md:grid-flow-row md:grid-cols-4 gap-5 xs:gap-6 md:gap-8 w-fit md:w-full">
+                    
+                    {tratamientosList.map((item) => {
+                      const Icon = item.icon;
+                      return (
+                        <Link 
+                          key={item.id}
+                          href={item.href} 
+                          className={`snap-start shrink-0 w-[145px] xs:w-[155px] sm:w-[170px] md:w-full aspect-square relative flex flex-col overflow-hidden rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ${neumorphicBase} ${neumorphicActive} hover:scale-[1.02] active:scale-[0.98]`}
+                        >
+                          <RightArrowIcon />
 
-                      <div className="mb-4 md:mb-6 flex items-center justify-center text-dkv-green transition-transform group-hover:scale-110 group-hover:-translate-y-1 duration-300">
-                        <Sparkles className="w-10 h-10 md:w-12 md:h-12" strokeWidth={1.5} />
-                      </div>
-                      <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-lg md:text-2xl leading-tight mb-2">
-                        Limpieza
-                      </span>
-                      {/* ⚡️ Fuente corregida a text-sm md:text-base */}
-                      <span className="text-sm md:text-base text-gray-500 leading-snug max-w-[150px] md:max-w-none mt-1">
-                        <span className="text-dkv-green font-bold">Limpieza</span>, diagnóstico...
-                      </span>
-                    </Link>
-                  </ScrollReveal>
+                          {/* ⚡️ BLOQUE SUPERIOR LÓGICA DE IMAGEN VS ICONO */}
+                          <div className="w-full h-[45%] bg-white flex items-center justify-center transition-colors group-hover:bg-dkv-green/5 relative overflow-hidden">
+                            {item.image ? (
+                              <img 
+                                src={item.image} 
+                                alt={item.title} 
+                                className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" 
+                              />
+                            ) : (
+                              <div className="text-dkv-green transition-transform group-hover:scale-110 duration-300">
+                                <Icon className="w-8 h-8 xs:w-10 xs:h-10 md:w-12 md:h-12" strokeWidth={1.5} />
+                              </div>
+                            )}
+                          </div>
 
-                  {/* FICHA 3: PIEZAS */}
-                  <ScrollReveal delay={400}>
-                    <Link 
-                      href="/categorias/implantes" 
-                      className={`h-full relative flex flex-col items-center text-center p-5 md:p-8 rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ${neumorphicBase} ${neumorphicActive} hover:scale-[1.02] active:scale-[0.98]`}
-                    >
-                      <div className="absolute top-4 right-4 md:top-5 md:right-5 text-dkv-green-dark opacity-70 group-hover:opacity-100 group-hover:text-dkv-green transition-all duration-300 group-hover:translate-x-1">
-                        <ArrowRight className="w-5 h-5 md:w-6 md:h-6" strokeWidth={2.5} />
-                      </div>
+                          {/* BLOQUE INFERIOR */}
+                          <div className="w-full h-[55%] flex flex-col justify-center text-left p-3 xs:p-4 md:p-5 relative z-10">
+                            <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-base xs:text-lg md:text-xl leading-tight mb-1 md:mb-1.5 uppercase tracking-tight line-clamp-1">
+                              {item.title}
+                            </span>
+                            <span className="text-sm md:text-base text-gray-500 leading-snug line-clamp-2">
+                              {item.descMain}<span className="text-dkv-green font-bold">{item.descBold}</span>{item.descEnd}
+                            </span>
+                          </div>
 
-                      <div className="mb-4 md:mb-6 flex items-center justify-center text-dkv-green transition-transform group-hover:scale-110 group-hover:-translate-y-1 duration-300">
-                        <Stethoscope className="w-10 h-10 md:w-12 md:h-12" strokeWidth={1.5} />
-                      </div>
-                      <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-lg md:text-2xl leading-tight mb-2">
-                        Faltan piezas
-                      </span>
-                      {/* ⚡️ Fuente corregida a text-sm md:text-base */}
-                      <span className="text-sm md:text-base text-gray-500 leading-snug max-w-[150px] md:max-w-none mt-1">
-                        <span className="text-dkv-green font-bold">Implantes</span>, puentes...
-                      </span>
-                    </Link>
-                  </ScrollReveal>
+                        </Link>
+                      );
+                    })}
 
-                  {/* FICHA 4: SONRISA */}
-                  <ScrollReveal delay={500}>
-                    <Link 
-                      href="/tratamientos/ortodoncia-estetica" 
-                      className={`h-full relative flex flex-col items-center text-center p-5 md:p-8 rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ${neumorphicBase} ${neumorphicActive} hover:scale-[1.02] active:scale-[0.98]`}
-                    >
-                      <div className="absolute top-4 right-4 md:top-5 md:right-5 text-dkv-green-dark opacity-70 group-hover:opacity-100 group-hover:text-dkv-green transition-all duration-300 group-hover:translate-x-1">
-                        <ArrowRight className="w-5 h-5 md:w-6 md:h-6" strokeWidth={2.5} />
-                      </div>
-
-                      <div className="mb-4 md:mb-6 flex items-center justify-center text-dkv-green transition-transform group-hover:scale-110 group-hover:-translate-y-1 duration-300">
-                        <Smile className="w-10 h-10 md:w-12 md:h-12" strokeWidth={1.5} />
-                      </div>
-                      <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-lg md:text-2xl leading-tight mb-2">
-                        Mejorar sonrisa
-                      </span>
-                      {/* ⚡️ Fuente corregida a text-sm md:text-base */}
-                      <span className="text-sm md:text-base text-gray-500 leading-snug max-w-[150px] md:max-w-none mt-1">
-                        <span className="text-dkv-green font-bold">Ortodoncia</span>, estética...
-                      </span>
-                    </Link>
-                  </ScrollReveal>
-
+                  </div>
                 </div>
               </div>
+            </ScrollReveal>
 
-            </div>
           </div>
         </section>
 
-        {/* --- SECCIÓN DENTISTAS --- */}
+        {/* --- RESTO DE SECCIONES --- */}
         <section id="dentistas" className="py-24 bg-white border-t border-dkv-gray-border relative overflow-visible">
-        {/*<section id="dentistas" className="py-24 bg-[url('/images/utensilios.png')] bg-cover bg-center bg-no-repeat border-t border-dkv-gray-border relative overflow-visible">*/}
           <div className="container mx-auto px-4 text-center relative z-20">
            <ScrollReveal delay={0}>
-            <h2 className="text-4xl md:text-5xl font-lemon text-dkv-green-dark mb-6">Dentistas.</h2>
+            <h2 className="text-4xl md:text-5xl font-lemon text-dkv-green-dark mb-6 uppercase tracking-wide">Dentistas.</h2>
            </ScrollReveal>
            <ScrollReveal delay={100}>
-            {/* ⚡️ TEXTO MODIFICADO CON ESTILOS MOBILE-FIRST (mb-6, px-4, text-left) */}
             <p className="text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-6 md:mb-10 px-4 md:px-0 text-left md:text-center leading-relaxed">
               Nuestra red está formada por más de 2.600 dentistas en más de 1.450 centros dentales en toda España. Seguro que tienes uno cerca. Encuentra el tuyo.
             </p>
@@ -238,16 +202,14 @@ export default function LandingPage() {
             <div className="max-w-4xl mx-auto mb-8">
               <HeroSearch />
             </div>
-            {/* ⚡️ ELIMINADO EL TEXTO INFERIOR SOBRE LOS REGISTROS PREVIOS */}
            </ScrollReveal>
           </div>
         </section>
 
-        {/* --- SECCIÓN COMENTAR --- */}
-        <section id="información" className="py-20 bg-white border-t border-dkv-gray-border scroll-mt-28">
+        <section id="información" className="py-20 bg-white border-t border-dkv-gray-border scroll-mt-28 relative z-30">
          <ScrollReveal>
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-4xl font-lemon text-dkv-green-dark mb-6">¿Algo que comentar?</h2>
+            <h2 className="text-4xl font-lemon text-dkv-green-dark mb-6 uppercase tracking-wide">¿Algo que comentar?</h2>
             <p className="text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-10 leading-relaxed text-balance">
                 Plantéanos cualquier duda sobre tus circunstancias y cómo te puedes beneficiar de nuestros tratamientos.
             </p>
@@ -266,13 +228,86 @@ export default function LandingPage() {
 
         <Archetypes />
 
-        <div className="scroll-mt-28">
+        <div className="scroll-mt-28 relative z-30">
           <PricingCards />
         </div>
         
         <FooterLegal />
       </main>
+
+      {/* ⚡️⚡️ PANELES Y OVERLAYS ⚡️⚡️ */}
+
+      <div 
+        className={`fixed inset-0 bg-black/50 z-[40] transition-opacity duration-300 ${isAllPanelOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`} 
+        onClick={() => setAllPanelOpen(false)} 
+      />
+
+      <div 
+        className={`fixed right-0 top-0 h-full w-full bg-[#F0F0F0] z-[45] pt-[80px] md:pt-[130px] shadow-2xl transition-transform duration-300 transform flex flex-col ${isAllPanelOpen ? 'translate-x-0' : 'translate-x-full'}`}
+      >
+        
+        <div className="relative flex items-center justify-center w-full px-4 py-5 border-b border-dkv-gray-border/50 sticky top-0 bg-[#F0F0F0] z-10">
+          <button 
+            onClick={() => setAllPanelOpen(false)} 
+            className="absolute left-4 w-10 h-10 flex items-center justify-center rounded-full bg-white text-dkv-green-dark shadow-sm border border-dkv-gray-border active:scale-95 transition-transform"
+          >
+            <ChevronLeft className="w-6 h-6" strokeWidth={2.5} />
+          </button>
+          
+          <h3 className="text-2xl font-lemon text-dkv-green-dark uppercase tracking-wide text-center">
+            Tratamientos
+          </h3>
+        </div>
+
+        {/* CUADRÍCULA VERTICAL PANEL */}
+        <div className="flex-1 overflow-y-auto px-6 xs:px-8 pt-8 pb-24">
+          <style dangerouslySetInnerHTML={{__html: `::-webkit-scrollbar { display: none; }`}} />
+          
+          <div className="grid grid-cols-2 gap-4 xs:gap-6">
+            {tratamientosList.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link 
+                  key={`panel-${item.id}`}
+                  href={item.href} 
+                  onClick={() => setAllPanelOpen(false)}
+                  className={`w-full aspect-square relative flex flex-col overflow-hidden rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ${neumorphicBase} ${neumorphicActive} hover:scale-[1.02] active:scale-[0.98]`}
+                >
+                  <RightArrowIcon className="top-3 right-3 opacity-60 group-hover:opacity-100" />
+
+                  {/* ⚡️ BLOQUE SUPERIOR LÓGICA DE IMAGEN VS ICONO (Panel lateral) */}
+                  <div className="w-full h-[45%] bg-white flex items-center justify-center transition-colors group-hover:bg-dkv-green/5 relative overflow-hidden">
+                    {item.image ? (
+                      <img 
+                        src={item.image} 
+                        alt={item.title} 
+                        className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" 
+                      />
+                    ) : (
+                      <div className="text-dkv-green transition-transform group-hover:scale-110 duration-300">
+                        <Icon className="w-8 h-8 xs:w-10 xs:h-10" strokeWidth={1.5} />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* BLOQUE INFERIOR */}
+                  <div className="w-full h-[55%] flex flex-col justify-center text-left p-3 xs:p-4 relative z-10">
+                    <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-base xs:text-lg leading-tight mb-1 uppercase tracking-tight line-clamp-1">
+                      {item.title}
+                    </span>
+                    <span className="text-sm text-gray-500 leading-snug line-clamp-2">
+                      {item.descMain}<span className="text-dkv-green font-bold">{item.descBold}</span>{item.descEnd}
+                    </span>
+                  </div>
+
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+
+      </div>
+
     </div>
   );
 }
-
