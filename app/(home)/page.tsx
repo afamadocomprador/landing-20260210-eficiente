@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';   
 import type { Metadata, Viewport } from 'next';
 
-import { Smile, Zap, Stethoscope, Sparkles, ArrowRight, Baby, HeartPulse, Activity, ShieldCheck, ChevronRight, ChevronLeft } from "lucide-react"; 
+import { Smile, Zap, Stethoscope, Sparkles, ArrowRight, Baby, HeartPulse, Activity, ShieldCheck, ChevronRight, ChevronLeft, ChevronDown, X } from "lucide-react"; 
 
 import { SITE_CONFIG } from '@/constants/config';
 import MainHero from '@/components/hero/MainHero'; 
@@ -59,23 +59,31 @@ const nationalMasterSchema = {
   ]
 };
 
-// --- DATA: 8 TRATAMIENTOS ---
 const tratamientosList = [
-  { id: 1, href: "/categorias/implantes#implantes", icon: Stethoscope, image: "/images/tratamientos/implantes.png", title: "Implantes", descMain: "", descBold: "", descEnd: "" },
-  { id: 2, href: "/tratamientos/periodoncia#encias", icon: HeartPulse, image: "/images/tratamientos/general.png", title: "General", descMain: " ", descBold: "", descEnd: "" },
-  { id: 3, href: "/tratamientos/ortodoncia-estetica#sonrisa", icon: Sparkles, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "Ortodoncia", descMain: "", descBold: "", descEnd: "" },
-  { id: 4, href: "/tratamientos/odontologia-protesis", icon: Activity, title: "Prótesis", image: "/images/tratamientos/protesis.png", descMain: "", descBold: "", descEnd: "" },
-  { id: 5, href: "/tratamientos/odontopediatría", icon: Smile, image: "/images/tratamientos/odontopediatria.png", title: "Infantil", descMain: "", descBold: "", descEnd: "" },
-  { id: 6, href: "/tratamientos/estetica", icon: Baby, image: "/images/tratamientos/estetica.png", title: "Estética", descMain: "", descBold: "", descEnd: "" },
-  { id: 7, href: "/tratamientos/odontologia-conservadora#dolor", icon: Zap, image: "/images/tratamientos/endodoncia.png", title: "Salvar piezas", descMain: "", descBold: "", descEnd: "" },
-  { id: 8, href: "/categorias/higiene-y-prevencion#prevencion", icon: ShieldCheck, image: "/images/tratamientos/ferula.png", title: "Prevención", descMain: "", descBold: "", descEnd: "" },
+  { id: 1, href: "/tratamientos/estetica", icon: Baby, image: "/images/tratamientos/estetica.png", title: "ESTÉTICA", descMain: "", descBold: "", descEnd: "" },
+  { id: 2, hasSub: true, icon: Sparkles, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "ORTODONCIA", descMain: "", descBold: "", descEnd: "" },
+  { id: 3, href: "/categorias/implantes#implantes", icon: Stethoscope, image: "/images/tratamientos/implantes.png", title: "IMPLANTES", descMain: "", descBold: "", descEnd: "" },
+  { id: 4, href: "/tratamientos/odontologia-conservadora#dolor", icon: Zap, image: "/images/tratamientos/endodoncia.png", title: "ENDODONCIA", descMain: "", descBold: "", descEnd: "" },
+  { id: 5, href: "/tratamientos/odontopediatría", icon: Smile, image: "/images/tratamientos/odontopediatria.png", title: "ODONTOPEDIATRÍA", descMain: "", descBold: "", descEnd: "" },
+  { id: 6, href: "/tratamientos/periodoncia#encias", icon: HeartPulse, image: "/images/tratamientos/general.png", title: "LIMPIEZA GENERAL", descMain: " ", descBold: "", descEnd: "" },
+  { id: 7, href: "/tratamientos/odontologia-protesis", icon: Activity, title: "PRÓTESIS", image: "/images/tratamientos/protesis.png", descMain: "", descBold: "", descEnd: "" },
+  { id: 8, href: "/categorias/higiene-y-prevencion#prevencion", icon: ShieldCheck, image: "/images/tratamientos/ferula.png", title: "PREVENCIÓN", descMain: "", descBold: "", descEnd: "" },
+];
+
+// ⚡️ ACTUALIZADO: Añadimos iconos/imágenes para el Mini-Bento
+const ortodonciaSubOptions = [
+  { id: 'invisalign', title: 'Invisalign', href: '/tratamientos/ortodoncia/invisalign', tag: 'Invisible', icon: Sparkles, image: '/images/tratamientos/ortodoncia-invisalign.png' }, 
+  { id: 'lingual', title: 'Lingual', href: '/tratamientos/ortodoncia/lingual', tag: 'Interior', icon: Smile, image: '/images/tratamientos/ortodoncia-lingual.png' },
+  { id: 'zirconio', title: 'Zirconio', href: '/tratamientos/ortodoncia/zirconio', tag: 'Estética Fija', icon: ShieldCheck, image: '/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard.png' },
+  { id: 'metalica', title: 'Metálica', href: '/tratamientos/ortodoncia/metalica', tag: 'Tradicional', icon: Zap, image: '/images/tratamientos/ortodoncia-brackets-metalico-standard.png' }
+  // NOTA: Cuando tengas imágenes reales, pon la ruta en 'image', ej: '/images/tratamientos/invisalign-mini.png'
 ];
 
 export default function LandingPage() {
   
   const [isAllPanelOpen, setAllPanelOpen] = useState(false);
+  const [activeFloatingId, setActiveFloatingId] = useState<number | null>(null); 
 
-  // Variables de sombra EXACTAS
   const neumorphicBase = "shadow-[8px_8px_12px_#033b3720,-5px_-5px_10px_#ffffff]";
   const neumorphicActive = "active:shadow-[inset_4px_4px_8px_#033b3730,inset_-4px_-4px_8px_#ffffff]";
 
@@ -86,13 +94,13 @@ export default function LandingPage() {
   );
 
   useEffect(() => {
-    if (isAllPanelOpen) {
+    if (isAllPanelOpen || activeFloatingId !== null) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
     }
     return () => { document.body.style.overflow = ''; }; 
-  }, [isAllPanelOpen]);
+  }, [isAllPanelOpen, activeFloatingId]);
 
   return (
     <div className="min-h-screen bg-white text-dkv-gray selection:bg-dkv-green selection:text-white relative">
@@ -100,7 +108,6 @@ export default function LandingPage() {
       
       <main>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(nationalMasterSchema) }} />
-        
         <MainHero /> 
 
         <section id="tratamientos" className="py-20 bg-[#F0F0F0] border-t border-dkv-gray-border relative z-40 overflow-hidden">
@@ -137,20 +144,22 @@ export default function LandingPage() {
                 >
                   <style dangerouslySetInnerHTML={{__html: `::-webkit-scrollbar { display: none; }`}} />
 
-                  <div className="grid grid-rows-2 grid-flow-col md:grid-rows-none md:grid-flow-row md:grid-cols-4 gap-5 xs:gap-6 md:gap-8 w-fit md:w-full">
+                  <div className="grid grid-rows-2 grid-flow-col md:grid-rows-none md:grid-flow-row md:grid-cols-4 gap-5 xs:gap-6 md:gap-8 w-fit md:w-full items-start">
                     
                     {tratamientosList.map((item) => {
                       const Icon = item.icon;
-                      return (
-                        <Link 
-                          key={item.id}
-                          href={item.href} 
-                          className={`snap-start shrink-0 w-[145px] xs:w-[155px] sm:w-[170px] md:w-full aspect-square relative flex flex-col overflow-hidden rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ${neumorphicBase} ${neumorphicActive} hover:scale-[1.02] active:scale-[0.98]`}
-                        >
-                          <RightArrowIcon />
+                      const Wrapper = item.hasSub ? 'button' : Link; 
 
-                          {/* ⚡️ BLOQUE SUPERIOR LÓGICA DE IMAGEN VS ICONO */}
-                          <div className="w-full h-[45%] bg-white flex items-center justify-center transition-colors group-hover:bg-dkv-green/5 relative overflow-hidden">
+                      return (
+                        <Wrapper 
+                          key={item.id}
+                          href={item.hasSub ? undefined : item.href} 
+                          onClick={item.hasSub ? () => setActiveFloatingId(item.id) : undefined}
+                          className={`snap-start shrink-0 w-[145px] xs:w-[155px] sm:w-[170px] md:w-full relative flex flex-col overflow-hidden rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ease-out aspect-square hover:scale-[1.02] active:scale-[0.98] ${neumorphicBase} ${neumorphicActive} ${item.hasSub ? 'text-left' : ''}`}
+                        >
+                          {!item.hasSub && <RightArrowIcon />}
+
+                          <div className={`w-full bg-white flex items-center justify-center transition-all duration-500 relative overflow-hidden group-hover:bg-dkv-green/5 h-[45%]`}>
                             {item.image ? (
                               <img 
                                 src={item.image} 
@@ -164,17 +173,21 @@ export default function LandingPage() {
                             )}
                           </div>
 
-                          {/* ⚡️ BLOQUE INFERIOR: Cambiado a justify-start para que el texto suba debajo de la imagen */}
-                          <div className="w-full h-[55%] flex flex-col justify-start text-left p-3 xs:p-4 md:p-5 relative z-10">
-                            <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-base xs:text-lg md:text-xl leading-tight mb-1 md:mb-1.5 uppercase tracking-tight line-clamp-1">
-                              {item.title}
-                            </span>
+                          <div className="w-full flex flex-col justify-start text-left p-3 xs:p-4 md:p-5 relative z-10 flex-1">
+                            <div className="flex justify-between items-center w-full">
+                              <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-base xs:text-lg md:text-xl leading-tight mb-1 md:mb-1.5 uppercase tracking-tight line-clamp-1">
+                                {item.title}
+                              </span>
+                              {item.hasSub && (
+                                <ChevronDown className="w-5 h-5 text-dkv-green group-hover:translate-y-1 transition-transform duration-300" />
+                              )}
+                            </div>
+                            
                             <span className="text-sm md:text-base text-gray-500 leading-snug line-clamp-2">
                               {item.descMain}<span className="text-dkv-green font-bold">{item.descBold}</span>{item.descEnd}
                             </span>
                           </div>
-
-                        </Link>
+                        </Wrapper>
                       );
                     })}
 
@@ -186,9 +199,9 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* --- RESTO DE SECCIONES --- */}
+        {/* --- SECCIONES RESTANTES --- */}
         <section id="dentistas" className="py-24 bg-white border-t border-dkv-gray-border relative overflow-visible">
-          <div className="container mx-auto px-4 text-center relative z-20">
+          <div className="container mx-auto px-4 text-center relative z-40">
            <ScrollReveal delay={0}>
             <h2 className="text-4xl md:text-5xl font-lemon text-dkv-green-dark mb-6 uppercase tracking-wide">Dentistas.</h2>
            </ScrollReveal>
@@ -218,9 +231,6 @@ export default function LandingPage() {
             >
               Plantear Consulta
             </Link>
-            <p className="text-sm font-medium text-dkv-green-dark mt-6">
-              No te quedes con la duda. <br /> Respuesta personal.
-            </p>
           </div>
          </ScrollReveal>
         </section>
@@ -234,8 +244,80 @@ export default function LandingPage() {
         <FooterLegal />
       </main>
 
-      {/* ⚡️⚡️ PANELES Y OVERLAYS ⚡️⚡️ */}
+      {/* ⚡️⚡️ 1. EL SUB-BENTO VOLADOR CON REJILLA 2x2 ⚡️⚡️ */}
+      <div 
+        className={`fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-0 transition-all duration-500 ease-out ${
+          activeFloatingId !== null ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+      >
+        {/* Overlay desenfocado */}
+        <div 
+          className={`absolute inset-0 bg-[#033B37]/30 backdrop-blur-md transition-opacity duration-500 ${
+            activeFloatingId !== null ? 'opacity-100' : 'opacity-0'
+          }`}
+          onClick={() => setActiveFloatingId(null)}
+        />
 
+        {/* Modal Glassmorphism */}
+        <div 
+          className={`relative w-full max-w-[340px] bg-[#F0F0F0]/95 backdrop-blur-xl border border-white/50 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.3)] rounded-3xl p-5 transition-all duration-400 transform ${
+            activeFloatingId !== null ? 'scale-100 translate-y-0 opacity-100' : 'scale-95 translate-y-10 opacity-0'
+          }`}
+        >
+          <div className="flex justify-between items-center mb-5 px-1">
+            <div className="flex items-center gap-2.5">
+              <div className="p-2 bg-dkv-green/10 rounded-xl text-dkv-green">
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <h3 className="text-xl font-bold text-dkv-green-dark uppercase tracking-tight">Ortodoncia</h3>
+            </div>
+            <button 
+              onClick={() => setActiveFloatingId(null)}
+              className="p-1.5 rounded-full bg-black/5 text-gray-500 hover:bg-black/10 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* ⚡️ LA REJILLA FRACTAL (Mini Bento) */}
+          <div className="grid grid-cols-2 gap-3">
+            {ortodonciaSubOptions.map(sub => {
+              const SubIcon = sub.icon;
+              return (
+                <Link 
+                  key={sub.id} 
+                  href={sub.href}
+                  onClick={() => setActiveFloatingId(null)}
+                  className={`relative flex flex-col overflow-hidden rounded-2xl bg-[#F0F0F0] group transition-all duration-300 aspect-square hover:scale-[1.03] active:scale-[0.97] ${neumorphicBase} ${neumorphicActive}`}
+                >
+                  {/* Mitad Superior: Imagen / Icono */}
+                  <div className="h-[55%] w-full bg-white flex items-center justify-center transition-colors group-hover:bg-dkv-green/5 overflow-hidden">
+                    {sub.image ? (
+                      <img src={sub.image} alt={sub.title} className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" />
+                    ) : (
+                      <div className="text-dkv-green transition-transform group-hover:scale-110 duration-300">
+                        <SubIcon className="w-6 h-6" strokeWidth={1.5} />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Mitad Inferior: Título y Tag */}
+                  <div className="h-[45%] w-full flex flex-col justify-center items-start p-2.5 z-10">
+                    <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-sm leading-tight mb-1 uppercase tracking-tight line-clamp-1">
+                      {sub.title}
+                    </span>
+                    <span className="text-[9px] font-bold uppercase bg-dkv-green/10 text-dkv-green px-2 py-0.5 rounded-full line-clamp-1">
+                      {sub.tag}
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* ⚡️⚡️ 2. PANEL LATERAL ORIGINAL (Para "Mostrar todos" en mobile) ⚡️⚡️ */}
       <div 
         className={`fixed inset-0 bg-black/50 z-[40] transition-opacity duration-300 ${isAllPanelOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`} 
         onClick={() => setAllPanelOpen(false)} 
@@ -244,7 +326,6 @@ export default function LandingPage() {
       <div 
         className={`fixed right-0 top-0 h-full w-full bg-[#F0F0F0] z-[45] pt-[80px] md:pt-[130px] shadow-2xl transition-transform duration-300 transform flex flex-col ${isAllPanelOpen ? 'translate-x-0' : 'translate-x-full'}`}
       >
-        
         <div className="relative flex items-center justify-center w-full px-4 py-5 border-b border-dkv-gray-border/50 sticky top-0 bg-[#F0F0F0] z-10">
           <button 
             onClick={() => setAllPanelOpen(false)} 
@@ -252,30 +333,29 @@ export default function LandingPage() {
           >
             <ChevronLeft className="w-6 h-6" strokeWidth={2.5} />
           </button>
-          
           <h3 className="text-2xl font-lemon text-dkv-green-dark uppercase tracking-wide text-center">
             Tratamientos
           </h3>
         </div>
 
-        {/* CUADRÍCULA VERTICAL PANEL */}
         <div className="flex-1 overflow-y-auto px-6 xs:px-8 pt-8 pb-24">
           <style dangerouslySetInnerHTML={{__html: `::-webkit-scrollbar { display: none; }`}} />
           
-          <div className="grid grid-cols-2 gap-4 xs:gap-6">
+          <div className="grid grid-cols-2 gap-4 xs:gap-6 items-start">
             {tratamientosList.map((item) => {
               const Icon = item.icon;
-              return (
-                <Link 
-                  key={`panel-${item.id}`}
-                  href={item.href} 
-                  onClick={() => setAllPanelOpen(false)}
-                  className={`w-full aspect-square relative flex flex-col overflow-hidden rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ${neumorphicBase} ${neumorphicActive} hover:scale-[1.02] active:scale-[0.98]`}
-                >
-                  <RightArrowIcon className="top-3 right-3 opacity-60 group-hover:opacity-100" />
+              const Wrapper = item.hasSub ? 'button' : Link;
 
-                  {/* ⚡️ BLOQUE SUPERIOR LÓGICA DE IMAGEN VS ICONO (Panel lateral) */}
-                  <div className="w-full h-[45%] bg-white flex items-center justify-center transition-colors group-hover:bg-dkv-green/5 relative overflow-hidden">
+              return (
+                <Wrapper 
+                  key={`panel-${item.id}`}
+                  href={item.hasSub ? undefined : item.href} 
+                  onClick={item.hasSub ? () => setActiveFloatingId(item.id) : () => setAllPanelOpen(false)}
+                  className={`w-full relative flex flex-col overflow-hidden rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ease-out aspect-square hover:scale-[1.02] active:scale-[0.98] ${neumorphicBase} ${neumorphicActive} ${item.hasSub ? 'text-left' : ''}`}
+                >
+                  {!item.hasSub && <RightArrowIcon className="top-3 right-3 opacity-60 group-hover:opacity-100" />}
+
+                  <div className={`w-full bg-white flex items-center justify-center transition-all duration-500 relative overflow-hidden group-hover:bg-dkv-green/5 h-[45%]`}>
                     {item.image ? (
                       <img 
                         src={item.image} 
@@ -289,25 +369,23 @@ export default function LandingPage() {
                     )}
                   </div>
 
-                  {/* ⚡️ BLOQUE INFERIOR: Cambiado a justify-start */}
-                  <div className="w-full h-[55%] flex flex-col justify-start text-left p-3 xs:p-4 relative z-10">
-                    <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-base xs:text-lg leading-tight mb-1 uppercase tracking-tight line-clamp-1">
-                      {item.title}
-                    </span>
-                    <span className="text-sm text-gray-500 leading-snug line-clamp-2">
-                      {item.descMain}<span className="text-dkv-green font-bold">{item.descBold}</span>{item.descEnd}
-                    </span>
+                  <div className="w-full flex flex-col justify-start text-left p-3 xs:p-4 relative z-10 flex-1">
+                    <div className="flex justify-between items-center w-full">
+                      <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-base xs:text-lg leading-tight mb-1 uppercase tracking-tight line-clamp-1">
+                        {item.title}
+                      </span>
+                      {item.hasSub && (
+                         <ChevronDown className="w-4 h-4 text-dkv-green group-hover:translate-y-1 transition-transform duration-300" />
+                      )}
+                    </div>
                   </div>
-
-                </Link>
+                </Wrapper>
               );
             })}
           </div>
         </div>
-
       </div>
 
     </div>
   );
 }
-
