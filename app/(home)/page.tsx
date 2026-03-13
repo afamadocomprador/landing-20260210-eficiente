@@ -153,7 +153,7 @@ export default function LandingPage() {
                       return (
                         <Wrapper 
                           key={item.id}
-                          {...(item.hasSub ? {} : { href: item.href || "#" })}
+                          href={(item.hasSub ? undefined : item.href) as any}
                           onClick={item.hasSub ? () => setActiveFloatingId(item.id) : undefined}
                           className={`snap-start shrink-0 w-[145px] xs:w-[155px] sm:w-[170px] md:w-full relative flex flex-col overflow-hidden rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ease-out aspect-square hover:scale-[1.02] active:scale-[0.98] ${neumorphicBase} ${neumorphicActive} ${item.hasSub ? 'text-left' : ''}`}
                         >
