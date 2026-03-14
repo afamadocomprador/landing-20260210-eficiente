@@ -70,13 +70,11 @@ const tratamientosList = [
   { id: 8, href: "/categorias/higiene-y-prevencion#prevencion", icon: ShieldCheck, image: "/images/tratamientos/ferula.png", title: "PREVENCIÓN", descMain: "", descBold: "", descEnd: "" },
 ];
 
-// ⚡️ ACTUALIZADO: Añadimos iconos/imágenes para el Mini-Bento
 const ortodonciaSubOptions = [
   { id: 'invisalign', title: 'Invisalign', href: '/tratamientos/ortodoncia/invisalign', tag: 'Invisible', icon: Sparkles, image: '/images/tratamientos/ortodoncia-invisalign.png' }, 
   { id: 'lingual', title: 'Lingual', href: '/tratamientos/ortodoncia/lingual', tag: 'Interior', icon: Smile, image: '/images/tratamientos/ortodoncia-lingual.png' },
   { id: 'zirconio', title: 'Zirconio', href: '/tratamientos/ortodoncia/zirconio', tag: 'Estética Fija', icon: ShieldCheck, image: '/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard.png' },
   { id: 'metalica', title: 'Metálica', href: '/tratamientos/ortodoncia/metalica', tag: 'Tradicional', icon: Zap, image: '/images/tratamientos/ortodoncia-brackets-metalico-standard.png' }
-  // NOTA: Cuando tengas imágenes reales, pon la ruta en 'image', ej: '/images/tratamientos/invisalign-mini.png'
 ];
 
 export default function LandingPage() {
@@ -244,75 +242,88 @@ export default function LandingPage() {
         <FooterLegal />
       </main>
 
-      {/* ⚡️⚡️ 1. EL SUB-BENTO VOLADOR CON REJILLA 2x2 ⚡️⚡️ */}
+      {/* ⚡️⚡️ 1. EL INSET BOTTOM SHEET ⚡️⚡️ */}
       <div 
-        className={`fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-0 transition-all duration-500 ease-out ${
-          activeFloatingId !== null ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        className={`fixed inset-0 z-[100] flex flex-col justify-end md:justify-center items-center px-4 pb-0 md:p-4 transition-all duration-500 ease-out ${
+          activeFloatingId !== null ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
       >
-        {/* Overlay desenfocado */}
+        {/* ⚡️ Overlay esmerillado (Frosted Glass blanco-translúcido) */}
         <div 
-          className={`absolute inset-0 bg-[#033B37]/30 backdrop-blur-md transition-opacity duration-500 ${
+          className={`absolute inset-0 bg-white/60 backdrop-blur-md transition-opacity duration-500 ${
             activeFloatingId !== null ? 'opacity-100' : 'opacity-0'
           }`}
           onClick={() => setActiveFloatingId(null)}
         />
 
-        {/* Modal Glassmorphism */}
+        {/* Inset Bottom Sheet */}
         <div 
-          className={`relative w-full max-w-[340px] bg-[#F0F0F0]/95 backdrop-blur-xl border border-white/50 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.3)] rounded-3xl p-5 transition-all duration-400 transform ${
-            activeFloatingId !== null ? 'scale-100 translate-y-0 opacity-100' : 'scale-95 translate-y-10 opacity-0'
+          className={`relative w-full md:max-w-[400px] bg-white shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.2)] rounded-t-[28px] md:rounded-[28px] overflow-hidden transition-transform duration-500 ${
+            activeFloatingId !== null 
+              ? 'translate-y-0 scale-100 opacity-100' 
+              : 'translate-y-[100%] md:translate-y-10 md:scale-95 opacity-0'
           }`}
         >
-          <div className="flex justify-between items-center mb-5 px-1">
-            <div className="flex items-center gap-2.5">
-              <div className="p-2 bg-dkv-green/10 rounded-xl text-dkv-green">
-                <Sparkles className="w-5 h-5" />
-              </div>
-              <h3 className="text-xl font-bold text-dkv-green-dark uppercase tracking-tight">Ortodoncia</h3>
+          {/* Header Gris (Breadcrumb) */}
+          <div className="bg-[#F5F5F5] px-5 py-4 flex items-center justify-between border-b border-gray-300">
+            {/* ⚡️ Breadcrumb con texto más grande (15px) */}
+            <div className="flex items-center gap-1.5 text-[15px] font-medium text-gray-500 font-fsme">
+              <span>Tratamientos</span>
+              <ChevronRight className="w-4 h-4" />
+              <span className="text-gray-900">Ortodoncia</span>
             </div>
+            
+            {/* ⚡️ Botón X con texto Verde Oscuro */}
             <button 
               onClick={() => setActiveFloatingId(null)}
-              className="p-1.5 rounded-full bg-black/5 text-gray-500 hover:bg-black/10 transition-colors"
+              className="p-1.5 rounded-full bg-[#E5E5E5] text-dkv-green-dark hover:bg-[#D5D5D5] transition-colors"
             >
-              <X className="w-5 h-5" />
+              <X className="w-5 h-5" strokeWidth={2.5} />
             </button>
           </div>
 
-          {/* ⚡️ LA REJILLA FRACTAL (Mini Bento) */}
-          <div className="grid grid-cols-2 gap-3">
-            {ortodonciaSubOptions.map(sub => {
-              const SubIcon = sub.icon;
-              return (
-                <Link 
-                  key={sub.id} 
-                  href={sub.href}
-                  onClick={() => setActiveFloatingId(null)}
-                  className={`relative flex flex-col overflow-hidden rounded-2xl bg-[#F0F0F0] group transition-all duration-300 aspect-square hover:scale-[1.03] active:scale-[0.97] ${neumorphicBase} ${neumorphicActive}`}
-                >
-                  {/* Mitad Superior: Imagen / Icono */}
-                  <div className="h-[55%] w-full bg-white flex items-center justify-center transition-colors group-hover:bg-dkv-green/5 overflow-hidden">
-                    {sub.image ? (
-                      <img src={sub.image} alt={sub.title} className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" />
-                    ) : (
-                      <div className="text-dkv-green transition-transform group-hover:scale-110 duration-300">
-                        <SubIcon className="w-6 h-6" strokeWidth={1.5} />
-                      </div>
-                    )}
-                  </div>
+          {/* Contenido Principal */}
+          <div className="px-5 pt-6 pb-10 md:pb-6">
+            <h3 className="text-[26px] font-lemon text-dkv-green-dark uppercase tracking-tight mb-1 leading-none">
+              ORTODONCIA
+            </h3>
+            {/* ⚡️ Texto auxiliar más grande (17px) */}
+            <p className="text-gray-500 text-[17px] font-fsme mb-4">
+              Elige el tipo de aparato:
+            </p>
 
-                  {/* Mitad Inferior: Título y Tag */}
-                  <div className="h-[45%] w-full flex flex-col justify-center items-start p-2.5 z-10">
-                    <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-sm leading-tight mb-1 uppercase tracking-tight line-clamp-1">
-                      {sub.title}
-                    </span>
-                    <span className="text-[9px] font-bold uppercase bg-dkv-green/10 text-dkv-green px-2 py-0.5 rounded-full line-clamp-1">
-                      {sub.tag}
-                    </span>
-                  </div>
-                </Link>
-              );
-            })}
+            {/* Lista de Opciones (Líneas Divisorias más oscuras: border-gray-300) */}
+            <div className="flex flex-col border-t border-gray-300">
+              {ortodonciaSubOptions.map(sub => {
+                return (
+                  <Link 
+                    key={sub.id} 
+                    href={sub.href}
+                    onClick={() => setActiveFloatingId(null)}
+                    className="group flex items-center justify-between py-4 border-b border-gray-300 hover:bg-gray-50 transition-colors active:bg-gray-100"
+                  >
+                    <div className="flex items-center flex-wrap gap-2">
+                      <span className="font-bold text-[17px] text-dkv-green-dark group-hover:text-dkv-green transition-colors">
+                        {sub.title}
+                      </span>
+                      {/* ⚡️ Textos auxiliares/tags algo más grandes (16px) */}
+                      <span className="text-[16px] text-gray-500">
+                        ({sub.tag})
+                      </span>
+                      {/* Etiqueta Recomendado */}
+                      {sub.id === 'invisalign' && (
+                        <span className="text-[10px] font-bold bg-[#718E32] text-white px-2 py-0.5 rounded-full ml-1 uppercase tracking-wide">
+                          Recomendado
+                        </span>
+                      )}
+                    </div>
+                    
+                    {/* ⚡️ Flecha Chevron más grande y en Verde Oscuro */}
+                    <ChevronRight className="w-6 h-6 text-dkv-green-dark group-hover:text-dkv-green transition-colors shrink-0" strokeWidth={2.5} />
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
