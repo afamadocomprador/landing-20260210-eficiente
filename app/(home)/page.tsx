@@ -2,7 +2,7 @@
 
 "use client"; // ⚡️ IMPORTANTE: Necesitamos interactividad
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic'; 
 import Link from 'next/link';   
 import type { Metadata, Viewport } from 'next';
@@ -81,15 +81,16 @@ export default function LandingPage() {
   
   const [isAllPanelOpen, setAllPanelOpen] = useState(false);
   const [activeFloatingId, setActiveFloatingId] = useState<number | null>(null); 
+  
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  
+  const [isNudging, setIsNudging] = useState(false);
+  // ⚡️ NUEVO ESTADO: Controla si la sección completa ya entró en pantalla para iniciar la cascada interna
+  const [hasEntered, setHasEntered] = useState(false);
 
   const neumorphicBase = "shadow-[8px_8px_12px_#033b3720,-5px_-5px_10px_#ffffff]";
   const neumorphicActive = "active:shadow-[inset_4px_4px_8px_#033b3730,inset_-4px_-4px_8px_#ffffff]";
-
-  const RightArrowIcon = ({ className = "" }) => (
-    <div className={`absolute top-3 right-3 md:top-4 md:right-4 text-dkv-green-dark opacity-70 group-hover:opacity-100 group-hover:text-dkv-green transition-all duration-300 group-hover:translate-x-1 z-10 ${className}`}>
-      <ArrowRight className="w-4 h-4 md:w-5 md:h-5" strokeWidth={2.5} />
-    </div>
-  );
 
   useEffect(() => {
     if (isAllPanelOpen || activeFloatingId !== null) {
@@ -99,6 +100,48 @@ export default function LandingPage() {
     }
     return () => { document.body.style.overflow = ''; }; 
   }, [isAllPanelOpen, activeFloatingId]);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          // ⚡️ Al asomar la sección, marcamos "hasEntered" a true. 
+          // Esto arranca la cascada CSS para todas las fichas (visibles y no visibles) a la vez.
+          setHasEntered(true);
+          
+          timeoutId = setTimeout(() => {
+            setIsNudging(true);
+            setTimeout(() => {
+              setIsNudging(false);
+            }, 400); 
+          }, 1200);
+        }
+      },
+      { threshold: 0.2 } 
+    );
+
+    if (scrollContainerRef.current) {
+      observer.observe(scrollContainerRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
+  const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      const maxScroll = scrollWidth - clientWidth;
+      if (maxScroll > 0) {
+        const progress = (scrollLeft / maxScroll) * 100;
+        setScrollProgress(progress);
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white text-dkv-gray selection:bg-dkv-green selection:text-white relative">
@@ -123,41 +166,85 @@ export default function LandingPage() {
               </p>
             </ScrollReveal>
 
+            {/* BOTÓN "VER TODOS" */}
             <ScrollReveal delay={150}>
               <div className="flex justify-end mb-6 px-8 md:hidden relative z-50">
-                <button 
-                  onClick={() => setAllPanelOpen(true)} 
-                  className="flex items-center gap-1.5 text-dkv-green font-bold hover:text-dkv-green-dark transition-colors text-lg pb-1"
-                >
-                  Mostrar todos <ChevronRight className="w-5 h-5" />
-                </button>
+                <div className="rounded-full bg-[#E8ECEF] p-[3.5px] shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_6px_16px_rgba(0,0,0,0.12)] hover:scale-105 active:scale-95 transition-all duration-300">
+                  <button 
+                    onClick={() => setAllPanelOpen(true)} 
+                    className="group flex items-center justify-center gap-2 pl-5 pr-3.5 py-1.5 bg-white rounded-full shadow-[inset_0_1px_1px_rgba(255,255,255,1),0_1px_2px_rgba(0,0,0,0.04)]"
+                  >
+                    <span className="text-dkv-green-dark font-bold text-[18px] tracking-tight pb-0.5">
+                      Ver todos
+                    </span>
+                    <ChevronRight 
+                      className="w-[22px] h-[22px] text-dkv-green group-hover:translate-x-0.5 transition-transform" 
+                      strokeWidth={3.5} 
+                    />
+                  </button>
+                </div>
               </div>
             </ScrollReveal>
 
-            <ScrollReveal delay={200}>
-              <div className="relative z-40 px-0 md:px-8">
-                <div 
-                  className="w-full overflow-x-auto md:overflow-visible snap-x snap-mandatory pt-4 pb-12 md:pb-16 px-8 md:px-0 scroll-pl-8" 
-                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                >
-                  <style dangerouslySetInnerHTML={{__html: `::-webkit-scrollbar { display: none; }`}} />
+            <div className="relative z-40 px-0 md:px-8">
+              <div 
+                ref={scrollContainerRef}
+                onScroll={handleScroll}
+                className="w-full overflow-x-auto md:overflow-visible snap-x snap-mandatory pt-4 pb-6 md:pb-16 px-8 md:px-0 scroll-pl-8" 
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                <style dangerouslySetInnerHTML={{__html: `::-webkit-scrollbar { display: none; }
+                  @keyframes nudge-scroll {
+                    0%, 100% { transform: translateX(0); }
+                    50% { transform: translateX(-15px); }
+                  }
+                  @media (max-width: 767px) {
+                    .nudge-animation {
+                      animation: nudge-scroll 0.4s ease-in-out;
+                    }
+                  }
+                `}} />
 
-                  <div className="grid grid-rows-2 grid-flow-col md:grid-rows-none md:grid-flow-row md:grid-cols-4 gap-5 xs:gap-6 md:gap-8 w-fit md:w-full items-start">
-                    
-                    {tratamientosList.map((item) => {
-                      const Icon = item.icon;
-                      const Wrapper = item.hasSub ? 'button' : Link; 
+                <div className={`grid grid-rows-2 grid-flow-col md:grid-rows-none md:grid-flow-row md:grid-cols-4 gap-5 xs:gap-6 md:gap-8 w-fit md:w-full items-start ${isNudging ? 'nudge-animation' : ''}`}>
+                  
+                  {tratamientosList.map((item, index) => {
+                    const Icon = item.icon;
+                    const Wrapper = item.hasSub ? 'button' : Link; 
 
-                      return (
+                    return (
+                      // ⚡️ LA CASCADA NATIVA: Envolvemos cada ficha en un div que transiciona según el estado `hasEntered` global
+                      <div
+                        key={item.id}
+                        className={`snap-start shrink-0 w-[145px] xs:w-[155px] sm:w-[170px] md:w-full transition-all duration-[800ms] ease-out ${
+                          hasEntered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+                        }`}
+                        style={{ transitionDelay: `${index * 80}ms` }}
+                      >
                         <Wrapper 
-                          key={item.id}
                           href={(item.hasSub ? undefined : item.href) as any}
                           onClick={item.hasSub ? () => setActiveFloatingId(item.id) : undefined}
-                          className={`snap-start shrink-0 w-[145px] xs:w-[155px] sm:w-[170px] md:w-full relative flex flex-col overflow-hidden rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ease-out aspect-square hover:scale-[1.02] active:scale-[0.98] ${neumorphicBase} ${neumorphicActive} ${item.hasSub ? 'text-left' : ''}`}
+                          className={`w-full h-full relative flex flex-col overflow-hidden rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ease-out aspect-square hover:scale-[1.02] active:scale-[0.98] ${neumorphicBase} ${neumorphicActive} ${item.hasSub ? 'text-left' : ''}`}
                         >
-                          {!item.hasSub && <RightArrowIcon />}
+                          <div className="w-full bg-white flex flex-col justify-start text-left px-4 pt-4 pb-3 md:px-5 md:pt-5 md:pb-4 relative z-10">
+                            <div className="flex justify-between items-center w-full gap-2">
+                              <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-base xs:text-lg md:text-xl leading-tight uppercase tracking-tight line-clamp-1">
+                                {item.title}
+                              </span>
+                              {item.hasSub ? (
+                                <ChevronDown className="w-5 h-5 text-dkv-green shrink-0 group-hover:translate-y-1 transition-transform duration-300" />
+                              ) : (
+                                <ArrowRight className="w-5 h-5 text-dkv-green opacity-70 shrink-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
+                              )}
+                            </div>
+                            
+                            {(item.descMain || item.descBold || item.descEnd) && (
+                              <span className="text-xs md:text-sm text-gray-500 leading-snug line-clamp-2 mt-1">
+                                {item.descMain}<span className="text-dkv-green font-bold">{item.descBold}</span>{item.descEnd}
+                              </span>
+                            )}
+                          </div>
 
-                          <div className={`w-full bg-white flex items-center justify-center transition-all duration-500 relative overflow-hidden group-hover:bg-dkv-green/5 h-[45%]`}>
+                          <div className={`w-full flex-1 flex items-center justify-center transition-all duration-500 relative overflow-hidden group-hover:bg-dkv-green/5`}>
                             {item.image ? (
                               <img 
                                 src={item.image} 
@@ -166,33 +253,34 @@ export default function LandingPage() {
                               />
                             ) : (
                               <div className="text-dkv-green transition-transform group-hover:scale-110 duration-300">
-                                <Icon className="w-8 h-8 xs:w-10 xs:h-10 md:w-12 md:h-12" strokeWidth={1.5} />
+                                <Icon className="w-10 h-10 md:w-14 md:h-14" strokeWidth={1.5} />
                               </div>
                             )}
                           </div>
-
-                          <div className="w-full flex flex-col justify-start text-left p-3 xs:p-4 md:p-5 relative z-10 flex-1">
-                            <div className="flex justify-between items-center w-full">
-                              <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-base xs:text-lg md:text-xl leading-tight mb-1 md:mb-1.5 uppercase tracking-tight line-clamp-1">
-                                {item.title}
-                              </span>
-                              {item.hasSub && (
-                                <ChevronDown className="w-5 h-5 text-dkv-green group-hover:translate-y-1 transition-transform duration-300" />
-                              )}
-                            </div>
-                            
-                            <span className="text-sm md:text-base text-gray-500 leading-snug line-clamp-2">
-                              {item.descMain}<span className="text-dkv-green font-bold">{item.descBold}</span>{item.descEnd}
-                            </span>
-                          </div>
                         </Wrapper>
-                      );
-                    })}
+                      </div>
+                    );
+                  })}
 
-                  </div>
                 </div>
               </div>
-            </ScrollReveal>
+
+              {/* INDICADOR DE SCROLL PREMIUM (Sigue la misma lógica global de cascada CSS) */}
+              <div 
+                className={`flex justify-center md:hidden pb-10 transition-all duration-[800ms] ease-out ${
+                  hasEntered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+                }`}
+                style={{ transitionDelay: '400ms' }}
+              >
+                <div className="w-20 h-2 bg-[#D1D5DB] border border-[#B0B5C1] shadow-[inset_0_1px_3px_rgba(0,0,0,0.15)] rounded-full overflow-hidden relative">
+                  <div 
+                    className="absolute top-0 left-0 h-full bg-dkv-green rounded-full w-1/2 transition-transform duration-100 ease-linear"
+                    style={{ transform: `translateX(${scrollProgress}%)` }}
+                  />
+                </div>
+              </div>
+
+            </div>
 
           </div>
         </section>
@@ -248,7 +336,6 @@ export default function LandingPage() {
           activeFloatingId !== null ? 'pointer-events-auto' : 'pointer-events-none'
         }`}
       >
-        {/* ⚡️ Overlay esmerillado (Frosted Glass blanco-translúcido) */}
         <div 
           className={`absolute inset-0 bg-white/60 backdrop-blur-md transition-opacity duration-500 ${
             activeFloatingId !== null ? 'opacity-100' : 'opacity-0'
@@ -256,7 +343,6 @@ export default function LandingPage() {
           onClick={() => setActiveFloatingId(null)}
         />
 
-        {/* Inset Bottom Sheet */}
         <div 
           className={`relative w-full md:max-w-[400px] bg-white shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.2)] rounded-t-[28px] md:rounded-[28px] overflow-hidden transition-transform duration-500 ${
             activeFloatingId !== null 
@@ -264,16 +350,13 @@ export default function LandingPage() {
               : 'translate-y-[100%] md:translate-y-10 md:scale-95 opacity-0'
           }`}
         >
-          {/* Header Gris (Breadcrumb) */}
           <div className="bg-[#F5F5F5] px-5 py-4 flex items-center justify-between border-b border-gray-300">
-            {/* ⚡️ Breadcrumb con texto más grande (15px) */}
             <div className="flex items-center gap-1.5 text-[15px] font-medium text-gray-500 font-fsme">
               <span>Tratamientos</span>
               <ChevronRight className="w-4 h-4" />
               <span className="text-gray-900">Ortodoncia</span>
             </div>
             
-            {/* ⚡️ Botón X con texto Verde Oscuro */}
             <button 
               onClick={() => setActiveFloatingId(null)}
               className="p-1.5 rounded-full bg-[#E5E5E5] text-dkv-green-dark hover:bg-[#D5D5D5] transition-colors"
@@ -282,17 +365,14 @@ export default function LandingPage() {
             </button>
           </div>
 
-          {/* Contenido Principal */}
           <div className="px-5 pt-6 pb-10 md:pb-6">
             <h3 className="text-[26px] font-lemon text-dkv-green-dark uppercase tracking-tight mb-1 leading-none">
               ORTODONCIA
             </h3>
-            {/* ⚡️ Texto auxiliar más grande (17px) */}
             <p className="text-gray-500 text-[17px] font-fsme mb-4">
               Elige el tipo de aparato:
             </p>
 
-            {/* Lista de Opciones (Líneas Divisorias más oscuras: border-gray-300) */}
             <div className="flex flex-col border-t border-gray-300">
               {ortodonciaSubOptions.map(sub => {
                 return (
@@ -306,11 +386,9 @@ export default function LandingPage() {
                       <span className="font-bold text-[17px] text-dkv-green-dark group-hover:text-dkv-green transition-colors">
                         {sub.title}
                       </span>
-                      {/* ⚡️ Textos auxiliares/tags algo más grandes (16px) */}
                       <span className="text-[16px] text-gray-500">
                         ({sub.tag})
                       </span>
-                      {/* Etiqueta Recomendado */}
                       {sub.id === 'invisalign' && (
                         <span className="text-[10px] font-bold bg-[#718E32] text-white px-2 py-0.5 rounded-full ml-1 uppercase tracking-wide">
                           Recomendado
@@ -318,7 +396,6 @@ export default function LandingPage() {
                       )}
                     </div>
                     
-                    {/* ⚡️ Flecha Chevron más grande y en Verde Oscuro */}
                     <ChevronRight className="w-6 h-6 text-dkv-green-dark group-hover:text-dkv-green transition-colors shrink-0" strokeWidth={2.5} />
                   </Link>
                 );
@@ -353,44 +430,46 @@ export default function LandingPage() {
           <style dangerouslySetInnerHTML={{__html: `::-webkit-scrollbar { display: none; }`}} />
           
           <div className="grid grid-cols-2 gap-4 xs:gap-6 items-start">
-            {tratamientosList.map((item) => {
+            {tratamientosList.map((item, index) => {
               const Icon = item.icon;
               const Wrapper = item.hasSub ? 'button' : Link;
 
               return (
-                <Wrapper 
-                  key={`panel-${item.id}`}
-                  href={(item.hasSub ? undefined : item.href) as any}
-                  onClick={item.hasSub ? () => setActiveFloatingId(item.id) : () => setAllPanelOpen(false)}
-                  className={`w-full relative flex flex-col overflow-hidden rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ease-out aspect-square hover:scale-[1.02] active:scale-[0.98] ${neumorphicBase} ${neumorphicActive} ${item.hasSub ? 'text-left' : ''}`}
-                >
-                  {!item.hasSub && <RightArrowIcon className="top-3 right-3 opacity-60 group-hover:opacity-100" />}
-
-                  <div className={`w-full bg-white flex items-center justify-center transition-all duration-500 relative overflow-hidden group-hover:bg-dkv-green/5 h-[45%]`}>
-                    {item.image ? (
-                      <img 
-                        src={item.image} 
-                        alt={item.title} 
-                        className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" 
-                      />
-                    ) : (
-                      <div className="text-dkv-green transition-transform group-hover:scale-110 duration-300">
-                        <Icon className="w-8 h-8 xs:w-10 xs:h-10" strokeWidth={1.5} />
+                <ScrollReveal key={`panel-${item.id}`} delay={index * 80}>
+                  <Wrapper 
+                    href={(item.hasSub ? undefined : item.href) as any}
+                    onClick={item.hasSub ? () => setActiveFloatingId(item.id) : () => setAllPanelOpen(false)}
+                    className={`w-full relative flex flex-col overflow-hidden rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ease-out aspect-square hover:scale-[1.02] active:scale-[0.98] ${neumorphicBase} ${neumorphicActive} ${item.hasSub ? 'text-left' : ''}`}
+                  >
+                    <div className="w-full bg-white flex flex-col justify-start text-left px-4 pt-4 pb-3 relative z-10">
+                      <div className="flex justify-between items-center w-full gap-2">
+                        <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-base xs:text-lg leading-tight uppercase tracking-tight line-clamp-1">
+                          {item.title}
+                        </span>
+                        {item.hasSub ? (
+                           <ChevronDown className="w-5 h-5 text-dkv-green shrink-0 group-hover:translate-y-1 transition-transform duration-300" />
+                        ) : (
+                           <ArrowRight className="w-5 h-5 text-dkv-green opacity-70 shrink-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
+                        )}
                       </div>
-                    )}
-                  </div>
+                    </div>
 
-                  <div className="w-full flex flex-col justify-start text-left p-3 xs:p-4 relative z-10 flex-1">
-                    <div className="flex justify-between items-center w-full">
-                      <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-base xs:text-lg leading-tight mb-1 uppercase tracking-tight line-clamp-1">
-                        {item.title}
-                      </span>
-                      {item.hasSub && (
-                         <ChevronDown className="w-4 h-4 text-dkv-green group-hover:translate-y-1 transition-transform duration-300" />
+                    <div className={`w-full flex-1 flex items-center justify-center transition-all duration-500 relative overflow-hidden group-hover:bg-dkv-green/5`}>
+                      {item.image ? (
+                        <img 
+                          src={item.image} 
+                          alt={item.title} 
+                          className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" 
+                        />
+                      ) : (
+                        <div className="text-dkv-green transition-transform group-hover:scale-110 duration-300">
+                          <Icon className="w-10 h-10" strokeWidth={1.5} />
+                        </div>
                       )}
                     </div>
-                  </div>
-                </Wrapper>
+
+                  </Wrapper>
+                </ScrollReveal>
               );
             })}
           </div>
