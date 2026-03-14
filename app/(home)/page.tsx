@@ -1,5 +1,3 @@
-// app/(home)/page.tsx
-
 "use client"; // ⚡️ IMPORTANTE: Necesitamos interactividad
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -62,7 +60,7 @@ const nationalMasterSchema = {
 const tratamientosList = [
   { id: 1, href: "/tratamientos/estetica", icon: Baby, image: "/images/tratamientos/estetica.png", title: "Estética", descMain: "", descBold: "", descEnd: "" },
   { id: 2, hasSub: true, icon: Sparkles, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "Ortodoncia", descMain: "", descBold: "", descEnd: "" },
-  { id: 3, href: "/categorias/implantes#implantes", icon: Stethoscope, image: "/images/tratamientos/implantes.png", title: "Implantes", descMain: "", descBold: "", descEnd: "" },
+  { id: 3, href: "/categorias/implantes#implantes", icon: Stethoscope, image: "/images/tratamientos/implantes.png", title: "Implantes", descMain: "", descBold: "" , descEnd: "" },
   { id: 4, href: "/tratamientos/odontologia-conservadora#dolor", icon: Zap, image: "/images/tratamientos/endodoncia.png", title: "Dolor", descMain: "", descBold: "", descEnd: "" },
   { id: 5, href: "/tratamientos/odontologia-protesis", icon: Activity, title: "Prótesis", image: "/images/tratamientos/protesis.png", descMain: "", descBold: "", descEnd: "" },
   { id: 6, href: "/tratamientos/odontopediatría", icon: Smile, image: "/images/tratamientos/odontopediatria.png", title: "Niñ@s", descMain: "", descBold: "", descEnd: "" },
@@ -138,6 +136,22 @@ export default function LandingPage() {
         setScrollProgress(progress);
       }
     }
+  };
+
+  // ⚡️ FUNCIÓN NIVEL DIOS: Scroll al hacer click en el track
+  const handleTrackClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!scrollContainerRef.current) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const width = rect.width;
+    const clickPercentage = clickX / width;
+    
+    const scrollTarget = (scrollContainerRef.current.scrollWidth - scrollContainerRef.current.clientWidth) * clickPercentage;
+    
+    scrollContainerRef.current.scrollTo({
+      left: scrollTarget,
+      behavior: 'smooth'
+    });
   };
 
   return (
@@ -222,7 +236,6 @@ export default function LandingPage() {
                         >
                           <div className="w-full bg-white flex flex-col justify-start text-left px-3.5 pt-3.5 pb-3 md:px-5 md:pt-5 md:pb-4 relative z-10">
                             <div className="flex justify-between items-start w-full gap-1.5">
-                              {/* ⚡️ UX FIX: text-[18px] para mayor jerarquía visual */}
                               <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-[18px] md:text-xl leading-tight tracking-tight line-clamp-2 break-words">
                                 {item.title}
                               </span>
@@ -261,17 +274,23 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              {/* INDICADOR DE SCROLL PREMIUM */}
-              <ScrollReveal delay={400}>
-                <div className="flex justify-center md:hidden pb-10">
-                  <div className="w-20 h-2 bg-[#D1D5DB] border border-[#B0B5C1] shadow-[inset_0_1px_3px_rgba(0,0,0,0.15)] rounded-full overflow-hidden relative">
-                    <div 
-                      className="absolute top-0 left-0 h-full bg-dkv-green rounded-full w-1/2 transition-transform duration-100 ease-linear"
-                      style={{ transform: `translateX(${scrollProgress}%)` }}
-                    />
-                  </div>
+              {/* INDICADOR DE SCROLL - SIN ScrollReveal, sincronizado con las fichas */}
+              <div 
+                className={`flex justify-center md:hidden pb-10 transition-all duration-[800ms] ease-out ${
+                  hasEntered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
+                style={{ transitionDelay: `${tratamientosList.length * 80}ms` }}
+              >
+                <div 
+                  onClick={handleTrackClick}
+                  className="w-20 h-2 bg-[#D1D5DB] border border-[#B0B5C1] shadow-[inset_0_1px_3px_rgba(0,0,0,0.15)] rounded-full overflow-hidden relative cursor-pointer touch-none"
+                >
+                  <div 
+                    className="absolute top-0 left-0 h-full bg-dkv-green rounded-full w-1/2 transition-transform duration-300 ease-out"
+                    style={{ transform: `translateX(${scrollProgress}%)` }}
+                  />
                 </div>
-              </ScrollReveal>
+              </div>
 
             </div>
 
@@ -398,7 +417,7 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* ⚡️⚡️ 2. PANEL LATERAL ORIGINAL (Para "Mostrar todos" en mobile) ⚡️⚡️ */}
+      {/* ⚡️⚡️ 2. PANEL LATERAL ORIGINAL ⚡️⚡️ */}
       <div 
         className={`fixed inset-0 bg-black/50 z-[40] transition-opacity duration-300 ${isAllPanelOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`} 
         onClick={() => setAllPanelOpen(false)} 
@@ -436,7 +455,6 @@ export default function LandingPage() {
                   >
                     <div className="w-full bg-white flex flex-col justify-start text-left px-3.5 pt-3.5 pb-3 relative z-10">
                       <div className="flex justify-between items-start w-full gap-1.5">
-                        {/* ⚡️ UX FIX: text-[18px] aplicado también en el panel lateral */}
                         <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-[18px] leading-tight tracking-tight line-clamp-2 break-words">
                           {item.title}
                         </span>
