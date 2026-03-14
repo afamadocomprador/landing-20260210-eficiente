@@ -86,7 +86,6 @@ export default function LandingPage() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
   const [isNudging, setIsNudging] = useState(false);
-  // ⚡️ NUEVO ESTADO: Controla si la sección completa ya entró en pantalla para iniciar la cascada interna
   const [hasEntered, setHasEntered] = useState(false);
 
   const neumorphicBase = "shadow-[8px_8px_12px_#033b3720,-5px_-5px_10px_#ffffff]";
@@ -107,8 +106,6 @@ export default function LandingPage() {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          // ⚡️ Al asomar la sección, marcamos "hasEntered" a true. 
-          // Esto arranca la cascada CSS para todas las fichas (visibles y no visibles) a la vez.
           setHasEntered(true);
           
           timeoutId = setTimeout(() => {
@@ -177,8 +174,9 @@ export default function LandingPage() {
                     <span className="text-dkv-green-dark font-bold text-[18px] tracking-tight pb-0.5">
                       Ver todos
                     </span>
+                    {/* ⚡️ CHEVRON VERDE OSCURO (Se ilumina en hover) */}
                     <ChevronRight 
-                      className="w-[22px] h-[22px] text-dkv-green group-hover:translate-x-0.5 transition-transform" 
+                      className="w-[22px] h-[22px] text-dkv-green-dark group-hover:text-dkv-green group-hover:translate-x-0.5 transition-all" 
                       strokeWidth={3.5} 
                     />
                   </button>
@@ -212,7 +210,6 @@ export default function LandingPage() {
                     const Wrapper = item.hasSub ? 'button' : Link; 
 
                     return (
-                      // ⚡️ LA CASCADA NATIVA: Envolvemos cada ficha en un div que transiciona según el estado `hasEntered` global
                       <div
                         key={item.id}
                         className={`snap-start shrink-0 w-[145px] xs:w-[155px] sm:w-[170px] md:w-full transition-all duration-[800ms] ease-out ${
@@ -230,11 +227,11 @@ export default function LandingPage() {
                               <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-base xs:text-lg md:text-xl leading-tight uppercase tracking-tight line-clamp-1">
                                 {item.title}
                               </span>
-                              {item.hasSub ? (
-                                <ChevronDown className="w-5 h-5 text-dkv-green shrink-0 group-hover:translate-y-1 transition-transform duration-300" />
-                              ) : (
-                                <ArrowRight className="w-5 h-5 text-dkv-green opacity-70 shrink-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
-                              )}
+                              
+                              {/* ⚡️ CHEVRON VERDE OSCURO (Se ilumina en hover) */}
+                              <div className="w-6 h-6 md:w-7 md:h-7 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-dkv-green/10 group-hover:scale-110 transition-all duration-300 shrink-0">
+                                <ChevronRight className="w-4 h-4 text-dkv-green-dark group-hover:text-dkv-green group-hover:translate-x-0.5 transition-all duration-300" strokeWidth={2.5} />
+                              </div>
                             </div>
                             
                             {(item.descMain || item.descBold || item.descEnd) && (
@@ -257,6 +254,7 @@ export default function LandingPage() {
                               </div>
                             )}
                           </div>
+                          
                         </Wrapper>
                       </div>
                     );
@@ -265,20 +263,17 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              {/* INDICADOR DE SCROLL PREMIUM (Sigue la misma lógica global de cascada CSS) */}
-              <div 
-                className={`flex justify-center md:hidden pb-10 transition-all duration-[800ms] ease-out ${
-                  hasEntered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-                }`}
-                style={{ transitionDelay: '400ms' }}
-              >
-                <div className="w-20 h-2 bg-[#D1D5DB] border border-[#B0B5C1] shadow-[inset_0_1px_3px_rgba(0,0,0,0.15)] rounded-full overflow-hidden relative">
-                  <div 
-                    className="absolute top-0 left-0 h-full bg-dkv-green rounded-full w-1/2 transition-transform duration-100 ease-linear"
-                    style={{ transform: `translateX(${scrollProgress}%)` }}
-                  />
+              {/* INDICADOR DE SCROLL PREMIUM */}
+              <ScrollReveal delay={400}>
+                <div className="flex justify-center md:hidden pb-10">
+                  <div className="w-20 h-2 bg-[#D1D5DB] border border-[#B0B5C1] shadow-[inset_0_1px_3px_rgba(0,0,0,0.15)] rounded-full overflow-hidden relative">
+                    <div 
+                      className="absolute top-0 left-0 h-full bg-dkv-green rounded-full w-1/2 transition-transform duration-100 ease-linear"
+                      style={{ transform: `translateX(${scrollProgress}%)` }}
+                    />
+                  </div>
                 </div>
-              </div>
+              </ScrollReveal>
 
             </div>
 
@@ -446,11 +441,11 @@ export default function LandingPage() {
                         <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-base xs:text-lg leading-tight uppercase tracking-tight line-clamp-1">
                           {item.title}
                         </span>
-                        {item.hasSub ? (
-                           <ChevronDown className="w-5 h-5 text-dkv-green shrink-0 group-hover:translate-y-1 transition-transform duration-300" />
-                        ) : (
-                           <ArrowRight className="w-5 h-5 text-dkv-green opacity-70 shrink-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
-                        )}
+                        
+                        {/* ⚡️ CHEVRON VERDE OSCURO TAMBIÉN EN EL PANEL LATERAL */}
+                        <div className="w-6 h-6 md:w-7 md:h-7 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-dkv-green/10 group-hover:scale-110 transition-all duration-300 shrink-0">
+                          <ChevronRight className="w-4 h-4 text-dkv-green-dark group-hover:text-dkv-green group-hover:translate-x-0.5 transition-all duration-300" strokeWidth={2.5} />
+                        </div>
                       </div>
                     </div>
 
