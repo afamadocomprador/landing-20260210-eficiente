@@ -60,14 +60,14 @@ const nationalMasterSchema = {
 };
 
 const tratamientosList = [
-  { id: 1, href: "/tratamientos/estetica", icon: Baby, image: "/images/tratamientos/estetica.png", title: "ESTÉTICA", descMain: "", descBold: "", descEnd: "" },
-  { id: 2, hasSub: true, icon: Sparkles, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "ORTODONCIA", descMain: "", descBold: "", descEnd: "" },
-  { id: 3, href: "/categorias/implantes#implantes", icon: Stethoscope, image: "/images/tratamientos/implantes.png", title: "IMPLANTES", descMain: "", descBold: "", descEnd: "" },
-  { id: 4, href: "/tratamientos/odontologia-conservadora#dolor", icon: Zap, image: "/images/tratamientos/endodoncia.png", title: "ENDODONCIA", descMain: "", descBold: "", descEnd: "" },
-  { id: 5, href: "/tratamientos/odontopediatría", icon: Smile, image: "/images/tratamientos/odontopediatria.png", title: "ODONTOPEDIATRÍA", descMain: "", descBold: "", descEnd: "" },
-  { id: 6, href: "/tratamientos/periodoncia#encias", icon: HeartPulse, image: "/images/tratamientos/general.png", title: "LIMPIEZA GENERAL", descMain: " ", descBold: "", descEnd: "" },
-  { id: 7, href: "/tratamientos/odontologia-protesis", icon: Activity, title: "PRÓTESIS", image: "/images/tratamientos/protesis.png", descMain: "", descBold: "", descEnd: "" },
-  { id: 8, href: "/categorias/higiene-y-prevencion#prevencion", icon: ShieldCheck, image: "/images/tratamientos/ferula.png", title: "PREVENCIÓN", descMain: "", descBold: "", descEnd: "" },
+  { id: 1, href: "/tratamientos/estetica", icon: Baby, image: "/images/tratamientos/estetica.png", title: "Estética", descMain: "", descBold: "", descEnd: "" },
+  { id: 2, hasSub: true, icon: Sparkles, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "Ortodoncia", descMain: "", descBold: "", descEnd: "" },
+  { id: 3, href: "/categorias/implantes#implantes", icon: Stethoscope, image: "/images/tratamientos/implantes.png", title: "Implantes", descMain: "", descBold: "", descEnd: "" },
+  { id: 4, href: "/tratamientos/odontologia-conservadora#dolor", icon: Zap, image: "/images/tratamientos/endodoncia.png", title: "Dolor", descMain: "", descBold: "", descEnd: "" },
+  { id: 5, href: "/tratamientos/odontologia-protesis", icon: Activity, title: "Prótesis", image: "/images/tratamientos/protesis.png", descMain: "", descBold: "", descEnd: "" },
+  { id: 6, href: "/tratamientos/odontopediatría", icon: Smile, image: "/images/tratamientos/odontopediatria.png", title: "Niñ@s", descMain: "", descBold: "", descEnd: "" },
+  { id: 7, href: "/tratamientos/periodoncia#encias", icon: HeartPulse, image: "/images/tratamientos/general.png", title: "Limpieza general", descMain: " ", descBold: "", descEnd: "" },
+  { id: 8, href: "/categorias/higiene-y-prevencion#prevencion", icon: ShieldCheck, image: "/images/tratamientos/ferula.png", title: "Prevención", descMain: "", descBold: "", descEnd: "" },
 ];
 
 const ortodonciaSubOptions = [
@@ -163,7 +163,6 @@ export default function LandingPage() {
               </p>
             </ScrollReveal>
 
-            {/* BOTÓN "VER TODOS" */}
             <ScrollReveal delay={150}>
               <div className="flex justify-end mb-6 px-8 md:hidden relative z-50">
                 <div className="rounded-full bg-[#E8ECEF] p-[3.5px] shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_6px_16px_rgba(0,0,0,0.12)] hover:scale-105 active:scale-95 transition-all duration-300">
@@ -174,7 +173,6 @@ export default function LandingPage() {
                     <span className="text-dkv-green-dark font-bold text-[18px] tracking-tight pb-0.5">
                       Ver todos
                     </span>
-                    {/* ⚡️ CHEVRON VERDE OSCURO (Se ilumina en hover) */}
                     <ChevronRight 
                       className="w-[22px] h-[22px] text-dkv-green-dark group-hover:text-dkv-green group-hover:translate-x-0.5 transition-all" 
                       strokeWidth={3.5} 
@@ -212,7 +210,7 @@ export default function LandingPage() {
                     return (
                       <div
                         key={item.id}
-                        className={`snap-start shrink-0 w-[145px] xs:w-[155px] sm:w-[170px] md:w-full transition-all duration-[800ms] ease-out ${
+                        className={`snap-start shrink-0 w-[160px] xs:w-[170px] sm:w-[185px] md:w-full transition-all duration-[800ms] ease-out ${
                           hasEntered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
                         }`}
                         style={{ transitionDelay: `${index * 80}ms` }}
@@ -222,15 +220,15 @@ export default function LandingPage() {
                           onClick={item.hasSub ? () => setActiveFloatingId(item.id) : undefined}
                           className={`w-full h-full relative flex flex-col overflow-hidden rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ease-out aspect-square hover:scale-[1.02] active:scale-[0.98] ${neumorphicBase} ${neumorphicActive} ${item.hasSub ? 'text-left' : ''}`}
                         >
-                          <div className="w-full bg-white flex flex-col justify-start text-left px-4 pt-4 pb-3 md:px-5 md:pt-5 md:pb-4 relative z-10">
-                            <div className="flex justify-between items-center w-full gap-2">
-                              <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-base xs:text-lg md:text-xl leading-tight uppercase tracking-tight line-clamp-1">
+                          <div className="w-full bg-white flex flex-col justify-start text-left px-3.5 pt-3.5 pb-3 md:px-5 md:pt-5 md:pb-4 relative z-10">
+                            <div className="flex justify-between items-start w-full gap-1.5">
+                              {/* ⚡️ UX FIX: text-[18px] para mayor jerarquía visual */}
+                              <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-[18px] md:text-xl leading-tight tracking-tight line-clamp-2 break-words">
                                 {item.title}
                               </span>
                               
-                              {/* ⚡️ CHEVRON VERDE OSCURO (Se ilumina en hover) */}
-                              <div className="w-6 h-6 md:w-7 md:h-7 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-dkv-green/10 group-hover:scale-110 transition-all duration-300 shrink-0">
-                                <ChevronRight className="w-4 h-4 text-dkv-green-dark group-hover:text-dkv-green group-hover:translate-x-0.5 transition-all duration-300" strokeWidth={2.5} />
+                              <div className="w-6 h-6 md:w-7 md:h-7 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-dkv-green/10 group-hover:scale-110 transition-all duration-300 shrink-0 mt-[-1px]">
+                                <ChevronRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-dkv-green-dark group-hover:text-dkv-green group-hover:translate-x-0.5 transition-all duration-300" strokeWidth={2.5} />
                               </div>
                             </div>
                             
@@ -436,15 +434,15 @@ export default function LandingPage() {
                     onClick={item.hasSub ? () => setActiveFloatingId(item.id) : () => setAllPanelOpen(false)}
                     className={`w-full relative flex flex-col overflow-hidden rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ease-out aspect-square hover:scale-[1.02] active:scale-[0.98] ${neumorphicBase} ${neumorphicActive} ${item.hasSub ? 'text-left' : ''}`}
                   >
-                    <div className="w-full bg-white flex flex-col justify-start text-left px-4 pt-4 pb-3 relative z-10">
-                      <div className="flex justify-between items-center w-full gap-2">
-                        <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-base xs:text-lg leading-tight uppercase tracking-tight line-clamp-1">
+                    <div className="w-full bg-white flex flex-col justify-start text-left px-3.5 pt-3.5 pb-3 relative z-10">
+                      <div className="flex justify-between items-start w-full gap-1.5">
+                        {/* ⚡️ UX FIX: text-[18px] aplicado también en el panel lateral */}
+                        <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-[18px] leading-tight tracking-tight line-clamp-2 break-words">
                           {item.title}
                         </span>
                         
-                        {/* ⚡️ CHEVRON VERDE OSCURO TAMBIÉN EN EL PANEL LATERAL */}
-                        <div className="w-6 h-6 md:w-7 md:h-7 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-dkv-green/10 group-hover:scale-110 transition-all duration-300 shrink-0">
-                          <ChevronRight className="w-4 h-4 text-dkv-green-dark group-hover:text-dkv-green group-hover:translate-x-0.5 transition-all duration-300" strokeWidth={2.5} />
+                        <div className="w-6 h-6 md:w-7 md:h-7 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-dkv-green/10 group-hover:scale-110 transition-all duration-300 shrink-0 mt-[-1px]">
+                          <ChevronRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-dkv-green-dark group-hover:text-dkv-green group-hover:translate-x-0.5 transition-all duration-300" strokeWidth={2.5} />
                         </div>
                       </div>
                     </div>
