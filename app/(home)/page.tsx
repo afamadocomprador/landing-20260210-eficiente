@@ -62,7 +62,6 @@ const tratamientosList = [
   { id: 4, href: "/tratamientos/odontologia-conservadora#dolor", icon: Zap, image: "/images/tratamientos/endodoncia.png", title: "Dolor" },
   { id: 5, hasSub: true, icon: Activity, title: "Prótesis", image: "/images/tratamientos/protesis.png" },
   { id: 9, href: "/tratamientos/apnea", icon: Moon, title: "Ronquido", image: "/images/tratamientos/apnea.png" },
-  // ⚡️ ODONTOPEDIATRÍA AHORA ABRE EL BOTTOM SHEET (hasSub: true)
   { id: 6, hasSub: true, icon: Smile, image: "/images/tratamientos/odontopediatria.png", title: "Niñ@s" },
   { id: 7, href: "/tratamientos/periodoncia#encias", icon: HeartPulse, image: "/images/tratamientos/general.png", title: "Limpieza" },
   { id: 8, href: "/categorias/higiene-y-prevencion#prevencion", icon: ShieldCheck, image: "/images/tratamientos/ferula.png", title: "Prevención" },
@@ -78,11 +77,16 @@ const esteticaSubOptions = [
   { id: 'zafiro-est', title: 'Brackets de Zafiro', href: '/tratamientos/ortodoncia/zafiro', tag: 'Estética Fija' },
 ];
 
+// ⚡️ OPCIONES DE ORTODONCIA ACTUALIZADAS CON SEPARADOR INFANTIL
 const ortodonciaSubOptions = [
   { id: 'invisalign', title: 'Invisalign', href: '/tratamientos/ortodoncia/invisalign', tag: 'Invisible' }, 
   { id: 'lingual', title: 'Lingual', href: '/tratamientos/ortodoncia/lingual', tag: 'Interior' },
   { id: 'zafiro', title: 'Zafiro', href: '/tratamientos/ortodoncia/zafiro', tag: 'Estética Fija' },
-  { id: 'metalica', title: 'Metálica', href: '/tratamientos/ortodoncia/metalica', tag: 'Tradicional' }
+  { id: 'metalica', title: 'Metálica', href: '/tratamientos/ortodoncia/metalica', tag: 'Tradicional' },
+  
+  // SEPARADOR VISUAL PARA ORTODONCIA INFANTIL
+  { id: 'sep-orto-infantil', isSeparator: true, title: 'Ortodoncia Infantil' },
+  { id: 'ortodoncia-removible', title: 'Ortodoncia Removible', href: '/tratamientos/ortodoncia/removible', tag: 'Aparatos de quita y pon' }
 ];
 
 const implantesSubOptions = [
@@ -98,12 +102,15 @@ const protesisSubOptions = [
   { id: 'taller', title: 'Taller Dental', href: '/tratamientos/protesis/reparaciones-y-ajustes', tag: 'Reparaciones y ajustes' }
 ];
 
-// ⚡️ NUEVAS OPCIONES PARA ODONTOPEDIATRÍA (NIÑ@S)
 const pediatriaSubOptions = [
   { id: 'prevencion', title: 'Prevención y Educación', href: '/tratamientos/odontopediatria/prevencion', tag: 'Escudo protector' },
   { id: 'conservadora', title: 'Curando la Caries', href: '/tratamientos/odontopediatria/conservadora', tag: 'Odontología conservadora' },
   { id: 'endodoncia', title: 'Endodoncia Infantil', href: '/tratamientos/odontopediatria/endodoncia', tag: 'Salvar el diente' },
-  { id: 'espacios', title: 'Salvando los Espacios', href: '/tratamientos/odontopediatria/cirugia-y-espacio', tag: 'Para los dientes que vienen' }
+  { id: 'espacios', title: 'Salvando los Espacios', href: '/tratamientos/odontopediatria/cirugia-y-espacio', tag: 'Para los dientes que vienen' },
+  
+  { id: 'sep-orto-infantil-ped', isSeparator: true, title: 'Ortodoncia Infantil' },
+  
+  { id: 'ortodoncia-removible-ped', title: 'Ortodoncia Removible', href: '/tratamientos/ortodoncia/removible', tag: 'Aparatos de quita y pon' }
 ];
 
 export default function LandingPage() {
@@ -121,13 +128,13 @@ export default function LandingPage() {
     return () => { document.body.style.overflow = ''; }; 
   }, [activeFloatingId]);
 
-  // ⚡️ LÓGICA DINÁMICA PARA EL MODAL (AHORA CON PEDIATRÍA)
+  // ⚡️ LÓGICA DINÁMICA PARA EL MODAL
   const activeCategory = tratamientosList.find(t => t.id === activeFloatingId);
   const isEstetica = activeFloatingId === 1;
   const isOrtodoncia = activeFloatingId === 2;
   const isImplantes = activeFloatingId === 3;
   const isProtesis = activeFloatingId === 5;
-  const isPediatria = activeFloatingId === 6; // ⚡️ Identificador de Niñ@s
+  const isPediatria = activeFloatingId === 6; 
   
   const subOptions = isEstetica ? esteticaSubOptions : isOrtodoncia ? ortodonciaSubOptions : isImplantes ? implantesSubOptions : isProtesis ? protesisSubOptions : isPediatria ? pediatriaSubOptions : [];
   const modalTitle = isEstetica ? "ESTÉTICA DENTAL" : isOrtodoncia ? "ORTODONCIA" : isImplantes ? "IMPLANTES" : isProtesis ? "PRÓTESIS Y REHABILITACIÓN" : isPediatria ? "ODONTOPEDIATRÍA" : "";
