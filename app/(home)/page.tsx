@@ -1,7 +1,5 @@
 "use client"; // ⚡️ IMPORTANTE: Necesitamos interactividad
 
-"use client"; // ⚡️ IMPORTANTE: Necesitamos interactividad
-
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic'; 
 import Link from 'next/link';   
@@ -60,10 +58,11 @@ const nationalMasterSchema = {
 const tratamientosList = [
   { id: 1, href: "/tratamientos/estetica", icon: Baby, image: "/images/tratamientos/estetica.png", title: "Estética" },
   { id: 2, hasSub: true, icon: Sparkles, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "Ortodoncia" },
-  { id: 3, href: "/categorias/implantes#implantes", icon: Stethoscope, image: "/images/tratamientos/implantes.png", title: "Implantes" },
+  // ⚡️ IMPLANTES AHORA ABRE EL BOTTOM SHEET (hasSub: true)
+  { id: 3, hasSub: true, icon: Stethoscope, image: "/images/tratamientos/implantes.png", title: "Implantes" },
   { id: 4, href: "/tratamientos/odontologia-conservadora#dolor", icon: Zap, image: "/images/tratamientos/endodoncia.png", title: "Dolor" },
   { id: 5, href: "/tratamientos/odontologia-protesis", icon: Activity, title: "Prótesis", image: "/images/tratamientos/protesis.png" },
-  { id: 6, href: "/tratamientos/odontopediatría", icon: Smile, image: "/images/tratamientos/odontopediatria.png", title: "Niñ@s" },
+  { id: 6, href: "/tratamientos/implantologia", icon: Smile, image: "/images/tratamientos/odontopediatria.png", title: "Niñ@s" },
   { id: 7, href: "/tratamientos/periodoncia#encias", icon: HeartPulse, image: "/images/tratamientos/general.png", title: "Limpieza" },
   { id: 8, href: "/categorias/higiene-y-prevencion#prevencion", icon: ShieldCheck, image: "/images/tratamientos/ferula.png", title: "Prevención" },
 ];
@@ -73,6 +72,13 @@ const ortodonciaSubOptions = [
   { id: 'lingual', title: 'Lingual', href: '/tratamientos/ortodoncia/lingual', tag: 'Interior' },
   { id: 'zirconio', title: 'Zirconio', href: '/tratamientos/ortodoncia/zirconio', tag: 'Estética Fija' },
   { id: 'metalica', title: 'Metálica', href: '/tratamientos/ortodoncia/metalica', tag: 'Tradicional' }
+];
+
+// ⚡️ NUEVAS OPCIONES PARA IMPLANTOLOGÍA
+const implantesSubOptions = [
+  { id: 'individual', title: 'Implante Individual', href: '/tratamientos/implantologia/implante-individual', tag: 'Sustitución de 1 pieza' },
+  { id: 'arcada', title: 'Arcada Completa Fija', href: '/tratamientos/implantologia/arcada-completa-fija', tag: 'Todos los dientes fijos' },
+  { id: 'sobredentadura', title: 'Sobredentadura', href: '/tratamientos/implantologia/sobredentadura', tag: 'Económica y segura' }
 ];
 
 export default function LandingPage() {
@@ -89,6 +95,14 @@ export default function LandingPage() {
     }
     return () => { document.body.style.overflow = ''; }; 
   }, [activeFloatingId]);
+
+  // ⚡️ LÓGICA DINÁMICA PARA EL MODAL
+  const activeCategory = tratamientosList.find(t => t.id === activeFloatingId);
+  const isOrtodoncia = activeFloatingId === 2;
+  const isImplantes = activeFloatingId === 3;
+  const subOptions = isOrtodoncia ? ortodonciaSubOptions : isImplantes ? implantesSubOptions : [];
+  const modalTitle = isOrtodoncia ? "ORTODONCIA" : isImplantes ? "IMPLANTES" : "";
+  const modalSubtitle = isOrtodoncia ? "Elige el tipo de aparato:" : isImplantes ? "Elige la solución que necesitas:" : "";
 
   return (
     <div className="min-h-screen bg-white text-dkv-gray selection:bg-dkv-green selection:text-white relative">
@@ -118,7 +132,6 @@ export default function LandingPage() {
                 const Icon = item.icon;
                 const Wrapper = item.hasSub ? 'button' : Link; 
 
-                // Lógica de Delay escalonado
                 const columnDelay = (index % 2) * 150; 
                 const rowDelay = Math.floor(index / 2) * 100;
                 const finalDelay = columnDelay + rowDelay;
@@ -209,7 +222,7 @@ export default function LandingPage() {
         <FooterLegal />
       </main>
 
-      {/* PANEL FLOTANTE ORTODONCIA */}
+      {/* PANEL FLOTANTE DINÁMICO */}
       <div 
         className={`fixed inset-0 z-[100] flex flex-col justify-end md:justify-center items-center px-4 pb-0 md:p-4 transition-all duration-500 ease-out ${
           activeFloatingId !== null ? 'pointer-events-auto' : 'pointer-events-none'
@@ -233,7 +246,7 @@ export default function LandingPage() {
             <div className="flex items-center gap-1.5 text-[15px] font-medium text-gray-500 font-fsme">
               <span>Tratamientos</span>
               <ChevronRight className="w-4 h-4" />
-              <span className="text-gray-900">Ortodoncia</span>
+              <span className="text-gray-900">{activeCategory?.title || 'Opciones'}</span>
             </div>
             
             <button 
@@ -246,14 +259,14 @@ export default function LandingPage() {
 
           <div className="px-5 pt-6 pb-10 md:pb-6">
             <h3 className="text-[26px] font-lemon text-dkv-green-dark uppercase tracking-tight mb-1 leading-none">
-              ORTODONCIA
+              {modalTitle}
             </h3>
             <p className="text-gray-500 text-[17px] font-fsme mb-4">
-              Elige el tipo de aparato:
+              {modalSubtitle}
             </p>
 
             <div className="flex flex-col border-t border-gray-300">
-              {ortodonciaSubOptions.map(sub => (
+              {subOptions.map(sub => (
                 <Link 
                   key={sub.id} 
                   href={sub.href}
@@ -267,6 +280,12 @@ export default function LandingPage() {
                     <span className="text-[16px] text-gray-500">
                       ({sub.tag})
                     </span>
+                    {/* Badge Recomendado opcional si lo necesitaras en el futuro */}
+                    {sub.id === 'invisalign' && (
+                      <span className="text-[10px] font-bold bg-[#718E32] text-white px-2 py-0.5 rounded-full ml-1 uppercase tracking-wide">
+                        Recomendado
+                      </span>
+                    )}
                   </div>
                   <ChevronRight className="w-6 h-6 text-dkv-green-dark group-hover:text-dkv-green transition-colors shrink-0" strokeWidth={2.5} />
                 </Link>
@@ -278,4 +297,3 @@ export default function LandingPage() {
     </div>
   );
 }
-
