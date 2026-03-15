@@ -1,11 +1,4 @@
-"use client"; // ⚡️ IMPORTANTE: Necesitamos interactividad
-
-import React, { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic'; 
-import Link from 'next/link';   
-import { Viewport } from 'next';
-
-import { Smile, Zap, Stethoscope, Sparkles, Baby, HeartPulse, Activity, ShieldCheck, ChevronRight, X } from "lucide-react"; 
+Smile, Zap, Stethoscope, Sparkles, Baby, HeartPulse, Activity, ShieldCheck, ChevronRight, X } from "lucide-react"; 
 
 import { SITE_CONFIG } from '@/constants/config';
 import MainHero from '@/components/hero/MainHero'; 
@@ -56,18 +49,18 @@ const nationalMasterSchema = {
 };
 
 const tratamientosList = [
-  // ⚡️ ESTÉTICA ABRE EL BOTTOM SHEET
   { id: 1, hasSub: true, icon: Baby, image: "/images/tratamientos/estetica.png", title: "Estética" },
   { id: 2, hasSub: true, icon: Sparkles, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "Ortodoncia" },
   { id: 3, hasSub: true, icon: Stethoscope, image: "/images/tratamientos/implantes.png", title: "Implantes" },
   { id: 4, href: "/tratamientos/odontologia-conservadora#dolor", icon: Zap, image: "/images/tratamientos/endodoncia.png", title: "Dolor" },
-  { id: 5, href: "/tratamientos/odontologia-protesis", icon: Activity, title: "Prótesis", image: "/images/tratamientos/protesis.png" },
+  // ⚡️ PRÓTESIS AHORA ABRE EL BOTTOM SHEET (hasSub: true)
+  { id: 5, hasSub: true, icon: Activity, title: "Prótesis", image: "/images/tratamientos/protesis.png" },
+  { id: 9, href: "/tratamientos/apnea", icon: Moon, title: "Ronquido", image: "/images/tratamientos/apnea.png" }, // 🌙 Nueva Categoría Directa
   { id: 6, href: "/tratamientos/implantologia", icon: Smile, image: "/images/tratamientos/odontopediatria.png", title: "Niñ@s" },
   { id: 7, href: "/tratamientos/periodoncia#encias", icon: HeartPulse, image: "/images/tratamientos/general.png", title: "Limpieza" },
   { id: 8, href: "/categorias/higiene-y-prevencion#prevencion", icon: ShieldCheck, image: "/images/tratamientos/ferula.png", title: "Prevención" },
 ];
 
-// ⚡️ OPCIONES PARA ESTÉTICA CON SEPARADORES DE CROSS-SELLING
 const esteticaSubOptions = [
   { id: 'blanqueamiento', title: 'Blanqueamiento', href: '/tratamientos/estetica/blanqueamiento', tag: 'Luz y armonía' }, 
   { id: 'carillas', title: 'Carillas y Diseño', href: '/tratamientos/estetica/carillas', tag: 'Hollywood Smile' },
@@ -94,6 +87,14 @@ const implantesSubOptions = [
   { id: 'sobredentadura', title: 'Sobredentadura', href: '/tratamientos/implantologia/sobredentadura', tag: 'Económica y segura' }
 ];
 
+// ⚡️ NUEVAS OPCIONES PARA PRÓTESIS
+const protesisSubOptions = [
+  { id: 'fijas', title: 'Prótesis Fijas', href: '/tratamientos/protesis/fijas', tag: 'Dientes que no se quitan' },
+  { id: 'removibles', title: 'Prótesis Removibles', href: '/tratamientos/protesis/removibles', tag: 'De quita y pon' },
+  { id: 'bruxismo', title: 'Oclusión y Bruxismo', href: '/tratamientos/protesis/bruxismo', tag: 'Protección' },
+  { id: 'taller', title: 'Taller Dental', href: '/tratamientos/protesis/reparaciones-y-ajustes', tag: 'Reparaciones y ajustes' }
+];
+
 export default function LandingPage() {
   const [activeFloatingId, setActiveFloatingId] = useState<number | null>(null); 
   
@@ -109,15 +110,16 @@ export default function LandingPage() {
     return () => { document.body.style.overflow = ''; }; 
   }, [activeFloatingId]);
 
-  // ⚡️ LÓGICA DINÁMICA PARA EL MODAL
+  // ⚡️ LÓGICA DINÁMICA PARA EL MODAL (AHORA CON PRÓTESIS)
   const activeCategory = tratamientosList.find(t => t.id === activeFloatingId);
   const isEstetica = activeFloatingId === 1;
   const isOrtodoncia = activeFloatingId === 2;
   const isImplantes = activeFloatingId === 3;
+  const isProtesis = activeFloatingId === 5;
   
-  const subOptions = isEstetica ? esteticaSubOptions : isOrtodoncia ? ortodonciaSubOptions : isImplantes ? implantesSubOptions : [];
-  const modalTitle = isEstetica ? "ESTÉTICA DENTAL" : isOrtodoncia ? "ORTODONCIA" : isImplantes ? "IMPLANTES" : "";
-  const modalSubtitle = isEstetica ? "Elige el tratamiento que deseas:" : isOrtodoncia ? "Elige el tipo de aparato:" : isImplantes ? "Elige la solución que necesitas:" : "";
+  const subOptions = isEstetica ? esteticaSubOptions : isOrtodoncia ? ortodonciaSubOptions : isImplantes ? implantesSubOptions : isProtesis ? protesisSubOptions : [];
+  const modalTitle = isEstetica ? "ESTÉTICA DENTAL" : isOrtodoncia ? "ORTODONCIA" : isImplantes ? "IMPLANTES" : isProtesis ? "PRÓTESIS Y REHABILITACIÓN" : "";
+  const modalSubtitle = isEstetica ? "Elige el tratamiento que deseas:" : isOrtodoncia ? "Elige el tipo de aparato:" : isImplantes ? "Elige la solución que necesitas:" : isProtesis ? "Elige el tipo de tratamiento:" : "";
 
   return (
     <div className="min-h-screen bg-white text-dkv-gray selection:bg-dkv-green selection:text-white relative">
