@@ -4,7 +4,8 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
 interface StickySubNavProps {
-  activeId: 'metalica' | 'zafiro' | 'invisalign' | 'lingual';
+  //activeId: 'metalica' | 'zafiro' | 'invisalign' | 'lingual';
+    activeId: "invisalign" | "lingual" | "metalica" | "zafiro" | "individual" | "arcada" | "sobredentadura";
 }
 
 export default function StickySubNav({ activeId }: StickySubNavProps) {
