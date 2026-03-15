@@ -26,6 +26,12 @@ const NAVIGATION_CLUSTERS = {
     { id: 'blanqueamiento', label: 'Blanqueamiento', href: '/tratamientos/estetica/blanqueamiento' },
     { id: 'carillas', label: 'Carillas', href: '/tratamientos/estetica/carillas' },
     { id: 'incrustaciones', label: 'Incrustaciones', href: '/tratamientos/estetica/incrustaciones' },
+  ],
+  protesis: [
+    { id: 'fija', label: 'Fijas', href: '/tratamientos/protesis/fijas' },
+    { id: 'removible', label: 'Removibles', href: '/tratamientos/protesis/removibles' },
+    { id: 'bruxismo', label: 'Bruxismo', href: '/tratamientos/protesis/bruxismo' },
+    { id: 'reparaciones', label: 'Reparaciones', href: '/tratamientos/protesis/reparaciones-y-ajustes' },
   ]
 };
 
