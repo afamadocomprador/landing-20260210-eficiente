@@ -56,15 +56,29 @@ const nationalMasterSchema = {
 };
 
 const tratamientosList = [
-  { id: 1, href: "/tratamientos/estetica", icon: Baby, image: "/images/tratamientos/estetica.png", title: "Estética" },
+  // ⚡️ ESTÉTICA ABRE EL BOTTOM SHEET
+  { id: 1, hasSub: true, icon: Baby, image: "/images/tratamientos/estetica.png", title: "Estética" },
   { id: 2, hasSub: true, icon: Sparkles, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "Ortodoncia" },
-  // ⚡️ IMPLANTES AHORA ABRE EL BOTTOM SHEET (hasSub: true)
   { id: 3, hasSub: true, icon: Stethoscope, image: "/images/tratamientos/implantes.png", title: "Implantes" },
   { id: 4, href: "/tratamientos/odontologia-conservadora#dolor", icon: Zap, image: "/images/tratamientos/endodoncia.png", title: "Dolor" },
   { id: 5, href: "/tratamientos/odontologia-protesis", icon: Activity, title: "Prótesis", image: "/images/tratamientos/protesis.png" },
   { id: 6, href: "/tratamientos/implantologia", icon: Smile, image: "/images/tratamientos/odontopediatria.png", title: "Niñ@s" },
   { id: 7, href: "/tratamientos/periodoncia#encias", icon: HeartPulse, image: "/images/tratamientos/general.png", title: "Limpieza" },
   { id: 8, href: "/categorias/higiene-y-prevencion#prevencion", icon: ShieldCheck, image: "/images/tratamientos/ferula.png", title: "Prevención" },
+];
+
+// ⚡️ OPCIONES PARA ESTÉTICA CON SEPARADORES DE CROSS-SELLING
+const esteticaSubOptions = [
+  { id: 'blanqueamiento', title: 'Blanqueamiento', href: '/tratamientos/estetica/blanqueamiento', tag: 'Luz y armonía' }, 
+  { id: 'carillas', title: 'Carillas y Diseño', href: '/tratamientos/estetica/carillas', tag: 'Hollywood Smile' },
+  { id: 'incrustaciones', title: 'Incrustaciones', href: '/tratamientos/estetica/incrustaciones', tag: 'Reconstrucción' },
+  
+  // SEPARADOR VISUAL PARA ORTODONCIA ESTÉTICA
+  { id: 'sep-orto-estetica', isSeparator: true, title: 'Alineación Estética' },
+  
+  { id: 'invisalign-est', title: 'Invisalign', href: '/tratamientos/ortodoncia/invisalign', tag: 'Ortodoncia Invisible' }, 
+  { id: 'lingual-est', title: 'Ortodoncia Lingual', href: '/tratamientos/ortodoncia/lingual', tag: 'Aparato Interior' },
+  { id: 'zafiro-est', title: 'Brackets de Zafiro', href: '/tratamientos/ortodoncia/zafiro', tag: 'Estética Fija' },
 ];
 
 const ortodonciaSubOptions = [
@@ -74,7 +88,6 @@ const ortodonciaSubOptions = [
   { id: 'metalica', title: 'Metálica', href: '/tratamientos/ortodoncia/metalica', tag: 'Tradicional' }
 ];
 
-// ⚡️ NUEVAS OPCIONES PARA IMPLANTOLOGÍA
 const implantesSubOptions = [
   { id: 'individual', title: 'Implante Individual', href: '/tratamientos/implantologia/implante-individual', tag: 'Sustitución de 1 pieza' },
   { id: 'arcada', title: 'Arcada Completa Fija', href: '/tratamientos/implantologia/arcada-completa-fija', tag: 'Todos los dientes fijos' },
@@ -98,11 +111,13 @@ export default function LandingPage() {
 
   // ⚡️ LÓGICA DINÁMICA PARA EL MODAL
   const activeCategory = tratamientosList.find(t => t.id === activeFloatingId);
+  const isEstetica = activeFloatingId === 1;
   const isOrtodoncia = activeFloatingId === 2;
   const isImplantes = activeFloatingId === 3;
-  const subOptions = isOrtodoncia ? ortodonciaSubOptions : isImplantes ? implantesSubOptions : [];
-  const modalTitle = isOrtodoncia ? "ORTODONCIA" : isImplantes ? "IMPLANTES" : "";
-  const modalSubtitle = isOrtodoncia ? "Elige el tipo de aparato:" : isImplantes ? "Elige la solución que necesitas:" : "";
+  
+  const subOptions = isEstetica ? esteticaSubOptions : isOrtodoncia ? ortodonciaSubOptions : isImplantes ? implantesSubOptions : [];
+  const modalTitle = isEstetica ? "ESTÉTICA DENTAL" : isOrtodoncia ? "ORTODONCIA" : isImplantes ? "IMPLANTES" : "";
+  const modalSubtitle = isEstetica ? "Elige el tratamiento que deseas:" : isOrtodoncia ? "Elige el tipo de aparato:" : isImplantes ? "Elige la solución que necesitas:" : "";
 
   return (
     <div className="min-h-screen bg-white text-dkv-gray selection:bg-dkv-green selection:text-white relative">
@@ -236,13 +251,13 @@ export default function LandingPage() {
         />
 
         <div 
-          className={`relative w-full md:max-w-[400px] bg-white shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.2)] rounded-t-[28px] md:rounded-[28px] overflow-hidden transition-transform duration-500 ${
+          className={`relative w-full md:max-w-[400px] bg-white shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.2)] rounded-t-[28px] md:rounded-[28px] overflow-hidden transition-transform duration-500 flex flex-col max-h-[85vh] ${
             activeFloatingId !== null 
               ? 'translate-y-0 scale-100 opacity-100' 
               : 'translate-y-[100%] md:translate-y-10 md:scale-95 opacity-0'
           }`}
         >
-          <div className="bg-[#F5F5F5] px-5 py-4 flex items-center justify-between border-b border-gray-300">
+          <div className="bg-[#F5F5F5] px-5 py-4 flex items-center justify-between border-b border-gray-300 shrink-0">
             <div className="flex items-center gap-1.5 text-[15px] font-medium text-gray-500 font-fsme">
               <span>Tratamientos</span>
               <ChevronRight className="w-4 h-4" />
@@ -257,7 +272,7 @@ export default function LandingPage() {
             </button>
           </div>
 
-          <div className="px-5 pt-6 pb-10 md:pb-6">
+          <div className="px-5 pt-6 pb-10 md:pb-6 overflow-y-auto overscroll-contain">
             <h3 className="text-[26px] font-lemon text-dkv-green-dark uppercase tracking-tight mb-1 leading-none">
               {modalTitle}
             </h3>
@@ -265,31 +280,44 @@ export default function LandingPage() {
               {modalSubtitle}
             </p>
 
-            <div className="flex flex-col border-t border-gray-300">
-              {subOptions.map(sub => (
-                <Link 
-                  key={sub.id} 
-                  href={sub.href}
-                  onClick={() => setActiveFloatingId(null)}
-                  className="group flex items-center justify-between py-4 border-b border-gray-300 hover:bg-gray-50 transition-colors active:bg-gray-100"
-                >
-                  <div className="flex items-center flex-wrap gap-2">
-                    <span className="font-bold text-[17px] text-dkv-green-dark group-hover:text-dkv-green transition-colors">
-                      {sub.title}
-                    </span>
-                    <span className="text-[16px] text-gray-500">
-                      ({sub.tag})
-                    </span>
-                    {/* Badge Recomendado opcional si lo necesitaras en el futuro */}
-                    {sub.id === 'invisalign' && (
-                      <span className="text-[10px] font-bold bg-[#718E32] text-white px-2 py-0.5 rounded-full ml-1 uppercase tracking-wide">
-                        Recomendado
+            <div className="flex flex-col border-t border-gray-300 pt-2">
+              {subOptions.map((sub: any) => {
+                // ⚡️ LÓGICA PARA RENDERIZAR SEPARADORES VISUALES
+                if (sub.isSeparator) {
+                  return (
+                    <div key={sub.id} className="pt-6 pb-2">
+                      <span className="text-[11px] font-bold text-dkv-green uppercase tracking-widest bg-dkv-green/10 px-3 py-1 rounded-full">
+                        {sub.title}
                       </span>
-                    )}
-                  </div>
-                  <ChevronRight className="w-6 h-6 text-dkv-green-dark group-hover:text-dkv-green transition-colors shrink-0" strokeWidth={2.5} />
-                </Link>
-              ))}
+                    </div>
+                  );
+                }
+
+                // Elemento Normal
+                return (
+                  <Link 
+                    key={sub.id} 
+                    href={sub.href}
+                    onClick={() => setActiveFloatingId(null)}
+                    className="group flex items-center justify-between py-4 border-b border-gray-200/60 hover:bg-gray-50 transition-colors active:bg-gray-100"
+                  >
+                    <div className="flex items-center flex-wrap gap-2">
+                      <span className="font-bold text-[17px] text-dkv-green-dark group-hover:text-dkv-green transition-colors">
+                        {sub.title}
+                      </span>
+                      <span className="text-[16px] text-gray-500">
+                        ({sub.tag})
+                      </span>
+                      {sub.id === 'invisalign' && (
+                        <span className="text-[10px] font-bold bg-[#718E32] text-white px-2 py-0.5 rounded-full ml-1 uppercase tracking-wide">
+                          Recomendado
+                        </span>
+                      )}
+                    </div>
+                    <ChevronRight className="w-6 h-6 text-dkv-green-dark group-hover:text-dkv-green transition-colors shrink-0" strokeWidth={2.5} />
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </div>
