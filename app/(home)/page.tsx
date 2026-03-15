@@ -70,7 +70,7 @@ const tratamientosList = [
 const ortodonciaSubOptions = [
   { id: 'invisalign', title: 'Invisalign', href: '/tratamientos/ortodoncia/invisalign', tag: 'Invisible' }, 
   { id: 'lingual', title: 'Lingual', href: '/tratamientos/ortodoncia/lingual', tag: 'Interior' },
-  { id: 'zirconio', title: 'Zirconio', href: '/tratamientos/ortodoncia/zirconio', tag: 'Estética Fija' },
+  { id: 'zafiro', title: 'Zafiro', href: '/tratamientos/ortodoncia/zafiro', tag: 'Estética Fija' },
   { id: 'metalica', title: 'Metálica', href: '/tratamientos/ortodoncia/metalica', tag: 'Tradicional' }
 ];
 
