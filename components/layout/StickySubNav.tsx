@@ -32,6 +32,13 @@ const NAVIGATION_CLUSTERS = {
     { id: 'removible', label: 'Removibles', href: '/tratamientos/protesis/removibles' },
     { id: 'bruxismo', label: 'Bruxismo', href: '/tratamientos/protesis/bruxismo' },
     { id: 'reparaciones', label: 'Reparaciones', href: '/tratamientos/protesis/reparaciones-y-ajustes' },
+  ],
+  // ⚡️ NUEVO CLUSTER: ODONTOPEDIATRÍA
+  odontopediatria: [
+    { id: 'prevencion', label: 'Prevención', href: '/tratamientos/odontopediatria/prevencion' },
+    { id: 'conservadora-pediatria', label: 'Conservadora', href: '/tratamientos/odontopediatria/conservadora' },
+    { id: 'endodoncia-pediatria', label: 'Endodoncia', href: '/tratamientos/odontopediatria/endodoncia' },
+    { id: 'cirugia-pediatria', label: 'Cirugía y Espacio', href: '/tratamientos/odontopediatria/cirugia-y-espacio' },
   ]
 };
 
@@ -50,17 +57,11 @@ export default function StickySubNav({ activeId }: StickySubNavProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // ⚡️ LÓGICA DE RUTEO INTELIGENTE (Context-Aware)
-  // Averiguamos a qué cluster pertenece el activeId que nos ha pasado la página
-  let activeCluster = null;
-
-  if (NAVIGATION_CLUSTERS.ortodoncia.some(item => item.id === activeId)) {
-    activeCluster = NAVIGATION_CLUSTERS.ortodoncia;
-  } else if (NAVIGATION_CLUSTERS.implantologia.some(item => item.id === activeId)) {
-    activeCluster = NAVIGATION_CLUSTERS.implantologia;
-  } else if (NAVIGATION_CLUSTERS.estetica.some(item => item.id === activeId)) {
-    activeCluster = NAVIGATION_CLUSTERS.estetica;
-  }
+  // ⚡️ LÓGICA DE RUTEO INTELIGENTE AUTOMÁTICO (Refactorizado)
+  // Escanea automáticamente todos los clusters. ¡Ya no hacen falta interminables if/else!
+  const activeCluster = Object.values(NAVIGATION_CLUSTERS).find(cluster => 
+    cluster.some(item => item.id === activeId)
+  );
 
   // Si pasamos un ID que no está mapeado, no renderizamos el menú para no confundir al usuario
   if (!activeCluster) return null;
