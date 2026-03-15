@@ -16,6 +16,7 @@ const NAVIGATION_CLUSTERS = {
     { id: 'zafiro', label: 'Zafiro', href: '/tratamientos/ortodoncia/zafiro' },
     { id: 'invisalign', label: 'Invisalign', href: '/tratamientos/ortodoncia/invisalign' },
     { id: 'lingual', label: 'Lingual', href: '/tratamientos/ortodoncia/lingual' },
+    { id: 'ortodoncia-removible', label: 'Removible', href: '/tratamientos/ortodoncia/removible' },
   ],
   implantologia: [
     { id: 'individual', label: 'Implante Individual', href: '/tratamientos/implantologia/implante-individual' },
@@ -33,12 +34,17 @@ const NAVIGATION_CLUSTERS = {
     { id: 'bruxismo', label: 'Bruxismo', href: '/tratamientos/protesis/bruxismo' },
     { id: 'reparaciones', label: 'Reparaciones', href: '/tratamientos/protesis/reparaciones-y-ajustes' },
   ],
-  // ⚡️ NUEVO CLUSTER: ODONTOPEDIATRÍA
   odontopediatria: [
     { id: 'prevencion', label: 'Prevención', href: '/tratamientos/odontopediatria/prevencion' },
     { id: 'conservadora-pediatria', label: 'Conservadora', href: '/tratamientos/odontopediatria/conservadora' },
     { id: 'endodoncia-pediatria', label: 'Endodoncia', href: '/tratamientos/odontopediatria/endodoncia' },
     { id: 'cirugia-pediatria', label: 'Cirugía y Espacio', href: '/tratamientos/odontopediatria/cirugia-y-espacio' },
+  ],
+  // ⚡️ NUEVO CLUSTER: ODONTOLOGÍA CONSERVADORA
+  conservadora: [
+    { id: 'reconstruccion', label: 'Reconstrucción', href: '/tratamientos/odontologia-conservadora/reconstruccion' },
+    { id: 'endodoncias', label: 'Endodoncias', href: '/tratamientos/odontologia-conservadora/endodoncias' },
+    { id: 'casos-complejos', label: 'Cirugía y Complejos', href: '/tratamientos/odontologia-conservadora/cirugia-y-complejos' },
   ]
 };
 
