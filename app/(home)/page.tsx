@@ -1,4 +1,11 @@
-Smile, Zap, Stethoscope, Sparkles, Baby, HeartPulse, Activity, ShieldCheck, ChevronRight, X } from "lucide-react"; 
+"use client"; // ⚡️ IMPORTANTE: Necesitamos interactividad
+
+import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic'; 
+import Link from 'next/link';   
+import { Viewport } from 'next';
+
+import { Moon, Smile, Zap, Stethoscope, Sparkles, Baby, HeartPulse, Activity, ShieldCheck, ChevronRight, X } from "lucide-react"; 
 
 import { SITE_CONFIG } from '@/constants/config';
 import MainHero from '@/components/hero/MainHero'; 
@@ -53,10 +60,10 @@ const tratamientosList = [
   { id: 2, hasSub: true, icon: Sparkles, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "Ortodoncia" },
   { id: 3, hasSub: true, icon: Stethoscope, image: "/images/tratamientos/implantes.png", title: "Implantes" },
   { id: 4, href: "/tratamientos/odontologia-conservadora#dolor", icon: Zap, image: "/images/tratamientos/endodoncia.png", title: "Dolor" },
-  // ⚡️ PRÓTESIS AHORA ABRE EL BOTTOM SHEET (hasSub: true)
   { id: 5, hasSub: true, icon: Activity, title: "Prótesis", image: "/images/tratamientos/protesis.png" },
-  { id: 9, href: "/tratamientos/apnea", icon: Moon, title: "Ronquido", image: "/images/tratamientos/apnea.png" }, // 🌙 Nueva Categoría Directa
-  { id: 6, href: "/tratamientos/implantologia", icon: Smile, image: "/images/tratamientos/odontopediatria.png", title: "Niñ@s" },
+  { id: 9, href: "/tratamientos/apnea", icon: Moon, title: "Ronquido", image: "/images/tratamientos/apnea.png" },
+  // ⚡️ ODONTOPEDIATRÍA AHORA ABRE EL BOTTOM SHEET (hasSub: true)
+  { id: 6, hasSub: true, icon: Smile, image: "/images/tratamientos/odontopediatria.png", title: "Niñ@s" },
   { id: 7, href: "/tratamientos/periodoncia#encias", icon: HeartPulse, image: "/images/tratamientos/general.png", title: "Limpieza" },
   { id: 8, href: "/categorias/higiene-y-prevencion#prevencion", icon: ShieldCheck, image: "/images/tratamientos/ferula.png", title: "Prevención" },
 ];
@@ -65,10 +72,7 @@ const esteticaSubOptions = [
   { id: 'blanqueamiento', title: 'Blanqueamiento', href: '/tratamientos/estetica/blanqueamiento', tag: 'Luz y armonía' }, 
   { id: 'carillas', title: 'Carillas y Diseño', href: '/tratamientos/estetica/carillas', tag: 'Hollywood Smile' },
   { id: 'incrustaciones', title: 'Incrustaciones', href: '/tratamientos/estetica/incrustaciones', tag: 'Reconstrucción' },
-  
-  // SEPARADOR VISUAL PARA ORTODONCIA ESTÉTICA
   { id: 'sep-orto-estetica', isSeparator: true, title: 'Alineación Estética' },
-  
   { id: 'invisalign-est', title: 'Invisalign', href: '/tratamientos/ortodoncia/invisalign', tag: 'Ortodoncia Invisible' }, 
   { id: 'lingual-est', title: 'Ortodoncia Lingual', href: '/tratamientos/ortodoncia/lingual', tag: 'Aparato Interior' },
   { id: 'zafiro-est', title: 'Brackets de Zafiro', href: '/tratamientos/ortodoncia/zafiro', tag: 'Estética Fija' },
@@ -87,12 +91,19 @@ const implantesSubOptions = [
   { id: 'sobredentadura', title: 'Sobredentadura', href: '/tratamientos/implantologia/sobredentadura', tag: 'Económica y segura' }
 ];
 
-// ⚡️ NUEVAS OPCIONES PARA PRÓTESIS
 const protesisSubOptions = [
   { id: 'fijas', title: 'Prótesis Fijas', href: '/tratamientos/protesis/fijas', tag: 'Dientes que no se quitan' },
   { id: 'removibles', title: 'Prótesis Removibles', href: '/tratamientos/protesis/removibles', tag: 'De quita y pon' },
   { id: 'bruxismo', title: 'Oclusión y Bruxismo', href: '/tratamientos/protesis/bruxismo', tag: 'Protección' },
   { id: 'taller', title: 'Taller Dental', href: '/tratamientos/protesis/reparaciones-y-ajustes', tag: 'Reparaciones y ajustes' }
+];
+
+// ⚡️ NUEVAS OPCIONES PARA ODONTOPEDIATRÍA (NIÑ@S)
+const pediatriaSubOptions = [
+  { id: 'prevencion', title: 'Prevención y Educación', href: '/tratamientos/odontopediatria/prevencion', tag: 'Escudo protector' },
+  { id: 'conservadora', title: 'Curando la Caries', href: '/tratamientos/odontopediatria/conservadora', tag: 'Odontología conservadora' },
+  { id: 'endodoncia', title: 'Endodoncia Infantil', href: '/tratamientos/odontopediatria/endodoncia', tag: 'Salvar el diente' },
+  { id: 'espacios', title: 'Salvando los Espacios', href: '/tratamientos/odontopediatria/cirugia-y-espacio', tag: 'Para los dientes que vienen' }
 ];
 
 export default function LandingPage() {
@@ -110,16 +121,17 @@ export default function LandingPage() {
     return () => { document.body.style.overflow = ''; }; 
   }, [activeFloatingId]);
 
-  // ⚡️ LÓGICA DINÁMICA PARA EL MODAL (AHORA CON PRÓTESIS)
+  // ⚡️ LÓGICA DINÁMICA PARA EL MODAL (AHORA CON PEDIATRÍA)
   const activeCategory = tratamientosList.find(t => t.id === activeFloatingId);
   const isEstetica = activeFloatingId === 1;
   const isOrtodoncia = activeFloatingId === 2;
   const isImplantes = activeFloatingId === 3;
   const isProtesis = activeFloatingId === 5;
+  const isPediatria = activeFloatingId === 6; // ⚡️ Identificador de Niñ@s
   
-  const subOptions = isEstetica ? esteticaSubOptions : isOrtodoncia ? ortodonciaSubOptions : isImplantes ? implantesSubOptions : isProtesis ? protesisSubOptions : [];
-  const modalTitle = isEstetica ? "ESTÉTICA DENTAL" : isOrtodoncia ? "ORTODONCIA" : isImplantes ? "IMPLANTES" : isProtesis ? "PRÓTESIS Y REHABILITACIÓN" : "";
-  const modalSubtitle = isEstetica ? "Elige el tratamiento que deseas:" : isOrtodoncia ? "Elige el tipo de aparato:" : isImplantes ? "Elige la solución que necesitas:" : isProtesis ? "Elige el tipo de tratamiento:" : "";
+  const subOptions = isEstetica ? esteticaSubOptions : isOrtodoncia ? ortodonciaSubOptions : isImplantes ? implantesSubOptions : isProtesis ? protesisSubOptions : isPediatria ? pediatriaSubOptions : [];
+  const modalTitle = isEstetica ? "ESTÉTICA DENTAL" : isOrtodoncia ? "ORTODONCIA" : isImplantes ? "IMPLANTES" : isProtesis ? "PRÓTESIS Y REHABILITACIÓN" : isPediatria ? "ODONTOPEDIATRÍA" : "";
+  const modalSubtitle = isEstetica ? "Elige el tratamiento que deseas:" : isOrtodoncia ? "Elige el tipo de aparato:" : isImplantes ? "Elige la solución que necesitas:" : isProtesis ? "Elige el tipo de tratamiento:" : isPediatria ? "Cuidando la sonrisa de los más pequeños:" : "";
 
   return (
     <div className="min-h-screen bg-white text-dkv-gray selection:bg-dkv-green selection:text-white relative">
@@ -284,7 +296,6 @@ export default function LandingPage() {
 
             <div className="flex flex-col border-t border-gray-300 pt-2">
               {subOptions.map((sub: any) => {
-                // ⚡️ LÓGICA PARA RENDERIZAR SEPARADORES VISUALES
                 if (sub.isSeparator) {
                   return (
                     <div key={sub.id} className="pt-6 pb-2">
@@ -295,7 +306,6 @@ export default function LandingPage() {
                   );
                 }
 
-                // Elemento Normal
                 return (
                   <Link 
                     key={sub.id} 
