@@ -15,16 +15,13 @@ import HeroSearch from '@/components/home/HeroSearch';
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import ShareButton from "@/components/ui/ShareButton";
 
-import { AlertCircle, Info, Zap, Sparkles, Smile, ShieldCheck, CheckCircle2 } from "lucide-react"; 
+// ⚡️ Añadido el icono Diamond para el bloque Premium
+import { AlertCircle, Info, Zap, Sparkles, Smile, ShieldCheck, CheckCircle2, Diamond } from "lucide-react"; 
 
 export const metadata: Metadata = {
   title: "Ortodoncia Invisible Invisalign | Precios Cerrados DKV Dentisalud",
   description: "Alineadores transparentes y removibles. El sistema más demandado por adultos para una ortodoncia cómoda, estética y planificada en 3D.",
 };
-
-
-
-
 
 // --- Componente Ficha de Tratamiento ---
 const TreatmentRow = ({ id, name, price, image, imageAlt, secondaryImage, secondaryImageAlt, titleTag = "h2", children }: any) => {
@@ -89,8 +86,6 @@ export default function OrtodonciaInvisalignPage() {
         {/* ⚡️ Inyección del menú transversal (Invisalign Activo) */}
         <StickySubNav activeId="invisalign" />
 
-
-
         <section className="bg-dkv-gray-border/30 pt-12 pb-20">
           <div className="container mx-auto px-4 max-w-4xl flow-root">
 
@@ -121,6 +116,25 @@ export default function OrtodonciaInvisalignPage() {
                     </p>
                   </div>
                   
+                  {/* 💎 BLOQUE PREMIUM: CENTROS PROPIOS (Integrado dentro o justo antes de precios) */}
+                  <div id="garantia-centros-propios" className="bg-gradient-to-br from-dkv-green-dark to-[#022A27] rounded-2xl p-6 md:p-8 shadow-xl relative overflow-hidden my-8 text-white border border-[#D4AF37]/30">
+                    <div className="absolute top-0 right-0 w-48 h-48 bg-white opacity-5 blur-[80px] rounded-full"></div>
+                    <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#D4AF37] opacity-10 blur-[60px] rounded-full"></div>
+
+                    <div className="relative z-10">
+                      <div className="flex items-center gap-2 mb-3">
+                        <Diamond className="w-6 h-6 text-[#D4AF37]" />
+                        <span className="text-[#D4AF37] font-bold text-xs md:text-sm uppercase tracking-[0.2em] font-fsme">Garantía Exclusiva</span>
+                      </div>
+                      <h3 className="text-xl md:text-2xl font-lemon mb-3 uppercase tracking-wide">
+                        Centros Propios Especiales DKV
+                      </h3>
+                      <p className="font-fsme text-base text-white/90 leading-relaxed mb-0">
+                        Los tratamientos de Ortodoncia Invisible que vendemos se realizan <strong>EXCLUSIVAMENTE en nuestros Centros Propios Especiales</strong>. Solo a través de nuestra red clínica de élite podemos asegurar el rigor de la planificación 3D, la autenticidad de los materiales y ofrecerte una <strong>garantía total sobre los resultados</strong>. Si no es en un Centro Propio, no está garantizado.
+                      </p>
+                    </div>
+                  </div>
+
                   <div className="bg-dkv-gray-light/30 rounded-2xl p-5 md:p-6 border border-dkv-gray-border mt-6">
                     <h3 className="text-dkv-green-dark font-bold font-lemon text-sm uppercase mb-4">Precios Integrales Cerrados</h3>
                     <ul className="space-y-4">
@@ -204,11 +218,11 @@ export default function OrtodonciaInvisalignPage() {
                   <div className="bg-dkv-gray-light p-4 rounded-xl border border-dkv-gray-border/50 mb-8 flex items-start gap-3">
                     <Info className="w-5 h-5 text-dkv-green shrink-0 mt-0.5" />
                     <p className="text-lg text-dkv-gray font-fsme leading-relaxed">
-                      El primer paso es un escaneado digital de tu boca. Acude a una primera visita para evaluar tu caso y previsualizar cómo quedará tu sonrisa con alineadores invisibles. La información reflejada es orientativa.
+                      El primer paso es un escaneado digital de tu boca. Acude a una primera visita en uno de nuestros <strong>Centros Propios Especiales</strong> para evaluar tu caso, garantizar los resultados y previsualizar cómo quedará tu sonrisa.
                     </p>
                   </div>
                   <p className="text-lg text-dkv-gray mb-6">
-                    Encuentra tu centro DKV más cercano y pide tu cita de valoración sin compromiso:
+                    Encuentra tu centro DKV Especializado más cercano y pide tu cita de valoración sin compromiso:
                   </p>
                 </div>
                 
