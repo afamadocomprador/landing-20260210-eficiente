@@ -59,12 +59,13 @@ const tratamientosList = [
   { id: 1, hasSub: true, icon: Baby, image: "/images/tratamientos/estetica.png", title: "Estética" },
   { id: 2, hasSub: true, icon: Sparkles, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "Ortodoncia" },
   { id: 3, hasSub: true, icon: Stethoscope, image: "/images/tratamientos/implantes.png", title: "Implantes" },
-  { id: 4, href: "/tratamientos/odontologia-conservadora#dolor", icon: Zap, image: "/images/tratamientos/endodoncia.png", title: "Dolor" },
+  { id: 4, hasSub: true, icon: Zap, image: "/images/tratamientos/endodoncia.png", title: "Dolor" },
   { id: 5, hasSub: true, icon: Activity, title: "Prótesis", image: "/images/tratamientos/protesis.png" },
-  { id: 9, href: "/tratamientos/apnea", icon: Moon, title: "Ronquido", image: "/images/tratamientos/apnea.png" },
+  // ⚡️ IMAGEN REASIGNADA A RONQUIDO
+  { id: 9, href: "/tratamientos/apnea", icon: Moon, title: "Ronquido", image: "/images/tratamientos/ferula.png" },
   { id: 6, hasSub: true, icon: Smile, image: "/images/tratamientos/odontopediatria.png", title: "Niñ@s" },
   { id: 7, href: "/tratamientos/periodoncia#encias", icon: HeartPulse, image: "/images/tratamientos/general.png", title: "Limpieza" },
-  { id: 8, href: "/categorias/higiene-y-prevencion#prevencion", icon: ShieldCheck, image: "/images/tratamientos/ferula.png", title: "Prevención" },
+  // ⚡️ PREVENCIÓN ELIMINADA PARA CUADRAR EL GRID A 8 ELEMENTOS EXACTOS
 ];
 
 const esteticaSubOptions = [
@@ -77,14 +78,11 @@ const esteticaSubOptions = [
   { id: 'zafiro-est', title: 'Brackets de Zafiro', href: '/tratamientos/ortodoncia/zafiro', tag: 'Estética Fija' },
 ];
 
-// ⚡️ OPCIONES DE ORTODONCIA ACTUALIZADAS CON SEPARADOR INFANTIL
 const ortodonciaSubOptions = [
   { id: 'invisalign', title: 'Invisalign', href: '/tratamientos/ortodoncia/invisalign', tag: 'Invisible' }, 
   { id: 'lingual', title: 'Lingual', href: '/tratamientos/ortodoncia/lingual', tag: 'Interior' },
   { id: 'zafiro', title: 'Zafiro', href: '/tratamientos/ortodoncia/zafiro', tag: 'Estética Fija' },
   { id: 'metalica', title: 'Metálica', href: '/tratamientos/ortodoncia/metalica', tag: 'Tradicional' },
-  
-  // SEPARADOR VISUAL PARA ORTODONCIA INFANTIL
   { id: 'sep-orto-infantil', isSeparator: true, title: 'Ortodoncia Infantil' },
   { id: 'ortodoncia-removible', title: 'Ortodoncia Removible', href: '/tratamientos/ortodoncia/removible', tag: 'Aparatos de quita y pon' }
 ];
@@ -107,10 +105,14 @@ const pediatriaSubOptions = [
   { id: 'conservadora', title: 'Curando la Caries', href: '/tratamientos/odontopediatria/conservadora', tag: 'Odontología conservadora' },
   { id: 'endodoncia', title: 'Endodoncia Infantil', href: '/tratamientos/odontopediatria/endodoncia', tag: 'Salvar el diente' },
   { id: 'espacios', title: 'Salvando los Espacios', href: '/tratamientos/odontopediatria/cirugia-y-espacio', tag: 'Para los dientes que vienen' },
-  
   { id: 'sep-orto-infantil-ped', isSeparator: true, title: 'Ortodoncia Infantil' },
-  
   { id: 'ortodoncia-removible-ped', title: 'Ortodoncia Removible', href: '/tratamientos/ortodoncia/removible', tag: 'Aparatos de quita y pon' }
+];
+
+const conservadoraSubOptions = [
+  { id: 'reconstruccion', title: 'Reconstrucción', href: '/tratamientos/odontologia-conservadora/reconstruccion', tag: 'Frenar la caries a tiempo' },
+  { id: 'endodoncias', title: 'Endodoncias', href: '/tratamientos/odontologia-conservadora/endodoncias', tag: 'Cuando no te deja dormir' },
+  { id: 'cirugia-complejos', title: 'Cirugía y Casos Complejos', href: '/tratamientos/odontologia-conservadora/cirugia-y-complejos', tag: 'Segundas oportunidades' }
 ];
 
 export default function LandingPage() {
@@ -128,17 +130,19 @@ export default function LandingPage() {
     return () => { document.body.style.overflow = ''; }; 
   }, [activeFloatingId]);
 
-  // ⚡️ LÓGICA DINÁMICA PARA EL MODAL
   const activeCategory = tratamientosList.find(t => t.id === activeFloatingId);
   const isEstetica = activeFloatingId === 1;
   const isOrtodoncia = activeFloatingId === 2;
   const isImplantes = activeFloatingId === 3;
+  const isConservadora = activeFloatingId === 4;
   const isProtesis = activeFloatingId === 5;
   const isPediatria = activeFloatingId === 6; 
   
-  const subOptions = isEstetica ? esteticaSubOptions : isOrtodoncia ? ortodonciaSubOptions : isImplantes ? implantesSubOptions : isProtesis ? protesisSubOptions : isPediatria ? pediatriaSubOptions : [];
-  const modalTitle = isEstetica ? "ESTÉTICA DENTAL" : isOrtodoncia ? "ORTODONCIA" : isImplantes ? "IMPLANTES" : isProtesis ? "PRÓTESIS Y REHABILITACIÓN" : isPediatria ? "ODONTOPEDIATRÍA" : "";
-  const modalSubtitle = isEstetica ? "Elige el tratamiento que deseas:" : isOrtodoncia ? "Elige el tipo de aparato:" : isImplantes ? "Elige la solución que necesitas:" : isProtesis ? "Elige el tipo de tratamiento:" : isPediatria ? "Cuidando la sonrisa de los más pequeños:" : "";
+  const subOptions = isEstetica ? esteticaSubOptions : isOrtodoncia ? ortodonciaSubOptions : isImplantes ? implantesSubOptions : isProtesis ? protesisSubOptions : isPediatria ? pediatriaSubOptions : isConservadora ? conservadoraSubOptions : [];
+  
+  const modalTitle = isEstetica ? "ESTÉTICA DENTAL" : isOrtodoncia ? "ORTODONCIA" : isImplantes ? "IMPLANTES" : isProtesis ? "PRÓTESIS Y REHABILITACIÓN" : isPediatria ? "ODONTOPEDIATRÍA" : isConservadora ? "ODONTOLOGÍA CONSERVADORA" : "";
+  
+  const modalSubtitle = isEstetica ? "Elige el tratamiento que deseas:" : isOrtodoncia ? "Elige el tipo de aparato:" : isImplantes ? "Elige la solución que necesitas:" : isProtesis ? "Elige el tipo de tratamiento:" : isPediatria ? "Cuidando la sonrisa de los más pequeños:" : isConservadora ? "Salvar tu diente es nuestra prioridad:" : "";
 
   return (
     <div className="min-h-screen bg-white text-dkv-gray selection:bg-dkv-green selection:text-white relative">
