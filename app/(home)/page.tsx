@@ -109,7 +109,7 @@ export default function LandingPage() {
 
             <ScrollReveal delay={100}>
               <p className="text-xl md:text-xl text-dkv-gray font-fsme max-w-3xl mb-12 md:mb-16 leading-relaxed text-left md:text-center mx-auto">
-                Ofrecemos servicios básicos gratuitos, y el resto, a <strong>precios inferiores a mercado</strong>.
+                Servicios básicos sin coste en consulta, y el resto, a <strong>precios inferiores a mercado</strong>.
               </p>
             </ScrollReveal>
 
@@ -278,3 +278,4 @@ export default function LandingPage() {
     </div>
   );
 }
+
