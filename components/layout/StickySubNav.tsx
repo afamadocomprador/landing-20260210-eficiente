@@ -4,16 +4,37 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
 interface StickySubNavProps {
-  //activeId: 'metalica' | 'zafiro' | 'invisalign' | 'lingual';
-    activeId: "invisalign" | "lingual" | "metalica" | "zafiro" | "individual" | "arcada" | "sobredentadura";
+  // ⚡️ Tipado genérico: Ahora acepta cualquier string, haciendo el componente infinitamente escalable.
+  activeId: string; 
 }
+
+// ⚡️ DICCIONARIO CENTRALIZADO DE NAVEGACIÓN TRANSVERSAL
+// Aquí agrupamos los tratamientos por "clusters" lógicos.
+const NAVIGATION_CLUSTERS = {
+  ortodoncia: [
+    { id: 'metalica', label: 'Metálica', href: '/tratamientos/ortodoncia/metalica' },
+    { id: 'zafiro', label: 'Zafiro', href: '/tratamientos/ortodoncia/zafiro' },
+    { id: 'invisalign', label: 'Invisalign', href: '/tratamientos/ortodoncia/invisalign' },
+    { id: 'lingual', label: 'Lingual', href: '/tratamientos/ortodoncia/lingual' },
+  ],
+  implantologia: [
+    { id: 'individual', label: 'Implante Individual', href: '/tratamientos/implantologia/implante-individual' },
+    { id: 'arcada', label: 'Arcada Fija', href: '/tratamientos/implantologia/arcada-completa-fija' },
+    { id: 'sobredentadura', label: 'Sobredentadura', href: '/tratamientos/implantologia/sobredentadura' },
+  ],
+  estetica: [
+    { id: 'blanqueamiento', label: 'Blanqueamiento', href: '/tratamientos/estetica/blanqueamiento' },
+    { id: 'carillas', label: 'Carillas', href: '/tratamientos/estetica/carillas' },
+    { id: 'incrustaciones', label: 'Incrustaciones', href: '/tratamientos/estetica/incrustaciones' },
+  ]
+};
 
 export default function StickySubNav({ activeId }: StickySubNavProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      // Aparece al pasar la primera visualización
+      // Aparece al pasar la primera visualización (hero)
       setIsVisible(window.scrollY > 350); 
     };
 
@@ -23,13 +44,20 @@ export default function StickySubNav({ activeId }: StickySubNavProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // ⚡️ Array limpio, sin iconos. Directo al grano.
-  const navItems = [
-    { id: 'metalica', label: 'Metálica', href: '/tratamientos/ortodoncia/metalica', active: activeId === 'metalica' },
-    { id: 'zafiro', label: 'Zafiro', href: '/tratamientos/ortodoncia/zafiro', active: activeId === 'zafiro' },
-    { id: 'invisalign', label: 'Invisalign', href: '/tratamientos/ortodoncia/invisalign', active: activeId === 'invisalign' },
-    { id: 'lingual', label: 'Lingual', href: '/tratamientos/ortodoncia/lingual', active: activeId === 'lingual' },
-  ];
+  // ⚡️ LÓGICA DE RUTEO INTELIGENTE (Context-Aware)
+  // Averiguamos a qué cluster pertenece el activeId que nos ha pasado la página
+  let activeCluster = null;
+
+  if (NAVIGATION_CLUSTERS.ortodoncia.some(item => item.id === activeId)) {
+    activeCluster = NAVIGATION_CLUSTERS.ortodoncia;
+  } else if (NAVIGATION_CLUSTERS.implantologia.some(item => item.id === activeId)) {
+    activeCluster = NAVIGATION_CLUSTERS.implantologia;
+  } else if (NAVIGATION_CLUSTERS.estetica.some(item => item.id === activeId)) {
+    activeCluster = NAVIGATION_CLUSTERS.estetica;
+  }
+
+  // Si pasamos un ID que no está mapeado, no renderizamos el menú para no confundir al usuario
+  if (!activeCluster) return null;
 
   return (
     <div 
@@ -42,20 +70,23 @@ export default function StickySubNav({ activeId }: StickySubNavProps) {
     >
       <div className="bg-white/90 backdrop-blur-xl border border-dkv-gray-border shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)] rounded-full p-1.5 flex items-center justify-center gap-1 overflow-x-auto hide-scrollbar max-w-full pointer-events-auto">
         
-        {navItems.map((item) => (
-          <Link 
-            key={item.id} 
-            href={item.href}
-            // ⚡️ Ajuste de padding (px-5) para compensar la falta de icono y mantener el área táctil perfecta
-            className={`snap-start shrink-0 px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 text-center ${
-              item.active 
-                ? 'bg-dkv-green text-white shadow-md' 
-                : 'text-dkv-gray hover:bg-dkv-gray-light/50 hover:text-dkv-green-dark'
-            }`}
-          >
-            {item.label}
-          </Link>
-        ))}
+        {activeCluster.map((item) => {
+          const isActive = item.id === activeId;
+
+          return (
+            <Link 
+              key={item.id} 
+              href={item.href}
+              className={`snap-start shrink-0 px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 text-center ${
+                isActive 
+                  ? 'bg-dkv-green text-white shadow-md' 
+                  : 'text-dkv-gray hover:bg-dkv-gray-light/50 hover:text-dkv-green-dark'
+              }`}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
 
       </div>
     </div>
