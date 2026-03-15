@@ -1,7 +1,8 @@
-// app/tratamientos/implantologia/sobredentadura/page.tsx
+// app/tratamientos/implantologia/arcada-completa-fija/page.tsx
 
 import { Metadata } from "next";
 import React from "react";
+import Link from "next/link";
 
 // Componentes de Layout y UI
 import Header from "@/components/layout/Header";
@@ -14,11 +15,11 @@ import HeroSearch from '@/components/home/HeroSearch';
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import ShareButton from "@/components/ui/ShareButton";
 
-import { Info, ShieldCheck, Smile } from "lucide-react"; 
+import { AlertCircle, Info, Zap, Sparkles, Smile, ShieldCheck, Layers } from "lucide-react"; 
 
 export const metadata: Metadata = {
-  title: "Sobredentadura sobre Implantes | Precios DKV Dentisalud",
-  description: "Fija tu dentadura postiza con implantes y anclajes tipo Locator. La solución más económica y segura con tarifas exclusivas DKV.",
+  title: "Arcada Completa Fija sobre Implantes | Precios DKV Dentisalud",
+  description: "Recupera todos tus dientes fijos. Presupuesto real y transparente para rehabilitación completa con implantes, sin letra pequeña y tarifa DKV.",
 };
 
 // --- Componente Ficha de Tratamiento ---
@@ -57,12 +58,12 @@ const TreatmentRow = ({ id, name, price, image, imageAlt, secondaryImage, second
   );
 };
 
-export default function SobredentaduraPage() {
+export default function ArcadaCompletaFijaPage() {
   const breadcrumbs = [
     { label: "Inicio", href: "/" },
     { label: "Tratamientos", href: "/tratamientos" },
     { label: "Implantología", href: "/tratamientos/implantologia" },
-    { label: "Sobredentadura", href: "#" }
+    { label: "Arcada Completa Fija", href: "#" }
   ];
 
   return (
@@ -74,16 +75,16 @@ export default function SobredentaduraPage() {
         <FixedBreadcrumb items={breadcrumbs} behavior="smart" />
 
         <TreatmentsHero 
-          badgeText="Económica y Segura"
-          title={{ dark: "SOBREDENTADURA", normal: "REMOVIBLE" }} 
+          badgeText="Todos los Dientes Fijos"
+          title={{ dark: "ARCADA COMPLETA", normal: "FIJA" }} 
           description={[
-            "Si tu dentadura postiza tradicional es un infierno diario, te hace llagas o se te cae al hablar, esta es tu salvación.",
-            "Una prótesis que hace 'clic' sobre implantes. Mínimamente invasiva, fácil de limpiar y totalmente segura."
+            "La solución definitiva para pacientes que han perdido todos los dientes de un maxilar y rechazan usar prótesis de 'quita y pon'.",
+            "Muerde manzanas y sonríe con total seguridad, recuperando la estética y función de tus dientes naturales."
           ]}
         />
 
-        {/* Menú transversal apuntando a "sobredentadura" */}
-        <StickySubNav activeId="sobredentadura" />
+        {/* Menú transversal apuntando a "arcada" */}
+        <StickySubNav activeId="arcada" />
 
         <section className="bg-dkv-gray-border/30 pt-12 pb-20">
           <div className="container mx-auto px-4 max-w-4xl flow-root">
@@ -94,40 +95,44 @@ export default function SobredentaduraPage() {
                 <div className="mb-8 text-center md:text-left">
                   <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme">Presupuesto Real Total</span>
                   <h3 className="text-2xl font-bold font-lemon text-dkv-green-dark border-b-2 border-dkv-green pb-3 inline-block w-full mt-2 uppercase tracking-wide">
-                    El Caso Ideal (Estabilización con 2 Implantes)
+                    El Caso Ideal (Técnica de 4 Implantes)
                   </h3>
                   <p className="text-dkv-gray mt-4 font-fsme text-lg">
-                    La forma más eficiente y económica de estabilizar una mandíbula inferior. Colocamos solo 2 implantes (un procedimiento rápido). Tu nueva prótesis llevará unos "broches" en su interior. Te la pones, hace "clic" y queda bloqueada para masticar. Solo te la quitas tú, con un pequeño tirón, para lavarla.
+                    Devolvemos la función y estética a toda tu boca. Colocamos estratégicamente 4 implantes de titanio que actuarán como los pilares de un puente. Sobre ellos, atornillamos una estructura completa de 10 a 12 dientes que no se mueve, no roza el paladar y no te tienes que quitar para dormir.
                   </p>
                 </div>
 
                 <TreatmentRow 
-                    id="sobredentadura-ideal" 
-                    name="Sobredentadura sobre 2 Implantes" 
-                    price="2.450 €"
+                    id="arcada-ideal" 
+                    name="Rehabilitación Fija de Arcada Completa" 
+                    price="6.018 €"
+                    image="/images/tratamientos/protesis.png"
                   >
-                  <p>Te mostramos la <strong>inversión total real</strong> sumando los implantes, los anclajes de precisión (Locator) y la prótesis reforzada.</p>
+                  <p>A diferencia de otras clínicas que anuncian solo el precio de la prótesis, en DKV Dentisalud te mostramos la <strong>inversión total real</strong> sumando los "cimientos" (implantes) y el "tejado" (dientes).</p>
                   
                   <div className="bg-dkv-gray-light/30 rounded-2xl p-5 border border-dkv-gray-border mt-4">
                     <ul className="space-y-4">
                       <li className="flex flex-col md:flex-row md:justify-between items-start md:items-center pb-3 border-b border-dkv-gray-border/50">
-                        <span className="font-bold text-dkv-gray">Diagnóstico y Estudio <span className="font-normal block text-sm text-dkv-gray/80">TAC 3D y planificación</span></span>
+                        <span className="font-bold text-dkv-gray">Diagnóstico 3D y Guías Quirúrgicas <span className="font-normal block text-sm text-dkv-gray/80">Estudio implantológico y Férulas</span></span>
                         <span className="font-lemon text-lg text-dkv-green-dark shrink-0">Incluido</span>
                       </li>
                       <li className="flex flex-col md:flex-row md:justify-between items-start md:items-center pb-3 border-b border-dkv-gray-border/50">
-                        <span className="font-bold text-dkv-gray">Fase Quirúrgica <span className="font-normal block text-sm text-dkv-gray/80">2 Implantes de titanio (2 x 550 €)</span></span>
-                        <span className="font-lemon text-lg text-dkv-green-dark shrink-0">1.100 €</span>
+                        <span className="font-bold text-dkv-gray">Fase Quirúrgica <span className="font-normal block text-sm text-dkv-gray/80">4 Implantes de titanio (4 x 550 €)</span></span>
+                        <span className="font-lemon text-lg text-dkv-green-dark shrink-0">2.200 €</span>
                       </li>
                       <li className="flex flex-col md:flex-row md:justify-between items-start md:items-center pb-3 border-b border-dkv-gray-border/50">
-                        <span className="font-bold text-dkv-gray">Fijaciones de Precisión <span className="font-normal block text-sm text-dkv-gray/80">2 Sistemas de anclaje tipo Locator/Bolas (2 x 230 €)</span></span>
-                        <span className="font-lemon text-lg text-dkv-green-dark shrink-0">460 €</span>
+                        <span className="font-bold text-dkv-gray">Fase Conectiva <span className="font-normal block text-sm text-dkv-gray/80">4 Aditamentos protésicos (4 x 247 €)</span></span>
+                        <span className="font-lemon text-lg text-dkv-green-dark shrink-0">988 €</span>
                       </li>
                       <li className="flex flex-col md:flex-row md:justify-between items-start md:items-center">
-                        <span className="font-bold text-dkv-gray">La Prótesis <span className="font-normal block text-sm text-dkv-gray/80">Sobredentadura reforzada completa</span></span>
-                        <span className="font-lemon text-lg text-dkv-green-dark shrink-0">890 €</span>
+                        <span className="font-bold text-dkv-gray">La Dentadura Fija <span className="font-normal block text-sm text-dkv-gray/80">Arcada fija metal-resina (10-12 dientes)</span></span>
+                        <span className="font-lemon text-lg text-dkv-green-dark shrink-0">2.830 €</span>
                       </li>
                     </ul>
                   </div>
+                  <p className="text-sm font-medium text-dkv-gray/80 italic mt-3 text-right">
+                    * El especialista evaluará si tu caso requiere 4 o 6 implantes para una estabilidad óptima.
+                  </p>
                 </TreatmentRow>
               </ScrollReveal>
 
@@ -140,34 +145,55 @@ export default function SobredentaduraPage() {
                     Tratamientos Adicionales Posibles
                   </h3>
                   <p className="text-dkv-gray mt-4 font-fsme text-lg">
-                    Para que una sobredentadura sea cómoda y duradera, la anatomía sobre la que se apoya debe ser la adecuada. El cirujano valorará si requieres alguno de estos ajustes.
+                    Las rehabilitaciones completas son complejas. Dependiendo del estado en el que se encuentre tu hueso maxilar tras años de desgaste, podríamos necesitar acondicionar el terreno con alguno de estos procedimientos.
                   </p>
                 </div>
                 
-                {/* Ficha Encía */}
-                <TreatmentRow id="vestibuloplastia" name="Adecuación de la Encía (Vestibuloplastia)">
+                {/* Ficha Nivelación Ósea */}
+                <TreatmentRow id="nivelacion" name="Preparación y Nivelación del Hueso">
                   <div className="mb-6">
-                    <p className="mb-4">Falta de encía dura (queratinizada): Si la encía que recubre tu hueso es muy fina y se mueve mucho, los implantes pueden sufrir. En ese caso, necesitamos realizar una pequeña cirugía para crear un entorno de encía fuerte y evitar que la musculatura del labio tire de la prótesis al hablar.</p>
+                    <p className="mb-4">Si hay infecciones previas o el hueso ha quedado irregular, necesitaremos nivelarlo mediante una alveoloplastia para que la nueva prótesis asiente perfectamente plana y evitar molestias o acumulación de comida.</p>
                     <div className="bg-dkv-gray-light/30 rounded-2xl p-5 border border-dkv-gray-border">
                       <ul className="space-y-4">
                         <li className="flex justify-between items-center">
-                          <span className="font-bold text-dkv-gray">Vestibuloplastia <span className="text-sm font-normal text-dkv-gray/80">(por cuadrante)</span></span>
-                          <span className="font-lemon text-lg text-dkv-green-dark">75 €</span>
+                          <span className="font-bold text-dkv-gray">Remodelación maxilar / Alveoloplastia</span>
+                          <span className="font-lemon text-lg text-dkv-green-dark">99 €</span>
                         </li>
                       </ul>
                     </div>
                   </div>
                 </TreatmentRow>
 
-                {/* Ficha Aumento de anclajes */}
+                {/* Ficha Regeneración Extrema */}
                 <div className="mt-8">
-                  <TreatmentRow id="aumento-anclajes" name="Aumento de Estabilidad (4 Implantes)">
-                    <p className="mb-4">Si muerdes con mucha fuerza, eres un paciente corpulento, o la prótesis va a ir colocada en el <strong>maxilar superior</strong> (que tiene un hueso más blando), el doctor te recomendará colocar 4 implantes en lugar de 2 para garantizar que la prótesis no bascule bajo ningún concepto.</p>
-                    <div className="bg-dkv-green/5 rounded-2xl p-5 border border-dkv-green/20 flex items-start gap-3">
-                      <ShieldCheck className="w-6 h-6 text-dkv-green shrink-0 mt-0.5" />
-                      <p className="text-dkv-gray font-fsme text-sm">
-                        En este caso, al presupuesto base sencillamente habría que sumarle el coste de los 2 implantes adicionales (+1.100 €) y sus respectivos 2 anclajes Locator (+460 €).
-                      </p>
+                  <TreatmentRow id="elevacion-seno" name="Elevación de Seno y Hueso (Maxilar Superior)">
+                    <p className="mb-4">Si los senos paranasales han bajado mucho por llevar tiempo sin muelas arriba, nos quedamos sin altura física. Necesitaremos realizar una pequeña elevación e introducir material regenerativo para crear un lecho seguro donde anclar los implantes posteriores.</p>
+                    <div className="bg-dkv-gray-light/30 rounded-2xl p-5 border border-dkv-gray-border mb-6">
+                      <ul className="space-y-4">
+                        <li className="flex justify-between items-center pb-3 border-b border-dkv-gray-border/50">
+                          <span className="font-bold text-dkv-gray">Elevación de seno cerrado</span>
+                          <span className="font-lemon text-lg text-dkv-green-dark">130 €</span>
+                        </li>
+                        <li className="flex justify-between items-center">
+                          <span className="font-bold text-dkv-gray">Material de relleno regenerativo</span>
+                          <span className="font-lemon text-lg text-dkv-green-dark">175 €</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </TreatmentRow>
+                </div>
+
+                {/* Ficha Falsos Muñones */}
+                <div className="mt-8">
+                  <TreatmentRow id="falso-munon" name="Ajuste de Ángulos (Falsos Muñones)">
+                    <p className="mb-4">En rehabilitaciones completas, a menudo debemos colocar los implantes de los extremos muy inclinados para aprovechar tu hueso natural sano. Para que los dientes atornillados salgan rectos y la mordida sea perfecta, usamos unas piezas correctoras hechas a medida en laboratorio.</p>
+                    <div className="bg-dkv-gray-light/30 rounded-2xl p-5 border border-dkv-gray-border">
+                      <ul className="space-y-4">
+                        <li className="flex justify-between items-center">
+                          <span className="font-bold text-dkv-gray">Falso muñón de titanio <span className="text-sm font-normal text-dkv-gray/80">(por pieza)</span></span>
+                          <span className="font-lemon text-lg text-dkv-green-dark">216 €</span>
+                        </li>
+                      </ul>
                     </div>
                   </TreatmentRow>
                 </div>
@@ -188,11 +214,11 @@ export default function SobredentaduraPage() {
                   <div className="bg-dkv-gray-light p-4 rounded-xl border border-dkv-gray-border/50 mb-8 flex items-start gap-3">
                     <Info className="w-5 h-5 text-dkv-green shrink-0 mt-0.5" />
                     <p className="text-lg text-dkv-gray font-fsme leading-relaxed">
-                      La información reflejada en esta página tiene mero carácter orientativo. El diagnóstico clínico que determinará si tu hueso es apto para 2 o 4 implantes únicamente te lo podrá proporcionar un especialista.
+                      La información reflejada en esta página tiene mero carácter orientativo. Una rehabilitación de arcada completa requiere un diseño de alta precisión. El diagnóstico definitivo únicamente te lo podrá proporcionar el equipo de cirugía maxilofacial en consulta.
                     </p>
                   </div>
                   <p className="text-lg text-dkv-gray mb-6">
-                    Te invitamos a solicitar una cita gratuita de valoración. Analizaremos tu boca y te daremos el presupuesto exacto para que vuelvas a morder con seguridad. Encuentra tu centro:
+                    Te invitamos a solicitar un Estudio Implantológico Gratuito. Realizaremos un TAC 3D para diseñar tu nueva sonrisa y darte un presupuesto exacto y cerrado. Encuentra tu clínica:
                   </p>
                 </div>
                 
