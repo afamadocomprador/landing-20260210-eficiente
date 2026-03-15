@@ -1,5 +1,7 @@
 "use client"; // ⚡️ IMPORTANTE: Necesitamos interactividad
 
+"use client"; // ⚡️ IMPORTANTE: Necesitamos interactividad
+
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic'; 
 import Link from 'next/link';   
@@ -111,15 +113,12 @@ export default function LandingPage() {
               </p>
             </ScrollReveal>
 
-            {/* GRID DE TRATAMIENTOS: 2 columnas en móvil, 4 en desktop. Scroll vertical natural. */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 xs:gap-5 md:gap-8 relative z-40">
               {tratamientosList.map((item, index) => {
                 const Icon = item.icon;
                 const Wrapper = item.hasSub ? 'button' : Link; 
 
-                // Lógica de Delay: 
-                // 1. Diferencia entre columna izquierda y derecha (150ms)
-                // 2. Diferencia entre filas (100ms por fila)
+                // Lógica de Delay escalonado
                 const columnDelay = (index % 2) * 150; 
                 const rowDelay = Math.floor(index / 2) * 100;
                 const finalDelay = columnDelay + rowDelay;
@@ -127,9 +126,7 @@ export default function LandingPage() {
                 return (
                   <ScrollReveal 
                     key={item.id} 
-                    delay={finalDelay} 
-                    direction="up" 
-                    distance={20}
+                    delay={finalDelay}
                   >
                     <Wrapper 
                       href={(item.hasSub ? undefined : item.href) as any}
