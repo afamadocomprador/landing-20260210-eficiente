@@ -57,83 +57,83 @@ const nationalMasterSchema = {
 };
 
 const tratamientosList = [
-  { id: 1, hasSub: true, icon: Baby, image: "/images/tratamientos/estetica.png", title: "Estética" },
-  { id: 2, hasSub: true, icon: Sparkles, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "Ortodoncia" },
-  { id: 3, hasSub: true, icon: Stethoscope, image: "/images/tratamientos/implantes.png", title: "Implantes" },
-  { id: 4, hasSub: true, icon: Zap, image: "/images/tratamientos/endodoncia.png", title: "Dolor" },
-  { id: 5, hasSub: true, icon: Activity, title: "Prótesis", image: "/images/tratamientos/protesis.png" },
-  { id: 9, href: "/tratamientos/apnea", icon: Moon, title: "Apnea", image: "/images/tratamientos/ferula.png" },
+  { id: 1, hasSub: true, icon: Baby, image: "/images/tratamientos/estetica.png", title: "Precio de Estética" },
+  { id: 2, hasSub: true, icon: Sparkles, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "Precio de Ortodoncia" },
+  { id: 3, hasSub: true, icon: Stethoscope, image: "/images/tratamientos/implantes.png", title: "Precio de Implantes" },
+  { id: 4, hasSub: true, icon: Zap, image: "/images/tratamientos/endodoncia.png", title: "Precio de Empastes y Endodoncias" },
+  { id: 5, hasSub: true, icon: Activity, title: "Precios de Prótesis", image: "/images/tratamientos/protesis.png" },
+  { id: 9, href: "/tratamientos/apnea", icon: Moon, title: "Precio para Apnea", image: "/images/tratamientos/ferula.png" },
   { id: 6, hasSub: true, icon: Smile, image: "/images/tratamientos/odontopediatria.png", title: "Niñ@s" },
   // ⚡️ MODIFICADO: Prevención con modal y su imagen preservada
   { id: 7, hasSub: true, icon: ShieldCheck, image: "/images/tratamientos/general.png", title: "Prevención" },
   // ⚡️ NUEVA FICHA: Encías / Periodoncia
-  { id: 10, hasSub: true, icon: HeartPulse, image: "/images/tratamientos/encias-y-periodoncia.png", title: "Encías / Periodoncia" },
+  { id: 10, hasSub: true, icon: HeartPulse, image: "/images/tratamientos/encias-y-periodoncia.png", title: "Precio para Encías / Periodoncia" },
   // ⚡️ NUEVA FICHA: Cirugía Avanzada
-  { id: 11, hasSub: true, icon: Scissors, image: "/images/tratamientos/cirugia.png", title: "Cirugía Avanzada" },
+  { id: 11, hasSub: true, icon: Scissors, image: "/images/tratamientos/cirugia.png", title: "Precio de Cirugía Avanzada" },
 ];
 
 const esteticaSubOptions = [
-  { id: 'blanqueamiento', title: 'Blanqueamiento', href: '/tratamientos/estetica/blanqueamiento', tag: 'Luz y armonía' }, 
-  { id: 'carillas', title: 'Carillas y Diseño', href: '/tratamientos/estetica/carillas', tag: 'Hollywood Smile' },
-  { id: 'incrustaciones', title: 'Incrustaciones', href: '/tratamientos/estetica/incrustaciones', tag: 'Reconstrucción' },
+  { id: 'blanqueamiento', title: 'Blanqueamiento', href: '/tratamientos/estetica-blanqueamiento', tag: 'Luz y armonía' }, 
+  { id: 'carillas', title: 'Carillas y Diseño', href: '/tratamientos/estetica-carillas', tag: 'Hollywood Smile' },
+  { id: 'incrustaciones', title: 'Incrustaciones', href: '/tratamientos/estetica-incrustaciones', tag: 'Reconstrucción' },
   { id: 'sep-orto-estetica', isSeparator: true, title: 'Alineación Estética' },
-  { id: 'invisalign-est', title: 'Invisalign', href: '/tratamientos/ortodoncia/invisalign', tag: 'Ortodoncia Invisible' }, 
-  { id: 'lingual-est', title: 'Ortodoncia Lingual', href: '/tratamientos/ortodoncia/lingual', tag: 'Aparato Interior' },
-  { id: 'zafiro-est', title: 'Brackets de Zafiro', href: '/tratamientos/ortodoncia/zafiro', tag: 'Estética Fija' },
+  { id: 'invisalign-est', title: 'Invisalign', href: '/tratamientos/ortodoncia-invisalign', tag: 'Ortodoncia Invisible' }, 
+  { id: 'lingual-est', title: 'Ortodoncia Lingual', href: '/tratamientos/ortodoncia-lingual', tag: 'Aparato Interior' },
+  { id: 'zafiro-est', title: 'Brackets de Zafiro', href: '/tratamientos/ortodoncia-zafiro', tag: 'Estética Fija' },
 ];
 
 const ortodonciaSubOptions = [
-  { id: 'invisalign', title: 'Invisalign', href: '/tratamientos/ortodoncia/invisalign', tag: 'Invisible' }, 
-  { id: 'lingual', title: 'Lingual', href: '/tratamientos/ortodoncia/lingual', tag: 'Interior' },
-  { id: 'zafiro', title: 'Zafiro', href: '/tratamientos/ortodoncia/zafiro', tag: 'Estética Fija' },
-  { id: 'metalica', title: 'Metálica', href: '/tratamientos/ortodoncia/metalica', tag: 'Tradicional' },
+  { id: 'invisalign', title: 'Invisalign', href: '/tratamientos/ortodoncia-invisalign', tag: 'Invisible' }, 
+  { id: 'lingual', title: 'Lingual', href: '/tratamientos/ortodoncia-lingual', tag: 'Interior' },
+  { id: 'zafiro', title: 'Zafiro', href: '/tratamientos/ortodoncia-zafiro', tag: 'Estética Fija' },
+  { id: 'metalica', title: 'Metálica', href: '/tratamientos/ortodoncia-metalica', tag: 'Tradicional' },
   { id: 'sep-orto-infantil', isSeparator: true, title: 'Ortodoncia Infantil' },
-  { id: 'ortodoncia-removible', title: 'Ortodoncia Removible', href: '/tratamientos/ortodoncia/removible', tag: 'Aparatos de quita y pon' }
+  { id: 'ortodoncia-removible', title: 'Ortodoncia Removible', href: '/tratamientos/ortodoncia-removible', tag: 'Aparatos de quita y pon' }
 ];
 
 const implantesSubOptions = [
-  { id: 'individual', title: 'Implante Individual', href: '/tratamientos/implantologia/implante-individual', tag: 'Sustitución de 1 pieza' },
-  { id: 'arcada', title: 'Arcada Completa Fija', href: '/tratamientos/implantologia/arcada-completa-fija', tag: 'Todos los dientes fijos' },
-  { id: 'sobredentadura', title: 'Sobredentadura', href: '/tratamientos/implantologia/sobredentadura', tag: 'Económica y segura' }
+  { id: 'individual', title: 'Implante Individual', href: '/tratamientos/implante-individual', tag: 'Sustitución de 1 pieza' },
+  { id: 'arcada', title: 'Arcada Completa Fija', href: '/tratamientos/implante-arcada', tag: 'Todos los dientes fijos' },
+  { id: 'sobredentadura', title: 'Sobredentadura', href: '/tratamientos/implante-sobredentadura', tag: 'Económica y segura' }
 ];
 
 const protesisSubOptions = [
-  { id: 'fijas', title: 'Prótesis Fijas', href: '/tratamientos/protesis/fijas', tag: 'Dientes que no se quitan' },
-  { id: 'removibles', title: 'Prótesis Removibles', href: '/tratamientos/protesis/removibles', tag: 'De quita y pon' },
-  { id: 'bruxismo', title: 'Oclusión y Bruxismo', href: '/tratamientos/protesis/bruxismo', tag: 'Protección' },
-  { id: 'taller', title: 'Taller Dental', href: '/tratamientos/protesis/reparaciones-y-ajustes', tag: 'Reparaciones y ajustes' }
+  { id: 'fijas', title: 'Prótesis Fijas', href: '/tratamientos/protesis-fijas', tag: 'Dientes que no se quitan' },
+  { id: 'removibles', title: 'Prótesis Removibles', href: '/tratamientos/protesis-removibles', tag: 'De quita y pon' },
+  { id: 'bruxismo', title: 'Oclusión y Bruxismo', href: '/tratamientos/protesis-bruxismo', tag: 'Protección' },
+  { id: 'taller', title: 'Taller Dental', href: '/tratamientos/protesis/protesis-ajustes', tag: 'Reparaciones y ajustes' }
 ];
 
 const pediatriaSubOptions = [
-  { id: 'prevencion', title: 'Prevención y Educación', href: '/tratamientos/odontopediatria/prevencion', tag: 'Escudo protector' },
-  { id: 'conservadora', title: 'Curando la Caries', href: '/tratamientos/odontopediatria/conservadora', tag: 'Odontología conservadora' },
-  { id: 'endodoncia', title: 'Endodoncia Infantil', href: '/tratamientos/odontopediatria/endodoncia', tag: 'Salvar el diente' },
-  { id: 'espacios', title: 'Salvando los Espacios', href: '/tratamientos/odontopediatria/cirugia-y-espacio', tag: 'Para los dientes que vienen' },
+  { id: 'prevencion', title: 'Prevención y Educación', href: '/tratamientos/pediatria-prevencion', tag: 'Escudo protector' },
+  { id: 'conservadora', title: 'Curando la Caries', href: '/tratamientos/pediatria-conservacion', tag: 'Odontología conservadora' },
+  { id: 'endodoncia', title: 'Endodoncia Infantil', href: '/tratamientos/pediatria-endodoncia', tag: 'Salvar el diente' },
+  { id: 'espacios', title: 'Salvando los Espacios', href: '/tratamientos/pediatria-cirugia-y-espacio', tag: 'Para los dientes que vienen' },
   { id: 'sep-orto-infantil-ped', isSeparator: true, title: 'Ortodoncia Infantil' },
-  { id: 'ortodoncia-removible-ped', title: 'Ortodoncia Removible', href: '/tratamientos/ortodoncia/removible', tag: 'Aparatos de quita y pon' }
+  { id: 'ortodoncia-removible-ped', title: 'Ortodoncia Removible', href: '/tratamientos/ortodoncia-removible', tag: 'Aparatos de quita y pon' }
 ];
 
 const conservadoraSubOptions = [
-  { id: 'reconstruccion', title: 'Reconstrucción', href: '/tratamientos/odontologia-conservadora/reconstruccion', tag: 'Frenar la caries a tiempo' },
-  { id: 'endodoncias', title: 'Endodoncias', href: '/tratamientos/odontologia-conservadora/endodoncias', tag: 'Cuando no te deja dormir' },
-  { id: 'cirugia-complejos', title: 'Cirugía y Casos Complejos', href: '/tratamientos/odontologia-conservadora/cirugia-y-complejos', tag: 'Segundas oportunidades' }
+  { id: 'reconstruccion', title: 'Reconstrucción', href: '/tratamientos/conservadora-reconstruccion', tag: 'Frenar la caries a tiempo' },
+  { id: 'endodoncias', title: 'Endodoncias', href: '/tratamientos/conservadora-endodoncias', tag: 'Cuando no te deja dormir' },
+  { id: 'cirugia-complejos', title: 'Cirugía y Casos Complejos', href: '/tratamientos/conservadora-cirugia', tag: 'Segundas oportunidades' }
 ];
 
 // ⚡️ NUEVAS OPCIONES PARA PREVENCIÓN, PERIODONCIA Y CIRUGÍA
 const prevencionSubOptions = [
-  { id: 'primera-visita', title: 'Primera visita', href: '/tratamientos/prevencion/primera-visita', tag: 'Diagnóstico inicial' },
-  { id: 'higiene', title: 'Higiene y prevención', href: '/tratamientos/prevencion/higiene', tag: 'Mantenimiento' }
+  { id: 'primera-visita', title: 'Primera visita', href: '/tratamientos/prevencion-primera-visita', tag: 'Diagnóstico inicial' },
+  { id: 'higiene', title: 'Higiene y prevención', href: '/tratamientos/prevencion-higiene', tag: 'Mantenimiento' }
 ];
 
 const periodonciaSubOptions = [
-  { id: 'diagnostico-basico', title: 'Diagnóstico y tratamiento básico', href: '/tratamientos/periodoncia/basico', tag: 'Fase inicial' },
-  { id: 'estabilizacion', title: 'Estabilización', href: '/tratamientos/periodoncia/estabilizacion', tag: 'Control de la enfermedad' },
-  { id: 'micro-cirugia', title: 'Micro cirugía', href: '/tratamientos/periodoncia/micro-cirugia', tag: 'Regeneración' }
+  { id: 'diagnostico-basico', title: 'Diagnóstico y tratamiento básico', href: '/tratamientos/periodoncia-basica', tag: 'Fase inicial' },
+  { id: 'estabilizacion', title: 'Estabilización', href: '/tratamientos/periodoncia-estabilizacion', tag: 'Control de la enfermedad' },
+  { id: 'micro-cirugia', title: 'Micro cirugía', href: '/tratamientos/periodoncia-micro-cirugia', tag: 'Regeneración' }
 ];
 
 const cirugiaSubOptions = [
-  { id: 'extracciones', title: 'Extracciones complejas', href: '/tratamientos/cirugia-avanzada/extracciones', tag: 'Muelas del juicio y más' },
-  { id: 'hueso', title: 'Reconstrucción del hueso', href: '/tratamientos/cirugia-avanzada/reconstruccion-osea', tag: 'Regeneración ósea' }
+  { id: 'extracciones', title: 'Extracciones complejas', href: '/tratamientos/cirugia-extracciones', tag: 'Muelas del juicio y más' },
+  { id: 'hueso', title: 'Reconstrucción del hueso', href: '/tratamientos/cirugia-reconstruccion-osea', tag: 'Regeneración ósea' }
 ];
 
 export default function LandingPage() {
