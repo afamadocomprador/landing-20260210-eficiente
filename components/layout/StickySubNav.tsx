@@ -40,11 +40,24 @@ const NAVIGATION_CLUSTERS = {
     { id: 'endodoncia-pediatria', label: 'Endodoncia', href: '/tratamientos/odontopediatria/endodoncia' },
     { id: 'cirugia-pediatria', label: 'Cirugía y Espacio', href: '/tratamientos/odontopediatria/cirugia-y-espacio' },
   ],
-  // ⚡️ NUEVO CLUSTER: ODONTOLOGÍA CONSERVADORA
   conservadora: [
     { id: 'reconstruccion', label: 'Reconstrucción', href: '/tratamientos/odontologia-conservadora/reconstruccion' },
     { id: 'endodoncias', label: 'Endodoncias', href: '/tratamientos/odontologia-conservadora/endodoncias' },
     { id: 'casos-complejos', label: 'Cirugía y Complejos', href: '/tratamientos/odontologia-conservadora/cirugia-y-complejos' },
+  ],
+  // ⚡️ NUEVOS CLUSTERS FINALES:
+  prevencion: [
+    { id: 'primera-visita', label: 'Primera Visita', href: '/tratamientos/prevencion/primera-visita' },
+    { id: 'higiene', label: 'Higiene', href: '/tratamientos/prevencion/higiene' },
+  ],
+  periodoncia: [
+    { id: 'diagnostico-basico', label: 'Diagnóstico', href: '/tratamientos/periodoncia/basico' },
+    { id: 'estabilizacion', label: 'Estabilización', href: '/tratamientos/periodoncia/estabilizacion' },
+    { id: 'micro-cirugia', label: 'Micro-cirugía', href: '/tratamientos/periodoncia/micro-cirugia' },
+  ],
+  cirugia_avanzada: [
+    { id: 'extracciones', label: 'Extracciones', href: '/tratamientos/cirugia-avanzada/extracciones' },
+    { id: 'hueso', label: 'Hueso e Injertos', href: '/tratamientos/cirugia-avanzada/reconstruccion-osea' },
   ]
 };
 
