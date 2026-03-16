@@ -5,7 +5,8 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';   
 import { Viewport } from 'next';
 
-import { Moon, Smile, Zap, Stethoscope, Sparkles, Baby, HeartPulse, Activity, ShieldCheck, ChevronRight, X } from "lucide-react"; 
+// ⚡️ Añadido 'Scissors' para el icono fallback de cirugía
+import { Moon, Smile, Zap, Stethoscope, Sparkles, Baby, HeartPulse, Activity, ShieldCheck, ChevronRight, X, Scissors } from "lucide-react"; 
 
 import { SITE_CONFIG } from '@/constants/config';
 import MainHero from '@/components/hero/MainHero'; 
@@ -61,11 +62,14 @@ const tratamientosList = [
   { id: 3, hasSub: true, icon: Stethoscope, image: "/images/tratamientos/implantes.png", title: "Implantes" },
   { id: 4, hasSub: true, icon: Zap, image: "/images/tratamientos/endodoncia.png", title: "Dolor" },
   { id: 5, hasSub: true, icon: Activity, title: "Prótesis", image: "/images/tratamientos/protesis.png" },
-  // ⚡️ IMAGEN REASIGNADA A RONQUIDO
   { id: 9, href: "/tratamientos/apnea", icon: Moon, title: "Ronquido", image: "/images/tratamientos/ferula.png" },
   { id: 6, hasSub: true, icon: Smile, image: "/images/tratamientos/odontopediatria.png", title: "Niñ@s" },
-  { id: 7, href: "/tratamientos/periodoncia#encias", icon: HeartPulse, image: "/images/tratamientos/general.png", title: "Limpieza" },
-  // ⚡️ PREVENCIÓN ELIMINADA PARA CUADRAR EL GRID A 8 ELEMENTOS EXACTOS
+  // ⚡️ MODIFICADO: Prevención con modal y su imagen preservada
+  { id: 7, hasSub: true, icon: ShieldCheck, image: "/images/tratamientos/general.png", title: "Prevención" },
+  // ⚡️ NUEVA FICHA: Encías / Periodoncia
+  { id: 10, hasSub: true, icon: HeartPulse, image: "/images/tratamientos/encias-y-periodoncia.png", title: "Encías / Periodoncia" },
+  // ⚡️ NUEVA FICHA: Cirugía Avanzada
+  { id: 11, hasSub: true, icon: Scissors, image: "/images/tratamientos/cirugia.png", title: "Cirugía Avanzada" },
 ];
 
 const esteticaSubOptions = [
@@ -115,6 +119,23 @@ const conservadoraSubOptions = [
   { id: 'cirugia-complejos', title: 'Cirugía y Casos Complejos', href: '/tratamientos/odontologia-conservadora/cirugia-y-complejos', tag: 'Segundas oportunidades' }
 ];
 
+// ⚡️ NUEVAS OPCIONES PARA PREVENCIÓN, PERIODONCIA Y CIRUGÍA
+const prevencionSubOptions = [
+  { id: 'primera-visita', title: 'Primera visita', href: '/tratamientos/prevencion/primera-visita', tag: 'Diagnóstico inicial' },
+  { id: 'higiene', title: 'Higiene y prevención', href: '/tratamientos/prevencion/higiene', tag: 'Mantenimiento' }
+];
+
+const periodonciaSubOptions = [
+  { id: 'diagnostico-basico', title: 'Diagnóstico y tratamiento básico', href: '/tratamientos/periodoncia/basico', tag: 'Fase inicial' },
+  { id: 'estabilizacion', title: 'Estabilización', href: '/tratamientos/periodoncia/estabilizacion', tag: 'Control de la enfermedad' },
+  { id: 'micro-cirugia', title: 'Micro cirugía', href: '/tratamientos/periodoncia/micro-cirugia', tag: 'Regeneración' }
+];
+
+const cirugiaSubOptions = [
+  { id: 'extracciones', title: 'Extracciones complejas', href: '/tratamientos/cirugia-avanzada/extracciones', tag: 'Muelas del juicio y más' },
+  { id: 'hueso', title: 'Reconstrucción del hueso', href: '/tratamientos/cirugia-avanzada/reconstruccion-osea', tag: 'Regeneración ósea' }
+];
+
 export default function LandingPage() {
   const [activeFloatingId, setActiveFloatingId] = useState<number | null>(null); 
   
@@ -130,6 +151,7 @@ export default function LandingPage() {
     return () => { document.body.style.overflow = ''; }; 
   }, [activeFloatingId]);
 
+  // ⚡️ LÓGICA DINÁMICA DE RUTEO DEL MODAL
   const activeCategory = tratamientosList.find(t => t.id === activeFloatingId);
   const isEstetica = activeFloatingId === 1;
   const isOrtodoncia = activeFloatingId === 2;
@@ -137,12 +159,39 @@ export default function LandingPage() {
   const isConservadora = activeFloatingId === 4;
   const isProtesis = activeFloatingId === 5;
   const isPediatria = activeFloatingId === 6; 
+  const isPrevencion = activeFloatingId === 7;
+  const isPeriodoncia = activeFloatingId === 10;
+  const isCirugia = activeFloatingId === 11;
   
-  const subOptions = isEstetica ? esteticaSubOptions : isOrtodoncia ? ortodonciaSubOptions : isImplantes ? implantesSubOptions : isProtesis ? protesisSubOptions : isPediatria ? pediatriaSubOptions : isConservadora ? conservadoraSubOptions : [];
+  const subOptions = isEstetica ? esteticaSubOptions : 
+                     isOrtodoncia ? ortodonciaSubOptions : 
+                     isImplantes ? implantesSubOptions : 
+                     isProtesis ? protesisSubOptions : 
+                     isPediatria ? pediatriaSubOptions : 
+                     isConservadora ? conservadoraSubOptions : 
+                     isPrevencion ? prevencionSubOptions : 
+                     isPeriodoncia ? periodonciaSubOptions : 
+                     isCirugia ? cirugiaSubOptions : [];
   
-  const modalTitle = isEstetica ? "ESTÉTICA DENTAL" : isOrtodoncia ? "ORTODONCIA" : isImplantes ? "IMPLANTES" : isProtesis ? "PRÓTESIS Y REHABILITACIÓN" : isPediatria ? "ODONTOPEDIATRÍA" : isConservadora ? "ODONTOLOGÍA CONSERVADORA" : "";
+  const modalTitle = isEstetica ? "ESTÉTICA DENTAL" : 
+                     isOrtodoncia ? "ORTODONCIA" : 
+                     isImplantes ? "IMPLANTES" : 
+                     isProtesis ? "PRÓTESIS Y REHABILITACIÓN" : 
+                     isPediatria ? "ODONTOPEDIATRÍA" : 
+                     isConservadora ? "ODONTOLOGÍA CONSERVADORA" : 
+                     isPrevencion ? "PREVENCIÓN" : 
+                     isPeriodoncia ? "ENCÍAS Y PERIODONCIA" : 
+                     isCirugia ? "CIRUGÍA AVANZADA" : "";
   
-  const modalSubtitle = isEstetica ? "Elige el tratamiento que deseas:" : isOrtodoncia ? "Elige el tipo de aparato:" : isImplantes ? "Elige la solución que necesitas:" : isProtesis ? "Elige el tipo de tratamiento:" : isPediatria ? "Cuidando la sonrisa de los más pequeños:" : isConservadora ? "Salvar tu diente es nuestra prioridad:" : "";
+  const modalSubtitle = isEstetica ? "Elige el tratamiento que deseas:" : 
+                        isOrtodoncia ? "Elige el tipo de aparato:" : 
+                        isImplantes ? "Elige la solución que necesitas:" : 
+                        isProtesis ? "Elige el tipo de tratamiento:" : 
+                        isPediatria ? "Cuidando la sonrisa de los más pequeños:" : 
+                        isConservadora ? "Salvar tu diente es nuestra prioridad:" : 
+                        isPrevencion ? "La base de una boca sana:" : 
+                        isPeriodoncia ? "Cuida el soporte de tus dientes:" : 
+                        isCirugia ? "Soluciones quirúrgicas especializadas:" : "";
 
   return (
     <div className="min-h-screen bg-white text-dkv-gray selection:bg-dkv-green selection:text-white relative">
@@ -167,6 +216,7 @@ export default function LandingPage() {
               </p>
             </ScrollReveal>
 
+            {/* Grid actualizado que soporta dinámicamente las nuevas tarjetas */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 xs:gap-5 md:gap-8 relative z-40">
               {tratamientosList.map((item, index) => {
                 const Icon = item.icon;
@@ -202,6 +252,7 @@ export default function LandingPage() {
                           <img 
                             src={item.image} 
                             alt={item.title} 
+                            // Añadido object-contain como fallback en caso de que las nuevas imágenes no tengan las proporciones perfectas aún
                             className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" 
                           />
                         ) : (
