@@ -62,7 +62,7 @@ const tratamientosList = [
   { id: 3, hasSub: true, icon: Stethoscope, image: "/images/tratamientos/implantes.png", title: "Implantes" },
   { id: 4, hasSub: true, icon: Zap, image: "/images/tratamientos/endodoncia.png", title: "Dolor" },
   { id: 5, hasSub: true, icon: Activity, title: "Prótesis", image: "/images/tratamientos/protesis.png" },
-  { id: 9, href: "/tratamientos/apnea", icon: Moon, title: "Ronquido", image: "/images/tratamientos/ferula.png" },
+  { id: 9, href: "/tratamientos/apnea", icon: Moon, title: "Apnea", image: "/images/tratamientos/ferula.png" },
   { id: 6, hasSub: true, icon: Smile, image: "/images/tratamientos/odontopediatria.png", title: "Niñ@s" },
   // ⚡️ MODIFICADO: Prevención con modal y su imagen preservada
   { id: 7, hasSub: true, icon: ShieldCheck, image: "/images/tratamientos/general.png", title: "Prevención" },
