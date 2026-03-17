@@ -101,7 +101,7 @@ const protesisSubOptions = [
   { id: 'fijas', title: 'Prótesis Fijas', href: '/tratamientos/protesis-fijas', tag: 'Dientes que no se quitan' },
   { id: 'removibles', title: 'Prótesis Removibles', href: '/tratamientos/protesis-removibles', tag: 'De quita y pon' },
   { id: 'bruxismo', title: 'Oclusión y Bruxismo', href: '/tratamientos/protesis-bruxismo', tag: 'Protección' },
-  { id: 'taller', title: 'Taller Dental', href: '/tratamientos/protesis/protesis-ajustes', tag: 'Reparaciones y ajustes' }
+  { id: 'taller', title: 'Taller Dental', href: '/tratamientos/protesis-ajustes', tag: 'Reparaciones y ajustes' }
 ];
 
 const pediatriaSubOptions = [
