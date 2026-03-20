@@ -1,3 +1,4 @@
+// Ruta: app/tratamientos-v2/[slug]/page.tsx
 import { notFound } from 'next/navigation';
 import { Metadata, ResolvingMetadata } from 'next';
 import { getTreatmentDefinition, treatmentsRegistry } from '@/data/treatments';
@@ -9,14 +10,12 @@ interface Props {
 }
 
 // 1. GENERACIÓN ESTÁTICA (SSG) - El secreto del rendimiento (Core Web Vitals)
-// Next.js ejecutará esto en el build y creará un archivo HTML estático por cada tratamiento.
 export function generateStaticParams() {
   return Object.keys(treatmentsRegistry).map((slug) => ({
     slug: slug,
   }));
 }
 
-// 2. SEO DINÁMICO Y ESTRICTAMENTE TIPADO
 // 2. SEO DINÁMICO Y ESTRICTAMENTE TIPADO (VERSIÓN AVANZADA OPENGRAPH/WHATSAPP)
 export async function generateMetadata(
   { params, searchParams }: Props,
@@ -25,7 +24,6 @@ export async function generateMetadata(
   const shareId = searchParams?.share as string;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.dkvdentisalud.es';
   
-  // Usamos tu función importada correctamente
   const parentTreatment = getTreatmentDefinition(params.slug);
 
   if (!parentTreatment) {
@@ -39,14 +37,14 @@ export async function generateMetadata(
     const foundTreatment = parentTreatment.rows.find(row => row.id === shareId);
 
     if (foundTreatment) {
-      const ogTitleToRender = foundTreatment.price 
-        ? `${foundTreatment.name} ${foundTreatment.price}`.toUpperCase() 
-        : foundTreatment.name.toUpperCase();
-
       // TÍTULO EN NEGRITA que leerá WhatsApp debajo de la imagen
       const boldSnippetTitle = foundTreatment.price
         ? `${foundTreatment.name} por solo ${foundTreatment.price} - Precio cerrado DKV DENTISALUD ELITE`
         : `${foundTreatment.name} - Con DKV DENTISALUD ELITE`;
+
+      // ⚡️ NUEVO: Pasamos el nombre por un lado (title) y el precio por otro (subtitle)
+      const ogTitleToRender = foundTreatment.name.toUpperCase();
+      const subtitleQuery = foundTreatment.price ? `&subtitle=${encodeURIComponent(foundTreatment.price)}` : '';
 
       return {
         metadataBase: new URL(baseUrl), // ⚡️ CRUCIAL PARA WHATSAPP
@@ -59,7 +57,8 @@ export async function generateMetadata(
           siteName: 'DKV Dentisalud Élite',
           images: [
             {
-              url: `/api/og?title=${encodeURIComponent(ogTitleToRender)}&type=tratamiento&v=1`,
+              // Añadimos el subtitleQuery a la URL de la imagen
+              url: `/api/og?title=${encodeURIComponent(ogTitleToRender)}${subtitleQuery}&type=tratamiento&v=1`,
               width: 1200,
               height: 630,
               alt: foundTreatment.name,
@@ -99,18 +98,13 @@ export async function generateMetadata(
   };
 }
 
-
-
 // 3. REACT SERVER COMPONENT (RSC)
-// No usamos "use client" aquí. Todo se renderiza en el servidor a velocidad luz.
 export default function TreatmentPage({ params }: Props) {
   const treatment = getTreatmentDefinition(params.slug);
 
-  // Si alguien intenta acceder a /tratamientos-v2/inventado, lanzamos un 404
   if (!treatment) {
     notFound();
   }
 
-  // Pasamos el contrato estricto de datos al componente visual
   return <TreatmentLayout treatment={treatment} />;
 }
