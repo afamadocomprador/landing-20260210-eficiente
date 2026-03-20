@@ -125,8 +125,14 @@ export async function GET(request: NextRequest) {
                 {showEn && <span style={{ display: 'flex' }}>EN</span>}
                 <span style={{ display: 'flex', color: '#849700', marginTop: '10px' }}>{mainText}</span>
                 
-                {/* ⚡️ NUEVO: Si hay subtítulo (ej: Precio) lo pintamos en la fuente de cuerpo FSMe */}
-                {subtitle && (
+                {/* ⚡️ NUEVO: Lógica condicional para el subtítulo */}
+                {subtitle && type === 'tratamiento' && (
+                  <span style={{ display: 'flex', color: '#033B37', fontSize: 50, marginTop: '10px', fontFamily: '"LemonMILK"' }}>
+                    {subtitle}
+                  </span>
+                )}
+                
+                {subtitle && type !== 'tratamiento' && (
                   <span style={{ display: 'flex', color: '#666666', fontSize: 32, marginTop: '20px', fontFamily: '"FSME"', letterSpacing: '-0.5px' }}>
                     {subtitle}
                   </span>
