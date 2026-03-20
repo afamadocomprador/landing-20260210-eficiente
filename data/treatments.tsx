@@ -1,11 +1,11 @@
 // Ruta: data/treatments.tsx
 import { TreatmentDefinition } from '@/types/treatments';
 import { Diamond } from 'lucide-react'; 
-import ShareButton from "@/components/ui/ShareButton"; // <-- Importamos para el bloque Premium
+import ShareButton from "@/components/ui/ShareButton";
 
 export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   
-  // 1. BLANQUEAMIENTO DENTAL (Mantenido intacto)
+  // 1. BLANQUEAMIENTO DENTAL
   'estetica-blanqueamiento': {
     slug: 'estetica-blanqueamiento',
     activeSubNavId: 'blanqueamiento',
@@ -92,6 +92,10 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       { label: "Estética Dental", href: "/tratamientos/estetica" },
       { label: "Carillas y Diseño", href: "#" }
     ],
+    seo: {
+      title: "Carillas Dentales y Diseño de Sonrisa | Precios DKV Dentisalud",
+      description: "Cambia el color, forma y tamaño de tus dientes. Descubre nuestras carillas de composite, porcelana y disilicato de litio con diseño digital 3D."
+    },
     hero: {
       badgeText: "Transformación Total",
       title: { dark: "CARILLAS Y DISEÑO DE", normal: "SONRISA" },
@@ -110,8 +114,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         id: "carillas-composite",
         name: "Carillas Estéticas de Composite",
         price: "75 €",
-        // --- INICIO DE LA MODIFICACIÓN NANO BANANA ---
-        // Sustituimos 'content' por 'points' para usar el nuevo diseño de grid iconográfico
         points: [
           {
             icon: 'Timer',
@@ -127,33 +129,45 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
           }
         ],
         footerNote: "* Precio por diente. Ideal para pequeñas correcciones de forma o color."
-        // --- FIN DE LA MODIFICACIÓN ---
       },
       {
         id: "carillas-porcelana",
         name: "Carillas Estéticas de Porcelana",
         price: "180 €",
-        content: (
-          <>
-            <p><strong>Máxima estabilidad de color.</strong> A diferencia de la resina, estas "losetas" de cerámica se fabrican a medida en el laboratorio. No se tiñen ni pierden color con el paso de los años (no absorben café ni tabaco).</p>
-            <div className="bg-dkv-gray-light/30 rounded-2xl p-5 border border-dkv-gray-border mt-4">
-              <ul className="space-y-4">
-                <li className="flex flex-col md:flex-row md:justify-between items-start md:items-center pb-3 border-b border-dkv-gray-border/50">
-                  <span className="font-bold text-dkv-gray">Carilla de porcelana estándar <span className="font-normal block text-sm text-dkv-gray/80">(precio por diente)</span></span>
-                  <span className="font-lemon text-lg text-dkv-green-dark shrink-0">180 €</span>
-                </li>
-                <li className="flex flex-col md:flex-row md:justify-between items-start md:items-center">
-                  <span className="font-bold text-dkv-gray">Suplemento porcelanas y efectos especiales <span className="font-normal block text-sm text-dkv-gray/80">El laboratorio pinta y texturiza imitando las transparencias de un diente natural perfecto.</span></span>
-                  <span className="font-lemon text-lg text-dkv-green-dark shrink-0">50 €</span>
-                </li>
-              </ul>
-            </div>
-          </>
-        )
+        // Puntos principales (Los 3 primeros iconos)
+        points: [
+          {
+            icon: 'Porcelain1',
+            text: <><strong className="text-dkv-green-dark font-bold">Estabilidad cromática.</strong><br />Máxima estabilidad, años sin teñirse (no café, tabaco).</>
+          },
+          {
+            icon: 'Porcelain2',
+            text: <><strong className="text-dkv-green-dark font-bold">Fabricado individualmente.</strong><br />A medida en laboratorio (no losetas).</>
+          },
+          {
+            icon: 'Porcelain3',
+            text: <><strong className="text-dkv-green-dark font-bold">Superficie impermeable.</strong><br />No absorbe café ni tabaco.</>
+          }
+        ],
+        // NUEVA ESTRUCTURA: La sub-caja de precios (Los 2 últimos iconos)
+        detailedPrices: [
+          {
+            icon: 'Porcelain4',
+            title: 'Carilla de Porcelana Estándar',
+            description: '(precio por diente)',
+            price: '180 €'
+          },
+          {
+            icon: 'Porcelain5',
+            title: 'Suplemento Efectos Especiales',
+            description: 'Pintado y texturizado para transparencias.',
+            price: '50 €'
+          }
+        ],
+        footerNote: "* Precio por diente. Ideal para pequeñas correcciones de forma o color."
       }
     ],
 
-    // data/treatments.tsx (Bloque Premium de 'estetica-carillas')
     premiumBlock: (
       <div id="alta-estetica-digital" className="bg-gradient-to-br from-dkv-green-dark to-[#022A27] rounded-2xl md:rounded-3xl p-8 md:p-10 shadow-2xl relative overflow-hidden mt-16 mb-12 text-white">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 blur-[100px] rounded-full"></div>
@@ -165,7 +179,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             <span className="text-[#D4AF37] font-bold text-sm md:text-base uppercase tracking-[0.2em] font-fsme">Upgrade Premium Exclusivo</span>
           </div>
           
-          {/* CABECERA PREMIUM: Reconstruida como Flexbox anidado en H2 */}
           <h2 className="flex flex-col md:flex-row md:justify-between md:items-start gap-3 md:gap-4 mb-6 text-xl md:text-2xl font-lemon uppercase tracking-wide m-0 text-white">
             <span className="pr-4 mt-1">Alta Estética Digital (DSD)</span>
             <span className="flex items-center gap-3 self-end md:self-auto mt-2 md:mt-0">
