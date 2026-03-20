@@ -35,7 +35,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         id: "blanqueamiento-combinado",
         name: "Blanqueamiento Combinado (Consultorio + Kit Domicilio)",
         price: "300 €",
-        // --- NUEVO DISEÑO APLICADO AQUÍ ---
         subTitle: <><strong>El Tratamiento Estrella:</strong> Es la opción que más recomendamos. Combina el choque rápido y potente de la clínica con el mantenimiento profundo y progresivo en casa.</>,
         points: [
           {
@@ -52,7 +51,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
           }
         ],
         footerNote: "* Precio por tratamiento combinado completo. Ideal para un blanqueamiento profundo y duradero."
-        // --- FIN CAMBIO ---
       },
       {
         id: "blanqueamiento-consultorio",
@@ -294,6 +292,60 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       title: "Planifica tu tratamiento",
       infoNote: "La información reflejada en esta página tiene mero carácter orientativo. Para asegurar que tus dientes son aptos para recibir carillas y decidir el material óptimo (composite vs disilicato), necesitas la evaluación clínica de uno de nuestros especialistas en estética.",
       description: "Reserva tu cita de valoración y descubre cómo quedaría tu sonrisa ideal antes incluso de empezar. Encuentra tu centro más cercano:"
+    }
+  },
+
+  // 3. INCRUSTACIONES DENTALES (NUEVA SECCIÓN)
+  'estetica-incrustaciones': {
+    slug: 'estetica-incrustaciones',
+    activeSubNavId: 'incrustaciones',
+    seoTitle: "Incrustaciones Estéticas Dentales | Precios DKV Dentisalud",
+    seoDescription: "Salva tu muela dañada con incrustaciones de porcelana a medida sin necesidad de tallarla. Estética, resistencia 100% invisible y tarifas exclusivas DKV.",
+    breadcrumbs: [
+      { label: "Inicio", href: "/" },
+      { label: "Tratamientos", href: "/tratamientos" },
+      { label: "Estética Dental", href: "/tratamientos/estetica" },
+      { label: "Incrustaciones", href: "#" }
+    ],
+    hero: {
+      badgeText: "Restauración Conservadora",
+      title: { dark: "INCRUSTACIONES", normal: "ESTÉTICAS" },
+      description: [
+        "El objetivo: Salvar una muela muy dañada de forma totalmente estética (sin metales oscuros) y sin tener que rebajarla entera para ponerle una funda o corona.",
+        "Fabricamos la parte de tu muela que falta a medida. Es como la pieza de un rompecabezas que encaja y se sella en tu diente para devolverle el 100% de su dureza."
+      ]
+    },
+    intro: {
+      badgeText: "¿Cuándo son necesarias?",
+      title: "La Alternativa al Empaste Grande",
+      description: "Cuando tienes una caries muy grande, se ha roto un trozo importante de muela o hay que cambiar un empaste antiguo de metal (amalgama) muy extenso, pero aún queda pared de diente sano. En lugar de un empaste tradicional (que podría fracturarse al ser tan grande y no soportar la fuerza de la masticación), el laboratorio fabrica un bloque sólido a medida."
+    },
+    rows: [
+      {
+        id: "incrustacion-porcelana",
+        name: "Incrustación Estética de Porcelana",
+        price: "140 €",
+        points: [
+          {
+            icon: 'Incrustacion1',
+            text: <><strong className="text-dkv-green-dark font-bold">Reconstrucción Estética.</strong> Restaura la estructura perdida tras caries muy extensas.</>
+          },
+          {
+            icon: 'Incrustacion2',
+            text: <><strong className="text-dkv-green-dark font-bold">Indicación.</strong> Recomendado para molares con grandes destrucciones o tratamiento de conducto.</>
+          },
+          {
+            icon: 'Incrustacion3',
+            text: <><strong className="text-dkv-green-dark font-bold">Alternativa Conservadora.</strong> Reconstrucción que preserva el diente sano frente a una corona.</>
+          }
+        ],
+        footerNote: "* Precio por incrustación individual. Recomendado tras endodoncia o grandes destrucciones de caries."
+      }
+    ],
+    cta: {
+      title: "Planifica tu tratamiento",
+      infoNote: "La información reflejada en esta página tiene mero carácter orientativo. Para asegurar que tu muela tiene paredes sanas suficientes para soportar una incrustación (y descartar la necesidad de una corona completa), es imprescindible una evaluación clínica y radiológica.",
+      description: "Solicita tu cita de valoración y descubre la forma más conservadora y estética de salvar tus piezas dentales. Encuentra tu clínica más cercana:"
     }
   }
 
