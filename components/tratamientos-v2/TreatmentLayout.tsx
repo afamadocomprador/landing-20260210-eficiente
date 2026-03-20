@@ -47,6 +47,11 @@ const CombinadoIcon1 = () => <img src="/images/icons/blanqueamiento_combinado_-_
 const CombinadoIcon2 = () => <img src="/images/icons/blanqueamiento_combinado_-_item2.png" alt="Moldes a medida" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 const CombinadoIcon3 = () => <img src="/images/icons/blanqueamiento_combinado_-_item3.png" alt="Kit profesional y resultados" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 
+// --- ICONOS INCRUSTACIÓN PORCELANA ---
+const IncrustacionIcon1 = () => <img src="/images/icons/incrustacion_estetica_de_porcelana_-_item1.png" alt="Reconstrucción estética" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const IncrustacionIcon2 = () => <img src="/images/icons/incrustacion_estetica_de_porcelana_-_item2.png" alt="Indicación clínica" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const IncrustacionIcon3 = () => <img src="/images/icons/incrustacion_estetica_de_porcelana_-_item3.png" alt="Alternativa conservadora" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+
 const IconMapRefined: Record<string, React.ElementType> = {
   Timer: CustomTimerIcon,
   Paintbrush: CustomBrushIcon,
@@ -67,9 +72,12 @@ const IconMapRefined: Record<string, React.ElementType> = {
   Consultorio2: ConsultorioIcon2, 
   Consultorio3: ConsultorioIcon3, 
   Consultorio4: ConsultorioIcon4,
-  Combinado1: CombinadoIcon1,   // <-- Añadido
-  Combinado2: CombinadoIcon2,   // <-- Añadido
-  Combinado3: CombinadoIcon3,   // <-- Añadido
+  Combinado1: CombinadoIcon1,   
+  Combinado2: CombinadoIcon2,   
+  Combinado3: CombinadoIcon3,
+  Incrustacion1: IncrustacionIcon1, // <-- Añadido
+  Incrustacion2: IncrustacionIcon2, // <-- Añadido
+  Incrustacion3: IncrustacionIcon3, // <-- Añadido
   AlarmClock,
   Coins,
   Smile,
