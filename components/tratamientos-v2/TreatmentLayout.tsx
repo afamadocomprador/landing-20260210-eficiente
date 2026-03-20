@@ -133,7 +133,7 @@ export function TreatmentLayout({ treatment }: Props) {
                           </span>
                         )}
                         <span className="scale-[1.3] transform origin-center text-dkv-green flex items-center justify-center cursor-pointer">
-                          <ShareButton className="w-8 h-8" />
+                          <ShareButton id={row.id} title={row.name} className="w-8 h-8" />
                         </span>
                       </span>
                     </h2>
