@@ -125,11 +125,24 @@ export async function GET(request: NextRequest) {
                 {showEn && <span style={{ display: 'flex' }}>EN</span>}
                 <span style={{ display: 'flex', color: '#849700', marginTop: '10px' }}>{mainText}</span>
                 
-                {/* ⚡️ NUEVO: Lógica condicional para el subtítulo */}
+                {/* ⚡️ NUEVO: Lógica condicional para el subtítulo (PRECIO EN PÍLDORA) */}
                 {subtitle && type === 'tratamiento' && (
-                  <span style={{ display: 'flex', color: '#033B37', fontSize: 50, marginTop: '10px', fontFamily: '"LemonMILK"' }}>
-                    {subtitle}
-                  </span>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: '#F3F4F6', // Gris clarito muy elegante
+                      borderRadius: '100px', // Forma de píldora totalmente redondeada
+                      padding: '12px 32px', // Espacio interior (arriba/abajo y lados)
+                      marginTop: '30px', // Separación con el nombre del tratamiento
+                      alignSelf: 'flex-start', // Mantiene la píldora ajustada al texto a la izquierda
+                    }}
+                  >
+                    <span style={{ display: 'flex', color: '#033B37', fontSize: 42, fontFamily: '"LemonMILK"', lineHeight: 1 }}>
+                      {subtitle}
+                    </span>
+                  </div>
                 )}
                 
                 {subtitle && type !== 'tratamiento' && (
