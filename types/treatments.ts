@@ -26,13 +26,11 @@ export interface TreatmentListItem {
   text: ReactNode | string;
 }
 
-// Para los puntos iconográficos del diseño Nano Banana
 export interface StructuredPoint {
   icon: string;
   text: ReactNode | string;
 }
 
-// NUEVA INTERFAZ: Para la caja de desglose de precios inferior
 export interface DetailedPriceItem {
   icon: string;
   title: string;
@@ -44,13 +42,14 @@ export interface TreatmentRowData {
   id: string;
   name: string;
   price?: string;
+  subTitle?: ReactNode | string; // <-- NUESTRO NUEVO CAMPO
   image?: string;
   imageAlt?: string;
   secondaryImage?: string;
   secondaryImageAlt?: string;
   content?: ReactNode | string; 
   points?: StructuredPoint[];   
-  detailedPrices?: DetailedPriceItem[]; // <-- NUEVA LÍNEA: Array para la sub-caja de precios
+  detailedPrices?: DetailedPriceItem[]; 
   list?: TreatmentListItem[];
   footerNote?: ReactNode | string;
 }
@@ -70,11 +69,9 @@ export interface TreatmentDefinition {
   slug: string;
   activeSubNavId: string;
   
-  // SEO
   seoTitle: string;
   seoDescription: string;
   
-  // UI Data
   breadcrumbs: BreadcrumbItem[];
   hero: HeroData;
   intro?: IntroData;
@@ -82,7 +79,6 @@ export interface TreatmentDefinition {
   premiumBlock?: ReactNode; 
   veredicto?: VeredictoData;
   cta: CTAData;
-  // Bloque para SEO y Metadatos
   seo?: {
     title: string;
     description: string;
