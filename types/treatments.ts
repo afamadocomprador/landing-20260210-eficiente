@@ -73,4 +73,9 @@ export interface TreatmentDefinition {
   premiumBlock?: ReactNode; // <-- NUEVA LÍNEA: Permite inyectar bloques UI exclusivos
   veredicto?: VeredictoData;
   cta: CTAData;
+  // NUEVO: Bloque para SEO y Metadatos
+  seo?: {
+    title: string;
+    description: string;
+  };
 }
