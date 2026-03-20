@@ -18,14 +18,34 @@ const CustomTimerIcon = () => <img src="/images/icons/carillas_esteticas_de_comp
 const CustomBrushIcon = () => <img src="/images/icons/carillas_esteticas_de_composite_-_item_2.png" alt="Icono modelado directo" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 const CustomZapIcon = () => <img src="/images/icons/carillas_esteticas_de_composite_-_item_3.png" alt="Icono endurecido con luz" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 
-// --- NUEVOS ICONOS PORCELANA ---
+// --- ICONOS PORCELANA ---
 const PorcelainIcon1 = () => <img src="/images/icons/carillas_esteticas_de_porcelana_-_item_1.png" alt="Estabilidad cromática" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 const PorcelainIcon2 = () => <img src="/images/icons/carillas_esteticas_de_porcelana_-_item_2.png" alt="Fabricado individualmente" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 const PorcelainIcon3 = () => <img src="/images/icons/carillas_esteticas_de_porcelana_-_item_3.png" alt="Superficie impermeable" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
-
-// Iconos Sub-Caja (Más compactos para el diseño en línea móvil: w-12 h-12)
 const PorcelainIcon4 = () => <img src="/images/icons/carillas_esteticas_de_porcelana_-_item_4.png" alt="Carilla Estándar" className="w-12 h-12 md:w-14 md:h-14 shrink-0 relative z-10 object-contain" />;
 const PorcelainIcon5 = () => <img src="/images/icons/carillas_esteticas_de_porcelana_-_item_5.png" alt="Suplemento Efectos" className="w-12 h-12 md:w-14 md:h-14 shrink-0 relative z-10 object-contain" />;
+
+// --- ICONOS BLANQUEAMIENTO INTERNO ---
+const NoVitalIcon1 = () => <img src="/images/icons/blanqueamiento_de_diente_no_vital_-_item1.png" alt="Diente oscurecido" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const NoVitalIcon2 = () => <img src="/images/icons/blanqueamiento_de_diente_no_vital_-_item2.png" alt="Blanqueamiento interno" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const NoVitalIcon3 = () => <img src="/images/icons/blanqueamiento_de_diente_no_vital_-_item3.png" alt="Color igualado" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+
+// --- ICONOS BLANQUEAMIENTO FÉRULAS ---
+const FerulasIcon1 = () => <img src="/images/icons/blanqueamiento_con_ferulas_en_domicilio_-_item1.png" alt="Suave y progresivo" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const FerulasIcon2 = () => <img src="/images/icons/blanqueamiento_con_ferulas_en_domicilio_-_item2.png" alt="Férulas a medida" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const FerulasIcon3 = () => <img src="/images/icons/blanqueamiento_con_ferulas_en_domicilio_-_item3.png" alt="Kit profesional" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const FerulasIcon4 = () => <img src="/images/icons/blanqueamiento_con_ferulas_en_domicilio_-_item4.png" alt="Uso nocturno" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+
+// --- ICONOS BLANQUEAMIENTO CONSULTORIO ---
+const ConsultorioIcon1 = () => <img src="/images/icons/blanqueamiento_dental_en_consultorio_-_item1.png" alt="Sesión rápida" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ConsultorioIcon2 = () => <img src="/images/icons/blanqueamiento_dental_en_consultorio_-_item2.png" alt="Protección avanzada" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ConsultorioIcon3 = () => <img src="/images/icons/blanqueamiento_dental_en_consultorio_-_item3.png" alt="Gel y láser" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ConsultorioIcon4 = () => <img src="/images/icons/blanqueamiento_dental_en_consultorio_-_item4.png" alt="Resultado inmediato" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+
+// --- ICONOS BLANQUEAMIENTO COMBINADO ---
+const CombinadoIcon1 = () => <img src="/images/icons/blanqueamiento_combinado_-_item1.png" alt="Sesión intensiva" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const CombinadoIcon2 = () => <img src="/images/icons/blanqueamiento_combinado_-_item2.png" alt="Moldes a medida" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const CombinadoIcon3 = () => <img src="/images/icons/blanqueamiento_combinado_-_item3.png" alt="Kit profesional y resultados" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 
 const IconMapRefined: Record<string, React.ElementType> = {
   Timer: CustomTimerIcon,
@@ -36,6 +56,20 @@ const IconMapRefined: Record<string, React.ElementType> = {
   Porcelain3: PorcelainIcon3,
   Porcelain4: PorcelainIcon4,
   Porcelain5: PorcelainIcon5,
+  DienteOscuro: NoVitalIcon1,     
+  BlanqueamientoInt: NoVitalIcon2,  
+  ColorIgualado: NoVitalIcon3,    
+  Ferulas1: FerulasIcon1,         
+  Ferulas2: FerulasIcon2,         
+  Ferulas3: FerulasIcon3,         
+  Ferulas4: FerulasIcon4, 
+  Consultorio1: ConsultorioIcon1, 
+  Consultorio2: ConsultorioIcon2, 
+  Consultorio3: ConsultorioIcon3, 
+  Consultorio4: ConsultorioIcon4,
+  Combinado1: CombinadoIcon1,   // <-- Añadido
+  Combinado2: CombinadoIcon2,   // <-- Añadido
+  Combinado3: CombinadoIcon3,   // <-- Añadido
   AlarmClock,
   Coins,
   Smile,
@@ -165,6 +199,12 @@ export function TreatmentLayout({ treatment }: Props) {
                       </span>
                     </h2>
 
+                    {row.subTitle && (
+                      <div className="text-center text-dkv-gray font-fsme text-lg md:text-xl mb-6 pb-6 border-b border-gray-200 relative z-10">
+                        {row.subTitle}
+                      </div>
+                    )}
+
                     <div className="text-dkv-gray font-fsme text-lg leading-relaxed space-y-4 relative z-10 flex-grow">
                       {row.points ? renderIconographicPoints(row.points) : row.content}
                     </div>
@@ -192,7 +232,6 @@ export function TreatmentLayout({ treatment }: Props) {
 
                     {row.footerNote && (
                       <div className="pt-6 text-lg font-fsme text-dkv-gray/90 relative z-10">
-                        {/* Removido el mt-4 y el borde superior según indicaciones */}
                         <p className="leading-snug normal-case tracking-wide relative">
                           {row.footerNote}
                         </p>
