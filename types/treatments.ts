@@ -1,4 +1,4 @@
-// Ruta: types/treatments.ts (o el nombre que tenga tu archivo de tipos)
+// Ruta: types/treatments.ts
 import { ReactNode } from 'react';
 
 export interface BreadcrumbItem {
@@ -26,10 +26,18 @@ export interface TreatmentListItem {
   text: ReactNode | string;
 }
 
-// NUEVA INTERFAZ: Para los puntos iconográficos del diseño Nano Banana
+// Para los puntos iconográficos del diseño Nano Banana
 export interface StructuredPoint {
   icon: string;
   text: ReactNode | string;
+}
+
+// NUEVA INTERFAZ: Para la caja de desglose de precios inferior
+export interface DetailedPriceItem {
+  icon: string;
+  title: string;
+  description?: ReactNode | string;
+  price: string;
 }
 
 export interface TreatmentRowData {
@@ -40,8 +48,9 @@ export interface TreatmentRowData {
   imageAlt?: string;
   secondaryImage?: string;
   secondaryImageAlt?: string;
-  content?: ReactNode | string; // <-- MODIFICADO: Ahora es opcional (?)
-  points?: StructuredPoint[];   // <-- NUEVA LÍNEA: Añadimos la opción de usar los puntos
+  content?: ReactNode | string; 
+  points?: StructuredPoint[];   
+  detailedPrices?: DetailedPriceItem[]; // <-- NUEVA LÍNEA: Array para la sub-caja de precios
   list?: TreatmentListItem[];
   footerNote?: ReactNode | string;
 }
@@ -70,10 +79,10 @@ export interface TreatmentDefinition {
   hero: HeroData;
   intro?: IntroData;
   rows: TreatmentRowData[];
-  premiumBlock?: ReactNode; // <-- NUEVA LÍNEA: Permite inyectar bloques UI exclusivos
+  premiumBlock?: ReactNode; 
   veredicto?: VeredictoData;
   cta: CTAData;
-  // NUEVO: Bloque para SEO y Metadatos
+  // Bloque para SEO y Metadatos
   seo?: {
     title: string;
     description: string;
