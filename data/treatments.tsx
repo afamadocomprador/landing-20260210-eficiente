@@ -35,38 +35,93 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         id: "blanqueamiento-combinado",
         name: "Blanqueamiento Combinado (Consultorio + Kit Domicilio)",
         price: "300 €",
-        content: <p><strong>El Tratamiento Estrella:</strong> Es la opción que más recomendamos a nuestros pacientes. Combina el choque rápido y potente de la clínica con el mantenimiento profundo y progresivo en casa. Es la técnica que consigue un blanco más duradero, estable y espectacular.</p>,
-        list: [
-          { icon: 'Sparkles', text: '1 sesión intensiva en clínica con luz activadora.' },
-          { icon: 'Smile', text: 'Férulas a medida y gel profesional para usar en casa.' },
-          { icon: 'ShieldCheck', text: 'Máxima duración del tono blanco a lo largo de los años.' }
-        ]
+        // --- NUEVO DISEÑO APLICADO AQUÍ ---
+        subTitle: <><strong>El Tratamiento Estrella:</strong> Es la opción que más recomendamos. Combina el choque rápido y potente de la clínica con el mantenimiento profundo y progresivo en casa.</>,
+        points: [
+          {
+            icon: 'Combinado1',
+            text: <><strong className="text-dkv-green-dark font-bold">Sesión Intensiva en Clínica.</strong><br />Aproximadamente una hora activada por luz de plasma o láser.</>
+          },
+          {
+            icon: 'Combinado2',
+            text: <><strong className="text-dkv-green-dark font-bold">Toma de Moldes a Medida.</strong><br />Confección de férulas personalizadas para un ajuste perfecto.</>
+          },
+          {
+            icon: 'Combinado3',
+            text: <><strong className="text-dkv-green-dark font-bold block">Kit Profesional para Casa.<br />Blanqueamiento Espectacular.</strong>Tono blanco, estable y duradero, a lo largo de los años.</>
+          }
+        ],
+        footerNote: "* Precio por tratamiento combinado completo. Ideal para un blanqueamiento profundo y duradero."
+        // --- FIN CAMBIO ---
       },
       {
         id: "blanqueamiento-consultorio",
         name: "Blanqueamiento Dental en Consultorio (Plasma o Láser)",
         price: "250 €",
-        content: <p><strong>Ideal si buscas un resultado rápido.</strong> En una sesión de aproximadamente una hora en la clínica, aislamos cuidadosamente tus encías y aplicamos un gel de alta concentración que se activa mediante luz de plasma o láser.</p>,
-        footerNote: "Sales de la consulta el mismo día con una sonrisa notablemente más blanca."
+        subTitle: "Ideal si buscas un resultado rápido.",
+        points: [
+          {
+            icon: 'Consultorio1',
+            text: <>Sesión de aproximadamente <strong className="text-dkv-green-dark font-bold">una hora.</strong> Rápido y eficaz.</>
+          },
+          {
+            icon: 'Consultorio2',
+            text: <><strong className="text-dkv-green-dark font-bold">Protección avanzada.</strong> Aislamiento cuidadoso de encías.</>
+          },
+          {
+            icon: 'Consultorio3',
+            text: <><strong className="text-dkv-green-dark font-bold">Gel de alta concentración activado por luz de plasma o láser.</strong> Activación potente.</>
+          },
+          {
+            icon: 'Consultorio4',
+            text: <><strong className="text-dkv-green-dark font-bold">Resultado inmediato.</strong> Sonrisa notablemente más blanca el mismo día.</>
+          }
+        ],
+        footerNote: "* Precio por sesión completa. Ideal para un resultado rápido."
       },
       {
         id: "blanqueamiento-domicilio",
         name: "Blanqueamiento con Férulas en Domicilio",
         price: "216 €",
-        content: <p><strong>El método más suave y gradual.</strong> Tomamos moldes de tu boca para fabricarte unas fundas transparentes a medida (férulas). Te entregamos un kit con gel blanqueador que aplicarás en las férulas cada noche en tu casa durante un par de semanas.</p>,
-        footerNote: "Tratamiento completo incluido. Excelente para pacientes con sensibilidad dental que prefieren un proceso más lento."
+        points: [
+          {
+            icon: 'Ferulas1',
+            text: <><strong className="text-dkv-green-dark font-bold">Suave y progresivo.</strong><br />Blanqueamiento cómodo en tu hogar.</>
+          },
+          {
+            icon: 'Ferulas2',
+            text: <><strong className="text-dkv-green-dark font-bold">Férulas a medida.</strong><br />Moldes personalizados para un ajuste perfecto.</>
+          },
+          {
+            icon: 'Ferulas3',
+            text: <><strong className="text-dkv-green-dark font-bold">Kit profesional completo.</strong><br />Gel blanqueador incluido.</>
+          },
+          {
+            icon: 'Ferulas4',
+            text: <><strong className="text-dkv-green-dark font-bold">Uso nocturno cómodo.</strong><br />Resultados visibles en semanas.</>
+          }
+        ],
+        footerNote: "* Precio por tratamiento completo. Ideal para un blanqueamiento suave y gradual. Excelente para dientes sensibles."
       },
       {
         id: "blanqueamiento-interno",
         name: "Blanqueamiento de Diente No Vital",
         price: "50 €",
-        content: (
-          <>
-            <p><strong>¿Por qué hace falta?</strong> A veces, tras un fuerte golpe o una endodoncia (matar el nervio), un solo diente se vuelve gris o negro, desentonando con el resto de la sonrisa.</p>
-            <p>Este blanqueamiento específico se realiza desde el interior del propio diente afectado, depositando el agente blanqueador dentro de la cámara pulpar para igualar su color con los dientes vecinos sanos.</p>
-          </>
-        ),
-        footerNote: "* Precio por pieza tratada."
+        points: [
+          {
+            icon: 'DienteOscuro',
+            text: <><strong className="text-dkv-green-dark font-bold">Diente oscurecido.</strong><br />Tras un fuerte golpe o una endodoncia (matar el nervio).</>
+          },
+          {
+            icon: 'BlanqueamientoInt',
+            text: <><strong className="text-dkv-green-dark font-bold">Blanqueamiento interno.</strong><br />Se realiza desde el interior del diente afectado.</>
+          },
+          {
+            icon: 'ColorIgualado',
+            text: <><strong className="text-dkv-green-dark font-bold">Color igualado.</strong><br />Para igualar su color con los dientes vecinos sanos.</>
+          }
+        ],
+        footerNote: "* Precio por pieza tratada. Ideal para igualar color tras endodoncia."
       }
     ],
     veredicto: {
@@ -134,7 +189,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         id: "carillas-porcelana",
         name: "Carillas Estéticas de Porcelana",
         price: "180 €",
-        // Puntos principales (Los 3 primeros iconos)
         points: [
           {
             icon: 'Porcelain1',
@@ -149,7 +203,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             text: <><strong className="text-dkv-green-dark font-bold">Superficie impermeable.</strong><br />No absorbe café ni tabaco.</>
           }
         ],
-        // NUEVA ESTRUCTURA: La sub-caja de precios (Los 2 últimos iconos)
         detailedPrices: [
           {
             icon: 'Porcelain4',
