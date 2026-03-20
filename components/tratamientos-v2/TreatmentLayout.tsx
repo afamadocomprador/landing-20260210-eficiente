@@ -1,6 +1,6 @@
 // Ruta: components/tratamientos-v2/TreatmentLayout.tsx
 import React from 'react';
-import { TreatmentDefinition, StructuredPoint } from '@/types/treatments';
+import { TreatmentDefinition, StructuredPoint, DetailedPriceItem } from '@/types/treatments';
 import { AlarmClock, Coins, Paintbrush, Smile, Zap, Info, Share2, CornerDownRight } from 'lucide-react';
 
 import Header from "@/components/layout/Header";
@@ -13,34 +13,29 @@ import HeroSearch from '@/components/home/HeroSearch';
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import ShareButton from "@/components/ui/ShareButton";
 
-const CustomTimerIcon = () => (
-  <img 
-    src="/images/icons/carillas_esteticas_de_composite_-_item_1.png" 
-    alt="Icono rápido y económico" 
-    className="w-16 h-16 shrink-0 relative z-10 object-contain" 
-  />
-);
+// --- ICONOS COMPOSITE ---
+const CustomTimerIcon = () => <img src="/images/icons/carillas_esteticas_de_composite_-_item_1.png" alt="Icono rápido y económico" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const CustomBrushIcon = () => <img src="/images/icons/carillas_esteticas_de_composite_-_item_2.png" alt="Icono modelado directo" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const CustomZapIcon = () => <img src="/images/icons/carillas_esteticas_de_composite_-_item_3.png" alt="Icono endurecido con luz" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 
-const CustomBrushIcon = () => (
-  <img 
-    src="/images/icons/carillas_esteticas_de_composite_-_item_2.png" 
-    alt="Icono modelado directo" 
-    className="w-16 h-16 shrink-0 relative z-10 object-contain" 
-  />
-);
+// --- NUEVOS ICONOS PORCELANA ---
+const PorcelainIcon1 = () => <img src="/images/icons/carillas_esteticas_de_porcelana_-_item_1.png" alt="Estabilidad cromática" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const PorcelainIcon2 = () => <img src="/images/icons/carillas_esteticas_de_porcelana_-_item_2.png" alt="Fabricado individualmente" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const PorcelainIcon3 = () => <img src="/images/icons/carillas_esteticas_de_porcelana_-_item_3.png" alt="Superficie impermeable" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 
-const CustomZapIcon = () => (
-  <img 
-    src="/images/icons/carillas_esteticas_de_composite_-_item_3.png" 
-    alt="Icono endurecido con luz" 
-    className="w-16 h-16 shrink-0 relative z-10 object-contain" 
-  />
-);
+// Iconos Sub-Caja (Más compactos para el diseño en línea móvil: w-12 h-12)
+const PorcelainIcon4 = () => <img src="/images/icons/carillas_esteticas_de_porcelana_-_item_4.png" alt="Carilla Estándar" className="w-12 h-12 md:w-14 md:h-14 shrink-0 relative z-10 object-contain" />;
+const PorcelainIcon5 = () => <img src="/images/icons/carillas_esteticas_de_porcelana_-_item_5.png" alt="Suplemento Efectos" className="w-12 h-12 md:w-14 md:h-14 shrink-0 relative z-10 object-contain" />;
 
 const IconMapRefined: Record<string, React.ElementType> = {
   Timer: CustomTimerIcon,
   Paintbrush: CustomBrushIcon,
   Zap: CustomZapIcon,
+  Porcelain1: PorcelainIcon1,
+  Porcelain2: PorcelainIcon2,
+  Porcelain3: PorcelainIcon3,
+  Porcelain4: PorcelainIcon4,
+  Porcelain5: PorcelainIcon5,
   AlarmClock,
   Coins,
   Smile,
@@ -61,16 +56,48 @@ export function TreatmentLayout({ treatment }: Props) {
         {points.map((point, idx) => {
           const IconComponent = IconMapRefined[point.icon] || Info;
           return (
-            <div key={idx} className={`flex flex-row items-center gap-6 text-left relative pt-3 ${idx < points.length - 1 ? 'border-b border-gray-300 pb-3' : ''}`}>
+            <div key={idx} className={`flex flex-row items-center gap-5 text-left relative pt-3 ${idx < points.length - 1 ? 'border-b border-gray-300 pb-3' : ''}`}>
               <div className="relative flex items-center justify-center shrink-0 mt-1">
                 <IconComponent />
               </div>
-              
               <div className="flex flex-col flex-grow pt-1">
-                <p className="text-dkv-gray font-fsme text-xl md:text-2xl leading-relaxed normal-case tracking-wide">
+                <p className="text-dkv-gray font-fsme text-xl md:text-2xl leading-snug normal-case tracking-wide">
                   {point.text}
                 </p>
               </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  const renderDetailedPrices = (prices: DetailedPriceItem[]) => {
+    return (
+      <div className="mt-6 border border-gray-300 rounded-[1.5rem] p-4 md:p-5 bg-white relative z-10 shadow-sm">
+        {prices.map((item, idx) => {
+          const IconComponent = IconMapRefined[item.icon] || Info;
+          return (
+            <div key={idx} className={`flex flex-row items-center justify-between gap-2 py-3 ${idx < prices.length - 1 ? 'border-b border-gray-200' : ''}`}>
+              
+              <div className="flex flex-row items-center gap-3 md:gap-4 pr-1">
+                <div className="shrink-0 flex items-center justify-center">
+                  <IconComponent />
+                </div>
+                <div className="flex flex-col min-w-0">
+                  <span className="font-bold text-dkv-green-dark text-base md:text-lg font-fsme tracking-wide leading-tight block">{item.title}</span>
+                  {item.description && (
+                    <span className="text-dkv-gray/80 text-sm md:text-base font-fsme tracking-wide leading-tight block mt-0.5">{item.description}</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex justify-end shrink-0 pl-1">
+                <span className="font-lemon text-lg md:text-xl text-dkv-green-dark font-bold">
+                  {item.price}
+                </span>
+              </div>
+
             </div>
           );
         })}
@@ -142,7 +169,9 @@ export function TreatmentLayout({ treatment }: Props) {
                       {row.points ? renderIconographicPoints(row.points) : row.content}
                     </div>
 
-                    {!row.points && row.list && row.list.length > 0 && (
+                    {row.detailedPrices && row.detailedPrices.length > 0 && renderDetailedPrices(row.detailedPrices)}
+
+                    {!row.points && !row.detailedPrices && row.list && row.list.length > 0 && (
                       <ul className="mt-5 space-y-4 relative z-10">
                         {row.list.map((item, idx) => {
                           const IconComponent = IconMapRefined[item.icon] || Info;
@@ -152,7 +181,7 @@ export function TreatmentLayout({ treatment }: Props) {
                                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-dkv-green/20"></div>
                                 <IconComponent className="w-6 h-6 text-dkv-green shrink-0 relative z-10" />
                               </div>
-                              <span className="text-dkv-gray font-fsme text-lg leading-relaxed normal-case tracking-wide">
+                              <span className="text-dkv-gray font-fsme text-lg leading-snug normal-case tracking-wide">
                                 {item.text}
                               </span>
                             </li>
@@ -163,9 +192,9 @@ export function TreatmentLayout({ treatment }: Props) {
 
                     {row.footerNote && (
                       <div className="pt-6 text-lg font-fsme text-dkv-gray/90 relative z-10">
-                        <p className="leading-relaxed normal-case tracking-wide relative flex items-start gap-1">
-                          <span className="shrink-0 font-bold text-xl text-dkv-green/80 mt-1">&#8226;</span>
-                          <span>{row.footerNote}</span>
+                        {/* Removido el mt-4 y el borde superior según indicaciones */}
+                        <p className="leading-snug normal-case tracking-wide relative">
+                          {row.footerNote}
                         </p>
                       </div>
                     )}
