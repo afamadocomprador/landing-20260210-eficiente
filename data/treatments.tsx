@@ -169,7 +169,7 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
           <h2 className="flex flex-col md:flex-row md:justify-between md:items-start gap-3 md:gap-4 mb-6 text-xl md:text-2xl font-lemon uppercase tracking-wide m-0 text-white">
             <span className="pr-4 mt-1">Alta Estética Digital (DSD)</span>
             <span className="flex items-center gap-3 self-end md:self-auto mt-2 md:mt-0">
-              <ShareButton />
+              <ShareButton id="alta-estetica-digital" title="Alta Estética Digital (DSD)" />
             </span>
           </h2>
 
