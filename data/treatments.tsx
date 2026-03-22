@@ -1,6 +1,6 @@
 // Ruta: data/treatments.tsx
 import { TreatmentDefinition } from '@/types/treatments';
-import { Diamond } from 'lucide-react'; 
+import { Diamond, ShieldCheck, Smile, Sparkles, Layers } from 'lucide-react'; 
 import ShareButton from "@/components/ui/ShareButton";
 
 export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
@@ -68,7 +68,7 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
           },
           {
             icon: 'Consultorio3',
-            text: <><strong className="text-dkv-green-dark font-bold">Gel de alta concentración activado por luz de plasma o láser.</strong> Activación potente.</>
+            text: <><strong className="text-dkv-green-dark font-bold">Gel de alta concentración activado por luz de plasma or láser.</strong> Activación potente.</>
           },
           {
             icon: 'Consultorio4',
@@ -145,10 +145,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       { label: "Estética Dental", href: "/tratamientos/estetica" },
       { label: "Carillas y Diseño", href: "#" }
     ],
-    seo: {
-      title: "Carillas Dentales y Diseño de Sonrisa | Precios DKV Dentisalud",
-      description: "Cambia el color, forma y tamaño de tus dientes. Descubre nuestras carillas de composite, porcelana y disilicato de litio con diseño digital 3D."
-    },
     hero: {
       badgeText: "Transformación Total",
       title: { dark: "CARILLAS Y DISEÑO DE", normal: "SONRISA" },
@@ -295,7 +291,7 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     }
   },
 
-  // 3. INCRUSTACIONES DENTALES (NUEVA SECCIÓN)
+  // 3. INCRUSTACIONES DENTALES 
   'estetica-incrustaciones': {
     slug: 'estetica-incrustaciones',
     activeSubNavId: 'incrustaciones',
@@ -346,6 +342,238 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       title: "Planifica tu tratamiento",
       infoNote: "La información reflejada en esta página tiene mero carácter orientativo. Para asegurar que tu muela tiene paredes sanas suficientes para soportar una incrustación (y descartar la necesidad de una corona completa), es imprescindible una evaluación clínica y radiológica.",
       description: "Solicita tu cita de valoración y descubre la forma más conservadora y estética de salvar tus piezas dentales. Encuentra tu clínica más cercana:"
+    }
+  },
+
+  // 4. PRÓTESIS REMOVIBLES
+  'protesis-removibles': {
+    slug: 'protesis-removibles',
+    activeSubNavId: 'removible',
+    seoTitle: "Prótesis Removibles y Dentaduras Postizas | Precios DKV",
+    seoDescription: "Aparatos dentales de quita y pon. Prótesis completas, flexibles sin ganchos metálicos y esqueléticos con tarifas exclusivas DKV Dentisalud.",
+    breadcrumbs: [
+      { label: "Inicio", href: "/" },
+      { label: "Tratamientos", href: "/tratamientos" },
+      { label: "Prótesis y Rehabilitación", href: "/tratamientos/protesis" },
+      { label: "Prótesis Removibles", href: "#" }
+    ],
+    hero: {
+      badgeText: "Aparatos de Quita y Pon",
+      title: { dark: "PRÓTESIS", normal: "REMOVIBLES" },
+      description: [
+        "La solución ideal cuando faltan muchos dientes y no se pueden (o no se desean) colocar implantes ni prótesis fijas.",
+        "Te las quitas para dormir y limpiarlas. Diseños modernos y estéticos que te devolverán la confianza."
+      ]
+    },
+    intro: {
+      badgeText: "Recupera tu sonrisa",
+      title: "Opciones Removibles Modernas",
+      description: "La tecnología ha avanzado mucho. Hoy en día disponemos de materiales flexibles y ligeros que hacen que llevar un aparato removible sea mucho más cómodo y estético que antes. Descubre la opción que mejor encaja con tus necesidades."
+    },
+    rows: [
+      {
+        id: "completas",
+        name: "Prótesis Completa",
+        image: "/images/icons/protesis completa2 - hero.png",
+
+        // NUEVOS TEXTOS, PRECIO Y ESTRUCTURA DE ICONOS PARA LA FICHA SUPERIOR (SIN IMAGEN HERO)
+        subTitle: <> <strong className="block text-dkv-green-dark/80 mt-1">Para quien no tiene ningún diente.</strong>Recupera la sonrisa completa al instante, devuelve el soporte natural a los labios (evitando las arrugas peribucales de envejecimiento) y restaura tu capacidad de masticar. Ideal para una rehabilitación total a bajo coste.</>,
+
+
+        price: "370 €", // Precio correcto según ficha actual y tu instrucción
+        points: [
+          {
+            icon: 'ProtesisCompleta1',
+            text: <><strong className="text-dkv-green-dark font-bold">Rehabilitación Tradicional.</strong><br />La solución de confianza "de toda la vida".</>
+          },
+          {
+            icon: 'ProtesisCompleta2',
+            text: <><strong className="text-dkv-green-dark font-bold">Ajuste por Succión.</strong><br />Sujeción natural mediante saliva sobre la encía.</>
+          },
+          {
+            icon: 'ProtesisCompleta3',
+            text: <><strong className="text-dkv-green-dark font-bold">Fácil Mantenimiento.</strong><br />Material de resina, de fácil higiene diaria.</>
+          },
+          {
+            icon: 'ProtesisCompleta4',
+            text: <><strong className="text-dkv-green-dark font-bold block">Consejo de Estabilidad.</strong>Se recomienda el uso de crema fijadora para un mejor fijado.</>
+          }
+        ],
+
+        detailedPrices: [
+          {
+            title: 'Prótesis completa Superior ó Inferior',
+            description: 'Una arcada.',
+            price: '370 €'
+          },
+          {
+            title: 'Prótesis completa Superior + Inferior',
+            description: 'Dos arcadas (ambos maxilares).',
+            price: '740 €'
+          }
+        ],
+
+        footerNote: "* Solución tradicional de dentadura de quita y pon."
+      },
+      {
+        id: "flexibles",
+        name: "Prótesis Parciales Flexibles",
+        image: "/images/icons/protesis flexible hero5.png",
+        price: "Desde 477 €",
+        detailedPrices: [
+          {
+            icon: 'ProtesisFlexible1',
+            title: 'De 1 a 4 piezas dentales',
+            description: '',
+            price: '477 €'
+          },
+          {
+            icon: 'ProtesisFlexible2',
+            title: 'De 5 a 6 piezas dentales',
+            description: '',
+            price: '532 €'
+          }, 
+          {
+            icon: 'ProtesisFlexible3',
+            title: 'Más de 7 piezas dentales',
+            description: '',
+            price: '584 €'
+          },
+          {
+            icon: 'Flexible7',
+            title: '',
+            description: 'Suplemento resinas hipoarlergénicas',
+            price: '48 €'
+          }
+
+        ],
+
+        content: (
+          <>
+            <p><strong>La opción más estética y cómoda.</strong> No están hechas de plástico duro, sino de un material flexible (tipo Valplast o Flexite) que se dobla ligeramente, evitando las dolorosas rozaduras. Además, <strong>¡no llevan ganchos de metal!</strong> Los ganchos son del mismo color que la encía, haciéndolas casi invisibles cuando sonríes.</p>
+          </>
+        )
+      },
+      {
+        id: "esqueleticas",
+        name: "Prótesis Parciales Esqueléticas (Metálicas)",
+        image: "/images/icons/protesis parcial esqueletica metalica - hero.png",
+        price: "Desde 345 €",
+
+        detailedPrices: [
+          {
+            icon: 'ProtesisEsqueletica1',
+            title: 'De 1 a 4 piezas dentales',
+            description: '',
+            price: '345 €'
+          },
+          {
+            icon: 'ProtesisEsqueletica2',
+            title: 'De 5 a 6 piezas dentales',
+            description: '',
+            price: '434 €'
+          }, 
+          {
+            icon: 'ProtesisEsqueletica3',
+            title: 'De 7 a 8 piezas dentales',
+            description: '',
+            price: '551 €'
+          }, 
+          {
+            icon: 'ProtesisEsqueletica4',
+            title: 'Más de 8 piezas dentales',
+            description: '',
+            price: '650 €'
+          }
+        ],
+
+
+
+        content: (
+          <>
+            <p><strong>Para los que quieren saborear la comida.</strong> En lugar de llevar mucho plástico rosa que tapa el paladar, estas prótesis tienen un "esqueleto" de metal muy fino y resistente. Al no tapar el paladar, la comida sabe mejor, ocupan menos espacio en la boca y son extremadamente estables al masticar.</p>
+          </>
+        )
+      },
+      {
+        id: "acrilicas",
+        name: "Prótesis Parciales de Resina (Acrílicas)",
+        image: "/images/icons/protesis acrilicas gancho - hero2.png",
+        price: "Desde 209 €",
+        detailedPrices: [
+          {
+            icon: 'ProtesisAcrilica1',
+            title: 'De 1 a 4 piezas dentales',
+            description: '',
+            price: '209 €'
+          },
+          {
+            icon: 'ProtesisAcrilica2',
+            title: 'De 5 a 6 piezas dentales',
+            description: '',
+            price: '281 €'
+          }, 
+          {
+            icon: 'ProtesisAcrilica3',
+            title: 'Más de 7 piezas dentales',
+            description: '',
+            price: '353 €'
+          }
+        ],
+
+
+        content: (
+          <>
+            <p><strong>La opción más económica.</strong> Cuando te faltan algunas piezas y buscas salir del paso sin hacer un gran desembolso. Llevan una base de resina rosa (imitando la encía) y unos ganchitos de metal convencionales para agarrarse a tus dientes sanos restantes.</p>
+          </>
+        )
+      },
+      {
+        id: "suplementos-removibles",
+        name: "Mejoras y Personalización de tu Prótesis",
+        content: (
+          <>
+            <p>Porque cada boca es un mundo, te ofrecemos suplementos opcionales para hacer que tu prótesis sea aún más dura, estética o hipoalergénica.</p>
+            <div className="bg-dkv-gray-light/30 rounded-2xl p-5 border border-dkv-gray-border mt-4">
+              <ul className="space-y-4">
+                <li className="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b border-dkv-gray-border/50">
+                  <div>
+                    <span className="font-bold text-dkv-gray flex items-center gap-2"><Smile className="w-4 h-4 text-dkv-green"/> Suplemento por dientes de porcelana</span>
+                    <span className="font-normal text-sm text-dkv-gray/80 block mt-1">Sustituimos los dientes de resina del aparato por cerámica. Ideal si tienes una mordida muy fuerte.</span>
+                  </div>
+                  <span className="font-lemon text-xl text-dkv-green-dark shrink-0 mt-2 md:mt-0">90 €</span>
+                </li>
+                <li className="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b border-dkv-gray-border/50">
+                  <div>
+                    <span className="font-bold text-dkv-gray flex items-center gap-2"><Sparkles className="w-4 h-4 text-dkv-green"/> Suplemento ganchos estéticos (por unidad)</span>
+                    <span className="font-normal text-sm text-dkv-gray/80 block mt-1">Cambiamos el gancho de metal gris que sujeta la prótesis por uno transparente o color encía.</span>
+                  </div>
+                  <span className="font-lemon text-xl text-dkv-green-dark shrink-0 mt-2 md:mt-0">56 €</span>
+                </li>
+                <li className="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b border-dkv-gray-border/50">
+                  <div>
+                    <span className="font-bold text-dkv-gray flex items-center gap-2"><Layers className="w-4 h-4 text-dkv-green"/> Ataches de precisión (108 €) / Complejos (120 €)</span>
+                    <span className="font-normal text-sm text-dkv-gray/80 block mt-1">"Corchetes" totalmente ocultos. Se usan para enganchar la prótesis de quita y pon a unas fundas fijas sin que se vea absolutamente nada de metal al sonreír.</span>
+                  </div>
+                  <span className="font-lemon text-xl text-dkv-green-dark shrink-0 mt-2 md:mt-0">Desde 108 €</span>
+                </li>
+                <li className="flex flex-col md:flex-row justify-between items-start md:items-center">
+                  <div>
+                    <span className="font-bold text-dkv-gray flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-dkv-green"/> Metales nobles / seminobles</span>
+                    <span className="font-normal text-sm text-dkv-gray/80 block mt-1">Aleaciones exclusivas recomendadas para pacientes con alergias a ciertos metales.</span>
+                  </div>
+                  <span className="font-lemon text-xl text-dkv-green-dark shrink-0 mt-2 md:mt-0">72 €</span>
+                </li>
+              </ul>
+            </div>
+          </>
+        )
+      }
+    ],
+    cta: {
+      title: "Vuelve a sonreír sin complejos",
+      infoNote: "La información reflejada en esta página tiene mero carácter orientativo. Un odontólogo especialista debe estudiar cuántos dientes sanos te quedan y el estado de tu hueso para decidir qué tipo de soporte (esquelético, flexible o resina) te dará mayor estabilidad.",
+      description: "Solicita tu cita de valoración en tu clínica más cercana. Diseñaremos un aparato cómodo y a medida para que te olvides de que lo llevas puesto."
     }
   }
 
