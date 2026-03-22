@@ -1,7 +1,7 @@
 // Ruta: components/tratamientos-v2/TreatmentLayout.tsx
 import React from 'react';
 import { TreatmentDefinition, StructuredPoint, DetailedPriceItem } from '@/types/treatments';
-import { AlarmClock, Coins, Paintbrush, Smile, Zap, Info, Share2, CornerDownRight } from 'lucide-react';
+import { AlarmClock, Coins, Paintbrush, Smile, Zap, Info, Share2, CornerDownRight, ShieldCheck, Sparkles, Layers } from 'lucide-react';
 
 import Header from "@/components/layout/Header";
 import FooterLegal from "@/components/FooterLegal";
@@ -52,6 +52,34 @@ const IncrustacionIcon1 = () => <img src="/images/icons/incrustacion_estetica_de
 const IncrustacionIcon2 = () => <img src="/images/icons/incrustacion_estetica_de_porcelana_-_item2.png" alt="Indicación clínica" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 const IncrustacionIcon3 = () => <img src="/images/icons/incrustacion_estetica_de_porcelana_-_item3.png" alt="Alternativa conservadora" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 
+// --- ICONOS PRÓTESIS COMPLETA TRADICIONAL ---
+const ProtesisCompleta1 = () => <img src="/images/icons/protesis_completa_-_item1.png" alt="Rehabilitación Tradicional" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ProtesisCompleta2 = () => <img src="/images/icons/protesis_completa_-_item2.png" alt="Ajuste por Succión" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ProtesisCompleta3 = () => <img src="/images/icons/protesis_completa_-_item3.png" alt="Fácil Mantenimiento" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ProtesisCompleta4 = () => <img src="/images/icons/protesis_completa_-_item4.png" alt="Consejo de Estabilidad" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+
+
+// --- ICONOS PRÓTESIS FLEXIBLES ---
+const ProtesisFlexible1 = () => <img src="/images/icons/protesis_flexible_-_item1.png" alt="Prótesis flexible de 1 a 4 piezas dentales" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ProtesisFlexible2 = () => <img src="/images/icons/protesis_flexible_-_item2.png" alt="Prótesis flesible de 5 a 6 piezas dentales" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ProtesisFlexible3 = () => <img src="/images/icons/protesis_flexible_-_item3.png" alt="Prótesis flexible de más de 7 piezas dentales" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+
+
+// --- ICONOS PRÓTESIS ESQUELETICAS ---
+const ProtesisEsqueletica1 = () => <img src="/images/icons/protesis_flexible_-_item1.png" alt="Prótesis esqueletica de 1 a 44 piezas dentales" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ProtesisEsqueletica2 = () => <img src="/images/icons/protesis_flexible_-_item2.png" alt="Prótesis esquelética de 5 a 6 piezas dentales" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ProtesisEsqueletica3 = () => <img src="/images/icons/protesis_flexible_-_item3.png" alt="Prótesis esquelética de 7 a 8 piezas dentales" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ProtesisEsqueletica4 = () => <img src="/images/icons/protesis_flexible_-_item4.png" alt="Prótesis esquelética de 9 piezas en adelante" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+
+// --- ICONOS PRÓTESIS ACRILICAS ---
+const ProtesisAcrilica1 = () => <img src="/images/icons/protesis_flexible_-_item1.png" alt="Prótesis acrílica de 1 a 4 piezas dentales" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ProtesisAcrilica2 = () => <img src="/images/icons/protesis_flexible_-_item2.png" alt="Prótesis acrílica de 5 a 6 piezas dentales" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ProtesisAcrilica3 = () => <img src="/images/icons/protesis_flexible_-_item3.png" alt="Prótesis acrílica de más de 7 piezas dentales" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+
+
+
+
+
 const IconMapRefined: Record<string, React.ElementType> = {
   Timer: CustomTimerIcon,
   Paintbrush: CustomBrushIcon,
@@ -75,9 +103,23 @@ const IconMapRefined: Record<string, React.ElementType> = {
   Combinado1: CombinadoIcon1,   
   Combinado2: CombinadoIcon2,   
   Combinado3: CombinadoIcon3,
-  Incrustacion1: IncrustacionIcon1, // <-- Añadido
-  Incrustacion2: IncrustacionIcon2, // <-- Añadido
-  Incrustacion3: IncrustacionIcon3, // <-- Añadido
+  Incrustacion1: IncrustacionIcon1, 
+  Incrustacion2: IncrustacionIcon2, 
+  Incrustacion3: IncrustacionIcon3,
+  ProtesisCompleta1, 
+  ProtesisCompleta2, 
+  ProtesisCompleta3, 
+  ProtesisCompleta4, 
+  ProtesisFlexible1, 
+  ProtesisFlexible2, 
+  ProtesisFlexible3, 
+  ProtesisEsqueletica1, 
+  ProtesisEsqueletica2, 
+  ProtesisEsqueletica3, 
+  ProtesisEsqueletica4, 
+  ProtesisAcrilica1, 
+  ProtesisAcrilica2, 
+  ProtesisAcrilica3, 
   AlarmClock,
   Coins,
   Smile,
@@ -118,14 +160,18 @@ export function TreatmentLayout({ treatment }: Props) {
     return (
       <div className="mt-6 border border-gray-300 rounded-[1.5rem] p-4 md:p-5 bg-white relative z-10 shadow-sm">
         {prices.map((item, idx) => {
-          const IconComponent = IconMapRefined[item.icon] || Info;
+          // Lógica ajustada: Si no hay icono, no renderiza el componente de icono
+          const IconComponent = item.icon ? (IconMapRefined[item.icon] || Info) : null;
+          
           return (
             <div key={idx} className={`flex flex-row items-center justify-between gap-2 py-3 ${idx < prices.length - 1 ? 'border-b border-gray-200' : ''}`}>
               
               <div className="flex flex-row items-center gap-3 md:gap-4 pr-1">
-                <div className="shrink-0 flex items-center justify-center">
-                  <IconComponent />
-                </div>
+                {IconComponent && (
+                  <div className="shrink-0 flex items-center justify-center">
+                    <IconComponent />
+                  </div>
+                )}
                 <div className="flex flex-col min-w-0">
                   <span className="font-bold text-dkv-green-dark text-base md:text-lg font-fsme tracking-wide leading-tight block">{item.title}</span>
                   {item.description && (
@@ -190,22 +236,35 @@ export function TreatmentLayout({ treatment }: Props) {
                 <ScrollReveal>
                   <div className="bg-white rounded-[2rem] p-6 md:p-8 shadow-md border-[1.5px] border-dkv-green transition-all duration-300 group flex flex-col h-full overflow-hidden relative">
                     
-                    <h2 className="text-center mb-5 relative z-10 flex flex-col items-center gap-6">
+                    {/* TÍTULO PRINCIPAL */}
+                    <h2 className="text-center mb-6 relative z-10">
                       <span className="text-dkv-green-dark font-fsme font-light text-2xl md:text-4xl leading-[1.3] uppercase tracking-[0.2em] block">
                         {row.name}
                       </span>
-
-                      <span className="flex flex-row items-center justify-center gap-6">
-                        {row.price && (
-                          <span className="inline-flex items-center justify-center bg-dkv-green text-white font-fsme text-2xl md:text-3xl font-bold px-6 py-2 rounded-full whitespace-nowrap normal-case shrink-0 shadow-sm tracking-wide">
-                            {row.price}
-                          </span>
-                        )}
-                        <span className="scale-[1.3] transform origin-center text-dkv-green flex items-center justify-center cursor-pointer">
-                          <ShareButton id={row.id} title={row.name} />
-                        </span>
-                      </span>
                     </h2>
+
+                    {/* IMAGEN HERO DE LA FICHA */}
+                    {row.image && (
+                      <div className="mb-8 overflow-hidden rounded-2xl relative aspect-[16/9] md:aspect-[21/9]">
+                        <img 
+                          src={row.image} 
+                          alt={row.name}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                      </div>
+                    )}
+
+                    {/* PRECIO Y COMPARTIR */}
+                    <div className="flex flex-row items-center justify-center gap-6 mb-8 relative z-10">
+                      {row.price && (
+                        <span className="inline-flex items-center justify-center bg-dkv-green text-white font-fsme text-2xl md:text-3xl font-bold px-6 py-2 rounded-full whitespace-nowrap normal-case shrink-0 shadow-sm tracking-wide">
+                          {row.price}
+                        </span>
+                      )}
+                      <span className="scale-[1.3] transform origin-center text-dkv-green flex items-center justify-center cursor-pointer">
+                        <ShareButton id={row.id} title={row.name} />
+                      </span>
+                    </div>
 
                     {row.subTitle && (
                       <div className="text-center text-dkv-gray font-fsme text-lg md:text-xl mb-6 pb-6 border-b border-gray-200 relative z-10">
@@ -214,7 +273,14 @@ export function TreatmentLayout({ treatment }: Props) {
                     )}
 
                     <div className="text-dkv-gray font-fsme text-lg leading-relaxed space-y-4 relative z-10 flex-grow">
-                      {row.points ? renderIconographicPoints(row.points) : row.content}
+                      {/* LÓGICA CORREGIDA: Renderiza points y luego content si ambos existen */}
+                      {row.points && renderIconographicPoints(row.points)}
+                      
+                      {row.content && (
+                        <div className={row.points ? "mt-8" : ""}>
+                          {row.content}
+                        </div>
+                      )}
                     </div>
 
                     {row.detailedPrices && row.detailedPrices.length > 0 && renderDetailedPrices(row.detailedPrices)}
