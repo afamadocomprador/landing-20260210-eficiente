@@ -314,7 +314,7 @@ export function TreatmentLayout({ treatment }: Props) {
                     {!row.points && !row.detailedPrices && row.list && row.list.length > 0 && (
                       <ul className="mt-5 space-y-4 relative z-10">
                         {row.list.map((item, idx) => {
-                          const IconComponent = IconMapRefined[item.icon] || Info;
+                          const IconComponent = item.icon ? (IconMapRefined[item.icon] || Info) : Info;
                           return (
                             <li key={idx} className="flex items-start gap-4">
                               <div className="relative mt-1">
