@@ -375,16 +375,20 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         id: "completas",
         name: "Prótesis Completa",
         image: "/images/icons/protesis completa2 - hero.png",
-
-        // NUEVOS TEXTOS, PRECIO Y ESTRUCTURA DE ICONOS PARA LA FICHA SUPERIOR (SIN IMAGEN HERO)
-        subTitle: <> <strong className="block text-dkv-green-dark/80 mt-1">Para quien no tiene ningún diente.</strong>Recupera la sonrisa completa al instante, devuelve el soporte natural a los labios (evitando las arrugas peribucales de envejecimiento) y restaura tu capacidad de masticar. Ideal para una rehabilitación total a bajo coste.</>,
-
-
-        price: "370 €", // Precio correcto según ficha actual y tu instrucción
+        subTitle: <> <strong className="block text-dkv-green-dark/80 mt-1">Para quien no tiene ningún diente.</strong>Recupera la sonrisa completa al instante. Ideal para una <strong className="block text-dkv-green-dark/80 mt-1">rehabilitación total a bajo coste.</strong></>,
+        price: "370 €",
         points: [
           {
             icon: 'ProtesisCompleta1',
             text: <><strong className="text-dkv-green-dark font-bold">Rehabilitación Tradicional.</strong><br />La solución de confianza "de toda la vida".</>
+          },
+          {
+            icon: 'ProtesisCompleta5',
+            text: <><strong className="text-dkv-green-dark font-bold">Restauración Funcional.</strong><br />Recuperación de la capacidad de masticar.</>
+          },
+          {
+            icon: 'ProtesisCompleta6',
+            text: <><strong className="text-dkv-green-dark font-bold">Soporte labial.</strong><br />Devuelve el soporte natural a los labios, reduciendo arrugas peribucales.</>
           },
           {
             icon: 'ProtesisCompleta2',
@@ -399,7 +403,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             text: <><strong className="text-dkv-green-dark font-bold block">Consejo de Estabilidad.</strong>Se recomienda el uso de crema fijadora para un mejor fijado.</>
           }
         ],
-
         detailedPrices: [
           {
             title: 'Prótesis completa Superior ó Inferior',
@@ -412,7 +415,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             price: '740 €'
           }
         ],
-
         footerNote: "* Solución tradicional de dentadura de quita y pon."
       },
       {
@@ -420,6 +422,16 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         name: "Prótesis Parciales Flexibles",
         image: "/images/icons/protesis flexible hero5.png",
         price: "Desde 477 €",
+        points: [
+          {
+            icon: 'ProtesisFlexible4',
+            text: <><strong className="text-dkv-green-dark font-bold">Flexibilidad y comodidad.</strong><br />Material flexible que evita dolorosas rozaduras.</>
+          },
+          {
+            icon: 'ProtesisFlexible5',
+            text: <><strong className="text-dkv-green-dark font-bold">Estética superior.</strong><br />Sin ganchos de metal. Resultan casi invisibles cuando sonríes.</>
+          }
+        ],
         detailedPrices: [
           {
             icon: 'ProtesisFlexible1',
@@ -445,21 +457,13 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: 'Suplemento resinas hipoarlergénicas',
             price: '48 €'
           }
-
-        ],
-
-        content: (
-          <>
-            <p><strong>La opción más estética y cómoda.</strong> No están hechas de plástico duro, sino de un material flexible (tipo Valplast o Flexite) que se dobla ligeramente, evitando las dolorosas rozaduras. Además, <strong>¡no llevan ganchos de metal!</strong> Los ganchos son del mismo color que la encía, haciéndolas casi invisibles cuando sonríes.</p>
-          </>
-        )
+        ]
       },
       {
         id: "esqueleticas",
         name: "Prótesis Parciales Esqueléticas (Metálicas)",
         image: "/images/icons/protesis parcial esqueletica metalica - hero.png",
         price: "Desde 345 €",
-
         detailedPrices: [
           {
             icon: 'ProtesisEsqueletica1',
@@ -486,9 +490,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             price: '650 €'
           }
         ],
-
-
-
         content: (
           <>
             <p><strong>Para los que quieren saborear la comida.</strong> En lugar de llevar mucho plástico rosa que tapa el paladar, estas prótesis tienen un "esqueleto" de metal muy fino y resistente. Al no tapar el paladar, la comida sabe mejor, ocupan menos espacio en la boca y son extremadamente estables al masticar.</p>
@@ -520,8 +521,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             price: '353 €'
           }
         ],
-
-
         content: (
           <>
             <p><strong>La opción más económica.</strong> Cuando te faltan algunas piezas y buscas salir del paso sin hacer un gran desembolso. Llevan una base de resina rosa (imitando la encía) y unos ganchitos de metal convencionales para agarrarse a tus dientes sanos restantes.</p>
@@ -574,6 +573,289 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       title: "Vuelve a sonreír sin complejos",
       infoNote: "La información reflejada en esta página tiene mero carácter orientativo. Un odontólogo especialista debe estudiar cuántos dientes sanos te quedan y el estado de tu hueso para decidir qué tipo de soporte (esquelético, flexible o resina) te dará mayor estabilidad.",
       description: "Solicita tu cita de valoración en tu clínica más cercana. Diseñaremos un aparato cómodo y a medida para que te olvides de que lo llevas puesto."
+    }
+  },
+
+  // 5. PRÓTESIS FIJAS
+  'protesis-fijas': {
+    slug: 'protesis-fijas',
+    activeSubNavId: 'fija',
+    seoTitle: "Prótesis Fijas y Coronas Dentales | Precios DKV Dentisalud",
+    seoDescription: "Dientes artificiales que no se quitan. Coronas de zirconio, puentes de porcelana y restauraciones estéticas con tarifas exclusivas DKV.",
+    breadcrumbs: [
+      { label: "Inicio", href: "/" },
+      { label: "Tratamientos", href: "/tratamientos" },
+      { label: "Prótesis y Rehabilitación", href: "/tratamientos/protesis" },
+      { label: "Prótesis Fijas", href: "#" }
+    ],
+    hero: {
+      badgeText: "Dientes que no se quitan",
+      title: { dark: "PRÓTESIS", normal: "FIJAS" },
+      description: [
+        "Dientes artificiales pegados firmemente a tus propios dientes naturales previamente limados, o a raíces muy dañadas.",
+        "No te los tienes que quitar nunca; los cepillas y los sientes como si fueran tuyos."
+      ]
+    },
+    rows: [
+      {
+        id: "alta-estetica",
+        name: "Coronas y Puentes de Alta Estética (Sin metal)",
+        image: "/images/icons/protesis fija corona estetica - hero.png",
+        price: "Desde 299 €",
+        content: (
+          <>
+            <p className="mb-3"><strong>Motivo:</strong> El diente dañado está en una zona visible y quieres que nadie note que es falso.</p>
+            <p><strong>Cómo se hace:</strong> Tallamos un poco tu diente, tomamos medidas exactas y el laboratorio crea una funda o "corona" que encaja a la perfección, imitando la luz y textura natural.</p>
+          </>
+        ),
+        detailedPrices: [
+          {
+            icon: 'Sparkles',
+            title: "Corona de cerámica sin metal",
+            description: "Deja pasar la luz natural, ideal para dientes frontales.",
+            price: "299 €"
+          },
+          {
+            icon: 'Diamond',
+            title: "Corona o puente fijo de Zirconio",
+            description: "El material más duro y blanco del mercado. No oscurece la encía con el tiempo.",
+            price: "325 €"
+          }
+        ]
+      },
+      {
+        id: "clasicas-metal",
+        name: "Coronas y Puentes Clásicos (Con base de metal)",
+        image: "/images/icons/protesis fija corona clasica - hero.png",
+        price: "Desde 100 €",
+        content: (
+          <p><strong>Motivo:</strong> Buscas máxima resistencia para masticar en las muelas del fondo, o tienes un presupuesto más ajustado y la estética perfecta no es tu máxima prioridad.</p>
+        ),
+        detailedPrices: [
+          {
+            title: "Corona o puente de metal noble/seminoble con porcelana",
+            description: "Interior de metal para soportar fuerza extrema, y exterior recubierto de porcelana blanca.",
+            price: "210 €"
+          },
+          {
+            title: "Corona o puente metal-resina",
+            description: "Más económico. Exterior cubierto de resina estética en lugar de cerámica.",
+            price: "144 €"
+          },
+          {
+            title: "Corona o puente colada de metal",
+            description: "Totalmente metálicas. Usadas solo en casos muy específicos o muelas muy escondidas.",
+            price: "100 €"
+          }
+        ]
+      },
+      {
+        id: "incrustaciones",
+        name: "Incrustaciones",
+        image: "/images/icons/incrustacion - hero.png",
+        price: "Desde 65 €",
+        subTitle: <> Cuando un empaste sería demasiado grande y se caería, el labrotario fabrica el "trozo de muela" exacto que te falta y nosotros lo encajamos como la pieza de un puzle.</>,
+        points: [
+          {
+            icon: 'Incrustacion1',
+            text: <><strong className="text-dkv-green-dark font-bold">Reconstrucción Estética.</strong> Restaura la estructura perdida tras caries muy extensas.</>
+          },
+          {
+            icon: 'Incrustacion2',
+            text: <><strong className="text-dkv-green-dark font-bold">Indicación.</strong> Recomendado para molares con grandes destrucciones o tratamiento de conducto.</>
+          },
+          {
+            icon: 'Incrustacion3',
+            text: <><strong className="text-dkv-green-dark font-bold">Alternativa Conservadora.</strong> Reconstrucción que preserva el diente sano frente a una corona.</>
+          }
+        ],
+        detailedPrices: [
+          {
+            title: "Incrustación de resina.",
+            description: "",
+            price: "65 €"
+          },
+          {
+            title: "Incrustación de composite",
+            description: "",
+            price: "72 €"
+          },
+          {
+            title: "Incrustación estética de porcelana.",
+            description: "Resistencia extrema.",
+            price: "140 €"
+          }
+        ],
+        footerNote: "* Precio por incrustación individual. Recomendado tras endodoncia o grandes destrucciones de caries."
+      },
+      {
+        id: "restauracion-con-raiz",
+        name: "Muñon colado",
+        image: "/images/icons/munon colado - hero.png",
+        price: "65 €",
+        content: (
+          <>
+            <p className="mb-3"><strong>Motivo:</strong> Cuando se logra salvar tu raíz natural pero el resto del diente no es suficiente para tallar la base de la corona.</p>
+            <p><strong>Cómo se hace:</strong> Fabricamos un "pilar" a medida que va inserto en la raíz para pegar encima la corona.</p>
+          </>
+        )
+      },
+      {
+        id: "suplementos-fijos",
+        name: "Suplementos Especiales y Refuerzos",
+        content: (
+          <p>Técnicas avanzadas para dar soporte o evitar dañar piezas sanas en casos concretos.</p>
+        ),
+        detailedPrices: [
+          {
+            title: "Puente tipo Maryland",
+            description: "Un suplemento para pegar un diente falso apoyándose en la parte trasera de los dientes vecinos mediante unas \"aletas\", sin tener que limarlos apenas.",
+            price: "70 €"
+          },
+          {
+            title: "Barra de Ackerman",
+            description: "Una barra de metal que une varias raíces o implantes para dar muchísima firmeza a una prótesis.",
+            price: "70 €"
+          }
+        ]
+      }
+    ],
+    cta: {
+      title: "Planifica tu tratamiento",
+      infoNote: "La información reflejada en esta página tiene mero carácter orientativo. Para asegurar qué tipo de corona (zirconio vs metal-cerámica) requiere tu caso o si podemos salvar tu raíz con una incrustación, es imprescindible una valoración clínica.",
+      description: "Solicita tu cita de valoración en tu clínica más cercana. Analizaremos tu boca y te ofreceremos la solución fija más resistente y estética para ti."
+    }
+  },
+
+  // 6. OCLUSIÓN Y BRUXISMO (NUEVA SECCIÓN v2)
+  'protesis-bruxismo': {
+    slug: 'protesis-bruxismo',
+    activeSubNavId: 'bruxismo',
+    seoTitle: "Oclusión y Férulas de Bruxismo | Precios DKV Dentisalud",
+    seoDescription: "Protege tus dientes y articulación del desgaste nocturno. Férulas de descarga a medida y rehabilitación oclusal con tarifas exclusivas DKV.",
+    breadcrumbs: [
+      { label: "Inicio", href: "/" },
+      { label: "Tratamientos", href: "/tratamientos" },
+      { label: "Prótesis y Rehabilitación", href: "/tratamientos/protesis" },
+      { label: "Oclusión y Bruxismo", href: "#" }
+    ],
+    hero: {
+      badgeText: "Protección Articular y Dental",
+      title: { dark: "OCLUSIÓN Y", normal: "BRUXISMO" },
+      description: [
+        "Si aprietas o rechinas los dientes por la noche (bruxismo), acabarás rompiendo tus dientes naturales, tus empastes y sufriendo dolores de cabeza y cuello.",
+        "Protege tu sonrisa y tu articulación mandibular con nuestras férulas y tratamientos de rehabilitación."
+      ]
+    },
+    intro: {
+      badgeText: "Tu Escudo Protector",
+      title: "Férulas de Descarga a Medida",
+      description: "La solución más rápida y efectiva contra el desgaste dental nocturno. Un protector duro y fabricado a la medida exacta de tu boca que relaja la musculatura y absorbe toda la fuerza de la mandíbula mientras duermes."
+    },
+    rows: [
+      {
+        id: "ferulas",
+        name: "Férulas de Descarga y Protección",
+        image: "/images/icons/ferula descarga - hero.png",
+        subTitle: <> Permite que tu mandíbula resbale libremente, "desprogramando" el hábito de apretar.</>,
+        price: "Desde 108 €",
+        points: [
+          {
+            icon: 'BruxismoFerula1',
+            text: <><strong className="text-dkv-green-dark font-bold">Frenar Desgaste Dental.</strong> Protege tus dientes del destaste por bruxismo.</>
+          },
+          {
+            icon: 'BruxismoFerula2',
+            text: <><strong className="text-dkv-green-dark font-bold">Relajación Muscular.</strong> Alivia la tensión en la mandíbula y el cuello.</>
+          },
+          {
+            icon: 'BruxismoFerula3',
+            text: <><strong className="text-dkv-green-dark font-bold">Tratamiento Articular (ATM).</strong> Diseñada para problemas graves de ATM.</>
+          },
+          {
+            icon: 'BruxismoFerula4',
+            text: <><strong className="text-dkv-green-dark font-bold">Alivio de Sintomatología.</strong> Solucion para ruidos, dolores córniocos y bloqueos.</>
+          }
+        ],
+
+        detailedPrices: [
+          {
+            title: "Férula de descarga simple",
+            description: "Estándar para frenar el desgaste de los dientes y relajar la musculatura de la mandíbula y el cuello.",
+            price: "108 €"
+          },
+          {
+            title: "Férula compleja (Patología articular)",
+            description: "Especial y más gruesa. Diseñada para pacientes que ya tienen problemas graves en la articulación (ATM): Ruidos al abrir la boca, dolores crónicos o bloqueos.",
+            price: "217 €"
+          },
+          {
+            title: "Revisión y ajuste de férula",
+            description: "Al recibir el impacto que soportaban tus dientes es fundamental revisar en consulta periódicamente la férula para asegurar que sigue protegiendo tu articulación.",
+            price: "25 €"
+          }
+
+        ]
+      },
+      {
+        id: "estudios-oclusales",
+        name: "Estudios de ATM y Rehabilitación",
+        subTitle: " ",
+
+
+        subTitle: <><strong>Devuelve el equilibrio neromuscular a tu rostro. </strong> Diagnóstico Avanzado mediante pruebas de alta precisión: Cuando el bruxismo ha causado dolores severos o asimetrías, necesitamos medir exactamente cómo se mueve tu mandíbula para diseñar tu mejor solución.</>,
+
+
+
+
+/* *****************
+        content: (
+          <p>Pruebas de alta precisión para trazar el mapa de tus movimientos mandibulares y diseñar una solución que devuelva el equilibrio neuromuscular a tu rostro.</p>
+        ),
+********* */
+        detailedPrices: [
+          {
+            /* icon: 'Zap', */
+            title: "Axiografía y pruebas diagnósticas",
+            description: "Estudio informatizado o mecánico del trazado exacto de los movimientos de tus cóndilos (articulación).",
+            price: "180 €"
+          },
+          {
+            /* icon: 'CheckCircle2', */
+            title: "Sesión de rehabilitación neuro-oclusal",
+            description: "Tratamiento en clínica para corregir las interferencias y aliviar las tensiones musculares.",
+            price: "72 €"
+          }
+        ]
+      },
+      {
+        id: "servicios-incluidos",
+        name: "Procedimientos y Ajustes Incluidos",
+        price: "Incluido (0 €)",
+        content: (
+          <p>Como parte de nuestro compromiso con la correcta función de tu boca, muchos de los procedimientos preparatorios y de ajuste de la mordida no tienen ningún coste para nuestros pacientes asegurados.</p>
+        ),
+        list: [
+          {
+            /* icon: 'CheckCircle2', */
+            text: <><strong>Análisis Oclusal:</strong> Toma de modelos y evaluación de tu mordida en articulador.</>
+          },
+          {
+            /* icon: 'CheckCircle2', */
+            text: <><strong>Tallado Selectivo:</strong> Pequeños pulidos en el esmalte para eliminar puntos que chocan mal y desvían la mandíbula.</>
+          },
+          {
+            /* icon: 'CheckCircle2', */
+            text: <><strong>Retirar prótesis antiguas:</strong> Retirada de coronas o puentes viejos que estén causando mala mordida.</>
+          }
+        ]
+      }
+    ],
+
+    cta: {
+      title: "No dejes que el estrés rompa tus dientes",
+      infoNote: "El bruxismo es una acción involuntaria. Si te levantas con dolor de cabeza, tensión en las cervicales o notas tus dientes más cortos y planos, necesitas una férula de descarga cuanto antes para frenar el daño.",
+      description: "Solicita tu cita de valoración en tu clínica más cercana. Revisaremos tu articulación y te fabricaremos un escudo protector a medida."
     }
   }
 
