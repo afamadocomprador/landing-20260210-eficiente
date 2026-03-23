@@ -22,7 +22,7 @@ export interface IntroData {
 }
 
 export interface TreatmentListItem {
-  icon: 'Sparkles' | 'Smile' | 'ShieldCheck' | string;
+  icon?: 'Sparkles' | 'Smile' | 'ShieldCheck' | string;
   text: ReactNode | string;
 }
 
