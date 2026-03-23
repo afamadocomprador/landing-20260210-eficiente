@@ -57,12 +57,19 @@ const ProtesisCompleta1 = () => <img src="/images/icons/protesis_completa_-_item
 const ProtesisCompleta2 = () => <img src="/images/icons/protesis_completa_-_item2.png" alt="Ajuste por Succión" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 const ProtesisCompleta3 = () => <img src="/images/icons/protesis_completa_-_item3.png" alt="Fácil Mantenimiento" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 const ProtesisCompleta4 = () => <img src="/images/icons/protesis_completa_-_item4.png" alt="Consejo de Estabilidad" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ProtesisCompleta5 = () => <img src="/images/icons/protesis_completa_-_item_5.png" alt="Soporte labial natural" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ProtesisCompleta6 = () => <img src="/images/icons/protesis_completa_-_item_6.png" alt="Restauración funcional de masticación" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 
 
 // --- ICONOS PRÓTESIS FLEXIBLES ---
 const ProtesisFlexible1 = () => <img src="/images/icons/protesis_flexible_-_item1.png" alt="Prótesis flexible de 1 a 4 piezas dentales" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 const ProtesisFlexible2 = () => <img src="/images/icons/protesis_flexible_-_item2.png" alt="Prótesis flesible de 5 a 6 piezas dentales" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 const ProtesisFlexible3 = () => <img src="/images/icons/protesis_flexible_-_item3.png" alt="Prótesis flexible de más de 7 piezas dentales" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ProtesisFlexible4 = () => <img src="/images/icons/protesis_flexibles_-_item4.png" alt="Prótesis flexible de más de 7 piezas dentales" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ProtesisFlexible5 = () => <img src="/images/icons/protesis_flexibles_-_item5.png" alt="Prótesis flexible de más de 7 piezas dentales" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+
+
+
 
 
 // --- ICONOS PRÓTESIS ESQUELETICAS ---
@@ -75,6 +82,16 @@ const ProtesisEsqueletica4 = () => <img src="/images/icons/protesis_flexible_-_i
 const ProtesisAcrilica1 = () => <img src="/images/icons/protesis_flexible_-_item1.png" alt="Prótesis acrílica de 1 a 4 piezas dentales" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 const ProtesisAcrilica2 = () => <img src="/images/icons/protesis_flexible_-_item2.png" alt="Prótesis acrílica de 5 a 6 piezas dentales" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 const ProtesisAcrilica3 = () => <img src="/images/icons/protesis_flexible_-_item3.png" alt="Prótesis acrílica de más de 7 piezas dentales" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+
+// --- ICONOS MUÑON COLADO ---
+const MunonColado = () => <img src="/images/icons/munon colado - hero.png" alt="Muñon colado de metal" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+
+// --- ICONOS FERULAS PARA BRUXISMO ---
+const BruxismoFerula1 = () => <img src="/images/icons/bruxismoferulas_-_item1.png" alt="Ferula para bruxismo. Frenar desgaste dental" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const BruxismoFerula2 = () => <img src="/images/icons/bruxismoferulas_-_item2.png" alt="Ferula para bruxismo. Relajación muscular" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const BruxismoFerula3 = () => <img src="/images/icons/bruxismoferulas_-_item3.png" alt="Ferula para bruxismo. Tratamiento articular atm" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const BruxismoFerula4 = () => <img src="/images/icons/bruxismoferulas_-_item4.png" alt="Ferula para bruxismo. Alivio de sintomatología" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+
 
 
 
@@ -110,9 +127,13 @@ const IconMapRefined: Record<string, React.ElementType> = {
   ProtesisCompleta2, 
   ProtesisCompleta3, 
   ProtesisCompleta4, 
+  ProtesisCompleta5, 
+  ProtesisCompleta6, 
   ProtesisFlexible1, 
   ProtesisFlexible2, 
   ProtesisFlexible3, 
+  ProtesisFlexible4, 
+  ProtesisFlexible5, 
   ProtesisEsqueletica1, 
   ProtesisEsqueletica2, 
   ProtesisEsqueletica3, 
@@ -120,6 +141,11 @@ const IconMapRefined: Record<string, React.ElementType> = {
   ProtesisAcrilica1, 
   ProtesisAcrilica2, 
   ProtesisAcrilica3, 
+  MunonColado, 
+  BruxismoFerula1, 
+  BruxismoFerula2, 
+  BruxismoFerula3, 
+  BruxismoFerula4, 
   AlarmClock,
   Coins,
   Smile,
