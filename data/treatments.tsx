@@ -800,13 +800,7 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       {
         id: "estudios-oclusales",
         name: "Estudios de ATM y Rehabilitación",
-        subTitle: " ",
-
-
         subTitle: <><strong>Devuelve el equilibrio neromuscular a tu rostro. </strong> Diagnóstico Avanzado mediante pruebas de alta precisión: Cuando el bruxismo ha causado dolores severos o asimetrías, necesitamos medir exactamente cómo se mueve tu mandíbula para diseñar tu mejor solución.</>,
-
-
-
 
 /* *****************
         content: (
