@@ -32,7 +32,7 @@ export interface StructuredPoint {
 }
 
 export interface DetailedPriceItem {
-  icon: string;
+  icon?: string;
   title: string;
   description?: ReactNode | string;
   price: string;
