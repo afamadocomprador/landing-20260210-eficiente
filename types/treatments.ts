@@ -38,6 +38,15 @@ export interface DetailedPriceItem {
   price: string;
 }
 
+
+// Creamos el tipo para el grupo
+export interface PriceGroup {
+  title: string;
+  description?: ReactNode | string; // 💡 NUEVO: Texto aclarativo bajo el título
+  items: DetailedPriceItem[];
+}
+
+
 export interface TreatmentRowData {
   id: string;
   name: string;
@@ -49,7 +58,8 @@ export interface TreatmentRowData {
   secondaryImageAlt?: string;
   content?: ReactNode | string; 
   points?: StructuredPoint[];   
-  detailedPrices?: DetailedPriceItem[]; 
+  detailedPrices?: DetailedPriceItem[]; // Mantenemos este para no romper fichas antiguas
+  priceGroups?: PriceGroup[];           // NUEVO: Para fichas con múltiples bloques y títulos
   list?: TreatmentListItem[];
   footerNote?: ReactNode | string;
 }
