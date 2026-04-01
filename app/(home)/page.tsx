@@ -62,7 +62,7 @@ const tratamientosList = [
   { id: 3, hasSub: true, icon: Stethoscope, image: "/images/tratamientos/implantes.png", title: "Precio de Implantes" },
   { id: 4, hasSub: true, icon: Zap, image: "/images/tratamientos/endodoncia.png", title: "Precio de Empastes y Endodoncias" },
   { id: 5, hasSub: true, icon: Activity, title: "Precios de Prótesis", image: "/images/tratamientos/protesis.png" },
-  { id: 9, href: "/tratamientos/apnea", icon: Moon, title: "Precio para Apnea", image: "/images/tratamientos/ferula.png" },
+  { id: 9, href: "/tratamientos-v2/apnea", icon: Moon, title: "Precio para Apnea", image: "/images/tratamientos/ferula.png" },
   { id: 6, hasSub: true, icon: Smile, image: "/images/tratamientos/odontopediatria.png", title: "Niñ@s" },
   // ⚡️ MODIFICADO: Prevención con modal y su imagen preservada
   { id: 7, hasSub: true, icon: ShieldCheck, image: "/images/tratamientos/general.png", title: "Prevención" },
@@ -73,50 +73,50 @@ const tratamientosList = [
 ];
 
 const esteticaSubOptions = [
-  { id: 'blanqueamiento', title: 'Blanqueamiento', href: '/tratamientos/estetica-blanqueamiento', tag: 'Luz y armonía' }, 
-  { id: 'carillas', title: 'Carillas y Diseño', href: '/tratamientos/estetica-carillas', tag: 'Hollywood Smile' },
-  { id: 'incrustaciones', title: 'Incrustaciones', href: '/tratamientos/estetica-incrustaciones', tag: 'Reconstrucción' },
+  { id: 'blanqueamiento', title: 'Blanqueamiento', href: '/tratamientos-v2/estetica-blanqueamiento', tag: 'Luz y armonía' }, 
+  { id: 'carillas', title: 'Carillas y Diseño', href: '/tratamientos-v2/estetica-carillas', tag: 'Hollywood Smile' },
+  { id: 'incrustaciones', title: 'Incrustaciones', href: '/tratamientos-v2/estetica-incrustaciones', tag: 'Reconstrucción' },
   { id: 'sep-orto-estetica', isSeparator: true, title: 'Alineación Estética' },
-  { id: 'invisalign-est', title: 'Invisalign', href: '/tratamientos/ortodoncia-invisalign', tag: 'Ortodoncia Invisible' }, 
-  { id: 'lingual-est', title: 'Ortodoncia Lingual', href: '/tratamientos/ortodoncia-lingual', tag: 'Aparato Interior' },
-  { id: 'zafiro-est', title: 'Brackets de Zafiro', href: '/tratamientos/ortodoncia-zafiro', tag: 'Estética Fija' },
+  { id: 'invisalign-est', title: 'Invisalign', href: '/tratamientos-v2/ortodoncia-invisalign', tag: 'Ortodoncia Invisible' }, 
+  { id: 'lingual-est', title: 'Ortodoncia Lingual', href: '/tratamientos-v2/ortodoncia-lingual', tag: 'Aparato Interior' },
+  { id: 'zafiro-est', title: 'Brackets de Zafiro', href: '/tratamientos-v2/ortodoncia-zafiro', tag: 'Estética Fija' },
 ];
 
 const ortodonciaSubOptions = [
-  { id: 'invisalign', title: 'Invisalign', href: '/tratamientos/ortodoncia-invisalign', tag: 'Invisible' }, 
-  { id: 'lingual', title: 'Lingual', href: '/tratamientos/ortodoncia-lingual', tag: 'Interior' },
-  { id: 'zafiro', title: 'Zafiro', href: '/tratamientos/ortodoncia-zafiro', tag: 'Estética Fija' },
-  { id: 'metalica', title: 'Metálica', href: '/tratamientos/ortodoncia-metalica', tag: 'Tradicional' },
+  { id: 'invisalign', title: 'Invisalign', href: '/tratamientos-v2/ortodoncia-invisalign', tag: 'Invisible' }, 
+  { id: 'lingual', title: 'Lingual', href: '/tratamientos-v2/ortodoncia-lingual', tag: 'Interior' },
+  { id: 'zafiro', title: 'Zafiro', href: '/tratamientos-v2/ortodoncia-zafiro', tag: 'Estética Fija' },
+  { id: 'metalica', title: 'Metálica', href: '/tratamientos-v2/ortodoncia-metalica', tag: 'Tradicional' },
   { id: 'sep-orto-infantil', isSeparator: true, title: 'Ortodoncia Infantil' },
-  { id: 'ortodoncia-removible', title: 'Ortodoncia Removible', href: '/tratamientos/ortodoncia-removible', tag: 'Aparatos de quita y pon' }
+  { id: 'ortodoncia-removible', title: 'Ortodoncia Removible', href: '/tratamientos-v2/ortodoncia-removible', tag: 'Aparatos de quita y pon' }
 ];
 
 const implantesSubOptions = [
-  { id: 'individual', title: 'Implante Individual', href: '/tratamientos/implante-individual', tag: 'Sustitución de 1 pieza' },
-  { id: 'arcada', title: 'Arcada Completa Fija', href: '/tratamientos/implante-arcada', tag: 'Todos los dientes fijos' },
-  { id: 'sobredentadura', title: 'Sobredentadura', href: '/tratamientos/implante-sobredentadura', tag: 'Económica y segura' }
+  { id: 'individual', title: 'Implante Individual', href: '/tratamientos-v2/implante-individual', tag: 'Sustitución de 1 pieza' },
+  { id: 'arcada', title: 'Arcada Completa Fija', href: '/tratamientos-v2/implante-arcada', tag: 'Todos los dientes fijos' },
+  { id: 'sobredentadura', title: 'Sobredentadura', href: '/tratamientos-v2/implante-sobredentadura', tag: 'Económica y segura' },
+  { id: 'hueso', title: 'Regeneración de Hueso', href: '/tratamientos-v2/regeneracion-hueso', tag: 'Según el estado de tu hueso' }
 ];
 
 const protesisSubOptions = [
-  { id: 'fijas', title: 'Prótesis Fijas', href: '/tratamientos/protesis-fijas', tag: 'Dientes que no se quitan' },
-  { id: 'removibles', title: 'Prótesis Removibles', href: '/tratamientos/protesis-removibles', tag: 'De quita y pon' },
-  { id: 'bruxismo', title: 'Oclusión y Bruxismo', href: '/tratamientos/protesis-bruxismo', tag: 'Protección' },
-  { id: 'taller', title: 'Taller Dental', href: '/tratamientos/protesis-ajustes', tag: 'Reparaciones y ajustes' }
+  { id: 'fijas', title: 'Prótesis Fijas', href: '/tratamientos-v2/protesis-fijas', tag: 'Dientes que no se quitan' },
+  { id: 'removibles', title: 'Prótesis Removibles', href: '/tratamientos-v2/protesis-removibles', tag: 'De quita y pon' },
+  { id: 'bruxismo', title: 'Oclusión y Bruxismo', href: '/tratamientos-v2/protesis-bruxismo', tag: 'Protección' }
 ];
 
 const pediatriaSubOptions = [
-  { id: 'prevencion', title: 'Prevención y Educación', href: '/tratamientos/pediatria-prevencion', tag: 'Escudo protector' },
-  { id: 'conservadora', title: 'Curando la Caries', href: '/tratamientos/pediatria-conservacion', tag: 'Odontología conservadora' },
-  { id: 'endodoncia', title: 'Endodoncia Infantil', href: '/tratamientos/pediatria-endodoncia', tag: 'Salvar el diente' },
-  { id: 'espacios', title: 'Salvando los Espacios', href: '/tratamientos/pediatria-cirugia-y-espacio', tag: 'Para los dientes que vienen' },
+  { id: 'prevencion', title: 'Prevención y Educación', href: '/tratamientos-v2/pediatria-prevencion', tag: 'Escudo protector' },
+  { id: 'conservadora', title: 'Curando la Caries', href: '/tratamientos-v2/pediatria-conservadora', tag: 'Odontología conservadora' },
+  { id: 'endodoncia', title: 'Endodoncia Infantil', href: '/tratamientos-v2/pediatria-endodoncia', tag: 'Salvar el diente' },
+  { id: 'espacios', title: 'Salvando los Espacios', href: '/tratamientos-v2/pediatria-extracciones-y-espacio', tag: 'Para los dientes que vienen' },
   { id: 'sep-orto-infantil-ped', isSeparator: true, title: 'Ortodoncia Infantil' },
-  { id: 'ortodoncia-removible-ped', title: 'Ortodoncia Removible', href: '/tratamientos/ortodoncia-removible', tag: 'Aparatos de quita y pon' }
+  { id: 'ortodoncia-removible-ped', title: 'Ortodoncia Removible', href: '/tratamientos-v2/ortodoncia-removible', tag: 'Aparatos de quita y pon' }
 ];
 
 const conservadoraSubOptions = [
-  { id: 'reconstruccion', title: 'Reconstrucción', href: '/tratamientos/conservadora-reconstruccion', tag: 'Frenar la caries a tiempo' },
-  { id: 'endodoncias', title: 'Endodoncias', href: '/tratamientos/conservadora-endodoncias', tag: 'Cuando no te deja dormir' },
-  { id: 'cirugia-complejos', title: 'Cirugía y Casos Complejos', href: '/tratamientos/conservadora-cirugia', tag: 'Segundas oportunidades' }
+  { id: 'reconstruccion', title: 'Reconstrucción', href: '/tratamientos-v2/conservadora-reconstruccion', tag: 'Frenar la caries a tiempo' },
+  { id: 'endodoncias', title: 'Endodoncias', href: '/tratamientos-v2/conservadora-endodoncia', tag: 'Cuando no te deja dormir' },
+  { id: 'cirugia-complejos', title: 'Cirugía y Casos Complejos', href: '/tratamientos-v2/conservadora-cirugia', tag: 'Segundas oportunidades' }
 ];
 
 // ⚡️ NUEVAS OPCIONES PARA PREVENCIÓN, PERIODONCIA Y CIRUGÍA
@@ -150,6 +150,25 @@ export default function LandingPage() {
     }
     return () => { document.body.style.overflow = ''; }; 
   }, [activeFloatingId]);
+
+
+  // ⚡️ FIX PARA EL SCROLL HACIA SECCIONES DESDE OTRAS PÁGINAS
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash) {
+      // Un pequeño retraso permite que Next.js pinte la página y el ScrollReveal se prepare
+      setTimeout(() => {
+        const element = document.querySelector(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 300); 
+    }
+  }, []);
+
+
+
+
 
   // ⚡️ LÓGICA DINÁMICA DE RUTEO DEL MODAL
   const activeCategory = tratamientosList.find(t => t.id === activeFloatingId);
