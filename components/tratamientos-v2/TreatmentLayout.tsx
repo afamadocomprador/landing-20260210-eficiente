@@ -1,7 +1,7 @@
 // Ruta: components/tratamientos-v2/TreatmentLayout.tsx
 import React from 'react';
-import { TreatmentDefinition, StructuredPoint, DetailedPriceItem } from '@/types/treatments';
-import { AlarmClock, Coins, Paintbrush, Smile, Zap, Info, Share2, CornerDownRight, ShieldCheck, Sparkles, Layers } from 'lucide-react';
+import { TreatmentDefinition, StructuredPoint, DetailedPriceItem, PriceGroup } from '@/types/treatments';
+import { AlarmClock, Coins, Paintbrush, Smile, Zap, Info, Share2, CornerDownRight, ShieldCheck, Sparkles, Layers, ArrowUp } from 'lucide-react';
 
 import Header from "@/components/layout/Header";
 import FooterLegal from "@/components/FooterLegal";
@@ -60,17 +60,12 @@ const ProtesisCompleta4 = () => <img src="/images/icons/protesis_completa_-_item
 const ProtesisCompleta5 = () => <img src="/images/icons/protesis_completa_-_item_5.png" alt="Soporte labial natural" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 const ProtesisCompleta6 = () => <img src="/images/icons/protesis_completa_-_item_6.png" alt="Restauración funcional de masticación" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 
-
 // --- ICONOS PRÓTESIS FLEXIBLES ---
 const ProtesisFlexible1 = () => <img src="/images/icons/protesis_flexible_-_item1.png" alt="Prótesis flexible de 1 a 4 piezas dentales" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 const ProtesisFlexible2 = () => <img src="/images/icons/protesis_flexible_-_item2.png" alt="Prótesis flesible de 5 a 6 piezas dentales" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 const ProtesisFlexible3 = () => <img src="/images/icons/protesis_flexible_-_item3.png" alt="Prótesis flexible de más de 7 piezas dentales" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 const ProtesisFlexible4 = () => <img src="/images/icons/protesis_flexibles_-_item4.png" alt="Prótesis flexible de más de 7 piezas dentales" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 const ProtesisFlexible5 = () => <img src="/images/icons/protesis_flexibles_-_item5.png" alt="Prótesis flexible de más de 7 piezas dentales" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
-
-
-
-
 
 // --- ICONOS PRÓTESIS ESQUELETICAS ---
 const ProtesisEsqueletica1 = () => <img src="/images/icons/protesis_flexible_-_item1.png" alt="Prótesis esqueletica de 1 a 44 piezas dentales" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
@@ -91,6 +86,26 @@ const BruxismoFerula1 = () => <img src="/images/icons/bruxismoferulas_-_item1.pn
 const BruxismoFerula2 = () => <img src="/images/icons/bruxismoferulas_-_item2.png" alt="Ferula para bruxismo. Relajación muscular" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 const BruxismoFerula3 = () => <img src="/images/icons/bruxismoferulas_-_item3.png" alt="Ferula para bruxismo. Tratamiento articular atm" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 const BruxismoFerula4 = () => <img src="/images/icons/bruxismoferulas_-_item4.png" alt="Ferula para bruxismo. Alivio de sintomatología" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+
+
+// --- ICONOS INVISALIGN ---
+const Invisalign1 = () => <img src="/images/icons/invisalign_-_item1.png" alt="Invisalign. Comodidad Absoluta. Invisible y sin rozaduras." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const Invisalign2 = () => <img src="/images/icons/invisalign_-_item2.png" alt="Invisalign. Libertad Total. Removibles para comer con total normalidad" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const Invisalign3 = () => <img src="/images/icons/invisalign_-_item3.png" alt="Invisalign. Higiene Perfecta. Cepillado sin obstáculos metálicos." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const Invisalign4 = () => <img src="/images/icons/invisalign_-_item4.png" alt="Invisalign. Previsibilidad. Podrás ver tu sonrisa antes del tratamiento con software 3D." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const Invisalign5 = () => <img src="/images/icons/invisalign_-_item5.png" alt="Invisalign. Consejo de Adaptación. Ligera presión inicial-" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+
+const InvisalignPrecio1 = () => <img src="/images/icons/invisalign_-_precio1.png" alt="Invisalign. Tratamiento completo ambos maxilares hasta 12 meses. 3.210 €" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const InvisalignPrecio2 = () => <img src="/images/icons/invisalign_-_precio2.png" alt="Invisalign. Tratamiento completo ambos maxilares hasta 24 meses. 4.000 €" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+
+
+// --- ICONOS ORTODONCIA INICIO Y FINAL ---
+const OrtoIniFin1 = () => <img src="/images/icons/ortodoncia-inicial-final_-_item1.png" alt="Ortodoncia. Previo. Estudio fotográfico." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const OrtoIniFin2 = () => <img src="/images/icons/ortodoncia-inicial-final_-_item2.png" alt="Ortodoncia. Previo. Estudio cefalométrico." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const OrtoIniFin3 = () => <img src="/images/icons/ortodoncia-inicial-final_-_item3.png" alt="Ortodoncia. Previo. Modelos de Estudio ." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const OrtoIniFin4 = () => <img src="/images/icons/ortodoncia-inicial-final_-_item4.png" alt="Ortodoncia. Posterior. Aparatología estabilizadora." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const OrtoIniFin5 = () => <img src="/images/icons/ortodoncia-inicial-final_-_item5.png" alt="Ortodoncia. Visitas de revisión." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+
 
 
 
@@ -146,6 +161,18 @@ const IconMapRefined: Record<string, React.ElementType> = {
   BruxismoFerula2, 
   BruxismoFerula3, 
   BruxismoFerula4, 
+  Invisalign1,
+  Invisalign2,
+  Invisalign3,
+  Invisalign4,
+  Invisalign5,
+  InvisalignPrecio1,
+  InvisalignPrecio2,
+  OrtoIniFin1,
+  OrtoIniFin2,
+  OrtoIniFin3,
+  OrtoIniFin4,
+  OrtoIniFin5,
   AlarmClock,
   Coins,
   Smile,
@@ -166,16 +193,18 @@ export function TreatmentLayout({ treatment }: Props) {
         {points.map((point, idx) => {
           const IconComponent = IconMapRefined[point.icon] || Info;
           return (
-            <div key={idx} className={`flex flex-row items-center gap-5 text-left relative pt-3 ${idx < points.length - 1 ? 'border-b border-gray-300 pb-3' : ''}`}>
-              <div className="relative flex items-center justify-center shrink-0 mt-1">
-                <IconComponent />
+            <ScrollReveal key={idx} delay={100 + (idx * 150)} direction="up">
+              <div className={`flex flex-row items-center gap-5 text-left relative pt-3 ${idx < points.length - 1 ? 'border-b border-gray-300 pb-3' : ''}`}>
+                <div className="relative flex items-center justify-center shrink-0 mt-1">
+                  <IconComponent />
+                </div>
+                <div className="flex flex-col flex-grow pt-1">
+                  <p className="text-dkv-gray font-fsme text-xl md:text-2xl leading-snug normal-case tracking-wide">
+                    {point.text}
+                  </p>
+                </div>
               </div>
-              <div className="flex flex-col flex-grow pt-1">
-                <p className="text-dkv-gray font-fsme text-xl md:text-2xl leading-snug normal-case tracking-wide">
-                  {point.text}
-                </p>
-              </div>
-            </div>
+            </ScrollReveal>
           );
         })}
       </div>
@@ -186,38 +215,103 @@ export function TreatmentLayout({ treatment }: Props) {
     return (
       <div className="mt-6 border border-gray-300 rounded-[1.5rem] p-4 md:p-5 bg-white relative z-10 shadow-sm">
         {prices.map((item, idx) => {
-          // Lógica ajustada: Si no hay icono, no renderiza el componente de icono
           const IconComponent = item.icon ? (IconMapRefined[item.icon] || Info) : null;
           
           return (
-            <div key={idx} className={`flex flex-row items-center justify-between gap-2 py-3 ${idx < prices.length - 1 ? 'border-b border-gray-200' : ''}`}>
-              
-              <div className="flex flex-row items-center gap-3 md:gap-4 pr-1">
-                {IconComponent && (
-                  <div className="shrink-0 flex items-center justify-center">
-                    <IconComponent />
-                  </div>
-                )}
-                <div className="flex flex-col min-w-0">
-                  <span className="font-bold text-dkv-green-dark text-base md:text-lg font-fsme tracking-wide leading-tight block">{item.title}</span>
-                  {item.description && (
-                    <span className="text-dkv-gray/80 text-sm md:text-base font-fsme tracking-wide leading-tight block mt-0.5">{item.description}</span>
+            <ScrollReveal key={idx} delay={100 + (idx * 120)} direction="up">
+              <div className={`flex flex-row items-center justify-between gap-2 py-3 ${idx < prices.length - 1 ? 'border-b border-gray-200' : ''}`}>
+                
+                <div className="flex flex-row items-center gap-3 md:gap-4 pr-1">
+                  {IconComponent && (
+                    <div className="shrink-0 flex items-center justify-center">
+                      <IconComponent />
+                    </div>
                   )}
+                  <div className="flex flex-col min-w-0">
+                    <span className="font-bold text-dkv-green-dark text-base md:text-lg font-fsme tracking-wide leading-tight block">{item.title}</span>
+                    {item.description && (
+                      <span className="text-dkv-gray/80 text-sm md:text-base font-fsme tracking-wide leading-tight block mt-0.5">{item.description}</span>
+                    )}
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex justify-end shrink-0 pl-1">
-                <span className="font-lemon text-lg md:text-xl text-dkv-green-dark font-bold">
-                  {item.price}
-                </span>
-              </div>
+                <div className="flex justify-end shrink-0 pl-1">
+                  <span className="font-lemon text-lg md:text-xl text-dkv-green-dark font-bold">
+                    {item.price}
+                  </span>
+                </div>
 
-            </div>
+              </div>
+            </ScrollReveal>
           );
         })}
       </div>
     );
   };
+
+
+  // 💡 NOVA FUNCIÓN: Renderiza os grupos de prezos cos seus títulos
+// 💡 FUNCIÓN ACTUALIZADA: Los items ahora tienen EXACTAMENTE el mismo estilo que renderDetailedPrices
+  const renderPriceGroups = (groups: PriceGroup[]) => {
+    return (
+      <div className="mt-8 space-y-8">
+        {groups.map((group, groupIdx) => (
+          <div key={groupIdx} className="relative z-10">
+            
+            <h3 className={`text-dkv-green-dark font-bold font-lemon text-sm md:text-base uppercase ${group.description ? 'mb-2' : 'mb-4'}`}>
+              {group.title}
+            </h3>
+            
+            {group.description && (
+              <p className="text-sm italic mb-4 text-dkv-gray/80">
+                {group.description}
+              </p>
+            )}
+
+            <div className="mt-6 border border-gray-300 rounded-[1.5rem] p-4 md:p-5 bg-white relative z-10 shadow-sm">
+
+              {group.items.map((item, idx) => {
+                const IconComponent = item.icon ? (IconMapRefined[item.icon] || Info) : null;
+                return (
+                  <ScrollReveal key={idx} delay={100 + (idx * 120)} direction="up">
+                    <div className={`flex flex-row items-center justify-between gap-2 py-3 ${idx < group.items.length - 1 ? 'border-b border-gray-200/60' : ''}`}>
+                      
+                      <div className="flex flex-row items-center gap-3 md:gap-4 pr-1">
+                        {IconComponent && (
+                          <div className="shrink-0 flex items-center justify-center">
+                            <IconComponent />
+                          </div>
+                        )}
+                        <div className="flex flex-col min-w-0">
+                          {/* 💡 ESTILOS CLONADOS: Color verde oscuro, font-fsme y tracking-wide */}
+                          <span className="font-bold text-dkv-green-dark text-base md:text-lg font-fsme tracking-wide leading-tight block">{item.title}</span>
+                          {item.description && (
+                            <span className="text-dkv-gray/80 text-sm md:text-base font-fsme tracking-wide leading-tight block mt-0.5">{item.description}</span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* 💡 PADDING CLONADO: Cambiado de pl-4 a pl-1 para que el precio alinee igual */}
+                      <div className="flex justify-end shrink-0 pl-1">
+                        <span className="font-lemon text-lg md:text-xl text-dkv-green-dark font-bold">
+                          {item.price}
+                        </span>
+                      </div>
+
+                    </div>
+                  </ScrollReveal>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+
+
+
 
   return (
     <>
@@ -256,6 +350,35 @@ export function TreatmentLayout({ treatment }: Props) {
             </div>
           )}
 
+          {/* 💡 APLICADO: ID para el ancla y margen de scroll */}
+          {treatment.rows.length > 1 && (
+            <ScrollReveal delay={100}>
+              <div id="opciones-tratamiento" className="mb-16 scroll-mt-32">
+                <h3 className="text-sm font-bold text-dkv-gray/60 uppercase tracking-widest mb-4 font-fsme text-center md:text-left">
+                  Opciones de Tratamiento
+                </h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+                  {treatment.rows.map((row) => (
+                    <a 
+                      key={`index-${row.id}`} 
+                      href={`#${row.id}`}
+                      className="bg-white p-4 md:p-5 rounded-2xl border border-gray-300 shadow-sm hover:border-dkv-green hover:shadow-md transition-all duration-300 flex flex-col justify-between h-full group"
+                    >
+                      <span className="font-bold text-dkv-gray text-sm md:text-base leading-tight group-hover:text-dkv-green-dark transition-colors line-clamp-3">
+                        {row.name}
+                      </span>
+                      {row.price && (
+                        <span className="font-lemon text-lg md:text-xl text-dkv-green-dark mt-3 block">
+                          {row.price}
+                        </span>
+                      )}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </ScrollReveal>
+          )}
+
           <div className="space-y-16">
             {treatment.rows.map((row) => (
               <section key={row.id} id={row.id} className="scroll-mt-32">
@@ -271,11 +394,12 @@ export function TreatmentLayout({ treatment }: Props) {
 
                     {/* IMAGEN HERO DE LA FICHA */}
                     {row.image && (
-                      <div className="mb-8 overflow-hidden rounded-2xl relative aspect-[16/9] md:aspect-[21/9]">
+                      <div className="mb-8 w-full overflow-hidden rounded-2xl border border-gray-100 flex items-center justify-center bg-gray-50/50 py-4 relative z-10">
                         <img 
                           src={row.image} 
-                          alt={row.name}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          alt={row.imageAlt || row.name}
+                          className="w-full h-auto object-contain max-h-[200px] md:max-h-[250px] transition-transform duration-700 group-hover:scale-105"
+                          loading="lazy"
                         />
                       </div>
                     )}
@@ -299,7 +423,6 @@ export function TreatmentLayout({ treatment }: Props) {
                     )}
 
                     <div className="text-dkv-gray font-fsme text-lg leading-relaxed space-y-4 relative z-10 flex-grow">
-                      {/* LÓGICA CORREGIDA: Renderiza points y luego content si ambos existen */}
                       {row.points && renderIconographicPoints(row.points)}
                       
                       {row.content && (
@@ -309,22 +432,29 @@ export function TreatmentLayout({ treatment }: Props) {
                       )}
                     </div>
 
+                    {/* Precios detallados normales */}
                     {row.detailedPrices && row.detailedPrices.length > 0 && renderDetailedPrices(row.detailedPrices)}
+                    
+                    {/* Grupos de precios -precios con título- */}
+                    {row.priceGroups && row.priceGroups.length > 0 && renderPriceGroups(row.priceGroups)}
 
-                    {!row.points && !row.detailedPrices && row.list && row.list.length > 0 && (
+                    {/* Efecto cascada usando ScrollReveal para 'list' genérico */}
+                    {!row.points && !row.detailedPrices && !row.priceGroups && row.list && row.list.length > 0 && (
                       <ul className="mt-5 space-y-4 relative z-10">
                         {row.list.map((item, idx) => {
                           const IconComponent = item.icon ? (IconMapRefined[item.icon] || Info) : Info;
                           return (
-                            <li key={idx} className="flex items-start gap-4">
-                              <div className="relative mt-1">
-                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-dkv-green/20"></div>
-                                <IconComponent className="w-6 h-6 text-dkv-green shrink-0 relative z-10" />
-                              </div>
-                              <span className="text-dkv-gray font-fsme text-lg leading-snug normal-case tracking-wide">
-                                {item.text}
-                              </span>
-                            </li>
+                            <ScrollReveal key={idx} delay={100 + (idx * 150)} direction="up">
+                              <li className="flex items-start gap-4">
+                                <div className="relative mt-1">
+                                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-dkv-green/20"></div>
+                                  <IconComponent className="w-6 h-6 text-dkv-green shrink-0 relative z-10" />
+                                </div>
+                                <span className="text-dkv-gray font-fsme text-lg leading-snug normal-case tracking-wide">
+                                  {item.text}
+                                </span>
+                              </li>
+                            </ScrollReveal>
                           );
                         })}
                       </ul>
@@ -335,6 +465,31 @@ export function TreatmentLayout({ treatment }: Props) {
                         <p className="leading-snug normal-case tracking-wide relative">
                           {row.footerNote}
                         </p>
+                      </div>
+                    )}
+
+                    {/* IMAGEN SECUNDARIA DE LA FICHA */}
+                    {row.secondaryImage && (
+                      <div className="mt-8 w-full overflow-hidden rounded-xl border border-gray-100 flex items-center justify-center bg-gray-50/30 py-4 relative z-10">
+                        <img 
+                          src={row.secondaryImage} 
+                          alt={row.secondaryImageAlt || `${row.name} - detalle`} 
+                          className="w-full h-auto object-contain max-h-[140px] md:max-h-[180px] transition-transform duration-700 group-hover:scale-105" 
+                          loading="lazy" 
+                        />
+                      </div>
+                    )}
+
+                    {/* 💡 APLICADO: BOTÓN VOLVER ARRIBA (Solo si hay >1 opción) */}
+                    {treatment.rows.length > 1 && (
+                      <div className="mt-8 pt-6 border-t border-gray-100 flex justify-center relative z-10">
+                        <a 
+                          href="#opciones-tratamiento" 
+                          className="inline-flex items-center gap-2 text-dkv-gray/60 hover:text-dkv-green transition-colors font-fsme font-medium text-base px-4 py-2 rounded-full hover:bg-dkv-green/5 group"
+                        >
+                          <ArrowUp className="w-4 h-4 group-hover:-translate-y-1 transition-transform" />
+                          <span>Volver a opciones</span>
+                        </a>
                       </div>
                     )}
 
