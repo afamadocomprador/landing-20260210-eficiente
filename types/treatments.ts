@@ -35,7 +35,7 @@ export interface DetailedPriceItem {
   icon?: string;
   title: string;
   description?: ReactNode | string;
-  price: string;
+  price: ReactNode | string; // 💡 AHORA ACEPTA ETIQUETAS HTML
 }
 
 
@@ -50,7 +50,7 @@ export interface PriceGroup {
 export interface TreatmentRowData {
   id: string;
   name: string;
-  price?: string;
+  price?: ReactNode | string; // 💡 AHORA ACEPTA ETIQUETAS HTML
   subTitle?: ReactNode | string; // <-- NUESTRO NUEVO CAMPO
   image?: string;
   imageAlt?: string;
