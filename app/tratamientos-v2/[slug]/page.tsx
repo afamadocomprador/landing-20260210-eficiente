@@ -44,7 +44,9 @@ export async function generateMetadata(
 
       // ⚡️ NUEVO: Pasamos el nombre por un lado (title) y el precio por otro (subtitle)
       const ogTitleToRender = foundTreatment.name.toUpperCase();
-      const subtitleQuery = foundTreatment.price ? `&subtitle=${encodeURIComponent(foundTreatment.price)}` : '';
+      // ⚡️ NUEVO: Comprobamos si el precio es un texto antes de pasarlo a la URL de la imagen
+      const priceText = typeof foundTreatment.price === 'string' ? foundTreatment.price : '';
+      const subtitleQuery = priceText ? `&subtitle=${encodeURIComponent(priceText)}` : '';
 
       return {
         metadataBase: new URL(baseUrl), // ⚡️ CRUCIAL PARA WHATSAPP
