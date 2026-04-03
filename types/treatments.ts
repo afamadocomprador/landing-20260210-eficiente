@@ -33,7 +33,7 @@ export interface StructuredPoint {
 
 export interface DetailedPriceItem {
   icon?: string;
-  title: string;
+  title: ReactNode | string; // 💡 Ahora acepta tu <span className="sr-only">
   description?: ReactNode | string;
   price: ReactNode | string; // 💡 AHORA ACEPTA ETIQUETAS HTML
 }
@@ -41,7 +41,7 @@ export interface DetailedPriceItem {
 
 // Creamos el tipo para el grupo
 export interface PriceGroup {
-  title: string;
+  title: ReactNode | string; // 💡 Ahora acepta etiquetas HTML
   description?: ReactNode | string; // 💡 NUEVO: Texto aclarativo bajo el título
   items: DetailedPriceItem[];
 }
