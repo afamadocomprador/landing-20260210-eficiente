@@ -228,7 +228,9 @@ export function TreatmentLayout({ treatment }: Props) {
                     </div>
                   )}
                   <div className="flex flex-col min-w-0">
-                    <span className="font-bold text-dkv-green-dark text-base md:text-lg font-fsme tracking-wide leading-tight block">{item.title}</span>
+                    {/* ⚡️ CORREGIDO: Ahora es un H3 semántico manteniendo el mismo estilo visual */}
+                    <h3 className="font-bold text-dkv-green-dark text-base md:text-lg font-fsme tracking-wide leading-tight block m-0">{item.title}</h3>
+                    
                     {item.description && (
                       <span className="text-dkv-gray/80 text-sm md:text-base font-fsme tracking-wide leading-tight block mt-0.5">{item.description}</span>
                     )}
@@ -258,9 +260,11 @@ export function TreatmentLayout({ treatment }: Props) {
         {groups.map((group, groupIdx) => (
           <div key={groupIdx} className="relative z-10">
             
-            <h3 className={`text-dkv-green-dark font-bold font-lemon text-sm md:text-base uppercase ${group.description ? 'mb-2' : 'mb-4'}`}>
+            {/* ⚡️ CORREGIDO: Cambiado a <div> para no ensuciar tu jerarquía de encabezados SEO */}
+            <div className={`text-dkv-green-dark font-bold font-lemon text-sm md:text-base uppercase block ${group.description ? 'mb-2' : 'mb-4'}`}>
               {group.title}
-            </h3>
+            </div>
+
             
             {group.description && (
               <p className="text-sm italic mb-4 text-dkv-gray/80">
@@ -283,8 +287,9 @@ export function TreatmentLayout({ treatment }: Props) {
                           </div>
                         )}
                         <div className="flex flex-col min-w-0">
-                          {/* 💡 ESTILOS CLONADOS: Color verde oscuro, font-fsme y tracking-wide */}
-                          <span className="font-bold text-dkv-green-dark text-base md:text-lg font-fsme tracking-wide leading-tight block">{item.title}</span>
+                          {/* ⚡️ CORREGIDO: Ahora es un H3 semántico manteniendo el mismo estilo visual */}
+                          <h3 className="font-bold text-dkv-green-dark text-base md:text-lg font-fsme tracking-wide leading-tight block m-0">{item.title}</h3>
+
                           {item.description && (
                             <span className="text-dkv-gray/80 text-sm md:text-base font-fsme tracking-wide leading-tight block mt-0.5">{item.description}</span>
                           )}
