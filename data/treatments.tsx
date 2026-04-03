@@ -21,7 +21,7 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       badgeText: "Recupera la luz de tu sonrisa",
       title: { dark: "BLANQUEAMIENTO", normal: "DENTAL" },
       description: [
-        "Rejuvenece tu sonrisa eliminando pigmentaciones (café, tabaco, edad) sin alterar la forma ni la estructura de tus dientes."
+        "Elimina manchas de café, tabaco o la edad sin dañar tu esmalte. Una sonrisa más joven y brillante en un tratamiento rápido y 100% seguro."
       ]
     },
 /*
@@ -35,9 +35,9 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
 
       {
         id: "blanqueamiento-consultorio",
-        name: "Blanqueamiento Dental en Consultorio",
-        price: "250 €",
-        subTitle: "Ideal si buscas un resultado rápido.",
+        name: "Blanqueamiento en Clínica",
+        /* price: "250 €", */
+        subTitle: "El tratamiento ideal si buscas resultados casi inmediatos.",
         points: [
           {
             icon: 'Consultorio1',
@@ -56,13 +56,21 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             text: <><strong className="text-dkv-green-dark font-bold">Resultado inmediato.</strong> Sonrisa notablemente más blanca el mismo día.</>
           }
         ],
+        detailedPrices: [
+          {
+            icon: '',
+            title: 'Blanqueamiento en consultorio',
+            description: 'Tratamiento intensivo bajo supervisión para un aclarado rápido de color',
+            price: '250 €'
+          },
+        ],
         footerNote: "* Precio por sesión."
       },
       {
         id: "blanqueamiento-domicilio",
-        name: "Blanqueamiento Dental en Domicilio",
-        price: "216 €",
-        subTitle: "Ideal para un blanqueamiento suave y gradual. Excelente para dientes sensibles.",
+        name: "Blanqueamiento con férulas (en casa)",
+        /* price: "216 €", */
+        subTitle: "Perfecto para dientes sensibles. Un aclarado de color cómodo y respetuoso.",
         points: [
           {
             icon: 'Ferulas1',
@@ -81,17 +89,25 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             text: <><strong className="text-dkv-green-dark font-bold">Uso nocturno cómodo.</strong><br />Resultados visibles en semanas.</>
           }
         ],
+        detailedPrices: [
+          {
+            icon: '',
+            title: 'Blanqueamiento en domicilio',
+            description: 'Sistema gradual con férulas nocturnas adaptadas.',
+            price: '216 €'
+          },
+        ],
         footerNote: "* Precio por tratamiento completo."
       },
 
       {
         id: "blanqueamiento-combinado",
-        name: "Blanqueamiento Dental Combinado (Consultorio y Domicilio)",
-        price: "300 €",
+        name: "Blanqueamiento Combinado",
+        /* price: "300 €", */
 /*
-        subTitle: <><strong>El Tratamiento Estrella:</strong> Es la opción que más recomendamos. Combina el choque rápido y potente de la clínica con el mantenimiento profundo y progresivo en casa.</>,
+        subTitle: <><strong>El estándar médico de oro. </strong> El blanco más profundo y estable para tu sonrisa.</>,
 */
-        subTitle: <><strong>El tratamiento más recomendado. </strong> Combina el choque rápido y potente de la clínica con el mantenimiento profundo y progresivo en casa. Ideal para un blanqueamiento duradero.</>,
+        subTitle: <>Choque rápido en la clínica + mantenimiento en casa. El estándar de oro médico para un blanco más profundo y duradero.</>,
 
         points: [
           {
@@ -107,13 +123,21 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             text: <><strong className="text-dkv-green-dark font-bold block">Kit Profesional para Casa.<br />Blanqueamiento Espectacular.</strong>Tono blanco, estable y duradero, a lo largo de los años.</>
           }
         ],
+        detailedPrices: [
+          {
+            icon: '',
+            title: 'Blanqueamiento combinado.',
+            description: 'Enérgico en clíncia + estabilización en casa.',
+            price: '300 €'
+          },
+        ],
+
         footerNote: "* Precio por tratamiento combinado completo."
       },
       {
         id: "blanqueamiento-interno",
-        name: "Blanqueamiento de Diente No Vital",
-        price: "50 €",
-        subTitle: <>Ideal para igualar color tras endodoncia.</>,
+        name: "Blanqueamiento Interno (Dientes oscuros)",
+        subTitle: <>Devuelve la luz a un diente oscurecido tras un golpe o una endodoncia.</>,
         points: [
           {
             icon: 'DienteOscuro',
@@ -127,6 +151,14 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             icon: 'ColorIgualado',
             text: <><strong className="text-dkv-green-dark font-bold">Color igualado.</strong><br />Para igualar su color con los dientes vecinos sanos.</>
           }
+        ],
+        detailedPrices: [
+          {
+            icon: '',
+            title: 'Blanqueamiento no vital.',
+            description: 'Focalizado para recuperar el tono de un diente oscurecido.',
+            price: '50 €'
+          },
         ],
         footerNote: "* Precio por pieza tratada."
       }
@@ -155,10 +187,10 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       { label: "Carillas y Diseño", href: "#" }
     ],
     hero: {
-      badgeText: "Dientes Frontales",
-      title: { dark: "CARILLAS Y DISEÑO DE", normal: "SONRISA" },
+      badgeText: "Diseña tu sonrisa",
+      title: { dark: "CARILLAS", normal: "DENTALES" },
       description: [
-        "Mejora la estética de forma económica cambiando radicalmente el color, la forma o el tamaño de tus dientes frontales,  o bien cerrando espacios (diastemas) entre los mismos."
+        "Mejora la estética de tus dientes, cierra espacios y consigue una sonrisa armónica."
       ]
     },
 /*
@@ -172,9 +204,9 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     rows: [
       {
         id: "carillas-composite",
-        name: "Carillas Estéticas de Composite",
-        price: "75 €",
-        subTitle: <> Ideal para pequeñas correcciones de forma o color.</>,
+        name: "Carillas de composite (resina)",
+        /* price: "75 €", */
+        subTitle: <> Esculpidas a mano directamente sobre tu diente en una sola sesión. Ideales para pequeñas correcciones, fracturas o presupuestos ajustados.</>,
         points: [
           {
             icon: 'Timer',
@@ -189,13 +221,24 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             text: <><strong className="text-dkv-green-dark font-bold">Endurecido con luz.</strong><br />Resultado inmediato.</>
           }
         ],
-        footerNote: "* Precio por diente."
+
+        detailedPrices: [
+          {
+            icon: '',
+            title: 'Carilla de composite.',
+            description: 'Reconstrucción estética modelada directamente en clínica.',
+            price: '75 €'
+          },
+        ],
+
+
+        footerNote: "* Precio por pieza tratada."
       },
       {
         id: "carillas-porcelana",
-        name: "Carillas Estéticas de Porcelana",
-        price: "180 €",
-        subTitle: <> Ideal para pequeñas correcciones de forma o color mediante láminas.</>,
+        name: "Carillas de Porcelana (Alta Estética)",
+        /* price: "180 €", */
+        subTitle: <> Fabricadas en laboratorio a medida. Aportan una naturalidad insuperable, no pierden su brillo y jamás se tiñen con el café o el tabaco.</>,
         points: [
           {
             icon: 'Porcelain1',
@@ -213,18 +256,18 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         detailedPrices: [
           {
             icon: 'Porcelain4',
-            title: 'Carilla de Porcelana Estándar',
-            description: '(precio por diente)',
+            title: 'Carilla de Porcelana',
+            description: 'Lámina cerámica de alta resistencia fabricada a medida. (Precio por diente).',
             price: '180 €'
           },
           {
             icon: 'Porcelain5',
-            title: 'Suplemento Efectos Especiales',
-            description: 'Pintado y texturizado para transparencias.',
+            title: 'Suplemento Efecto Especial Carilla Porcelana',
+            description: 'Pintado y texturizado para recrear transparencias naturales.',
             price: <span className="text-dkv-green">+ 50 €</span>
           }
-        ],
-        footerNote: "* Precio por diente."
+        ]
+        /* footerNote: "* Precio por diente." */
       }
     ],
 
@@ -320,7 +363,7 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       badgeText: "Restauración Conservadora",
       title: { dark: "INCRUSTACIONES", normal: "ESTÉTICAS" },
       description: [
-        "Para salvar una muela muy dañada de forma estética, la medida previa a rebajarla entera para poner funda o corona es fabricar en laboratorio un bloque estético, que será como la pieza de un rompecabezas encajando en tu muela para devolverle el 100% de su dureza."      ]
+        "Salva tu muela sin necesidad de una corona (funda). Reponemos solo la parte dañada con una pieza a medida que devuelve el 100% de la fuerza y estética natural."      ]
     },
 /*
     intro: {
@@ -332,9 +375,9 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     rows: [
       {
         id: "incrustacion-porcelana",
-        name: "Incrustación Estética de Porcelana",
-        price: "140 €",
-        subTitle: <> Ideal tras endodoncia o grandes destrucciones de caries.</>,
+        name: "Incrustación Estética de Porcelana (Alta Resistencia)",
+        /* price: "140 €", */
+        subTitle: <> La opción más estética y duradera. Ideal para molares que soportan mucha fuerza al masticar o tras una endodoncia.</>,
         points: [
           {
             icon: 'Incrustacion1',
@@ -349,6 +392,16 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             text: <><strong className="text-dkv-green-dark font-bold">Alternativa Conservadora.</strong> Reconstrucción que preserva el diente sano frente a una corona.</>
           }
         ],
+
+        detailedPrices: [
+          {
+            icon: '',
+            title: 'Incrustación de porcelana.',
+            description: 'Bloque cerámico fabricado a medida en laboratorio para restaurar el diente.',
+            price: '140 €'
+          }
+        ],
+
         footerNote: "* Precio por incrustación individual."
       }
     ],
@@ -426,10 +479,11 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         name: "Prótesis Parciales Flexibles",
         image: "/images/icons/protesis flexible hero5.png",
         price: "Desde 477 €",
+        subTitle: "Flexibilidad y comodidad.",
         points: [
           {
             icon: 'ProtesisFlexible4',
-            text: <><strong className="text-dkv-green-dark font-bold">Flexibilidad y comodidad.</strong><br />Material flexible que evita dolorosas rozaduras.</>
+            text: <><strong className="text-dkv-green-dark font-bold">Material flexible </strong><br /> que evita dolorosas rozaduras.</>
           },
           {
             icon: 'ProtesisFlexible5',
@@ -468,6 +522,7 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         name: "Prótesis Parciales Esqueléticas (Metálicas)",
         image: "/images/icons/protesis parcial esqueletica metalica - hero.png",
         price: "Desde 345 €",
+        subTitle: "Mejor sentido del gusto.",
         detailedPrices: [
           {
             icon: 'ProtesisEsqueletica1',
@@ -494,17 +549,21 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             price: '650 €'
           }
         ],
-        content: (
-          <>
-            <p><strong>Para los que quieren saborear la comida.</strong> En lugar de llevar mucho plástico rosa que tapa el paladar, estas prótesis tienen un "esqueleto" de metal muy fino y resistente. Al no tapar el paladar, la comida sabe mejor, ocupan menos espacio en la boca y son extremadamente estables al masticar.</p>
-          </>
-        )
+
+        points: [
+          {
+            icon: '',
+            text: <><strong>Para los que quieren saborear la comida.</strong> En lugar de llevar mucho plástico rosa que tapa el paladar, estas prótesis tienen un "esqueleto" de metal muy fino y resistente. Al no tapar el paladar, la comida sabe mejor, ocupan menos espacio en la boca y son extremadamente estables al masticar.</>
+          }
+        ]
+
       },
       {
         id: "acrilicas",
         name: "Prótesis Parciales de Resina (Acrílicas)",
         image: "/images/icons/protesis acrilicas gancho - hero2.png",
         price: "Desde 209 €",
+        subTitle: "La opción más económica.",
         detailedPrices: [
           {
             icon: 'ProtesisAcrilica1',
@@ -525,16 +584,20 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             price: '353 €'
           }
         ],
-        content: (
-          <>
-            <p><strong>La opción más económica.</strong> Cuando te faltan algunas piezas y buscas salir del paso sin hacer un gran desembolso. Llevan una base de resina rosa (imitando la encía) y unos ganchitos de metal convencionales para agarrarse a tus dientes sanos restantes.</p>
-          </>
-        )
+
+        points: [
+          {
+            icon: '',
+            text: <>Cuando te faltan algunas piezas y buscas salir del paso <strong>sin hacer un gran desembolso</strong>. Llevan una base de resina rosa (imitando la encía) y unos ganchitos de metal convencionales para agarrarse a tus dientes sanos restantes.</>
+          }
+        ]
+
+
       },
       {
         id: "suplementos-removibles",
         name: "Mejoras, Arreglos y Personalización de tu Prótesis",
-
+        subTitle: "Añadiendo los extras.",
 
         priceGroups: [
           {
@@ -612,11 +675,13 @@ title: "De precisión compleja", description: "", price: "120 €" }
 
         ],
 
-        content: (
-          <>
-            <p>Porque cada boca es un mundo, te ofrecemos suplementos opcionales para hacer que tu prótesis sea aún más dura, estética o hipoalergénica.</p>
-          </>
-        )
+        points: [
+          {
+            icon: '',
+            text: <>Porque cada boca es un mundo, te ofrecemos suplementos opcionales para hacer que tu prótesis sea aún más dura, estética o hipoalergénica.</>
+          }
+        ]
+
       }
     ],
     cta: {
@@ -652,13 +717,18 @@ title: "De precisión compleja", description: "", price: "120 €" }
         name: "Coronas y Puentes de Alta Estética (Sin metal)",
         image: "/images/icons/protesis fija corona estetica - hero.png",
         price: "Desde 299 €",
-        content: (
-          <>
-            <p className="mb-3"><strong>Motivo:</strong> El diente dañado está en una zona visible y quieres que nadie note que es falso.</p>
-            <p><strong>Cómo se hace:</strong> Tallamos un poco tu diente, tomamos medidas exactas y el laboratorio crea una funda o "corona" que encaja a la perfección, imitando la luz y textura natural.</p>
-          </>
-        ),
+        subTitle: "Mejor aspecto.",
 
+        points: [
+          {
+            icon: '',
+            text: <><strong>Motivo:</strong> El diente dañado está en una zona visible y quieres que nadie note que es falso.</>
+          },
+          {
+            icon: '',
+            text: <><strong>Cómo se hace:</strong> Tallamos un poco tu diente, tomamos medidas exactas y el laboratorio crea una funda o "corona" que encaja a la perfección, imitando la luz y textura natural.</>
+          }
+        ],
 
 
         priceGroups: [
@@ -684,9 +754,14 @@ title: "De precisión compleja", description: "", price: "120 €" }
         name: "Coronas y Puentes Clásicos (Con base de metal)",
         image: "/images/icons/protesis fija corona clasica - hero.png",
         price: "Desde 100 €",
-        content: (
-          <p><strong>Motivo:</strong> Buscas máxima resistencia para masticar en las muelas del fondo, o tienes un presupuesto más ajustado y la estética perfecta no es tu máxima prioridad.</p>
-        ),
+        subTitle: "Relación calidad / precio óptima.",
+        points: [
+          {
+            icon: '',
+            text: <><strong>Motivo:</strong> Buscas máxima resistencia para masticar en las muelas del fondo, o tienes un presupuesto más ajustado y la estética perfecta no es tu máxima prioridad.</>
+          }
+        ],
+
         detailedPrices: [
           {
             title: "Corona o puente de metal con porcelana",
@@ -749,19 +824,31 @@ title: "De precisión compleja", description: "", price: "120 €" }
         name: "Muñon colado",
         image: "/images/icons/munon colado - hero.png",
         price: "65 €",
-        content: (
-          <>
-            <p className="mb-3"><strong>Motivo:</strong> Cuando se logra salvar tu raíz natural pero el resto del diente no es suficiente para tallar la base de la corona.</p>
-            <p><strong>Cómo se hace:</strong> Fabricamos un "pilar" a medida que va inserto en la raíz para pegar encima la corona.</p>
-          </>
-        )
+        subTitle: "El esqueleto.",
+
+        points: [
+          {
+            icon: '',
+            text: <><strong>Motivo:</strong> Cuando se logra salvar tu raíz natural pero el resto del diente no es suficiente para tallar la base de la corona.</>
+          },
+          {
+            icon: '',
+            text: <><strong>Cómo se hace:</strong> Fabricamos un "pilar" a medida que va inserto en la raíz para pegar encima la corona.</>
+          }
+        ],
+
       },
       {
         id: "suplementos-fijos",
         name: "Suplementos Especiales y Refuerzos",
-        content: (
-          <p>Técnicas avanzadas para dar soporte o evitar dañar piezas sanas en casos concretos.</p>
-        ),
+        subTitle: "Técnicas avanzadas.",
+        points: [
+          {
+            icon: '',
+            text: <>Dar soporte o evitar dañar piezas sanas en casos concretos.</>
+          }
+        ],
+
         detailedPrices: [
           {
             title: "Puente tipo Maryland",
@@ -778,11 +865,13 @@ title: "De precisión compleja", description: "", price: "120 €" }
       {
         id: "reparacion-fija",
         name: "Ajustes y Reparaciones de Prótesis Fijas",
-        content: (
-          <p>Soluciones para coronas y puentes que han sufrido una fractura estética o que simplemente necesitan ser vueltos a cementar.</p>
-        ),
-
-
+        subTitle: "Taller.",
+        points: [
+          {
+            icon: '',
+            text: <>Soluciones para coronas y puentes que han sufrido una fractura estética o que simplemente necesitan ser vueltos a cementar.</>
+          }
+        ],
 
 
         priceGroups: [
@@ -1009,13 +1098,20 @@ title: "De precisión compleja", description: "", price: "120 €" }
     },
     rows: [
       {
-        id: "metalicos",
+        id: "brackets-metalicos-convencionales",
         name: "Brackets Metálicos Convencionales",
         image: "/images/tratamientos/ortodoncia-brackets-metalico-standard.png",
         secondaryImage: "/images/tratamientos/ortodoncia-brackets-metalico-standard-un-diente.png",
-        content: (
-          <p>El sistema tradicional, más robusto y económico. Perfecto para corregir cualquier tipo de maloclusión, muy utilizado en adolescentes por su durabilidad.</p>
-        ),
+        subTitle: "El sistema tradicional, más robusto y económico. ",
+
+        points: [
+          {
+            icon: '',
+            text: <>Perfecto para corregir cualquier tipo de maloclusión, muy utilizado en adolescentes por su durabilidad.
+</>
+          }
+        ],
+
 
 /*
         detailedPrices: [
@@ -1051,16 +1147,22 @@ title: "Reposición de bracket", description: "(por pieza estropeada)", price: "
         /* footerNote: "Tratamientos asociados: Visitas de revisión (30€) y reposición de bracket (20€)." */
       },
       {
-        id: "autoligables",
+        id: "brackets-metalicos-autoligables",
         name: "Brackets Metálicos Autoligables",
         image: "/images/tratamientos/ortodoncia-brackets-metalico-autoligable.png",
         secondaryImage: "/images/tratamientos/ortodoncia-brackets-metalico-autoligable-un-diente.png",
-        content: (
-          <>
-            <p className="mb-4">Una evolución tecnológica del bracket metálico tradicional que prescinde de ataduras.</p>
-            <p><strong>Por qué elegirlo:</strong> Poseen una pequeña "compuerta" que sujeta el arco, eliminando las gomitas elásticas. Esto reduce la fricción, aplica fuerzas más biológicas y facilita enormemente el cepillado diario.</p>
-          </>
-        ),
+        subTitle: "Evolución tecnológica del bracket metálico tradicional que prescinde de ataduras. ",
+
+
+        points: [
+          {
+            icon: '',
+            text: <><strong>Por qué elegirlo:</strong> Poseen una pequeña "compuerta" que sujeta el arco, eliminando las gomitas elásticas. Esto reduce la fricción, aplica fuerzas más biológicas y facilita enormemente el cepillado diario.
+</>
+          },
+        ],
+
+
 
 /*
         detailedPrices: [
@@ -1101,9 +1203,9 @@ title: "Reposición de bracket", description: "(por pieza estropeada)", price: "
         /* footerNote: "Tratamientos asociados: Visitas de revisión (30€) y reposición de bracket (20€)." */
       },
       {
-        id: "diagnostico",
+        id: "brackets-antes-y-despues",
         name: "Estudio Previo / Estabilización Posterior",
-        subTitle: "",
+        subTitle: "'Cosas' que hacer antes y después de los brackets.",
         priceGroups: [
           {
             title: "Diagnóstico Preciso Inicial",
@@ -1161,16 +1263,26 @@ title: "Vista revisión post-tratamiento", price: "25 €" }
     },
     rows: [
       {
-        id: "zafiro-convencional",
+        id: "brackets-zafiro-convencionales",
         name: "Brackets de Zafiro",
         image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard.png",
         secondaryImage: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png",
-        content: (
-          <>
-            <p className="mb-4">A diferencia de los antiguos brackets de plástico o cerámica convencional, nuestros brackets están tallados en <strong>cristal de zafiro puro</strong>.</p>
-            <p><strong>La gran ventaja (No se tiñen):</strong> El zafiro mantiene su total transparencia durante todo el tratamiento. No importa si tomas café, té o vino tinto; el bracket seguirá siendo invisible y mimetizándose con el color natural de tu diente de principio a fin.</p>
-          </>
-        ),
+        subTitle: "Evolución estética del bracket metálico tradicional. ",
+
+        points: [
+          {
+            icon: '',
+            text: <>A diferencia de los antiguos brackets de plástico o cerámica convencional, nuestros brackets están tallados en <strong>cristal de zafiro puro</strong>.
+</>
+          },
+          {
+            icon: '',
+            text: <><strong>La gran ventaja (No se tiñen):</strong> El zafiro mantiene su total transparencia durante todo el tratamiento. No importa si tomas café, té o vino tinto; el bracket seguirá siendo invisible y mimetizándose con el color natural de tu diente de principio a fin.
+</>
+          }
+        ],
+
+
 /*
         detailedPrices: [
           {
@@ -1213,16 +1325,24 @@ title: "Reposición de bracket", description: "(por pieza estropeada)", price: "
        /*  footerNote: "Tratamientos asociados: Visitas de revisión (30€) y reposición de bracket (20€)." */
       },
       {
-        id: "zafiro-autoligable",
+        id: "brackets-zafiro-autoligables",
         name: "Brackets de Zafiro Autoligables",
         image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-autoligable.png",
         secondaryImage: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-autoligable-un-diente.png",
-        content: (
-          <>
-            <p className="mb-4">La combinación perfecta entre la más alta estética y la ingeniería biomecánica más avanzada.</p>
-            <p><strong>Por qué elegirlo:</strong> Al ser autoligables, incorporan un clip de cierre invisible que sujeta el arco sin necesidad de "gomitas". Esto significa menos fricción, movimientos dentales más rápidos y orgánicos, menos molestias y una higiene diaria mucho más sencilla.</p>
-          </>
-        ),
+        subTitle: "Evolución tecnológica del bracket estético de zafiro tradicional que prescinde de ataduras.",
+
+        points: [
+          {
+            icon: '',
+            text: <>La combinación perfecta entre la más alta estética y la ingeniería biomecánica más avanzada.
+</>
+          },
+          {
+            icon: '',
+            text: <><strong>Por qué elegirlo:</strong> Al ser autoligables, incorporan un clip de cierre invisible que sujeta el arco sin necesidad de "gomitas". Esto significa menos fricción, movimientos dentales más rápidos y orgánicos, menos molestias y una higiene diaria mucho más sencilla.
+</>
+          }
+        ],
 
 /*
         detailedPrices: [
@@ -1275,9 +1395,9 @@ title: "Reposición de bracket", description: "(por pieza estropeada)", price: "
       },
 
       {
-        id: "diagnostico",
+        id: "brackets-antes-y-despues",
         name: "Estudio Previo / Estabilización Posterior",
-        subTitle: "",
+        subTitle: "'Cosas' que hacer antes y después de los brackets.",
         priceGroups: [
           {
             title: "Diagnóstico Preciso Inicial",
@@ -1348,15 +1468,28 @@ title: "Vista revisión post-tratamiento", price: "25 €" }
         name: "Aparato activo (Expansor / Corrector)",
         price: "Desde 200 €",
         image: "/images/tratamientos/ortodoncia-removible.png",
-        content: (
-          <>
-            <p><strong>Los motores del cambio:</strong> El objetivo es ensanchar un paladar que se ha quedado estrecho, frenar una mandíbula que crece demasiado o estimular una que se ha quedado atrás.</p> <br/>
-            <p><strong>El beneficio:</strong> Evitan que los dientes definitivos salgan amontonados y corrigen "mordidas cruzadas" que, de no tratarse ahora, desgastarían los dientes de forma asimétrica y requerirían cirugía maxilofacial en la edad adulta.</p>
- <br/>
-            <p><strong>Uno o dos aparatos:</strong> Cuando el problema está localizado en un solo hueso (generalmente el paladar superior, que necesita expansión) se usa un solo aparato. Sin embargo, cuando se necesita coordinar el crecimiento superior e inferior para que encajen como una caja y su tapa, hay que aplicar aparatos en ambos maxilares.</p>
+        subTitle: "Los motores del cambio.",
 
-          </>
-        ),
+        points: [
+          {
+            icon: '',
+            text: <>El objetivo es ensanchar un paladar que se ha quedado estrecho, frenar una mandíbula que crece demasiado o estimular una que se ha quedado atrás.
+</>
+          },
+          {
+            icon: '',
+            text: <><strong>Uno o dos aparatos:</strong> Cuando el problema está localizado en un solo hueso (generalmente el paladar superior, que necesita expansión) se usa un solo aparato. Sin embargo, cuando se necesita coordinar el crecimiento superior e inferior para que encajen como una caja y su tapa, hay que aplicar aparatos en ambos maxilares.
+</>
+          },
+          {
+            icon: '',
+            text: <><strong>El beneficio:</strong> Evitan que los dientes definitivos salgan amontonados y corrigen "mordidas cruzadas" que, de no tratarse ahora, desgastarían los dientes de forma asimétrica y requerirían cirugía maxilofacial en la edad adulta.
+</>
+          }
+
+        ],
+
+
 
         priceGroups: [
           {
@@ -1383,15 +1516,29 @@ title: "Visita de revision", description: "El seguimiento, la clave del éxito."
         id: "corrector-respiracion",
         name: "Corrector de respiración por la boca",
         price: "87 €",
-        content: (
-          <>
-            <p><strong>¿Cuando es necesario?</strong>  La forma en que un niño respira o traga saliva define la forma de su cara.  Muchos niños respiran por la boca (por alergias, vegetaciones o simple hábito). Al tener la boca abierta siempre, la lengua no empuja el paladar y este se queda estrecho (cara alargada y ojeras).</p> <br/>
-            <p><strong>El beneficio:</strong> Esta placa se coloca en la boca y obliga físicamente al niño a respirar por la nariz, reeducando su sistema respiratorio y permitiendo que su cara crezca con las proporciones correctas.</p>
- <br/>
-            <p>Estos aparatos no "empujan" huesos directamente, sino que <strong>reeducan los músculos de la boca</strong>. </p>
+        subTitle: "Salvando un riesgo.",
 
-          </>
-        ),
+        points: [
+          {
+            icon: '',
+            text: <><strong>¿Cuando es necesario?</strong>  La forma en que un niño respira o traga saliva define la forma de su cara.  Muchos niños respiran por la boca (por alergias, vegetaciones o simple hábito). Al tener la boca abierta siempre, la lengua no empuja el paladar y este se queda estrecho (cara alargada y ojeras).
+</>
+          },
+          {
+            icon: '',
+            text: <><strong>El beneficio:</strong> Esta placa se coloca en la boca y obliga físicamente al niño a respirar por la nariz, reeducando su sistema respiratorio y permitiendo que su cara crezca con las proporciones correctas.
+</>
+          },
+          {
+            icon: '',
+            text: <>Estos aparatos no "empujan" huesos directamente, sino que <strong>reeducan los músculos de la boca</strong>.
+</>
+          }
+
+        ],
+
+
+
 
        footerNote: "* Precio por aparato." 
 
@@ -1402,23 +1549,24 @@ title: "Visita de revision", description: "El seguimiento, la clave del éxito."
         id: "corrector-posicion",
         name: "Corrector de posición",
         price: "144 €",
+        subTitle: "Consiguiendo la mordida ideal.",
 
+        points: [
+          {
+            icon: '',
+            text: <><strong>¿Cuando es necesario?</strong>  Suele emplearse en fases finales para asentar la mordida como si fuera un molde perfecto, o para guiar los dientes a su posición final aprovechando la propia fuerza de los músculos del niño al morderlo.
+</>
+          },
+          {
+            icon: '',
+            text: <>Es un aparato elástico (parecido a los protectores de los boxeadores) que abraza los dientes de arriba y abajo a la vez.
+</>
+          }
 
-        content: (
-          <>
-            <p><strong>¿Cuando es necesario?</strong>  Suele emplearse en fases finales para asentar la mordida como si fuera un molde perfecto, o para guiar los dientes a su posición final aprovechando la propia fuerza de los músculos del niño al morderlo.</p> <br/>
-            <p>Es un aparato elástico (parecido a los protectores de los boxeadores) que abraza los dientes de arriba y abajo a la vez.
- </p>
+        ],
 
-          </>
-        ),
        footerNote: "* Precio por aparato." 
       },
-
-
-
-
-
 
 
     ],
@@ -1461,15 +1609,25 @@ title: "Visita de revision", description: "El seguimiento, la clave del éxito."
     },
     rows: [
       {
-        id: "lingual",
+        id: "ortodoncia-lingual",
         name: "Ortodoncia Fija Lingual (100% Invisible)",
         image: "/images/tratamientos/ortodoncia-lingual.png",
-        content: (
-          <>
-            <p className="mb-4">La máxima expresión de la ortodoncia estética. Consiste en la colocación de brackets diseñados a medida en la <strong>cara interna (lingual) de los dientes</strong>.</p>
-            <p><strong>Por qué elegirlo:</strong> Porque quedan totalmente ocultos a la vista de los demás. Nadie sabrá que llevas ortodoncia, ni siquiera en distancias cortas. Ofrece un control tridimensional del movimiento dental idéntico al de los brackets exteriores de alta gama, pero con cero impacto en tu estética facial durante el tratamiento.</p>
-          </>
-        ),
+        subTitle: "Máxima expresión de la ortodoncia estética.",
+
+        points: [
+          {
+            icon: '',
+            text: <>Consiste en la colocación de brackets diseñados a medida en la <strong>cara interna (lingual) de los dientes</strong>.
+</>
+          },
+          {
+            icon: '',
+            text: <><strong>Por qué elegirlo:</strong> Porque quedan totalmente ocultos a la vista de los demás. Nadie sabrá que llevas ortodoncia, ni siquiera en distancias cortas. Ofrece un control tridimensional del movimiento dental idéntico al de los brackets exteriores de alta gama, pero con cero impacto en tu estética facial durante el tratamiento.
+</>
+          }
+        ],
+
+
 /* *****************
         detailedPrices: [
           {
@@ -1519,9 +1677,9 @@ title: "Reposición de bracket", description: "(por pieza estropeada)", price: "
 
 
       {
-        id: "diagnostico",
+        id: "brackets-antes-y-despues",
         name: "Estudio Previo / Estabilización Posterior",
-        subTitle: "",
+        subTitle: "'Cosas' que hacer antes y después de los brackets.",
         priceGroups: [
           {
             title: "Diagnóstico Preciso Inicial",
@@ -1579,10 +1737,10 @@ title: "Vista revisión post-tratamiento", price: "25 €" }
     },
     rows: [
       {
-        id: "invisalign",
+        id: "ortodoncia-invisalign",
         name: "Alineadores Transparentes / Invisalign",
         image: "/images/tratamientos/ortodoncia-invisalign.png",
-        price: "Desde 3.210 €",
+        /* price: "Desde 3.210 €", */
         subTitle: "El sistema más demandado por pacientes adultos por su comodidad y altísima estética. Consiste en una secuencia de férulas transparentes y removibles fabricadas a medida mediante tecnología digital tridimensional.",
         secondaryImage: "/images/tratamientos/ortodoncia-invisalign-un-diente.png",
         points: [
@@ -1608,49 +1766,27 @@ title: "Vista revisión post-tratamiento", price: "25 €" }
           }
         ],
 
-/**
-        detailedPrices: [
-          {
-            icon: 'InvisalignPrecio1',
-            title: 'Tratamiento hasta 12 meses',
-            description: 'Ambos maxilares completos.',
-            price: '3.210 €'
-          },
-          {
-            icon: 'InvisalignPrecio2',
-            title: 'Tratamiento hasta 24 meses',
-            description: 'Ambos maxilares completos.',
-            price: '4.000 €'
-          }
-        ],
-*/
-
 
         priceGroups: [
           {
-            title: "Tratamiento completo",
+            title: "Tratamiento completo Invisalign",
             description: "Ambos maxilares.",
             items: [
               { icon: 'InvisalignPrecio1',
-title: "Hasta 12 Meses", description: "", price: "3.210 €" },
+title: (
+      <>
+        <span className="sr-only">Tratamiento completo ambos maxilares</span> Hasta 12 Meses
+      </>
+    ), description: "", price: "3.210 €" },
               { icon: 'InvisalignPrecio2',
-title: "Hasta 24 Meses", description: "", price: "4.000 €" }
+title: "Tratamiento completo ambos maxilares hasta 24 meses", description: "", price: "4.000 €" }
             ]
           }
         ],
 
 
-
-
-
-
         content: (
           <>
-            <div className="bg-blue-50/50 p-4 rounded-xl border border-blue-100 mb-6">
-              <p className="text-sm text-slate-700">
-                <strong>El factor de adaptación:</strong> Los primeros días de cada férula nueva sentirás una ligera presión (señal de que los dientes se están moviendo) y puede que notes un levísimo cambio en la pronunciación, el cual desaparece en unos días.
-              </p>
-            </div>
             
             {/* 💎 BLOQUE PREMIUM: CENTROS PROPIOS (Integrado dentro o justo antes de precios) */}
             <div id="garantia-centros-propios" className="bg-gradient-to-br from-dkv-green-dark to-[#022A27] rounded-2xl p-6 md:p-8 shadow-xl relative overflow-hidden my-8 text-white border border-[#D4AF37]/30">
@@ -1677,30 +1813,30 @@ title: "Hasta 24 Meses", description: "", price: "4.000 €" }
 
 
       {
-        id: "diagnostico",
+        id: "brackets-antes-y-despues",
         name: "Estudio Previo / Estabilización Posterior",
-        subTitle: "",
+        subTitle: "Todo lo necesario antes de empezar y para asegurar que tu sonrisa no se mueva al terminar",
         priceGroups: [
           {
             title: "Diagnóstico Preciso Inicial",
-            description: "Una planificación previa óptima es fundamental para tu tratamiento.",
+            description: "Planificación previa fundamental para el éxito del tratamiento.",
             items: [
               { icon: 'OrtoIniFin1',
-title: "Estudio cefalométrico", description: "(Radiografía ángulos óseos)", price: "50 €" },
+title: "Estudio cefalométrico", description: "Radiografía de ángulos óseos.", price: "50 €" },
               { icon: 'OrtoIniFin2',
-title: "Estudio fotográfico", description: "(Proporciones faciales)", price: "30 €" },
+title: "Estudio fotográfico", description: "Análisis de proporciones faciales.", price: "30 €" },
               { icon: 'OrtoIniFin3',
 title: "Modelos de estudio", price: "Incluido" }
             ]
           },
           {
             title: "Estabilización y Mantenimiento",
-            description: "Los dientes tienen memoria y tienden a moverse al retirar los aparatos.",
+            description: "Evita que los dientes vuelvan a su posición original al retirar los alineadores.",
             items: [
               { icon: 'OrtoIniFin4',
-title: "Aparatología estabilizadora", description: "(Por aparato)", price: "108 €" },
+title: "Aparatología estabilizadora", description: "Precio por aparato.", price: "108 €" },
               { icon: 'OrtoIniFin5',
-title: "Vista revisión post-tratamiento", price: "25 €" }
+title: "Revisión post-tratamiento", price: "25 €" }
             ]
           }
         ]
@@ -1742,6 +1878,14 @@ title: "Vista revisión post-tratamiento", price: "25 €" }
         name: "Rehabilitación Completa Individual",
         price: "Desde 1.180 €",
         image: "/images/tratamientos/implantes.png",
+        subTitle: "Recupera diente estético y funcional donde antes había un hueco.",
+
+        points: [
+          {
+            icon: '',
+            text: <><strong>Tratamiento base </strong> contemplando las fases de Diagnóstico, Quirúrgica y Prótésica, y procedimientos clínicos necesarios para devolverte un diente perfecto desde cero.</>
+          }
+        ],
 
 
         priceGroups: [
@@ -1787,11 +1931,6 @@ title: "Corona Metal-Cerámica", description: "", price: "303 €" }
           }
         ],
 
-        content: (
-          <>
-            <p className="mb-4"><strong>Tratamiento base </strong> contemplando las fases de Diagnóstico, Quirúrgica y Prótésica, y procedimientos clínicos necesarios para devolverte un diente perfecto desde cero.</p>
-          </>
-        ),
         footerNote: "* Según valoración clínica o estética pueden ser necesarios tratamientos adicionales.Consultar precios franquiciados."
       },
 
@@ -1800,11 +1939,15 @@ title: "Corona Metal-Cerámica", description: "", price: "303 €" }
         id: "estetica-adicional",
         name: "Máxima Estética (Zonas Frontales y Provisionales)",
         subTitle: "Según necesidad estética: Tratamientos adicionales posibles",
-        content: (
-          <>
-            <p className="mb-4">Si es un diente frontal, recomendamos cambiar la corona de metal-porcelana por una <strong>Corona de Zirconio</strong>, ya que no tiene metal y la luz la atraviesa como un diente real. También disponemos de <strong>Coronas de resina</strong> para fases provisionales si no quieres estar sin diente durante la integración.</p>
-          </>
-        ),
+
+        points: [
+          {
+            icon: '',
+            text: <>Si es un diente frontal, recomendamos cambiar la corona de metal-porcelana por una <strong>Corona de Zirconio</strong>, ya que no tiene metal y la luz la atraviesa como un diente real. También disponemos de <strong>Coronas de resina</strong> para fases provisionales si no quieres estar sin diente durante la integración.</>
+          }
+        ],
+
+
 
 
         detailedPrices: [
@@ -1829,12 +1972,13 @@ title: "Corona Metal-Cerámica", description: "", price: "303 €" }
         id: "angulos",
         name: "Ajuste de Ángulo Protésico",
         subTitle: "Según Valoración Clínica: Tratamientos adicionales posibles",
-        content: (
-          <>
-            <p className="mb-4">Si el hueso disponible nos obliga a poner el implante inclinado (para asegurar la fijación), necesitaremos una pieza intermedia especial para enderezar el diente final y que la mordida sea perfecta.</p>
-          </>
-        ),
 
+        points: [
+          {
+            icon: '',
+            text: <>Si el hueso disponible nos obliga a poner el implante inclinado (para asegurar la fijación), necesitaremos una pieza intermedia especial para enderezar el diente final y que la mordida sea perfecta.</>
+          }
+        ],
 
 
         detailedPrices: [
@@ -1944,18 +2088,18 @@ title: "Corona Metal-Cerámica", description: "", price: "303 €" }
 */
     rows: [
       {
-        id: "arcada-ideal",
+        id: "arcada-completa",
         name: "Rehabilitación Fija de Arcada Completa",
         price: "6.128 €",
         image: "/images/tratamientos/protesis.png",
-        content: (
-          <>
-            <p className="mb-4">Este tratamiento contempla las fases, radiología avanzada y components necesarios para fijar la estructura a tu maxilar mediante 4 implantes de titanio.</p>
-          </>
-        ),
+        subTitle: "Dentadura nueva completa fijada mediante implantes.",
 
-
-
+        points: [
+          {
+            icon: '',
+            text: <>Este tratamiento contempla las fases, radiología avanzada y components necesarios para fijar la estructura a tu maxilar mediante 4 implantes de titanio.</>
+          }
+        ],
 
         priceGroups: [
           {
@@ -2093,12 +2237,14 @@ title: "Dentadura Fija", description: "Arcada fija completa", price: "2.830 €"
         id: "sobredentadura-ideal",
         name: "Sobredentadura removible sobre 2 Implantes",
         price: "Desde 2.530 €",
-        content: (
-          <>
-            <p className="mb-4">En el caso de la mandíbula inferior suele bastar con anclaje en dos puntos, es decir, <strong>en dos implantes</strong>. Es la forma más inteligente y económica de estabilizar una mandíbula inferior. Tu nueva prótesis llevará unos 'broches' ocultos. Al ponértela, hace 'clic' sobre los 2 implantes y queda bloqueada. Podrás masticar con firmeza y solo te la quitarás tú para limpiarla.</p>
-          </>
-        ),
+        subTitle: "Dentadura completa de quita y pon con un 'click'.",
 
+        points: [
+          {
+            icon: '',
+            text: <>En el caso de la mandíbula inferior suele bastar con anclaje en dos puntos, es decir, <strong>en dos implantes</strong>. Es la forma más inteligente y económica de estabilizar una mandíbula inferior. Tu nueva prótesis llevará unos 'broches' ocultos. Al ponértela, hace 'clic' sobre los 2 implantes y queda bloqueada. Podrás masticar con firmeza y solo te la quitarás tú para limpiarla.</>
+          }
+        ],
 
 
         priceGroups: [
@@ -2312,18 +2458,20 @@ title: "Remodelación maxilar", description: "", price: "99 €" }
         price: "29 €",
         image: "/images/empaste.png",
         imageAlt: "Esquema visual de un empaste dental o obturación",
-        subTitle: (
-          <div className="flex items-center justify-center gap-2 text-dkv-green">
-            <Bug className="w-5 h-5" />
-            <span className="font-bold tracking-widest text-xs uppercase">El clásico "empaste"</span>
-          </div>
-        ),
-        content: (
-          <>
-            <p className="mb-4"><strong>¿Qué es y cuándo se usa?</strong> Lo usamos cuando la caries es de tamaño pequeño o mediano.</p>
-            <p><strong>El beneficio:</strong> Limpiamos la zona oscura, aplicamos una resina del color exacto de tu diente y la endurecemos con luz. Tu diente vuelve a estar sano y funcional en 20 minutos.</p>
-          </>
-        ),
+        subTitle: "El clásico 'empaste'.",
+
+        points: [
+          {
+            icon: '',
+            text: <><strong>¿Qué es y cuándo se usa?</strong> Lo usamos cuando la caries es de tamaño pequeño o mediano.</>
+          },
+          {
+            icon: '',
+            text: <><strong>El beneficio:</strong> Limpiamos la zona oscura, aplicamos una resina del color exacto de tu diente y la endurecemos con luz. Tu diente vuelve a estar sano y funcional en 20 minutos.</>
+          }
+
+        ],
+
 
         footerNote: "Incluye recubrimiento pulpar en caso necesario."
 
@@ -2332,18 +2480,20 @@ title: "Remodelación maxilar", description: "", price: "99 €" }
         id: "gran-reconstruccion",
         name: "Reconstrucción",
         price: "40 €",
-        subTitle: (
-          <div className="flex items-center justify-center gap-2 text-dkv-gray">
-            <Layers className="w-5 h-5 text-dkv-green" />
-            <span className="font-bold tracking-widest text-xs uppercase text-dkv-green">Daños extensos</span>
-          </div>
-        ),
-        content: (
-          <>
-            <p className="mb-4"><strong>¿Por qué hace falta?</strong> A veces, la caries ha destruido más de la mitad del diente o se te ha roto un trozo grande al morder algo duro. Un empaste normal no aguantaría la presión.</p>
-            <p><strong>La técnica:</strong> Reconstruimos la anatomía completa de la muela, a menudo usando pequeños encofrados para darle su forma original.</p>
-          </>
-        ),
+        subTitle: "Daños extensos.",
+
+        points: [
+          {
+            icon: '',
+            text: <><strong>¿Por qué hace falta?</strong> A veces, la caries ha destruido más de la mitad del diente o se te ha roto un trozo grande al morder algo duro. Un empaste normal no aguantaría la presión.</>
+          },
+          {
+            icon: '',
+            text: <><strong>La técnica:</strong> Reconstruimos la anatomía completa de la muela, a menudo usando pequeños encofrados para darle su forma original.</>
+          }
+
+        ],
+
 
 
         priceGroups: [
@@ -2376,28 +2526,42 @@ title: "Empaste Provisional", description: "", price: "Incluido" }
         id: "bioactivo",
         name: "Sustitutivo dentinario bioactivo",
         price: "70 €",
-        subTitle: (
-          <div className="flex items-center justify-center gap-2 text-dkv-gray">
-            <Activity className="w-5 h-5 text-dkv-green" />
-            <span className="font-bold tracking-widest text-xs uppercase text-dkv-green">¡La última oportunidad del nervio!</span>
-          </div>
-        ),
-        content: (
-          <>
-            <p className="mb-4">Si la caries es tan profunda que casi toca el nervio, poner un empaste normal podría irritarlo y acabar en endodoncia.</p>
-            <p className="mb-4">En su lugar, aplicamos este material "inteligente" (base cavitaria) que <strong>libera minerales, calma el nervio y ayuda a que el diente se cure a sí mismo por dentro</strong> antes de sellarlo definitivamente.
-.</p>
-          </>
-        ),
+        subTitle: "¡La última oportunidad del nervio!",
+
+        points: [
+          {
+            icon: '',
+            text: <>Si la caries es tan profunda que casi toca el nervio, poner un empaste normal podría irritarlo y acabar en endodoncia.</>
+          },
+          {
+            icon: '',
+            text: <>En su lugar, aplicamos este material "inteligente" (base cavitaria) que <strong>libera minerales, calma el nervio y ayuda a que el diente se cure a sí mismo por dentro</strong> antes de sellarlo definitivamente.
+</>
+          }
+
+        ],
+
+
+
+
+
         footerNote: "Incluye el composite necesario para sellar el diente."
       },
       {
         id: "reimplante",
         name: "Reimplante de pieza dental",
         price: "Incluido",
-        content: (
-          <p><strong>Para accidentes:</strong> Si te das un golpe y se te sale un diente entero, ven corriendo a la clínica. Volvemos a colocarlo en su sitio y lo inmovilizamos para intentar que vuelva a agarrarse al hueso de forma natural.</p>
-        )
+        subTitle: "Segunda vida.",
+
+        points: [
+          {
+            icon: '',
+            text: <><strong>Para accidentes:</strong> Si te das un golpe y se te sale un diente entero, ven corriendo a la clínica. Volvemos a colocarlo en su sitio y lo inmovilizamos para intentar que vuelva a agarrarse al hueso de forma natural.</>
+          }
+
+        ],
+
+
       }
     ],
     premiumBlock: (
@@ -2447,6 +2611,7 @@ title: "Empaste Provisional", description: "", price: "Incluido" }
         price: "Desde 80 €",
         image: "/images/endodoncia.png",
         imageAlt: "Esquema de una endodoncia completa en un diente",
+        subTitle: "Salvando el conducto radicular.",
 
 
 
@@ -2471,30 +2636,29 @@ price: <span className="text-dkv-green">+ 15 €</span>
 
         ],
 
-        content: (
-          <>
-            <p className="mb-6">
-              Conocido coloquialmente como "matar el nervio". La técnica consiste en vaciar las raíces del diente, desinfectarlas por dentro y rellenarlas con un material plástico (gutapercha) para que las bacterias no vuelvan a entrar. El precio depende del número de raíces que tenga el diente:
-            </p>
-          </>
-        )
-      },
+        points: [
+          {
+            icon: '',
+            text: <>Conocido coloquialmente como "matar el nervio". La técnica consiste en vaciar las raíces del diente, desinfectarlas por dentro y rellenarlas con un material plástico (gutapercha) para que las bacterias no vuelvan a entrar. El precio depende del número de raíces que tenga el diente:</>
+          }
+        ],
 
+      },
 
 
       {
         id: "urgencias",
         name: "Pulpectomía de urgencia",
         price: "30 €",
-        subTitle: (
-          <div className="flex items-center justify-center gap-2 text-dkv-green">
-            <HeartPulse className="w-5 h-5" />
-            <span className="font-bold tracking-widest text-xs uppercase">El alivio inmediato</span>
-          </div>
-        ),
-        content: (
-          <p>Si llegas a la clínica de urgencia llorando de dolor, te anestesiamos, abrimos el diente y sacamos la parte superior del nervio infectado. <strong>El dolor desaparece al instante. </strong> En este caso la endodoncia definitiva se terminará en una cita posterior.</p>
-        ),
+        subTitle: "El alivio inmediato.",
+
+        points: [
+          {
+            icon: '',
+            text: <>Si llegas a la clínica de urgencia llorando de dolor, te anestesiamos, abrimos el diente y sacamos la parte superior del nervio infectado. <strong>El dolor desaparece al instante. </strong> En este caso la endodoncia definitiva se terminará en una cita posterior.</>
+          }
+        ],
+
 
         footerNote: "Incluye las curas."
 
@@ -2576,19 +2740,18 @@ price: <span className="text-dkv-green">+ 15 €</span>
         id: "reendodoncia",
         name: "Reendodoncia",
         price: "130 €",
-        subTitle: (
-          <div className="flex items-center justify-center gap-2 text-dkv-gray">
-            <RefreshCcw className="w-5 h-5 text-dkv-green" />
-            <span className="font-bold tracking-widest text-xs uppercase text-dkv-green">Limpieza de repetición</span>
-          </div>
-        ),
-        content: (
-          <>
-            <p><strong>¿En qué consiste?</strong> Hay que destapar el diente, sacar el material antiguo contaminado, volver a desinfectar todo el sistema de conductos a fondo y volver a sellar.</p>
-            <p>Es un trabajo muy minucioso (generalmente provocado por filtraciones en coronas antiguas o bacterias resistentes) cuyo único fin es intentar no tener que extraer la muela.</p>
+        subTitle: "Endodoncia de repetición.",
 
-          </>
-        ),
+        points: [
+          {
+            icon: '',
+            text: <><strong>¿En qué consiste?</strong> Hay que destapar el diente, sacar el material antiguo contaminado, volver a desinfectar todo el sistema de conductos a fondo y volver a sellar.</>
+          },
+          {
+            icon: '',
+            text: <>Es un trabajo muy minucioso (generalmente provocado por filtraciones en coronas antiguas o bacterias resistentes) cuyo único fin es intentar no tener que extraer la muela.</>
+          }
+        ],
 
         footerNote: "Precio por diente (independiente del número de raices)."
 
@@ -2599,35 +2762,37 @@ price: <span className="text-dkv-green">+ 15 €</span>
         price: "38 €",
         image: "/images/apicectomia.png",
         imageAlt: "Ilustración visual de una apicectomía o cirugía periapical",
-        subTitle: (
-          <div className="flex items-center justify-center gap-2 text-dkv-gray">
-            <Scissors className="w-5 h-5 text-dkv-green" />
-            <span className="font-bold tracking-widest text-xs uppercase text-dkv-green">La alternativa quirúrgica</span>
-          </div>
-        ),
-        content: (
-          <>
-            <p>Si la infección en la punta de la raíz (el ápice) no se cura ni siquiera repitiendo la endodoncia y se ha enquistado en el hueso, debemos intervenir desde fuera.</p> <br/>
-            <p>Abrimos un poquito la encía, cortamos la punta infectada de la raíz, extirpamos el quiste y sellamos la raíz desde abajo.</p>
-          </>
-        )
+        subTitle: "La alternativa quirúrgica.",
+
+        points: [
+          {
+            icon: '',
+            text: <>Si la infección en la punta de la raíz (el ápice) no se cura ni siquiera repitiendo la endodoncia y se ha enquistado en el hueso, debemos intervenir desde fuera.</>
+          },
+          {
+            icon: '',
+            text: <>Abrimos un poquito la encía, cortamos la punta infectada de la raíz, extirpamos el quiste y sellamos la raíz desde abajo.</>
+          }
+        ],
+
+
       },
       {
         id: "apicoformacion",
         name: "Apicoformación",
         price: "54 €",
-        subTitle: (
-          <div className="flex items-center justify-center gap-2 text-dkv-gray">
-            <Stethoscope className="w-5 h-5 text-dkv-green" />
-            <span className="font-bold tracking-widest text-xs uppercase text-dkv-green">Para dientes inmaduros</span>
-          </div>
-        ),
-        content: (
-          <>
-            <p>Tratamiento especial, generalmente para jóvenes, que han sufrido un traumatismo severo en un diente definitivo cuya raíz aún no se había formado por completo.</p>
-            <p>Utilizamos materiales especiales biocerámicos para ayudar a "cerrar" y crear una barrera artificial dura en la punta de esa raíz inmadura de forma química.</p>
-          </>
-        ),
+        subTitle: "Para dientes inmaduros.",
+
+        points: [
+          {
+            icon: '',
+            text: <>Tratamiento especial, generalmente para jóvenes, que han sufrido un traumatismo severo en un diente definitivo cuya raíz aún no se había formado por completo.</>
+          },
+          {
+            icon: '',
+            text: <>Utilizamos materiales especiales biocerámicos para ayudar a "cerrar" y crear una barrera artificial dura en la punta de esa raíz inmadura de forma química.</>
+          }
+        ],
 
         footerNote: "Precio por sesión."
 
@@ -2666,15 +2831,16 @@ price: <span className="text-dkv-green">+ 15 €</span>
         id: "dam",
         name: "Dispositivo de Avance Mandibular (DAM)",
         price: "875 €",
-        content: (
-          <>
-            <p>
-              Fabricamos a medida tus férulas duales conectadas. El beneficio es inmediato: despeja la garganta, elimina el ronquido y permite un sueño reparador desde la primera noche.
-            </p> <br/>
-          </>
-        ),
+
+        subTitle: "Sueño reparador.",
 
 
+        points: [
+          {
+            icon: '',
+            text: <>Fabricamos a medida tus férulas duales conectadas. El beneficio es inmediato: despeja la garganta, elimina el ronquido y permite un sueño reparador desde la primera noche.</>
+          }
+        ],
 
         priceGroups: [
           {
@@ -2783,11 +2949,15 @@ price: <span className="text-dkv-green">+ 15 €</span>
       {
         id: "higiene-educacion",
         name: "Educación y Tratamientos Preventivos",
-        content: (
-          <>
-            <p className="mb-4">Los niños no nacen sabiendo cepillarse. De forma lúdica, instauramos un hábito que les ahorrará muchos problemas y dolor en el futuro.</p>
-          </>
-        ),
+        subTitle: "Los niños no nacen sabiendo cepillarse.",
+
+        points: [
+          {
+            icon: '',
+            text: <>De forma lúdica, instauramos un hábito que les ahorrará muchos problemas y dolor en el futuro.</>
+          }
+        ],
+
 
         priceGroups: [
           {
@@ -2888,6 +3058,7 @@ price: <span className="text-dkv-green">+ 15 €</span>
       {
         id: "obturacion",
         name: "Caries: Hola y Adios",
+        subTitle: "Empastes y más.",
 /*
         subTitle: (
           <div className="flex items-center justify-center gap-2 text-dkv-green">
@@ -2896,11 +3067,13 @@ price: <span className="text-dkv-green">+ 15 €</span>
           </div>
         ),
 */
-        content: (
-          <>
-            <p> En función del avance de la caries tendremos que aplicar diferentes medidas para erradicarla. </p>
-          </>
-        ),
+        points: [
+          {
+            icon: '',
+            text: <>En función del avance de la caries tendremos que aplicar diferentes medidas para erradicarla.</>
+          }
+        ],
+
 
 
         priceGroups: [
@@ -2973,6 +3146,7 @@ price: <span className="text-dkv-green">+ 15 €</span>
       {
         id: "infeccion",
         name: "Infección: Hola y Adios",
+        subTitle: "Haciendo frente a la infección.",
 /*
         price: "44 €",
         subTitle: (
@@ -2982,12 +3156,13 @@ price: <span className="text-dkv-green">+ 15 €</span>
           </div>
         ),
 */
-        content: (
-          <>
-            <p>En función del grado de avance de la <strong> infección </strong> en el diente del niño, tomaremos las medidas necesarias para erradicarla.</p>
-          </>
-        ),
-
+        
+        points: [
+          {
+            icon: '',
+            text: <>En función del grado de avance de la <strong> infección </strong> en el diente del niño, tomaremos las medidas necesarias para erradicarla.</>
+          }
+        ],
 
 
 
@@ -3083,6 +3258,7 @@ price: <span className="text-dkv-green">+ 15 €</span>
       {
         id: "extracciones",
         name: "Extracciones dentales y Mantenedores de espacio",
+        subTitle: "Gestionando piezas faltantes.",
 /*
         price: "0 €",
         subTitle: (
@@ -3186,8 +3362,9 @@ price: <span className="text-dkv-green">+ 15 €</span>
     rows: [
       {
         id: "consulta",
-        name: "Consulta, Presupuesto y Revisión",
-        price: "Incluido (0 €)",
+        name: "Primera visita y revisiones",
+        price: "Incluido",
+        subTitle: "Valorando tu salud dental.",
 /*
         subTitle: (
           <div className="flex flex-col gap-2 mb-2">
@@ -3199,71 +3376,68 @@ price: <span className="text-dkv-green">+ 15 €</span>
           </div>
         ),
 */
-        content: (
-          <div className="bg-dkv-gray-light/30 rounded-2xl p-5 border border-dkv-gray-border/60 mt-4">
-            <ul className="space-y-4">
-              <li className="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b border-dkv-gray-border/50">
-                <div>
-                  <span className="font-bold text-dkv-gray">Consulta, presupuesto y plan de tratamiento</span>
-                  <span className="font-normal text-sm text-dkv-gray/80 block mt-1">Nuestros doctores analizan tu caso sin compromiso para trazar la hoja de ruta.</span>
-                </div>
-              </li>
-              <li className="flex flex-col md:flex-row justify-between items-start md:items-center">
-                <div>
-                  <span className="font-bold text-dkv-gray">Visita de revisión o control</span>
-                  <span className="font-normal text-sm text-dkv-gray/80 block mt-1">Tu revisión anual obligatoria para mantener tus dientes bajo estricto control.</span>
-                </div>
-              </li>
-            </ul>
-          </div>
-        )
-      },
-      {
-        id: "radiografias",
-        name: "Pruebas y Radiografías",
-        price: "Incluido (0 €)",
-        subTitle: (
-          <div className="flex items-center gap-2 mb-2 text-dkv-gray">
-            <Scan className="w-5 h-5 text-dkv-green" />
-            <span className="font-bold tracking-widest text-xs uppercase text-dkv-green">Tecnología Diagnóstica</span>
-          </div>
-        ),
-        content: (
-          <div className="bg-white p-5 rounded-2xl border border-dkv-gray-border/50 mt-4">
-            <h3 className="font-bold text-dkv-gray mb-2">Radiografías de control en el sillón</h3>
-            <p className="text-sm text-dkv-gray leading-relaxed mb-4">
-              (Intrabucales, Periapicales, RVG digital). Pequeñas radiografías instantáneas imprescindibles para ver debajo de la encía o confirmar si hay caries escondidas entre los dientes donde el ojo humano no llega.
-            </p>
-            <h3 className="font-bold text-dkv-gray mb-2 border-t border-gray-100 pt-4">Placa oclusal</h3>
-            <p className="text-sm text-dkv-gray leading-relaxed">
-              Radiografías de mordida para valorar grandes áreas del maxilar o mandíbula de un solo vistazo.
-            </p>
-          </div>
-        )
-      },
-      {
-        id: "dolor-orofacial",
-        name: "Consultas de Dolor Orofacial",
-        price: "Incluido (0 €)",
-        subTitle: (
-          <div className="flex items-center gap-2 mb-2 text-dkv-gray">
-            <Brain className="w-5 h-5 text-dkv-green" />
-            <span className="font-bold tracking-widest text-xs uppercase text-dkv-green">Especialistas en dolor complejo</span>
-          </div>
-        ),
-        content: (
-          <>
-            <p className="mb-4">
-              (Neuralgias, Dolor facial, Parálisis). Si te duele la cara de forma inexplicable, te molesta la mandíbula al despertar o sientes calambres y pinchazos nerviosos, la causa no siempre es una caries.
-            </p>
-            <div className="bg-dkv-green/5 p-4 rounded-xl border border-dkv-green/20 flex items-start gap-3">
-              <Activity className="w-5 h-5 text-dkv-green shrink-0 mt-0.5" />
-              <p className="text-sm text-dkv-gray font-fsme leading-relaxed m-0">
-                Nuestros especialistas estudiarán detalladamente tus síntomas para diagnosticar el origen neurológico o muscular del problema y ofrecerte alivio clínico.
-              </p>
-            </div>
-          </>
-        )
+        priceGroups: [
+          {
+            title: "Consulta Inicial y Revisión",
+            description: "Solo en casos extremos, de dientes de leche muy infectados o bien que obstruyan la salida de dientes definitivos.",
+            items: [
+              {
+                title: "Consulta, presupuesto y plan de tratamiento",
+                description: "Nuestros doctores analizan tu casi sin compromiso para trazar la hoja de ruta.",
+                price: "Incluido"
+              },
+              {
+                title: "Visita de revisión o control.",
+                description: "Tu revisión anual obligatoria para mantener tus dientes bajo estricto control.",
+                price: "Incluido"
+              },
+              {
+                title: "Consulta dolor facial.",
+                description: "Neuralgia, Dolor facial o Parálisis. No siempre el dolor es causado por una caries. A veces el origen es neurológico o muscular.",
+                price: "Incluído"
+              }
+            ]
+          },
+          {
+            title: "Radiografías",
+            description: "Tipos de radiografías instantáneas imprescindibles para ver debajo de la encía, o confirmar si hay caries escondidas entre los dientes donde el ojo no llega.",
+            items: [
+              {
+                title: "Radiografía Intrabucal",
+                description: "",
+                price: "Incluído"
+              },
+              {
+                title: "Radiografía Periapical",
+                description: "",
+                price: "Incluído"
+              },
+              {
+                title: "Radiografía RVG Digital",
+                description: "",
+                price: "Incluído"
+              },
+              {
+                title: "Ortopantomografía",
+                description: "",
+                price: "Incluído"
+              },
+              {
+                title: "Radiografías de control",
+                description: "",
+                price: "Incluído"
+              },
+
+              {
+                title: "Radiografías Oclusales",
+                description: "Radiografías de mordida para valorar grandes áreas del maxilar de un solo vistazo.",
+                price: "Incluido"
+              }
+            ]
+          }
+
+        ]
+
       }
     ],
     cta: {
@@ -3272,6 +3446,103 @@ price: <span className="text-dkv-green">+ 15 €</span>
       description: "Encuentra tu clínica dental DKV más cercana y reserva hoy mismo tu Primera Visita y revisión general:"
     }
   },
+
+
+
+// 22b. PREVENCIÓN Y EDUCACIÓN
+  'prevencion-higiene': {
+    slug: 'prevencion-higiene',
+    activeSubNavId: 'higiene',
+    seoTitle: "Higiene Dental y Prevención | DKV Dentisalud",
+    seoDescription: "Limpiezas, fluorizaciones, bicarbonato y selladores a coste cero. Mantén tus dientes limpios y fuertes con tu seguro DKV.",
+    breadcrumbs: [
+      { label: "Inicio", href: "/" },
+      { label: "Tratamientos", href: "/tratamientos" },
+      { label: "Prevención", href: "/tratamientos/prevencion-higiene" },
+      { label: "Higiene y Prevención", href: "#" }
+    ],
+    hero: {
+      badgeText: "El escudo protector",
+      title: { dark: "HIGIENE Y", normal: "PREVENCIÓN" },
+      description: [
+        "Tratamientos esenciales para mantener tus dientes limpios y fuertes frente a las bacterias.",
+        "De nada sirve curar si no prevenimos. Aprovecha al máximo las coberturas gratuitas de tu póliza para blindar tu sonrisa."
+      ]
+    },
+    rows: [
+      {
+        id: "limpieza-prevencion",
+        name: "Medidas preventivas",
+        price: "Incluido",
+        subTitle: "Más vale prevenir.",
+/*
+        subTitle: (
+          <div className="flex items-center gap-2 text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme mb-2">
+            Mantenimiento Base: Limpieza y Estética Natural
+          </div>
+        ),
+*/
+        priceGroups: [
+          {
+            title: "Limpieza de boca",
+            description: "",
+            items: [
+              {
+                title: "Limpieza dental",
+                description: "Elimina el sarro superficial que el cepillado no puede quitar.",
+                price: "Incluido"
+              },
+              {
+                title: "Bicarbonato.",
+                description: "Aeropulidor para eliminar manchas de café, té o tabaco, devolviendo el brillo a tus dientes sin dañar la superficie.",
+                price: "Incluido"
+              },
+              {
+                title: "Fluorización tópica.",
+                description: "Aplicación de flúor para que tus dientes resistan mejor los ataques ácidos de las bacterias.",
+                price: "Incluído"
+              }
+            ]
+          },
+          {
+            title: "Higienización",
+            description: "",
+            items: [
+              {
+                title: "Sellado de fisuras.",
+                description: "Relleno de surcos profundos de muelas adultas para que no entre comida ni se forme placa bacteriana.",
+                price: "Incluído"
+              },
+              {
+                title: "Formación Higiene.",
+                description: "Capacitacion sobre la técnica correcta de cepillado, uso del hilo dental y de cepillos interproximales.",
+                price: "Incluído"
+              }
+            ]
+          }
+
+        ]
+
+
+      }
+    ],
+    cta: {
+      title: "Tu sonrisa al 100%",
+      infoNote: "Si notas tus dientes ásperos, manchas superficiales o hace más de un año que no te haces una limpieza profesional, es el momento perfecto para blindar tu boca.",
+      description: "Disfruta de tu \"ITV dental\" y sal de la clínica con los dientes limpios, pulidos y fortalecidos sin pagar absolutamente nada. Busca tu centro:"
+    }
+  },
+
+
+
+
+
+
+
+
+
+
+
 
   // 23. PERIODONCIA: DIAGNÓSTICO Y CURETAJES
   'periodoncia-basica': {
@@ -3286,98 +3557,111 @@ price: <span className="text-dkv-green">+ 15 €</span>
       { label: "Diagnóstico y Tratamiento Básico", href: "#" }
     ],
     hero: {
-      badgeText: "Salva tus dientes desde la raíz",
+      badgeText: "Fase inicial de la enfermedad",
       title: { dark: "ENCÍAS Y", normal: "PERIODONCIA" },
       description: [
-        "Si te sangran las encías al cepillarte, tienes mal aliento crónico o notas que algún diente se mueve, tienes enfermedad periodontal ('Piorrea').",
-        "Esta sección es vital: de nada sirve un diente sin caries si el hueso y la encía que lo sujetan están enfermos."
+        "Si te sangran las encías al cepillarte, tienes mal aliento crónico o notas que algún diente se mueve, puedes sufrir una tenes enfermedad periodontal como la gingivitis o la 'piorrea'.",
+        "De nada sirve un diente sin caries si el hueso y la encía que lo sujetan están enfermos."
       ]
     },
     rows: [
       {
         id: "periodontograma",
-        name: "Diagnóstico, medición de bolsas y Periodontograma",
-        price: "Incluido (0 €)",
+        name: "Diagnóstico y medición (Periodontograma)",
+        price: "Incluido",
         subTitle: (
           <div className="flex flex-col gap-2 mb-2">
-            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme">Fase Inicial</span>
-            <div className="flex items-center gap-2 text-dkv-gray">
-              <Ruler className="w-5 h-5 text-dkv-green" />
-              <span className="font-bold tracking-widest text-xs uppercase text-dkv-green">El mapa de daños</span>
-            </div>
+            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme">Fase Inicial de la enfermedad</span>
           </div>
         ),
-        content: (
-          <>
-            <p>
-              Para tratar la enfermedad de las encías, primero necesitamos saber exactamente dónde está y qué profundidad tiene.
-            </p>
-            <div className="bg-dkv-gray-light/50 p-4 rounded-xl border border-dkv-gray-border/50 mt-4">
-              <p className="text-sm text-dkv-gray leading-relaxed m-0">
-                Utilizando una pequeña sonda milimetrada, medimos el espacio entre el diente y la encía (la "bolsa periodontal") diente por diente. Así sabemos milímetro a milímetro cuánto hueso de soporte has perdido y dónde debemos atacar la infección.
-              </p>
-            </div>
-          </>
-        )
+
+        points: [
+          {
+            icon: '',
+            text: <><strong className="text-dkv-green-dark font-bold"> El mapa.</strong> Para tratar la enfermedad de las encías, primero necesitamos saber exactamente dónde está y qué profundidad tiene.</>
+          },
+          {
+            icon: '',
+            text: <><strong className="text-dkv-green-dark font-bold">Medición precisa.</strong> Utilizando una pequeña sonda milimetrada, medimos el espacio entre el diente y la encía (la "bolsa periodontal") diente por diente. Así sabemos milímetro a milímetro cuánto hueso de soporte has perdido y dónde debemos atacar la infección.</>
+          }
+        ]
+
       },
       {
         id: "detartraje",
-        name: "Limpieza profunda (Detartraje subgingival)",
-        price: "Incluido (0 €)",
+        name: "Detartraje subgingival",
+        price: "Incluido",
         subTitle: (
-          <div className="flex items-center gap-2 mb-2 text-dkv-gray">
-            <Sparkles className="w-5 h-5 text-dkv-green" />
-            <span className="font-bold tracking-widest text-xs uppercase text-dkv-green">Bajo la línea de la encía</span>
+          <div className="flex flex-col gap-2 mb-2">
+            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme">Limpieza profunda</span>
           </div>
         ),
-        content: (
-          <p>
-            A diferencia de la limpieza normal (que solo quita el sarro visible), el detartraje es una limpieza un poco más profunda y focalizada que nos permite eliminar la placa bacteriana que ha empezado a esconderse justo por debajo de la encía.
-          </p>
-        )
+
+        points: [
+          {
+            icon: '',
+            text: <><strong className="text-dkv-green-dark font-bold">Bajo las encías.</strong><br />A diferencia de la limpieza normal (que solo quita el sarro visible), el detartraje es una limpieza un poco más profunda y focalizada que nos permite eliminar la placa bacteriana que ha empezado a esconderse justo por debajo de la encía.
+</>
+          }
+        ],
+
       },
       {
         id: "curetaje",
-        name: "Curetaje, alisado y pulido radicular",
+        name: "Curetaje",
         price: "40 €",
         subTitle: (
-          <div className="flex items-center gap-2 mb-2 text-dkv-gray">
-            <Activity className="w-5 h-5 text-dkv-green" />
-            <span className="font-bold tracking-widest text-xs uppercase text-dkv-green">Limpieza de raíces (Por cuadrante)</span>
+          <div className="flex flex-col gap-2 mb-2">
+            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme">Limpieza de raíces</span>
           </div>
         ),
-        content: (
-          <>
-            <p><strong>¿Qué es y por qué hace falta?</strong> Si el sarro ha penetrado muy por debajo de la encía, la "limpieza normal" ya no sirve porque las bacterias han creado costras duras pegadas a la raíz de tu diente.</p>
-            <p className="mt-4">
-              Con anestesia local (para que no sientas molestias), introducimos unas herramientas especiales llamadas curetas con las que "raspamos" y alisamos las raíces de tus dientes. Esto elimina las bacterias que se están comiendo tu hueso y permite que la encía vuelva a pegarse al diente.
-            </p>
-          </>
-        )
+
+        points: [
+          {
+            icon: '',
+            text: <><strong>¿Cuando es necesario?</strong> Las bacterias han penetrado muy por debajo de la encía, y han llegado a crear duras costras pegadas a la raíz de tu diente.
+</>
+          },
+          {
+            icon: '',
+            text: <><strong>¿En qué consiste?</strong> Con anestesia local, introducimos unas herramientas especiales llamadas curetas con las que alisamos y pulimos las raíces de tus dientes. Esto elimina las bacterias que se están comiendo tu hueso y permite que la encía vuelva a pegarse al diente.
+</>
+          }
+
+        ],
+
+
+
+
+        footerNote: "* Precio por cuadrante."
       },
       {
         id: "fluor-sensibilidad",
-        name: "Aplicación gel de flúor para sensibilidad dentinaria",
-        price: "Incluido (0 €)",
+        name: "Aplicación gel de flúor",
+        price: "Incluido",
         subTitle: (
-          <div className="flex items-center gap-2 mb-2 text-dkv-gray">
-            <Droplet className="w-5 h-5 text-dkv-green" />
-            <span className="font-bold tracking-widest text-xs uppercase text-dkv-green">Alivio post-tratamiento</span>
+          <div className="flex flex-col gap-2 mb-2">
+            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme">Alivio post-tratamiento para sensibilidad dentinaria</span>
           </div>
         ),
-        content: (
-          <>
-            <p>
-              Tras realizar los curetajes y quitar el sarro que "abrigaba" la raíz, los dientes pueden quedar temporalmente sensibles a los alimentos y bebidas frías. 
-            </p>
-            <div className="bg-dkv-green/5 p-4 rounded-xl border border-dkv-green/20 mt-4 flex items-start gap-3">
-              <ShieldCheck className="w-5 h-5 text-dkv-green shrink-0 mt-0.5" />
-              <p className="text-sm text-dkv-gray font-fsme leading-relaxed m-0">
-                Aplicamos un gel desensibilizante de flúor de alta concentración que sella los poros del diente y proporciona un alivio inmediato.
-              </p>
-            </div>
-          </>
-        )
+
+        points: [
+          {
+            icon: '',
+            text: <><strong>¿Cuando es necesario?</strong> Tras realizar los curetajes y quitar el sarro que "abrigaba" la raíz, los dientes pueden quedar temporalmente sensibles a los alimentos y bebidas frías.
+</>
+          },
+          {
+            icon: '',
+            text: <><strong>¿En qué consiste?</strong> Aplicamos un gel desensibilizante de flúor de alta concentración que sella los poros del diente y proporciona un alivio inmediato.
+</>
+          }
+
+        ],
+
+
+
+
       }
     ],
     cta: {
@@ -3396,93 +3680,95 @@ price: <span className="text-dkv-green">+ 15 €</span>
     breadcrumbs: [
       { label: "Inicio", href: "/" },
       { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Periodoncia", href: "/tratamientos/periodoncia/basico" },
+      { label: "Periodoncia", href: "/tratamientos/periodoncia-estabilizacion" },
       { label: "Estabilización", href: "#" }
     ],
     hero: {
-      badgeText: "Frenando la caída",
+      badgeText: "Control crónico",
       title: { dark: "MANTENIMIENTO Y", normal: "ESTABILIZACIÓN" },
       description: [
-        "La enfermedad periodontal (piorrea) es crónica. De nada sirve limpiar a fondo si no mantenemos la infección a raya a lo largo del tiempo.",
-        "Aquí consolidamos los resultados del tratamiento básico y estabilizamos los dientes que han empezado a moverse por la pérdida de hueso."
+        "La 'piorrea' (enfermedad periodontal) es crónica. De nada sirve limpiar a fondo si no mantenemos la infección a raya a lo largo del tiempo.",
+        "Toca consolidar los resultados del tratamiento básico y estabilizar los dientes que han empezado a moverse por la pérdida de hueso."
       ]
     },
     rows: [
       {
         id: "revisiones-periodontales",
-        name: "Revisiones de mantenimiento y control",
-        price: "Incluido (0 €)",
+        name: "Control Periodontal",
         subTitle: (
           <div className="flex flex-col gap-2 mb-2">
-            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme">Control Crónico</span>
-            <div className="flex items-center gap-2 text-dkv-gray">
-              <CalendarCheck className="w-5 h-5 text-dkv-green" />
-              <span className="font-bold tracking-widest text-xs uppercase text-dkv-green">Vigilancia constante</span>
-            </div>
+            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme">Vigilancia constante</span>
           </div>
         ),
-        content: (
-          <p>
-            Evaluamos periódicamente el estado de tus encías, la profundidad de las bolsas periodontales y tu índice de placa para asegurarnos de que la enfermedad está inactiva y detenida.
-          </p>
-        )
+
+        points: [
+          {
+            icon: '',
+            text: <><strong>Revisión períódica.</strong> Evaluamos periódicamente el estado de tus encías, la profundidad de las bolsas periodontales y tu índice de placa para asegurarnos de que la enfermedad está inactiva y detenida.
+</>
+          },
+          {
+            icon: '',
+            text: <> <strong>Limpieza periodontal.</strong>Cada 4 o 6 meses es estrictamente necesario que los pacientes con problemas de encías se sometan a una limpieza médica súper exhaustiva para que la infección no vuelva a penetrar bajo la encía.
+</>
+          },
+          {
+            icon: '',
+            text: <><strong>Importante. </strong> Saltarse estos mantenimientos es la principal causa de recaída. La limpieza dental estándar anual no es suficiente para los pacientes que ya han perdido soporte óseo.
+</>
+          }
+
+
+        ],
+
+        detailedPrices: [
+          {
+            icon: '',
+            title: 'Revisión periódica',
+            description: '',
+            price: 'Incluido'
+          },
+          {
+            icon: '',
+            title: 'Limpieza periodontal',
+            description: '',
+            price: "65 €"
+          }
+        ]
+
       },
-      {
-        id: "tratamiento-mantenimiento",
-        name: "Tratamiento periodontal de mantenimiento",
-        price: "65 €",
-        subTitle: (
-          <div className="flex items-center gap-2 mb-2 text-dkv-gray">
-            <ShieldPlus className="w-5 h-5 text-dkv-green" />
-            <span className="font-bold tracking-widest text-xs uppercase text-dkv-green">Limpieza médica exhaustiva</span>
-          </div>
-        ),
-        content: (
-          <>
-            <p>
-              Es una limpieza médica súper exhaustiva que los pacientes con problemas de encías deben hacerse estrictamente cada 4-6 meses para que la infección no vuelva a penetrar bajo la encía.
-            </p>
-            <div className="bg-white p-5 rounded-2xl border border-dkv-gray-border/50 mt-4 flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-dkv-green shrink-0 mt-0.5" />
-              <p className="text-sm text-dkv-gray leading-relaxed font-fsme m-0">
-                Saltarse estos mantenimientos es la principal causa de recaída. La limpieza dental estándar anual no es suficiente para los pacientes que ya han perdido soporte óseo.
-              </p>
-            </div>
-          </>
-        )
-      },
+
       {
         id: "ferulizacion",
-        name: "Ferulización de dientes",
+        name: "Ferulización Periodontal",
         subTitle: (
           <div className="flex flex-col gap-2 mb-2">
-            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme mt-4">Soluciones Mecánicas</span>
-            <div className="flex items-center gap-2 text-dkv-gray">
-              <LinkIcon className="w-5 h-5 text-dkv-green" />
-              <span className="font-bold tracking-widest text-xs uppercase text-dkv-green">Firmeza estructural</span>
-            </div>
+            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme mt-4">Firmeza estructural dental</span>
           </div>
         ),
-        content: (
-          <>
-            <p className="mb-4">
-              <strong>El beneficio:</strong> Si tus dientes se mueven porque han perdido hueso, los "atamos" unos a otros por la parte de atrás con una fibra invisible o alambre trenzado adherido con resina. Esto reparte las fuerzas masticatorias, dándoles firmeza para que puedas morder sin miedo a que se caigan.
-            </p>
 
-            <div className="bg-dkv-gray-light/50 p-5 rounded-2xl border border-dkv-gray-border/80">
-              <ul className="space-y-4">
-                <li className="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b border-dkv-gray-border/60 gap-4">
-                  <span className="font-bold text-dkv-gray">Por pieza dental</span>
-                  <span className="font-lemon text-xl text-dkv-green-dark shrink-0">18 €</span>
-                </li>
-                <li className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                  <span className="font-bold text-dkv-gray">Por sextante <span className="font-normal block text-sm text-dkv-gray/80 mt-1">Tramo completo de colmillo a colmillo</span></span>
-                  <span className="font-lemon text-xl text-dkv-green-dark shrink-0">100 €</span>
-                </li>
-              </ul>
-            </div>
-          </>
-        )
+        points: [
+          {
+            icon: '',
+            text: <><strong>El beneficio:</strong> Si tus dientes se mueven porque han perdido hueso, los unimos a otros firmes por la parte de atrás con una fibra invisible o alambre trenzado adherido con resina. Esto reparte las fuerzas masticatorias, dándoles firmeza para que puedas morder sin miedo a que se caigan.
+</>
+          }
+        ],
+        detailedPrices: [
+          {
+            icon: '',
+            title: 'Por pieza dental',
+            description: '',
+            price: '18 €'
+          },
+          {
+            icon: '',
+            title: 'Por sextante',
+            description: 'Tramo completo de colmillo a colmillo.',
+            price: "100 €"
+          }
+        ]
+
       }
     ],
     cta: {
@@ -3514,9 +3800,54 @@ price: <span className="text-dkv-green">+ 15 €</span>
     },
     rows: [
       {
+        id: "colgajo",
+        name: "Cirugía periodontal a colgajo",
+        subTitle: (
+          <div className="flex flex-col gap-2 mb-2">
+            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme mt-4">Sin tregua</span>
+          </div>
+        ),
+
+
+        points: [
+          {
+            icon: '',
+            text: <><strong>¿Por qué hace falta?</strong> Si la infección es tan profunda que el curetaje tradicional no llega a limpiar el fondo de la bolsa periodontal.
+</>
+          },
+          {
+            icon: '',
+            text: <>Bajo anestesia, apartamos suavemente la encía como si fuera la solapa de un sobre, limpiamos el hueso y las raíces directamente visualizando el daño, y volvemos a cerrar y suturar.
+</>
+          }
+        ],
+
+
+
+        detailedPrices: [
+          {
+            icon: '',
+            title: 'Por pieza dental',
+            description: '',
+            price: '26 €'
+          },
+          {
+            icon: '',
+            title: 'Por cuadrante completo',
+            description: '',
+            price: "100 €"
+          }
+        ]
+
+
+      },
+
+      {
         id: "epulis",
-        name: "Extirpación de un épulis",
+        name: "Extirpación de épulis",
         price: "40 €",
+        subTitle: "Extirpar quistes.",
+/*
         subTitle: (
           <div className="flex flex-col gap-2 mb-2">
             <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme">Acceso Directo</span>
@@ -3526,82 +3857,135 @@ price: <span className="text-dkv-green">+ 15 €</span>
             </div>
           </div>
         ),
+*/
+/*
         content: (
           <p>
             Intervención menor para quitar un pequeño bulto benigno o quiste que se haya formado en la encía, generalmente a causa de una irritación crónica.
           </p>
         )
+*/
+        points: [
+          {
+            icon: '',
+            text: <><strong>Intervención menor  </strong> para quitar un pequeño bulto benigno o quiste que se haya formado en la encía, generalmente a causa de una irritación crónica.
+
+</>
+          }
+        ]
+
+
       },
       {
-        id: "gingivectomia",
-        name: "Modelado de la encía",
+        id: "regenerativo",
+        name: "Regenerando Hueso perdido",
+        subTitle: "Perfeccionando el soporte óseo.",
+/*
         subTitle: (
-          <div className="flex items-center gap-2 mb-2 text-dkv-gray">
-            <Scissors className="w-5 h-5 text-dkv-green" />
-            <span className="font-bold tracking-widest text-xs uppercase text-dkv-green">Salud y Estética</span>
+          <div className="flex flex-col gap-2 mb-2">
+            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme mt-4">Sin tregua</span>
           </div>
         ),
-        content: (
-          <>
-            <p className="mb-4">
-              Tratamientos enfocados en recortar la encía con absoluta precisión si está demasiado inflamada (hiperplasia) o si "tapa" demasiado al diente, mejorando también enormemente la estética de tu sonrisa.
-            </p>
+*/
 
-            <div className="bg-dkv-gray-light/50 p-5 rounded-2xl border border-dkv-gray-border/80">
-              <ul className="space-y-4">
-                <li className="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b border-dkv-gray-border/60 gap-4">
-                  <div>
-                    <span className="font-bold text-dkv-gray">Gingivectomía total</span>
-                    <span className="font-normal text-sm text-dkv-gray/80 block mt-1">Precio por cuadrante.</span>
-                  </div>
-                  <span className="font-lemon text-xl text-dkv-green-dark shrink-0 mt-2 md:mt-0">17 €</span>
-                </li>
-                <li className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                  <div>
-                    <span className="font-bold text-dkv-gray">Alargamiento coronario</span>
-                    <span className="font-normal text-sm text-dkv-gray/80 block mt-1">Exposición de mayor superficie del diente.</span>
-                  </div>
-                  <span className="font-lemon text-xl text-dkv-green-dark shrink-0 mt-2 md:mt-0">100 €</span>
-                </li>
-              </ul>
-            </div>
-          </>
-        )
+        points: [
+          {
+            icon: '',
+            text: <><strong>¿Por qué hace falta?</strong> Se busca recuperar el soporte óseo perdido alrededor de los dientes debido a enfermedades o infecciones.
+</>
+          },
+          {
+            icon: '',
+            text: <>De este modo se permite salvar piezas dentales que de otro modo se perderían.
+</>
+          }
+        ],
+
+
+
+        detailedPrices: [
+          {
+            icon: '',
+            title: 'Cirugía periondontal de injerto',
+            description: 'Cuando tras limpiar la cirugía de colgajo, se detecta que se ha perdido hueso de soporte. Precio por cirugía.',
+            price: '130 €'
+          },
+          {
+            icon: '',
+            title: 'Membranas regenerativas',
+            description: 'Junto con injertos para guiar la regeneración de nuevo hueso y encía y que el tejido blando no invada el espacio donde debe crecer el hueso.',
+            price: "150 €"
+          },
+          {
+            icon: '',
+            title: 'Ingerto autólogo',
+            description: 'Hueso del propio paciente.',
+            price: "190 €"
+          },
+          {
+            icon: '',
+            title: 'Otros materiales de injerto.',
+            description: 'Hidroxiapatita, hueso liofilizado, etc. Precio por unidad.',
+            price: "150 €"
+          }
+        ]
+
+
       },
-      {
-        id: "colgajo",
-        name: "Cirugía periodontal a colgajo",
-        content: (
-          <>
-            <p className="mb-4">
-              <strong>¿Por qué hace falta?</strong> Si la infección es tan profunda que el curetaje tradicional no llega a limpiar el fondo de la bolsa periodontal.
-            </p>
-            <p className="mb-4">
-              Bajo anestesia, apartamos suavemente la encía como si fuera la solapa de un sobre, limpiamos el hueso y las raíces directamente visualizando el daño, y volvemos a cerrar y suturar.
-            </p>
 
-            <div className="bg-dkv-gray-light/50 p-5 rounded-2xl border border-dkv-gray-border/80">
-              <ul className="space-y-4">
-                <li className="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b border-dkv-gray-border/60 gap-4">
-                  <span className="font-bold text-dkv-gray">Por pieza dental</span>
-                  <span className="font-lemon text-xl text-dkv-green-dark shrink-0 mt-2 md:mt-0">26 €</span>
-                </li>
-                <li className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                  <span className="font-bold text-dkv-gray">Por cuadrante completo</span>
-                  <span className="font-lemon text-xl text-dkv-green-dark shrink-0 mt-2 md:mt-0">100 €</span>
-                </li>
-              </ul>
-            </div>
-          </>
-        )
-      }
+
+      {
+        id: "gingivectomia",
+        name: "Alargamiento de la corona",
+        subTitle: (
+          <div className="flex flex-col gap-2 mb-2">
+            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme mt-4">Beneficio estético</span>
+          </div>
+        ),
+
+        points: [
+          {
+            icon: '',
+            text: <><strong>Recuperación de sonrisa.</strong> Una vez controlada la infección y el hueso, estos tratamientos se enfocan en recortar la encía con absoluta precisión si está demasiado inflamada (hiperplasia) o si "tapa" demasiado al diente, mejorando también enormemente la estética de tu sonrisa.
+
+</>
+          }
+        ],
+
+
+
+        detailedPrices: [
+          {
+            icon: '',
+            title: 'Gingivectomía total',
+            description: 'Elimina exceso de encía para aumentar la longitud de los dientes sin necesidad de tocar hueso. Precio por cuadrante',
+            price: '17 €'
+          },
+          {
+            icon: '',
+            title: 'Alargamiento coronario',
+            description: 'Además de recortar exceso de encía implica remodelar el hueso para exponer más estructura dental.',
+            price: "100 €"
+          }
+        ]
+
+
+
+      },
+
+
+
+
+
+
     ],
     premiumBlock: (
-      <div id="tecnologia-laser" className="bg-gradient-to-br from-slate-900 to-[#022A27] rounded-2xl md:rounded-3xl p-8 md:p-10 shadow-2xl relative overflow-hidden mt-12 mb-4 scroll-mt-[120px] text-white">
+      <div id="cirugia-alta-complejidad" className="bg-gradient-to-br from-slate-900 to-[#022A27] rounded-2xl md:rounded-3xl p-8 md:p-10 shadow-2xl relative overflow-hidden mt-12 mb-4 scroll-mt-[120px] text-white">
         <div className="absolute top-0 right-0 p-8 opacity-10">
-          <Zap className="w-32 h-32 text-[#D4AF37]" />
+          <MoveUp className="w-32 h-32 text-[#D4AF37]" />
         </div>
         <div className="absolute bottom-0 left-0 w-40 h-40 bg-[#D4AF37] opacity-10 blur-[80px] rounded-full"></div>
+
 
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-4">
@@ -3609,11 +3993,13 @@ price: <span className="text-dkv-green">+ 15 €</span>
             <span className="text-[#D4AF37] font-bold text-sm md:text-base uppercase tracking-[0.2em] font-fsme">Upgrade Premium</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-lemon mb-4 uppercase tracking-wide leading-tight">
-            Tecnología Láser y Biológica
+            Cirugía Maxilar de Alta Complejidad
           </h2>
           <div className="inline-block bg-[#D4AF37]/20 border border-[#D4AF37]/40 px-4 py-1.5 rounded-full text-sm font-bold text-[#D4AF37] mb-8 uppercase tracking-widest">
             Exclusivo en Centros Propios
           </div>
+
+
 
           <div className="space-y-6">
             <div className="bg-white/5 rounded-2xl p-6 border border-white/10 backdrop-blur-sm">
@@ -3647,236 +4033,9 @@ price: <span className="text-dkv-green">+ 15 €</span>
             </div>
           </div>
 
-        </div>
-      </div>
-    ),
-    cta: {
-      title: "Mínima invasión, máxima eficacia",
-      infoNote: "La tecnología actual nos permite realizar intervenciones en las encías de forma rápida, segura y con un postoperatorio sumamente llevadero.",
-      description: "Acude a uno de nuestros especialistas para valorar la salud profunda de tus encías y la viabilidad de utilizar tecnología láser en tu tratamiento:"
-    }
-  },
 
-  // 26. CIRUGÍA AVANZADA: EXTRACCIONES COMPLEJAS 
-  'cirugia-extracciones': {
-    slug: 'cirugia-extracciones',
-    activeSubNavId: 'extracciones',
-    seoTitle: "Extracciones Complejas y Muelas del Juicio | DKV Dentisalud",
-    seoDescription: "Cirugía de muelas del juicio impactadas y amputaciones radiculares. Intervenciones precisas y seguras con la garantía de tu seguro DKV.",
-    breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Cirugía Avanzada", href: "/tratamientos/cirugia-avanzada/extracciones" },
-      { label: "Extracciones Complejas", href: "#" }
-    ],
-    hero: {
-      badgeText: "Muelas del juicio y más",
-      title: { dark: "EXTRACCIONES", normal: "COMPLEJAS" },
-      description: [
-        "Intervenciones precisas y seguras para pacientes que necesitan extracciones muy complejas o dientes severamente dañados.",
-        "Técnicas avanzadas para minimizar el impacto, preservar el hueso sano y asegurar una recuperación rápida y sin complicaciones."
-      ]
-    },
-    rows: [
-      {
-        id: "muelas-juicio",
-        name: "Cirugía de la muela del juicio (con o sin quiste)",
-        price: "25 €",
-        subTitle: (
-          <div className="flex flex-col gap-2 mb-2">
-            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme">Cirugía Menor</span>
-            <div className="flex items-center gap-2 text-dkv-gray">
-              <Scissors className="w-5 h-5 text-dkv-green" />
-              <span className="font-bold tracking-widest text-xs uppercase text-dkv-green">Extracción quirúrgica</span>
-            </div>
-          </div>
-        ),
-        content: (
-          <>
-            <p>
-              <strong>¿Por qué se hace?</strong> Cuando las muelas del juicio vienen torcidas, empujan al resto de dientes causando apiñamiento, o se quedan atrapadas parcial o totalmente bajo el hueso (impactadas).
-            </p>
-            <div className="bg-dkv-gray-light/50 p-5 rounded-2xl border border-dkv-gray-border/80 mt-4">
-              <p className="text-sm text-dkv-gray leading-relaxed m-0">
-                A diferencia de una extracción simple, esto requiere una pequeña intervención quirúrgica para partirlas (odontosección) y sacarlas sin dañar el hueso circundante ni los nervios o dientes vecinos de la boca.
-              </p>
-            </div>
-          </>
-        )
-      },
-      {
-        id: "amputacion-radicular",
-        name: "Amputación radicular (hemisección)",
-        price: "Incluido (0 €)",
-        subTitle: (
-          <div className="flex flex-col gap-2 mb-2 mt-4">
-            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme">Preservación Biológica</span>
-            <div className="flex items-center gap-2 text-dkv-gray">
-              <Activity className="w-5 h-5 text-dkv-green" />
-              <span className="font-bold tracking-widest text-xs uppercase text-dkv-green">Salvar la mitad sana</span>
-            </div>
-          </div>
-        ),
-        content: (
-          <>
-            <p>
-              Una técnica quirúrgica fascinante. A veces, una gran muela (que suele tener dos o tres raíces) presenta una infección masiva o fractura en una sola de sus raíces, mientras que la otra permanece perfectamente sana y firme en el hueso.
-            </p>
-            <div className="bg-dkv-green/5 p-4 rounded-xl border border-dkv-green/20 mt-4 flex items-start gap-3">
-              <CheckCircle2 className="w-5 h-5 text-dkv-green shrink-0 mt-0.5" />
-              <p className="text-sm text-dkv-gray font-fsme leading-relaxed m-0">
-                <strong>El beneficio:</strong> En lugar de sacar la muela entera y perder el diente, cortamos verticalmente y sacamos solo la raíz mala. Esto nos permite salvar la mitad del diente para utilizarlo como pilar de una futura corona.
-              </p>
-            </div>
-          </>
-        )
-      }
-    ],
-    cta: {
-      title: "En manos expertas",
-      infoNote: "La cirugía oral avanzada requiere pericia y experiencia. Nuestros cirujanos maxilofaciales y odontólogos especialistas garantizan intervenciones limpias con el mejor postoperatorio posible.",
-      description: "Si te han diagnosticado la necesidad de extraer una muela del juicio o un caso complejo, busca tu clínica DKV más cercana y ponte en las mejores manos:"
-    }
-  },
 
-  // 27. CIRUGÍA AVANZADA: RECONSTRUCCIÓN ÓSEA
-  'cirugia-reconstruccion-osea': {
-    slug: 'cirugia-reconstruccion-osea',
-    activeSubNavId: 'hueso',
-    seoTitle: "Reconstrucción de Hueso e Injertos Dentales | DKV Dentisalud",
-    seoDescription: "Regeneración ósea, injertos y elevación de seno maxilar. Preparamos el terreno para tus futuros implantes con la máxima seguridad.",
-    breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Cirugía Avanzada", href: "/tratamientos/cirugia-avanzada/extracciones" },
-      { label: "Reconstrucción del Hueso", href: "#" }
-    ],
-    hero: {
-      badgeText: "Preparando el terreno",
-      title: { dark: "RECONSTRUCCIÓN DEL", normal: "HUESO" },
-      description: [
-        "Cuando sacamos un diente, el hueso se colapsa y se encoge. Si en el futuro quieres ponerte un implante, necesitamos 'rellenar' ese agujero.",
-        "Utilizamos técnicas y biomateriales de última generación para estimular a tu cuerpo a crear hueso nuevo y recuperar el volumen perdido."
-      ]
-    },
-    rows: [
-      {
-        id: "postexodoncia",
-        name: "Tratamiento regenerativo postexodoncia",
-        subTitle: (
-          <div className="flex flex-col gap-2 mb-2">
-            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme">Regeneración Ósea</span>
-            <div className="flex items-center gap-2 text-dkv-gray">
-              <Activity className="w-5 h-5 text-dkv-green" />
-              <span className="font-bold tracking-widest text-xs uppercase text-dkv-green">Prevenir el colapso</span>
-            </div>
-          </div>
-        ),
-        content: (
-          <>
-            <p className="mb-4">
-              <strong>¿Qué es?</strong> Justo en el momento de sacarte el diente, rellenamos el hueco con materiales que estimulan a tu cuerpo a crear hueso nuevo, evitando así que la encía se hunda.
-            </p>
-            <div className="bg-dkv-gray-light/50 p-5 rounded-2xl border border-dkv-gray-border/80">
-              <ul className="space-y-4">
-                <li className="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b border-dkv-gray-border/60 gap-4">
-                  <span className="font-bold text-dkv-gray">Tratamiento para 1 pieza</span>
-                  <span className="font-lemon text-xl text-dkv-green-dark shrink-0 mt-2 md:mt-0">80 €</span>
-                </li>
-                <li className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                  <span className="font-bold text-dkv-gray">Tratamiento para más de 1 pieza</span>
-                  <span className="font-lemon text-xl text-dkv-green-dark shrink-0 mt-2 md:mt-0">150 €</span>
-                </li>
-              </ul>
-            </div>
-          </>
-        )
-      },
-      {
-        id: "materiales-regeneracion",
-        name: "Materiales de Relleno y Membranas",
-        content: (
-          <>
-            <p className="mb-4">
-              Biomateriales de altísima calidad que utilizamos como "andamio" estructural para guiar a tus propias células en la formación de hueso nuevo.
-            </p>
-            <div className="bg-white border border-dkv-gray-border/80 rounded-2xl overflow-hidden mt-6">
-              <div className="p-5 md:p-6 border-b border-dkv-gray-border/50">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <Layers className="w-5 h-5 text-dkv-green" />
-                      <h3 className="font-bold text-dkv-gray text-lg">Materiales alternativos de relleno</h3>
-                    </div>
-                    <p className="text-sm text-dkv-gray/80">(hidroxiapatita, hueso liofilizado). El "polvo de hueso" estéril que hace de andamio. Precio por unidad.</p>
-                  </div>
-                  <span className="font-lemon text-xl text-dkv-green-dark shrink-0">150 €</span>
-                </div>
-              </div>
-              <div className="p-5 md:p-6 bg-dkv-gray-light/30">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <ShieldCheck className="w-5 h-5 text-dkv-green" />
-                      <h3 className="font-bold text-dkv-gray text-lg">Membranas regenerativas</h3>
-                    </div>
-                    <p className="text-sm text-dkv-gray/80">La "tirita" interna especializada que protege el injerto de hueso para que no se mueva ni se contamine.</p>
-                  </div>
-                  <span className="font-lemon text-xl text-dkv-green-dark shrink-0">150 €</span>
-                </div>
-              </div>
-            </div>
-          </>
-        )
-      },
-      {
-        id: "injertos",
-        name: "Injertos Biológicos",
-        subTitle: (
-          <div className="flex items-center gap-2 mb-2 text-dkv-gray">
-            <Droplet className="w-5 h-5 text-dkv-green" />
-            <span className="font-bold tracking-widest text-xs uppercase text-dkv-green">Tu propio tejido</span>
-          </div>
-        ),
-        content: (
-          <>
-            <p className="mb-4">
-              La técnica consiste en coger un poquito de hueso o encía sana de otra parte de tu propia boca (normalmente de la zona posterior de las muelas del juicio) para injertarlo allí donde te falta grosor o altura.
-            </p>
-            <div className="bg-dkv-gray-light/50 p-5 rounded-2xl border border-dkv-gray-border/80">
-              <ul className="space-y-4">
-                <li className="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b border-dkv-gray-border/60 gap-4">
-                  <span className="font-bold text-dkv-gray">Cirugía periodontal de injerto</span>
-                  <span className="font-lemon text-xl text-dkv-green-dark shrink-0 mt-2 md:mt-0">130 €</span>
-                </li>
-                <li className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                  <span className="font-bold text-dkv-gray">Injerto autólogo</span>
-                  <span className="font-lemon text-xl text-dkv-green-dark shrink-0 mt-2 md:mt-0">190 €</span>
-                </li>
-              </ul>
-            </div>
-          </>
-        )
-      }
-    ],
-    premiumBlock: (
-      <div id="cirugia-alta-complejidad" className="bg-gradient-to-br from-slate-900 to-[#022A27] rounded-2xl md:rounded-3xl p-8 md:p-10 shadow-2xl relative overflow-hidden mt-12 mb-4 scroll-mt-[120px] text-white">
-        <div className="absolute top-0 right-0 p-8 opacity-10">
-          <MoveUp className="w-32 h-32 text-[#D4AF37]" />
-        </div>
-        <div className="absolute bottom-0 left-0 w-40 h-40 bg-[#D4AF37] opacity-10 blur-[80px] rounded-full"></div>
 
-        <div className="relative z-10">
-          <div className="flex items-center gap-3 mb-4">
-            <Diamond className="w-6 h-6 text-[#D4AF37]" />
-            <span className="text-[#D4AF37] font-bold text-sm md:text-base uppercase tracking-[0.2em] font-fsme">Upgrade Premium</span>
-          </div>
-          <h2 className="text-3xl md:text-4xl font-lemon mb-4 uppercase tracking-wide leading-tight">
-            Cirugía Maxilar de Alta Complejidad
-          </h2>
-          <div className="inline-block bg-[#D4AF37]/20 border border-[#D4AF37]/40 px-4 py-1.5 rounded-full text-sm font-bold text-[#D4AF37] mb-8 uppercase tracking-widest">
-            Exclusivo en Centros Propios
-          </div>
 
           <div className="space-y-6">
             <div className="bg-white/5 rounded-2xl p-6 border border-white/10 backdrop-blur-sm">
@@ -3917,11 +4076,131 @@ price: <span className="text-dkv-green">+ 15 €</span>
       </div>
     ),
     cta: {
-      title: "Invierte en tus cimientos",
-      infoNote: "El éxito de un implante a largo plazo depende enteramente de la cantidad y calidad del hueso que lo rodea. Un buen andamiaje hoy evitará problemas mañana.",
-      description: "Acude a uno de nuestros especialistas en cirugía maxilar para realizar un estudio en 3D y valorar las opciones de reconstrucción ósea para tu caso:"
+      title: "Mínima invasión, máxima eficacia",
+      infoNote: "La tecnología actual nos permite realizar intervenciones en las encías de forma rápida, segura y con un postoperatorio sumamente llevadero.",
+      description: "Acude a uno de nuestros especialistas para valorar la salud profunda de tus encías y la viabilidad de utilizar tecnología láser en tu tratamiento:"
+    }
+  },
+
+  // 26. CIRUGÍA AVANZADA: EXTRACCIONES COMPLEJAS 
+  'cirugia-extracciones': {
+    slug: 'cirugia-extracciones',
+    activeSubNavId: 'extracciones',
+    seoTitle: "Extracciones Complejas y Muelas del Juicio | DKV Dentisalud",
+    seoDescription: "Cirugía de muelas del juicio impactadas y amputaciones radiculares. Intervenciones precisas y seguras con la garantía de tu seguro DKV.",
+    breadcrumbs: [
+      { label: "Inicio", href: "/" },
+      { label: "Tratamientos", href: "/tratamientos" },
+      { label: "Cirugía Avanzada", href: "/tratamientos/cirugia-avanzada/extracciones" },
+      { label: "Extracciones Complejas", href: "#" }
+    ],
+    hero: {
+      badgeText: "Muelas del juicio y más",
+      title: { dark: "EXTRACCIONES", normal: "DENTALES" },
+      description: [
+        "Intervenciones precisas y seguras para pacientes que necesitan extracciones muy complejas o dientes severamente dañados.",
+        "Técnicas avanzadas para minimizar el impacto, preservar el hueso sano y asegurar una recuperación rápida y sin complicaciones."
+      ]
+    },
+    rows: [
+      {
+        id: "muelas-juicio",
+        name: "Extracciones",
+        subTitle: "Ultimo recurso.",
+/*        price: "25 €", */
+
+/*
+        subTitle: (
+          <div className="flex flex-col gap-2 mb-2">
+            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme">Cirugía Menor (con o sin quiste)</span>
+          </div>
+        ),
+*/
+/*
+        content: (
+          <>
+            <p>
+              <strong>¿Por qué se hace?</strong> Cuando las muelas del juicio vienen torcidas, empujan al resto de dientes causando apiñamiento, o se quedan atrapadas parcial o totalmente bajo el hueso (impactadas).
+            </p>
+            <div className="bg-dkv-gray-light/50 p-5 rounded-2xl border border-dkv-gray-border/80 mt-4">
+              <p className="text-sm text-dkv-gray leading-relaxed m-0">
+                A diferencia de una extracción simple, esto requiere una pequeña intervención quirúrgica para partirlas (odontosección) y sacarlas sin dañar el hueso circundante ni los nervios o dientes vecinos de la boca.
+              </p>
+            </div>
+          </>
+        ),
+*/
+
+        points: [
+          {
+            icon: '',
+            text: <><strong>Diagnóstico. </strong> Si el diente es extraíble, es una <strong>extracción simple</strong>. Si solo queda la raíz, son <strong>restos radiculares</strong>. Si es una muela del juicio erupcionada es <strong>simple</strong>, si está bajo la encía es <strong>submucosa</strong>, y si está dentro del hueso es <strong>cirugía</strong>.
+</>
+          },
+          {
+            icon: '',
+            text: <><strong>Conservación. </strong> Antes de extraer un molar entero, se puede intentar una <strong>amputación radicular</strong> para salvar la raíz sana.
+</>
+          },
+
+          {
+            icon: '',
+            text: <><strong>Regeneración. </strong>  Tras cualquier extracción compleja o de muela del juicio, es muy recomendable un <strong>tratamiento regenerativo alveolar</strong> para preservar el hueso para un futuro implante. .
+</>
+          }
+
+        ],
+
+
+        priceGroups: [
+          {
+            title: "Extracciòn dental",
+            description: "(no muelas del juicio)",
+            items: [
+              { icon: '',
+title: "Extracción dental simple", description: "Diente visible en la boca, generalmente sin necesidad de incisión en la encía.", price: "Incluido"},
+              { icon: '',
+title: "Extracción dental compleja. Restos radiculares", description: "Raíces dentales fracturadas o remanentes de dientes que han perdido su corono. A menudo requiere incisión en encía para acceder a la raíz.", price: "Incluido"},
+              { icon: '',
+title: "Amputación radicular (hemisección)", description: "Eliminar una de las raíces de un molar multirradicular por estar dañada, conservando el resto del diente sano. Evita la extracción de todo el diente.", price: "Incluido"}
+
+            ]
+          },
+          {
+            title: "Muela del juicio",
+            description: "",
+            items: [
+              { icon: '',
+title: "Extracción Muela del juicio normal", description: "La muela ha salido ya completamente de la encía. A veces se sutura.", price: "15 €" },
+              { icon: '',
+title: "Extracción Muela del juicio submucosa", description: "La muela no ha erupcionado del todo, está cubierta al menos en parte por la encía, pero no llega a estar retenida en el hueso.", price: "15 €"},
+              { icon: '',
+title: "Cirugía Muela del juicio", description: "Para muelas retenidas en el hueso o en posición horizontal. Con o sin quiste dentinario.", price: "25 €"}
+
+            ]
+          },
+          {
+            title: "Tratamiento regenerativo Alveolar Post-Exodoncia",
+            description: "Tras una extracción es muy recomendable para evitar que el hueso alveolar (donde estaba la raíz) se pierda o reabsorba, preparando la zona para un futuro implante.",
+            items: [
+              { icon: '',
+title: "Una pieza", description: "Tras sacar el diente, se coloca hueso artifical en el alveolo para favorecer la cicatrización ósea. Incluye materiales de relleno.", price: "80 €" },
+              { icon: '',
+title: "Más de una pieza", description: "Similar al anterior pero aplicado a la extracción de dos o más dientes. Incluye materiales de relleno.", price: "150 €"}
+            ]
+          }
+
+        ]
+
+      }
+    ],
+    cta: {
+      title: "En manos expertas",
+      infoNote: "La cirugía oral avanzada requiere pericia y experiencia. Nuestros cirujanos maxilofaciales y odontólogos especialistas garantizan intervenciones limpias con el mejor postoperatorio posible.",
+      description: "Si te han diagnosticado la necesidad de extraer una muela del juicio o un caso complejo, busca tu clínica DKV más cercana y ponte en las mejores manos:"
     }
   }
+
 
 };
 
