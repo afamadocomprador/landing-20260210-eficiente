@@ -40,6 +40,7 @@ export interface TrozoTexto {
 export interface DetailedPriceItem {
   icon?: string;
   title: TrozoTexto[]; // 💡 AHORA: El título es un array de trozos de texto estructurados  description?: ReactNode | string;
+  description?: ReactNode | string; // 
   price: ReactNode | string; // 💡 AHORA ACEPTA ETIQUETAS HTML
 }
 
