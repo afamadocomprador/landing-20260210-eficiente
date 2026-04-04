@@ -230,9 +230,6 @@ export const getBreadcrumbTrail = async (
     if (l.nivel === '01') { 
         href = "/dentistas"; 
     } 
-//    else if (l.nivel === '03') {
-//        href = `/dentistas/${l.slug}-provincia`;
-//  } 
     else {
         href = `/dentistas/${l.slug}`;
     }
@@ -241,6 +238,13 @@ export const getBreadcrumbTrail = async (
       label: l.breadcrumb || "Ubicación",
       href: href
     });
+  });
+
+  // ⚡️ INYECCIÓN CLAVE: El padre absoluto de la sección
+  // Apunta al ancla del buscador en la Landing principal
+  trail.unshift({
+    label: "Dentistas",
+    href: "/#dentistas"
   });
 
   return trail;
