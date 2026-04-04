@@ -181,6 +181,31 @@ const IconMapRefined: Record<string, React.ElementType> = {
   CornerDownRight
 };
 
+
+
+// Función auxiliar (Helper) para renderizar el nuevo array de título
+const renderTitleTrozos = (trozos: TrozoTexto[]) => {
+  return (
+    <>
+      {trozos.map((trozo, idx) => {
+        if (trozo.tipo === "oculto") {
+          return (
+            <span key={idx} className="sr-only">
+              {trozo.texto}
+            </span>
+          );
+        }
+        // Si el tipo es 'normal', lo pintamos tal cual, asegurándonos de dejar espacios
+        return <React.Fragment key={idx}>{trozo.texto}</React.Fragment>;
+      })}
+    </>
+  );
+};
+
+
+
+
+
 interface Props {
   treatment: TreatmentDefinition;
 }
@@ -228,8 +253,12 @@ export function TreatmentLayout({ treatment }: Props) {
                     </div>
                   )}
                   <div className="flex flex-col min-w-0">
-                    {/* ⚡️ CORREGIDO: Ahora es un H3 semántico manteniendo el mismo estilo visual */}
-                    <h3 className="font-bold text-dkv-green-dark text-base md:text-lg font-fsme tracking-wide leading-tight block m-0">{item.title}</h3>
+                    {/* ⚡️ MAGIA APLICADA: Ahora iteramos sobre el array de trozos usando el Helper */}
+                    <h3 className="font-bold text-dkv-green-dark text-base md:text-lg font-fsme tracking-wide leading-tight block m-0">
+                        {renderTitleTrozos(item.title)}
+                    </h3>
+
+
                     
                     {item.description && (
                       <span className="text-dkv-gray/80 text-sm md:text-base font-fsme tracking-wide leading-tight block mt-0.5">{item.description}</span>
@@ -287,8 +316,10 @@ export function TreatmentLayout({ treatment }: Props) {
                           </div>
                         )}
                         <div className="flex flex-col min-w-0">
-                          {/* ⚡️ CORREGIDO: Ahora es un H3 semántico manteniendo el mismo estilo visual */}
-                          <h3 className="font-bold text-dkv-green-dark text-base md:text-lg font-fsme tracking-wide leading-tight block m-0">{item.title}</h3>
+                          {/* ⚡️ MAGIA APLICADA AQUÍ TAMBIÉN */}
+                          <h3 className="font-bold text-dkv-green-dark text-base md:text-lg font-fsme tracking-wide leading-tight block m-0">
+                            {renderTitleTrozos(item.title)}
+                          </h3>
 
                           {item.description && (
                             <span className="text-dkv-gray/80 text-sm md:text-base font-fsme tracking-wide leading-tight block mt-0.5">{item.description}</span>
