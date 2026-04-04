@@ -89,11 +89,11 @@ const BruxismoFerula4 = () => <img src="/images/icons/bruxismoferulas_-_item4.pn
 
 
 // --- ICONOS INVISALIGN ---
-const Invisalign1 = () => <img src="/images/icons/invisalign_-_item1.png" alt="Invisalign. Comodidad Absoluta. Invisible y sin rozaduras." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
-const Invisalign2 = () => <img src="/images/icons/invisalign_-_item2.png" alt="Invisalign. Libertad Total. Removibles para comer con total normalidad" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
-const Invisalign3 = () => <img src="/images/icons/invisalign_-_item3.png" alt="Invisalign. Higiene Perfecta. Cepillado sin obstáculos metálicos." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
-const Invisalign4 = () => <img src="/images/icons/invisalign_-_item4.png" alt="Invisalign. Previsibilidad. Podrás ver tu sonrisa antes del tratamiento con software 3D." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
-const Invisalign5 = () => <img src="/images/icons/invisalign_-_item5.png" alt="Invisalign. Consejo de Adaptación. Ligera presión inicial-" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const Invisalign1 = () => <img src="/images/icons/Invisalign_-_item1.png" alt="Invisalign. Comodidad Absoluta. Invisible y sin rozaduras." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const Invisalign2 = () => <img src="/images/icons/Invisalign_-_item2.png" alt="Invisalign. Libertad Total. Removibles para comer con total normalidad" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const Invisalign3 = () => <img src="/images/icons/Invisalign_-_item3.png" alt="Invisalign. Higiene Perfecta. Cepillado sin obstáculos metálicos." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const Invisalign4 = () => <img src="/images/icons/Invisalign_-_item4.png" alt="Invisalign. Previsibilidad. Podrás ver tu sonrisa antes del tratamiento con software 3D." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const Invisalign5 = () => <img src="/images/icons/Invisalign_-_item5.png" alt="Invisalign. Consejo de Adaptación. Ligera presión inicial-" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 
 const InvisalignPrecio1 = () => <img src="/images/icons/invisalign_-_precio1.png" alt="Invisalign. Tratamiento completo ambos maxilares hasta 12 meses. 3.210 €" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 const InvisalignPrecio2 = () => <img src="/images/icons/invisalign_-_precio2.png" alt="Invisalign. Tratamiento completo ambos maxilares hasta 24 meses. 4.000 €" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
