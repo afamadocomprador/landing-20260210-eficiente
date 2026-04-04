@@ -74,8 +74,12 @@ export async function generateMetadata(
   }
 
   // CASO B: SEO por defecto (La página completa)
-  const defaultTitle = parentTreatment.seo?.title || parentTreatment.hero?.title?.normal || 'Tratamiento DKV Dentisalud';
-  const defaultDesc = parentTreatment.seo?.description || `Descubre toda la información sobre ${defaultTitle} en DKV Dentisalud.`;
+  // const defaultTitle = parentTreatment.seo?.title || parentTreatment.hero?.title?.normal || 'Tratamiento DKV Dentisalud';
+  // const defaultDesc = parentTreatment.seo?.description || `Descubre toda la información sobre ${defaultTitle} en DKV Dentisalud.`;
+
+  // CASO B: SEO por defecto (La página completa)
+  const defaultTitle = parentTreatment.seoTitle || parentTreatment.hero?.title?.normal || 'Tratamiento DKV Dentisalud';
+  const defaultDesc = parentTreatment.seoDescription || `Descubre toda la información sobre ${defaultTitle} en DKV Dentisalud.`;
 
   return {
     metadataBase: new URL(baseUrl), // ⚡️ CRUCIAL PARA WHATSAPP
