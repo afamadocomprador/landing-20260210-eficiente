@@ -1,6 +1,6 @@
 // Ruta: components/tratamientos-v2/TreatmentLayout.tsx
 import React from 'react';
-import { TreatmentDefinition, StructuredPoint, DetailedPriceItem, PriceGroup } from '@/types/treatments';
+import { TreatmentDefinition, StructuredPoint, DetailedPriceItem, PriceGroup, TrozoTexto } from '@/types/treatments';
 import { AlarmClock, Coins, Paintbrush, Smile, Zap, Info, Share2, CornerDownRight, ShieldCheck, Sparkles, Layers, ArrowUp } from 'lucide-react';
 
 import Header from "@/components/layout/Header";
