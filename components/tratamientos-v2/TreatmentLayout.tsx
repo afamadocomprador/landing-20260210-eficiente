@@ -390,9 +390,10 @@ export function TreatmentLayout({ treatment }: Props) {
           {treatment.rows.length > 1 && (
             <ScrollReveal delay={100}>
               <div id="opciones-tratamiento" className="mb-16 scroll-mt-32">
-                <h3 className="text-sm font-bold text-dkv-gray/60 uppercase tracking-widest mb-4 font-fsme text-center md:text-left">
+                {/* ⚡️ CORREGIDO: Ahora es un <div>, visualmente igual pero neutro para el SEO */}
+                <div className="text-sm font-bold text-dkv-gray/60 uppercase tracking-widest mb-4 font-fsme text-center md:text-left">
                   Opciones de Tratamiento
-                </h3>
+                </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
                   {treatment.rows.map((row) => (
                     <a 
