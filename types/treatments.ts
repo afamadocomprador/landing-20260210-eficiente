@@ -31,10 +31,15 @@ export interface StructuredPoint {
   text: ReactNode | string;
 }
 
+// 💡 NUEVO: Interfaz para los fragmentos de texto del título
+export interface TrozoTexto {
+  tipo: 'oculto' | 'normal';
+  texto: ReactNode | string;
+}
+
 export interface DetailedPriceItem {
   icon?: string;
-  title: ReactNode | string; // 💡 Ahora acepta tu <span className="sr-only">
-  description?: ReactNode | string;
+  title: TrozoTexto[]; // 💡 AHORA: El título es un array de trozos de texto estructurados  description?: ReactNode | string;
   price: ReactNode | string; // 💡 AHORA ACEPTA ETIQUETAS HTML
 }
 
