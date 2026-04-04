@@ -93,6 +93,7 @@ export default function FixedBreadcrumb({ items, behavior = "fixed" }: FixedBrea
             pr-8               
           "
         >
+          {/*
           <Link 
             href="/" 
             className="hover:text-dkv-green flex items-center gap-1 transition-colors shrink-0"
@@ -101,6 +102,18 @@ export default function FixedBreadcrumb({ items, behavior = "fixed" }: FixedBrea
             <span className="sr-only">Dentistas</span> 
             <span aria-hidden="true">Dentistas</span>
           </Link>
+          */}
+
+          <Link 
+            href="/" 
+            className="hover:text-dkv-green flex items-center justify-center transition-colors shrink-0"
+            title="Inicio"
+          >
+            <Home className="w-4 h-4" strokeWidth={2.5} /> 
+            <span className="sr-only">Inicio</span> 
+          </Link>
+
+
           
           {items.map((item, index) => {
             const isLast = index === items.length - 1;
