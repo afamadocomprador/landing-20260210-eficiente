@@ -67,9 +67,10 @@ const tratamientosList = [
   // ⚡️ MODIFICADO: Prevención con modal y su imagen preservada
   { id: 7, hasSub: true, icon: ShieldCheck, image: "/images/tratamientos/general.png", title: "Prevención" },
   // ⚡️ NUEVA FICHA: Encías / Periodoncia
-  { id: 10, hasSub: true, icon: HeartPulse, image: "/images/tratamientos/encias-y-periodoncia.png", title: "Precio para Encías / Periodoncia" },
-  // ⚡️ NUEVA FICHA: Cirugía Avanzada
-  { id: 11, hasSub: true, icon: Scissors, image: "/images/tratamientos/cirugia.png", title: "Precio de Cirugía Avanzada" },
+  { id: 10, hasSub: true, icon: HeartPulse, image: "/images/tratamientos/encias-y-periodoncia.png", title: "Precio de Periodoncia" },
+  // ⚡️ NUEVA FICHA: Extracciones
+  { id: 11, href: "/tratamientos-v2/cirugia-extracciones", icon: Scissors, title: "Precio de Extracciones", image: "/images/tratamientos/cirugia.png" },
+
 ];
 
 const esteticaSubOptions = [
@@ -121,19 +122,18 @@ const conservadoraSubOptions = [
 
 // ⚡️ NUEVAS OPCIONES PARA PREVENCIÓN, PERIODONCIA Y CIRUGÍA
 const prevencionSubOptions = [
-  { id: 'primera-visita', title: 'Primera visita', href: '/tratamientos/prevencion-primera-visita', tag: 'Diagnóstico inicial' },
-  { id: 'higiene', title: 'Higiene y prevención', href: '/tratamientos/prevencion-higiene', tag: 'Mantenimiento' }
+  { id: 'primera-visita', title: 'Primera visita', href: '/tratamientos-v2/prevencion-primera-visita', tag: 'Diagnóstico inicial' },
+  { id: 'higiene', title: 'Higiene y prevención', href: '/tratamientos-v2/prevencion-higiene', tag: 'Mantenimiento' }
 ];
 
 const periodonciaSubOptions = [
-  { id: 'diagnostico-basico', title: 'Diagnóstico y tratamiento básico', href: '/tratamientos/periodoncia-basica', tag: 'Fase inicial' },
-  { id: 'estabilizacion', title: 'Estabilización', href: '/tratamientos/periodoncia-estabilizacion', tag: 'Control de la enfermedad' },
-  { id: 'micro-cirugia', title: 'Micro cirugía', href: '/tratamientos/periodoncia-micro-cirugia', tag: 'Regeneración' }
+  { id: 'diagnostico-basico', title: 'Gingivitis y Piorrea', href: '/tratamientos-v2/periodoncia-basica', tag: 'Fase inicial' },
+  { id: 'estabilizacion', title: 'Estabilización', href: '/tratamientos-v2/periodoncia-estabilizacion', tag: 'Control de la enfermedad' },
+  { id: 'micro-cirugia', title: 'Micro cirugía', href: '/tratamientos-v2/periodoncia-micro-cirugia', tag: 'Regeneración' }
 ];
 
 const cirugiaSubOptions = [
-  { id: 'extracciones', title: 'Extracciones complejas', href: '/tratamientos/cirugia-extracciones', tag: 'Muelas del juicio y más' },
-  { id: 'hueso', title: 'Reconstrucción del hueso', href: '/tratamientos/cirugia-reconstruccion-osea', tag: 'Regeneración ósea' }
+  { id: 'extracciones', title: 'Extracciones', href: '/tratamientos-v2/cirugia-extracciones', tag: 'Muelas del juicio y más' }
 ];
 
 export default function LandingPage() {
@@ -152,6 +152,7 @@ export default function LandingPage() {
   }, [activeFloatingId]);
 
 
+/***
   // ⚡️ FIX PARA EL SCROLL HACIA SECCIONES DESDE OTRAS PÁGINAS
   useEffect(() => {
     const hash = window.location.hash;
@@ -166,7 +167,29 @@ export default function LandingPage() {
     }
   }, []);
 
+***/
 
+// ⚡️ MEJORA: Gestión combinada de Scroll y Apertura de Modales desde URL
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const modalId = params.get('modal');
+    const hash = window.location.hash;
+
+    // 1. Si hay un parámetro ?modal=X, abrimos ese modal
+    if (modalId) {
+      setActiveFloatingId(parseInt(modalId));
+    }
+
+    // 2. Si hay un #hash, hacemos el scroll suave
+    if (hash) {
+      setTimeout(() => {
+        const element = document.querySelector(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 400); // Aumentado a 400ms para asegurar que el DOM está listo
+    }
+  }, []);
 
 
 
@@ -199,8 +222,8 @@ export default function LandingPage() {
                      isPediatria ? "ODONTOPEDIATRÍA" : 
                      isConservadora ? "ODONTOLOGÍA CONSERVADORA" : 
                      isPrevencion ? "PREVENCIÓN" : 
-                     isPeriodoncia ? "ENCÍAS Y PERIODONCIA" : 
-                     isCirugia ? "CIRUGÍA AVANZADA" : "";
+                     isPeriodoncia ? "PERIODONCIA" : 
+                     isCirugia ? "EXTRACCIONES" : "";
   
   const modalSubtitle = isEstetica ? "Elige el tratamiento que deseas:" : 
                         isOrtodoncia ? "Elige el tipo de aparato:" : 
@@ -210,7 +233,7 @@ export default function LandingPage() {
                         isConservadora ? "Salvar tu diente es nuestra prioridad:" : 
                         isPrevencion ? "La base de una boca sana:" : 
                         isPeriodoncia ? "Cuida el soporte de tus dientes:" : 
-                        isCirugia ? "Soluciones quirúrgicas especializadas:" : "";
+                        isCirugia ? "Extracciones y regeneración:" : "";
 
   return (
     <div className="min-h-screen bg-white text-dkv-gray selection:bg-dkv-green selection:text-white relative">
