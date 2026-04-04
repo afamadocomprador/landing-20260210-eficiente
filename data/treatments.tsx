@@ -1,4 +1,4 @@
-// Ruta: data/treatments.tsx
+
 import { TreatmentDefinition } from '@/types/treatments';
 import { Diamond, ShieldCheck, Smile, Sparkles, Layers, Settings, Activity, Wind, CheckCircle2, AlertCircle, Info, Bug, HeartPulse, Stethoscope, Microscope, RefreshCcw, Scissors, Moon, Heart, Zap, Baby, ShieldAlert, ArrowLeftRight, ClipboardList, Scan, Brain, Paintbrush, BookOpen, Ruler, Droplet, CalendarCheck, ShieldPlus, Link as LinkIcon, MoveUp } from 'lucide-react'; 
 import ShareButton from "@/components/ui/ShareButton";
@@ -14,16 +14,15 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     /* ✨ */  seoTitle: "Blanqueamiento Dental Profesional | Resultados Rápidos",
     /* ✨ */   seoDescription: "Recupera el blanco natural de tus dientes sin dañar el esmalte. Presupuesto claro y sin sorpresas. Encuentra tu clínica más cercana y luce sonrisa hoy.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Estética Dental", href: "/tratamientos/estetica" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Estética Dental", href: "/?modal=1#tratamientos" },
       { label: "Blanqueamiento", href: "#" }
     ],
     hero: {
       badgeText: "Recupera la luz de tu sonrisa",
       title: { dark: "BLANQUEAMIENTO", normal: "DENTAL" },
       description: [
-        "Elimina manchas de café, tabaco o la edad sin dañar tu esmalte. Una sonrisa más joven y brillante en un tratamiento rápido y 100% seguro."
+        "Elimina manchas (café, tabaco, ...) sin dañar tu esmalte. Una sonrisa más joven y brillante en un tratamiento rápido y 100% seguro."
       ]
     },
     rows: [
@@ -138,9 +137,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     /* ✨ */  seoTitle: "Carillas Dentales Estéticas | Sonrisa Natural y Definitiva",
     /* ✨ */   seoDescription: "Diseña tu sonrisa con carillas ultrafinas. Alta estética y naturalidad con tarifas transparentes. Pide cita de valoración en tu centro dental más cercano.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Estética Dental", href: "/tratamientos/estetica" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Estética Dental", href: "/?modal=1#tratamientos" },
       { label: "Carillas y Diseño", href: "#" }
     ],
     hero: {
@@ -288,9 +286,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     /* ✨ */  seoTitle: "Incrustaciones Dentales | Salva tu Muela sin Fundas",
     /* ✨ */   seoDescription: "La alternativa conservadora a las coronas para muelas muy rotas. Máxima resistencia masticatoria con un precio sin sorpresas. Descubre tu clínica más próxima.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Estética Dental", href: "/tratamientos/estetica" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Estética Dental", href: "/?modal=1#tratamientos" },
       { label: "Incrustaciones", href: "#" }
     ],
     hero: {
@@ -339,9 +336,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     /* ✨ */  seoTitle: "Dentaduras Postizas y Prótesis Removibles | Cómodas y Seguras",
     /* ✨ */   seoDescription: "Recupera tu capacidad de masticar con aparatos dentales modernos y estéticos. Presupuesto claro desde el primer día en tu clínica de confianza más cercana.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Prótesis y Rehabilitación", href: "/tratamientos/protesis" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Prótesis y Rehabilitación", href: "/?modal=5#tratamientos" },
       { label: "Prótesis Removibles", href: "#" }
     ],
     hero: {
@@ -621,9 +617,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                 price: "70 €" }
             ]
           }
-        ],
-        points: [
-          { icon: '', text: <>Porque cada boca es un mundo, te ofrecemos suplementos opcionales para hacer que tu prótesis sea aún más dura, estética o hipoalergénica.</> }
         ]
       }
     ],
@@ -643,9 +636,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     /* ✨ */  seoTitle: "Prótesis Fijas y Coronas Dentales | Dientes que No se Quitan",
     /* ✨ */   seoDescription: "Recupera la firmeza al masticar con coronas de zirconio y metal-cerámica. Alta durabilidad y presupuesto transparente. Encuentra tu clínica más cercana.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Prótesis y Rehabilitación", href: "/tratamientos/protesis" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Prótesis y Rehabilitación", href: "/?modal=5#tratamientos" },
       { label: "Prótesis Fijas", href: "#" }
     ],
     hero: {
@@ -892,9 +884,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     /* ✨ */  seoTitle: "Férula de Descarga a Medida | Frena el Bruxismo y el Dolor",
     /* ✨ */   seoDescription: "Protege tus dientes del desgaste nocturno y alivia la tensión de la mandíbula. Férulas exactas con tarifas claras. Solicita valoración en tu centro más cercano.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Prótesis y Rehabilitación", href: "/tratamientos/protesis" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Prótesis y Rehabilitación", href: "/?modal=5#tratamientos" },
       { label: "Oclusión y Bruxismo", href: "#" }
     ],
     hero: {
@@ -1027,9 +1018,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     /* ✨ */  seoTitle: "Ortodoncia Fija Metálica | Dientes Alineados y Resistentes",
     /* ✨ */   seoDescription: "El sistema clásico y más duradero para corregir tu mordida. Tratamiento eficaz con un presupuesto definitivo desde el inicio. Busca tu clínica más cercana.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Ortodoncia", href: "/tratamientos/ortodoncia" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Ortodoncia", href: "/?modal=2#tratamientos" },
       { label: "Metálica", href: "#" }
     ],
     hero: {
@@ -1203,9 +1193,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     /* ✨ */  seoTitle: "Brackets de Zafiro Estéticos | Ortodoncia que No se Nota",
     /* ✨ */   seoDescription: "Alinea tus dientes con cristal de zafiro transparente que no se tiñen. Tarifas claras y sin letra pequeña. Empieza tu tratamiento en un centro cercano.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Ortodoncia", href: "/tratamientos/ortodoncia" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Ortodoncia", href: "/?modal=2#tratamientos" },
       { label: "Zafiro", href: "#" }
     ],
     hero: {
@@ -1395,9 +1384,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     /* ✨ */  seoTitle: "Ortodoncia Infantil de Quita y Pon | Ensancha su Paladar",
     /* ✨ */   seoDescription: "Aparatos removibles para guiar el crecimiento dental de tus hijos. Previene ortodoncias complejas con un presupuesto transparente en tu clínica más cercana.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Ortodoncia", href: "/tratamientos/ortodoncia" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Ortodoncia", href: "/?modal=2#tratamientos" },
       { label: "Ortodoncia Removible", href: "#" }
     ],
     hero: {
@@ -1527,9 +1515,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     /* ✨ */  seoTitle: "Ortodoncia Lingual | Brackets 100% Invisibles",
     /* ✨ */   seoDescription: "Alinea tu sonrisa con brackets ocultos en la cara interna del diente. Máxima estética y precisión con tarifas transparentes. Encuentra tu centro cercano.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Ortodoncia", href: "/tratamientos/ortodoncia" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Ortodoncia", href: "/?modal=2#tratamientos" },
       { label: "Lingual", href: "#" }
     ],
     hero: {
@@ -1658,9 +1645,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     /* ✨ */  seoTitle: "Ortodoncia Invisible | Alineadores Transparentes y Cómodos",
     /* ✨ */   seoDescription: "Diseña tu sonrisa sin brackets. Férulas a medida, removibles y estéticas. Conoce el coste total sin sorpresas en tu clínica dental especializada más próxima.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Ortodoncia", href: "/tratamientos/ortodoncia" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Ortodoncia", href: "/?modal=2#tratamientos" },
       { label: "Invisalign", href: "#" }
     ],
     hero: {
@@ -1793,9 +1779,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     /* ✨ */  seoTitle: "Implantes Dentales de Titanio | Recupera tu Diente Perdido",
     /* ✨ */   seoDescription: "Repón tu diente con la máxima naturalidad y seguridad. Cirugía avanzada y presupuesto totalmente transparente. Pide tu valoración en una clínica cercana.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Implantología", href: "/tratamientos/implantologia" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Implantología", href: "/?modal=3#tratamientos" },
       { label: "Implante Individual", href: "#" }
     ],
     hero: {
@@ -2006,18 +1991,16 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     }
   },
 
+
 // 12. ARCADA COMPLETA FIJA SOBRE IMPLANTES
   'implante-arcada': {
     slug: 'implante-arcada',
     activeSubNavId: 'arcada',
-    /* 🗑️ seoTitle: "Arcada Completa Fija sobre Implantes | Precios DKV Dentisalud", */
-    /* 🗑️ seoDescription: "Recupera todos tus dientes fijos. Presupuesto real total de rehabilitación completa con implantes, radiología 3D y garantía DKV.", */
     /* ✨ */ seoTitle: "Arcada Completa sobre Implantes | Todos tus Dientes Fijos",
     /* ✨ */ seoDescription: "Recupera la función y estética de toda tu boca. Dentadura fija atornillada con tarifas claras y sin sobrecostes. Visita a tu cirujano en un centro cercano.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Implantología", href: "/tratamientos/implantologia" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Implantología", href: "/?modal=3#tratamientos" },
       { label: "Arcada Completa Fija", href: "#" }
     ],
     hero: {
@@ -2047,42 +2030,36 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "Una planificación previa óptima es fundamental para tu tratamiento.",
             items: [
               { icon: '',
-                /* 🗑️ title: "Estudio implantológico", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Estudio implantológico' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "", price: "Incluido" },
               { icon: '',
-                /* 🗑️ title: "Férula RX", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Férula RX' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "", price: "Incluido" },
               { icon: '',
-                /* 🗑️ title: "Férula Quirúgica", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Férula Quirúrgica' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "", price: "Incluido" },
               { icon: '',
-                /* 🗑️ title: "Teleradiografia lateral de craneo", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Teleradiografía lateral de cráneo' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "", price: "Incluido" },
               { icon: '',
-                /* 🗑️ title: "Radiografía de ATM", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Radiografía de ATM' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "", price: "Incluido" },
               { icon: '',
-                /* 🗑️ title: "Dental Scan", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Dental Scan' },
                   { tipo: 'oculto', texto: '. Precio: 110 €.' }
@@ -2095,28 +2072,24 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "Implantes en hueso.",
             items: [
               { icon: '',
-                /* 🗑️ title: "Cirugía Pre-Protésica", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Cirugía Pre-Protésica' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "", price: "Incluido" },
               { icon: '',
-                /* 🗑️ title: "Tornillo de cicatrización", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Tornillo de cicatrización' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "Tornillo x 4", price: "Incluido" },
               { icon: '',
-                /* 🗑️ title: "Tornillo de cementación", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Tornillo de cementación' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "Tornillo x 4", price: "Incluido" },
               { icon: '',
-                /* 🗑️ title: "Implantes de Titanio", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Implantes de Titanio' },
                   { tipo: 'oculto', texto: '. Precio: 2.220 €.' }
@@ -2129,14 +2102,12 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "El diente visible.",
             items: [
               { icon: '',
-                /* 🗑️ title: "Aditamentos Protésicos", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Aditamentos Protésicos' },
                   { tipo: 'oculto', texto: '. Precio: 1.978 €.' }
                 ],
                 description: "Aditamentos (4 x 247 €)", price: "1.978 €" },
               { icon: '',
-                /* 🗑️ title: "Dentadura Fija", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Dentadura Fija' },
                   { tipo: 'oculto', texto: '. Precio: 2.830 €.' }
@@ -2200,14 +2171,11 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'implante-sobredentadura': {
     slug: 'implante-sobredentadura',
     activeSubNavId: 'sobredentadura',
-    /* 🗑️ seoTitle: "Sobredentadura sobre Implantes | Precios DKV Dentisalud", */
-    /* 🗑️ seoDescription: "Fija tu dentadura postiza con implantes y anclajes de precisión. La solución removible más económica y segura con tarifas exclusivas DKV.", */
     /* ✨ */ seoTitle: "Sobredentadura sobre Implantes | Dentadura Firme con un Clic",
     /* ✨ */ seoDescription: "Fija tu prótesis de quita y pon con implantes. La opción más económica para masticar seguro y sin roces. Descubre su precio exacto en tu clínica cercana.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Implantología", href: "/tratamientos/implantologia" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Implantología", href: "/?modal=3#tratamientos" },
       { label: "Sobredentadura", href: "#" }
     ],
     hero: {
@@ -2236,42 +2204,36 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "Una planificación previa óptima es fundamental para tu tratamiento.",
             items: [
               { icon: '',
-                /* 🗑️ title: "Estudio implantológico", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Estudio implantológico' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "", price: "Incluido" },
               { icon: '',
-                /* 🗑️ title: "Férula RX", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Férula RX' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "", price: "Incluido" },
               { icon: '',
-                /* 🗑️ title: "Férula Quirúgica", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Férula Quirúrgica' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "", price: "Incluido" },
               { icon: '',
-                /* 🗑️ title: "Teleradiografia lateral de craneo", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Teleradiografía lateral de cráneo' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "", price: "Incluido" },
               { icon: '',
-                /* 🗑️ title: "Radiografía de ATM", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Radiografía de ATM' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "", price: "Incluido" },
               { icon: '',
-                /* 🗑️ title: "Dental Scan", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Dental Scan' },
                   { tipo: 'oculto', texto: '. Precio: 80 €.' }
@@ -2284,21 +2246,18 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "Implantes en hueso.",
             items: [
               { icon: '',
-                /* 🗑️ title: "Cirugía Pre-Protésica", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Cirugía Pre-Protésica' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "", price: "Incluido" },
               { icon: '',
-                /* 🗑️ title: "Implantes de Titanio", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Implantes de Titanio' },
                   { tipo: 'oculto', texto: '. Precio: 1.100 €.' }
                 ],
                 description: "Implante (2 x 550 €)", price: "1.100 €" },
               { icon: '',
-                /* 🗑️ title: "Sistemas de Fijación", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Sistemas de Fijación' },
                   { tipo: 'oculto', texto: '. Precio: 460 €.' }
@@ -2311,7 +2270,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "La dentadura visible.",
             items: [
               { icon: '',
-                /* 🗑️ title: "Sobredentadura", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Sobredentadura' },
                   { tipo: 'oculto', texto: '. Precio: 890 €.' }
@@ -2375,14 +2333,11 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'regeneracion-hueso': {
     slug: 'regeneracion-hueso',
     activeSubNavId: 'hueso',
-    /* 🗑️ seoTitle: "Regeneración de Huseo | Precios Cerrados DKV Dentisalud", */
-    /* 🗑️ seoDescription: "Dependiendo del estado de tu hueso maxilar tras años de desgaste, podríamos necesitar acondicionarlo para reconstrucción y que sea un soporte eficiente.", */
     /* ✨ */ seoTitle: "Regeneración de Hueso Dental | Preparación para Implantes",
     /* ✨ */ seoDescription: "Recupera el hueso perdido en tus maxilares con injertos y plasma rico en plaquetas. Cirugía segura con un presupuesto claro. Encuentra tu clínica más próxima.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Implantología", href: "/tratamientos/implantologia" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Implantología", href: "/?modal=3#tratamientos" },
       { label: "Reconstrucción Hueso", href: "#" }
     ],
     hero: {
@@ -2403,21 +2358,18 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "Si perdiste la pieza hace tiempo, es posible que el hueso haya mermado. Usaremos material regenerativo y membranas para reconstruir los cimientos.",
             items: [
               { icon: '',
-                /* 🗑️ title: "Elevación de seno cerrado", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Elevación de seno cerrado' },
                   { tipo: 'oculto', texto: '. Precio: 130 €.' }
                 ],
                 description: "", price: "130 €" },
               { icon: '',
-                /* 🗑️ title: "Material de relleno regenerativo", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Material de relleno regenerativo' },
                   { tipo: 'oculto', texto: '. Precio: 175 €.' }
                 ],
                 description: "", price: "175 €" },
               { icon: '',
-                /* 🗑️ title: "Membrana reabsorvible y/o Malla de Titanio", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Membrana reabsorvible y/o Malla de Titanio' },
                   { tipo: 'oculto', texto: '. Precio: 200 €.' }
@@ -2430,7 +2382,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "Aplicación de plasma para reducir la inflamación y acelarar la curación.",
             items: [
               { icon: '',
-                /* 🗑️ title: "Plasma Rico en Plaquetas", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Plasma Rico en Plaquetas' },
                   { tipo: 'oculto', texto: '. Precio: 150 €.' }
@@ -2443,21 +2394,18 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "Si hay extracciones recientes o infecciones previas puede ser necesario nivelar el hueso maxilar.",
             items: [
               { icon: '',
-                /* 🗑️ title: "Vestibuloplastia", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Vestibuloplastia' },
                   { tipo: 'oculto', texto: '. Precio: 75 €.' }
                 ],
                 description: "(por cuadrante)", price: "75 €" },
               { icon: '',
-                /* 🗑️ title: "Alveoloplastia", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Alveoloplastia' },
                   { tipo: 'oculto', texto: '. Precio: 99 €.' }
                 ],
                 description: "", price: "99 €" },
               { icon: '',
-                /* 🗑️ title: "Remodelación maxilar", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Remodelación maxilar' },
                   { tipo: 'oculto', texto: '. Precio: 99 €.' }
@@ -2479,14 +2427,11 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'conservadora-reconstruccion': {
     slug: 'conservadora-reconstruccion',
     activeSubNavId: 'reconstruccion',
-    /* 🗑️ seoTitle: "Empastes y Reconstrucciones Dentales | DKV Dentisalud", */
-    /* 🗑️ seoDescription: "Frena la caries a tiempo con nuestros empastes, grandes reconstrucciones y tratamientos bioactivos. Salvar tu diente es nuestra prioridad.", */
     /* ✨ */ seoTitle: "Empastes y Reconstrucciones Dentales | Salva tu Diente",
     /* ✨ */ seoDescription: "Frena la caries a tiempo y evita el dolor. Restauraciones estéticas duraderas con tarifas 100% transparentes. Acude a una revisión en tu clínica cercana.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Odontología Conservadora", href: "/tratamientos/odontologia-conservadora" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Odontología Conservadora", href: "/?modal=4#tratamientos" },
       { label: "Reconstrucción", href: "#" }
     ],
     hero: {
@@ -2535,7 +2480,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "Si acudes con una urgencia y no hay tiempo para hacer la reconstrucción definitiva, o si estamos esperando a ver cómo reacciona el nervio, te ponemos una pasta temporal para que te vayas a casa sin agujeros y sin dolor.",
             items: [
               { icon: '',
-                /* 🗑️ title: "Empaste Provisional", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Empaste Provisional' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -2548,7 +2492,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "Cuando el diente está tan destruido eue la gran reconstrucción no tiene donde agarrarse, introducimos un pequeño 'poste' o pilar de fibra de vidrio en la raíz para que actúe como los cimientos de un edificio y sujete el material.",
             items: [
               { icon: '',
-                /* 🗑️ title: "Porte o pin", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Poste o pin' },
                   { tipo: 'oculto', texto: '. Precio: + 8 €.' }
@@ -2633,14 +2576,11 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'conservadora-endodoncia': {
     slug: 'conservadora-endodoncia',
     activeSubNavId: 'endodoncias',
-    /* 🗑️ seoTitle: "Endodoncias y Tratamiento de Conductos | DKV Dentisalud", */
-    /* 🗑️ seoDescription: "Salvamos tu diente cuando el dolor no te deja dormir. Endodoncias, urgencias y endodoncia microscópica exclusiva en Centros Propios DKV.", */
     /* ✨ */ seoTitle: "Endodoncias y Tratamiento de Conductos | Alivia el Dolor",
     /* ✨ */ seoDescription: "Salvamos tu muela cuando la caries llega al nervio. Intervención sin dolor con un presupuesto definitivo. Pide cita urgente en tu centro dental más cercano.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Odontología Conservadora", href: "/tratamientos/odontologia-conservadora" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Odontología Conservadora", href: "/?modal=4#tratamientos" },
       { label: "Endodoncias", href: "#" }
     ],
     hero: {
@@ -2665,28 +2605,24 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "El tratamiento de una pieza dental incluye todas sus raíces.",
             items: [
               { icon: '',
-                /* 🗑️ title: "Endodoncia de un conducto", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Endodoncia de un conducto' },
                   { tipo: 'oculto', texto: '. Precio: 80 €.' }
                 ],
                 description: "Normalmente para los incisivos y caninos, que solo tienen una raíz.", price: "80 €" },
               { icon: '',
-                /* 🗑️ title: "Endodoncia de dos conducto", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Endodoncia de dos conductos' },
                   { tipo: 'oculto', texto: '. Precio: 94 €.' }
                 ],
                 description: "Usada habitualmente para los dientes premolares.", price: "94 €" },
               { icon: '',
-                /* 🗑️ title: "Endodoncia de tres o más conductos", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Endodoncia de tres o más conductos' },
                   { tipo: 'oculto', texto: '. Precio: 123 €.' }
                 ],
                 description: "Para las grandes muelas del fondo, que son más difíciles y laboriosas de tratar.", price: "123 €" },
               { icon: '',
-                /* 🗑️ title: "Suplemento sistema rotatorio", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Suplemento sistema rotatorio' },
                   { tipo: 'oculto', texto: '. Precio: + 15 €.' }
@@ -2773,14 +2709,11 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'conservadora-cirugia': {
     slug: 'conservadora-cirugia',
     activeSubNavId: 'casos-complejos',
-    /* 🗑️ seoTitle: "Cirugía Periapical y Reendodoncias | DKV Dentisalud", */
-    /* 🗑️ seoDescription: "Segundas oportunidades para tu diente. Reendodoncias, apicectomías y apicoformaciones para curar infecciones complejas y evitar la extracción.", */
     /* ✨ */ seoTitle: "Reendodoncia y Cirugía Periapical | Evita la Extracción",
     /* ✨ */ seoDescription: "La última oportunidad para salvar tu diente infectado. Apicectomías y tratamientos complejos con claridad en el precio. Especialistas muy cerca de ti.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
       { label: "Tratamientos", href: "/#tratamientos" },
-      { label: "Odontología Conservadora", href: "/tratamientos/odontologia-conservadora" },
+      { label: "Odontología Conservadora", href: "/?modal=4#tratamientos" },
       { label: "Cirugía y Casos Complejos", href: "#" }
     ],
     hero: {
@@ -2865,14 +2798,12 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'apnea': {
     slug: 'apnea',
     activeSubNavId: 'apnea',
-    /* 🗑️ seoTitle: "Tratamiento de SAHS (Síndrome de Apnea-Hipopnea del Sueño) | DKV Dentisalud", */
-    /* 🗑️ seoDescription: "Dispositivos de Avance Mandibular (DAM) para tratar la apnea. Tecnología exclusiva en Centros Propios Especiales DKV.", */
     /* ✨ */ seoTitle: "Férula para Apnea del Sueño y Ronquidos | Duerme Mejor",
     /* ✨ */ seoDescription: "Trata el SAHS leve o moderado con dispositivos de avance mandibular. Presupuesto sin sorpresas para cuidar tu descanso. Descubre tu clínica más cercana.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Medicina del Sueño", href: "#" }
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Medicina del Sueño", href: "/?modal=9#tratamientos" },
+      { label: "Férula Apnea", href: "#" }
     ],
     hero: {
       badgeText: "Medicina Dental del Sueño",
@@ -2898,7 +2829,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "",
             items: [
               {
-                /* 🗑️ title: "Férula Apnea (SAHS)", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Férula Apnea (SAHS)' },
                   { tipo: 'oculto', texto: '. Precio: 800 €.' }
@@ -2913,7 +2843,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "Es necesario medir cuánto podemos adelantar tu mandíbula de forma segura para tu articulación.",
             items: [
               {
-                /* 🗑️ title: "Estudio Biomecánico", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Estudio Biomecánico' },
                   { tipo: 'oculto', texto: '. Precio: 75 €.' }
@@ -2922,7 +2851,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                 price: "75 €"
               },
               {
-                /* 🗑️ title: "Tele-Radiografía", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Tele-Radiografía' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -2931,7 +2859,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                 price: "Incluido"
               },
               {
-                /* 🗑️ title: "Ortopantomografía", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Ortopantomografía' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -2946,7 +2873,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "",
             items: [
               {
-                /* 🗑️ title: "Ajuste de férula", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Ajuste de férula' },
                   { tipo: 'oculto', texto: '. Precio: 35 €.' }
@@ -2955,7 +2881,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                 price: "35 €"
               },
               {
-                /* 🗑️ title: "Reparación y Rebase", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Reparación y Rebase' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -2992,14 +2917,11 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'pediatria-prevencion': {
     slug: 'pediatria-prevencion',
     activeSubNavId: 'prevencion',
-    /* 🗑️ seoTitle: "Prevención y Educación Dental Infantil | DKV Dentisalud", */
-    /* 🗑️ seoDescription: "Protege la sonrisa de tus hijos. Selladores, fluoraciones y enseñanza de higiene bucal con tratamientos gratuitos en tu póliza DKV.", */
     /* ✨ */ seoTitle: "Prevención Dental Infantil | Protege la Sonrisa de tu Hijo",
     /* ✨ */ seoDescription: "Selladores y fluorizaciones para evitar las caries desde pequeños. Inversión en salud con tarifas transparentes. Encuentra tu odontopediatra más cercano.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Odontopediatría", href: "/tratamientos/pediatria-prevencion" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Odontopediatría", href: "/?modal=6#tratamientos" },
       { label: "Educación y Prevención", href: "#" }
     ],
     hero: {
@@ -3024,7 +2946,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "",
             items: [
               {
-                /* 🗑️ title: "Cursillo Odontológico", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Cursillo Odontológico' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -3033,7 +2954,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                 price: "Incluido"
               },
               {
-                /* 🗑️ title: "Limpieza de boca", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Limpieza de boca' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -3048,7 +2968,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "El flúor es un mineral esencial que el diente absorve, actuando como un 'escudo', endureciendo el esmalte de forma inmediata y haciéndolo super resistente a los ataques de los ácidos de las bacterias.",
             items: [
               {
-                /* 🗑️ title: "Fluorización Tópica", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Fluorización Tópica' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -3063,7 +2982,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "Las primeras muelas definitivas salen a los 6 años. Suelen tener uno surcos muy profundos, donde las cerdas del cepillo no llegan, y ahí es donde empiezan el 90% de las caries infantiles.",
             items: [
               {
-                /* 🗑️ title: "Selladores de Fisuras", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Selladores de Fisuras' },
                   { tipo: 'oculto', texto: '. Precio: 17 €.' }
@@ -3078,7 +2996,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "Mediante pruebas fundamentales e indoloras el odontopediatra puede ver si hay caries escondidas entre los dientes que no se detectan a simple vista.",
             items: [
               {
-                /* 🗑️ title: "Radiovisiografía Digital (RVG)", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Radiovisiografía Digital (RVG)' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -3115,14 +3032,11 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'pediatria-conservadora': {
     slug: 'pediatria-conservadora',
     activeSubNavId: 'conservadora-pediatria',
-    /* 🗑️ seoTitle: "Odontología Conservadora Infantil | DKV Dentisalud", */
-    /* 🗑️ seoDescription: "Empastes, reconstrucciones y coronas para niños. Curamos la caries de tus hijos para que coman y sonrían sin dolor con coberturas DKV.", */
     /* ✨ */ seoTitle: "Empastes y Coronas para Niños | Odontopediatría sin Miedo",
     /* ✨ */ seoDescription: "Curamos la caries infantil para que coman y sonrían sin dolor. Trato amable y un presupuesto claro desde el primer minuto. Pide cita en una clínica cercana.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Odontopediatría", href: "/tratamientos/odontopediatria" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Odontopediatría", href: "/?modal=6#tratamientos" },
       { label: "Odontología Conservadora", href: "#" }
     ],
     hero: {
@@ -3147,7 +3061,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "Limpiamos cuidadosamente la caries y rellenamos el hueco con una resina estética del mismo color del diente para devolverle su función y forma.",
             items: [
               {
-                /* 🗑️ title: "Obturación", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Obturación' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -3162,7 +3075,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "Cuando la caries es tan grande que ha destruido una parte considerable de la estructura del diente, tal que un empaste no aguantaría la fuerza de la masticación.",
             items: [
               {
-                /* 🗑️ title: "Reconstrucción molares definitivos", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Reconstrucción molares definitivos' },
                   { tipo: 'oculto', texto: '. Precio: 40 €.' }
@@ -3177,7 +3089,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "Imagina que una muela de leche está destrozada por la caries, pero el niño aún tiene 5 años y esa muela no se va a caer de forma natural hasta los 10 años. No podemos sacarla porque perderíamos el espacio para el diente definitivo, y tampoco podemos hacer un empaste normal porque se rompería. ",
             items: [
               {
-                /* 🗑️ title: "Corona prefabricada metálica (acero)", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Corona prefabricada metálica (acero)' },
                   { tipo: 'oculto', texto: '. Precio: 65 €.' }
@@ -3201,14 +3112,11 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'pediatria-endodoncia': {
     slug: 'pediatria-endodoncia',
     activeSubNavId: 'endodoncia-pediatria',
-    /* 🗑️ seoTitle: "Endodoncia Infantil y Pulpotomía | DKV Dentisalud", */
-    /* 🗑️ seoDescription: "Salvamos los dientes de leche de tu hijo cuando la caries llega al nervio. Pulpotomías, pulpectomías y urgencias dentales infantiles con DKV.", */
     /* ✨ */ seoTitle: "Pulpotomías y Endodoncia Infantil | Salva el Diente de Leche",
     /* ✨ */ seoDescription: "Curamos infecciones profundas en niños para no perder el espacio. Intervención sin dolor y con precio definitivo. Urgencias en tu clínica dental más próxima.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Odontopediatría", href: "/tratamientos/odontopediatria" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Odontopediatría", href: "/?modal=6#tratamientos" },
       { label: "Endodoncia Infantil", href: "#" }
     ],
     hero: {
@@ -3233,7 +3141,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "La caries es muy profunda pero solo ha tocado la parte superior de la cámara del nervio.",
             items: [
               {
-                /* 🗑️ title: "Endodoncia a medias (Pulpotomía)", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Endodoncia a medias (Pulpotomía)' },
                   { tipo: 'oculto', texto: '. Precio: 44 €.' }
@@ -3248,7 +3155,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "La infección ha avanzado tanto que ha llegado hasta el final de las raíces del diente de leche.",
             items: [
               {
-                /* 🗑️ title: "Endodoncia infantil (Pulpectomía)", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Endodoncia infantil (Pulpectomía)' },
                   { tipo: 'oculto', texto: '. Precio: 36 €.' }
@@ -3263,7 +3169,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "Si tu hijo se da un golpe fuerte jugando y se rompe un diente definitivo que acaba de salir, seguramente no habrá terminado de formar su raíz por completo dentro del hueso.",
             items: [
               {
-                /* 🗑️ title: "Apicoformación", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Apicoformación' },
                   { tipo: 'oculto', texto: '. Precio: 20 €.' }
@@ -3278,7 +3183,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "Si tu hijo se da un golpe en el parque o haciendo deporte y un diente definitivo sale volando entero (de cuajo, con su raíz), no lo des por perdido.",
             items: [
               {
-                /* 🗑️ title: "1) Recoge el diente.", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: '1) Recoge el diente.' }
                 ],
@@ -3286,7 +3190,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                 price: ""
               },
               {
-                /* 🗑️ title: "2) Conserva el diente.", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: '2) Conserva el diente.' }
                 ],
@@ -3294,7 +3197,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                 price: ""
               },
               {
-                /* 🗑️ title: "3) Ven corriendo.", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: '3) Ven corriendo.' },
                   { tipo: 'oculto', texto: ' Reimplante de pieza dental. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -3318,14 +3220,11 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'pediatria-extracciones-y-espacio': {
     slug: 'pediatria-extracciones-y-espacio',
     activeSubNavId: 'cirugia-pediatria',
-    /* 🗑️ seoTitle: "Extracciones Infantiles y Mantenedores de Espacio | DKV Dentisalud", */
-    /* 🗑️ seoDescription: "Guiamos el recambio dental de tus hijos. Extracciones de dientes de leche y mantenedores de espacio para evitar ortodoncias complejas.", */
     /* ✨ */ seoTitle: "Extracciones Infantiles y Mantenedores de Espacio",
     /* ✨ */ seoDescription: "Guiamos el recambio dental de tus hijos extrayendo dientes que estorban. Evita ortodoncias futuras con tarifas claras en tu odontopediatra más cercano.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Odontopediatría", href: "/tratamientos/odontopediatria" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Odontopediatría", href: "/?modal=6#tratamientos" },
       { label: "Extracciones y Espacio", href: "#" }
     ],
     hero: {
@@ -3347,7 +3246,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "Solo en casos extremos, de dientes de leche muy infectados o bien que obstruyan la salida de dientes definitivos.",
             items: [
               {
-                /* 🗑️ title: "Extracción Dental simple", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Extracción Dental simple' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -3356,7 +3254,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                 price: "Incluido"
               },
               {
-                /* 🗑️ title: "Extracción Supernumerario retenido", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Extracción Supernumerario retenido' },
                   { tipo: 'oculto', texto: '. Precio: 25 €.' }
@@ -3371,7 +3268,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "Si se pierde una muela de leche antes de tiempo, es necesario mantener el hueco hasta que salga debajo la muela definitiva. En otro caso el resto de dientes se torcerán para tapar el hueco y la muela definitiva se verá atrapada al salir.",
             items: [
               {
-                /* 🗑️ title: "Mantenedor fijo unilateral", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Mantenedor fijo unilateral' },
                   { tipo: 'oculto', texto: '. Precio: 58 €.' }
@@ -3380,7 +3276,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                 price: "58 €"
               },
               {
-                /* 🗑️ title: "Mantenedor fijo bilateral", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Mantenedor fijo bilateral' },
                   { tipo: 'oculto', texto: '. Precio: 87 €.' }
@@ -3389,7 +3284,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                 price: "87 €"
               },
               {
-                /* 🗑️ title: "Mantenedor removible", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Mantenedor removible' },
                   { tipo: 'oculto', texto: '. Precio: 72 €.' }
@@ -3413,14 +3307,11 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'prevencion-primera-visita': {
     slug: 'prevencion-primera-visita',
     activeSubNavId: 'primera-visita',
-    /* 🗑️ seoTitle: "Primera Visita y Diagnóstico Dental | DKV Dentisalud", */
-    /* 🗑️ seoDescription: "Tu ITV dental. Consulta, radiografías y diagnóstico de dolor orofacial incluidos en tu póliza. Descubre a tiempo cualquier problema.", */
     /* ✨ */ seoTitle: "Revisión Dental Completa y Diagnóstico | Tu Salud al Día",
     /* ✨ */ seoDescription: "Anticipate al dolor con una exploración general y radiografías. Descubre el estado de tu boca sin sorpresas y en un centro dental muy cerca de ti.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Prevención", href: "/tratamientos/prevencion/primera-visita" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Prevención", href: "/?modal=7#tratamientos" },
       { label: "Primera Visita", href: "#" }
     ],
     hero: {
@@ -3443,7 +3334,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "Solo en casos extremos, de dientes de leche muy infectados o bien que obstruyan la salida de dientes definitivos.",
             items: [
               {
-                /* 🗑️ title: "Consulta, presupuesto y plan de tratamiento", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Consulta, presupuesto y plan de tratamiento' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -3452,7 +3342,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                 price: "Incluido"
               },
               {
-                /* 🗑️ title: "Visita de revisión o control.", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Visita de revisión o control' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -3461,7 +3350,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                 price: "Incluido"
               },
               {
-                /* 🗑️ title: "Consulta dolor facial.", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Consulta dolor facial' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -3476,7 +3364,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "Tipos de radiografías instantáneas imprescindibles para ver debajo de la encía, o confirmar si hay caries escondidas entre los dientes donde el ojo no llega.",
             items: [
               {
-                /* 🗑️ title: "Radiografía Intrabucal", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Radiografía Intrabucal' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -3485,7 +3372,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                 price: "Incluído"
               },
               {
-                /* 🗑️ title: "Radiografía Periapical", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Radiografía Periapical' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -3494,7 +3380,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                 price: "Incluído"
               },
               {
-                /* 🗑️ title: "Radiografía RVG Digital", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Radiografía RVG Digital' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -3503,7 +3388,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                 price: "Incluído"
               },
               {
-                /* 🗑️ title: "Ortopantomografía", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Ortopantomografía' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -3512,7 +3396,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                 price: "Incluído"
               },
               {
-                /* 🗑️ title: "Radiografías de control", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Radiografías de control' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -3521,7 +3404,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                 price: "Incluído"
               },
               {
-                /* 🗑️ title: "Radiografías Oclusales", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Radiografías Oclusales' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -3545,14 +3427,11 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'prevencion-higiene': {
     slug: 'prevencion-higiene',
     activeSubNavId: 'higiene',
-    /* 🗑️ seoTitle: "Higiene Dental y Prevención | DKV Dentisalud", */
-    /* 🗑️ seoDescription: "Limpiezas, fluorizaciones, bicarbonato y selladores a coste cero. Mantén tus dientes limpios y fuertes con tu seguro DKV.", */
     /* ✨ */ seoTitle: "Limpieza Dental Profesional y Tartrectomía | Dientes Sanos",
     /* ✨ */ seoDescription: "Elimina el sarro y las manchas superficiales para prevenir la gingivitis. Mantenimiento esencial con tarifas claras. Pide cita en tu clínica más cercana.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Prevención", href: "/tratamientos/prevencion-higiene" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Prevención", href: "/?modal=7#tratamientos" },
       { label: "Higiene y Prevención", href: "#" }
     ],
     hero: {
@@ -3575,7 +3454,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "",
             items: [
               {
-                /* 🗑️ title: "Limpieza dental", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Limpieza dental' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -3584,7 +3462,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                 price: "Incluido"
               },
               {
-                /* 🗑️ title: "Bicarbonato.", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Bicarbonato' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -3593,7 +3470,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                 price: "Incluido"
               },
               {
-                /* 🗑️ title: "Fluorización tópica.", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Fluorización tópica' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -3608,7 +3484,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "",
             items: [
               {
-                /* 🗑️ title: "Sellado de fisuras.", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Sellado de fisuras' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -3617,7 +3492,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                 price: "Incluído"
               },
               {
-                /* 🗑️ title: "Formación Higiene.", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Formación Higiene' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -3641,14 +3515,11 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'periodoncia-basica': {
     slug: 'periodoncia-basica',
     activeSubNavId: 'diagnostico-basico',
-    /* 🗑️ seoTitle: "Diagnóstico Periodontal y Curetajes | DKV Dentisalud", */
-    /* 🗑️ seoDescription: "Tratamiento básico de encías. Periodontograma, detartraje y curetajes para frenar la piorrea y salvar tus dientes desde la raíz.", */
     /* ✨ */ seoTitle: "Tratamiento de Encías y Curetajes | Frena la Gingivitis",
     /* ✨ */ seoDescription: "Detén el sangrado y la pérdida de hueso con limpiezas profundas de raíces. Presupuesto transparente para salvar tus dientes en tu especialista más cercano.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Periodoncia", href: "/tratamientos/periodoncia/basico" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Periodoncia", href: "/?modal=10#tratamientos" },
       { label: "Diagnóstico y Tratamiento Básico", href: "#" }
     ],
     hero: {
@@ -3728,14 +3599,11 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'periodoncia-estabilizacion': {
     slug: 'periodoncia-estabilizacion',
     activeSubNavId: 'estabilizacion',
-    /* 🗑️ seoTitle: "Mantenimiento Periodontal y Ferulización | DKV Dentisalud", */
-    /* 🗑️ seoDescription: "Frena la caída de tus dientes. Mantenimientos periodontales y ferulización de dientes móviles con tu tarifa DKV.", */
     /* ✨ */ seoTitle: "Mantenimiento Periodontal | Evita que tus Dientes se Muevan",
     /* ✨ */ seoDescription: "Revisiones exhaustivas y ferulización para estabilizar piezas móviles. Controla la piorrea con tarifas sin letra pequeña en tu centro dental más próximo.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Periodoncia", href: "/tratamientos/periodoncia-estabilizacion" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Periodoncia", href: "/?modal=10#tratamientos" },
       { label: "Estabilización", href: "#" }
     ],
     hero: {
@@ -3763,7 +3631,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         detailedPrices: [
           {
             icon: '',
-            /* 🗑️ title: 'Revisión periódica', */
             /* ✨ */  title: [
               { tipo: 'normal', texto: 'Revisión periódica' },
               { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -3773,7 +3640,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
           },
           {
             icon: '',
-            /* 🗑️ title: 'Limpieza periodontal', */
             /* ✨ */  title: [
               { tipo: 'normal', texto: 'Limpieza periodontal' },
               { tipo: 'oculto', texto: '. Precio: 65 €.' }
@@ -3797,7 +3663,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         detailedPrices: [
           {
             icon: '',
-            /* 🗑️ title: 'Por pieza dental', */
             /* ✨ */  title: [
               { tipo: 'oculto', texto: 'Ferulización periodontal ' },
               { tipo: 'normal', texto: 'Por pieza dental' },
@@ -3808,7 +3673,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
           },
           {
             icon: '',
-            /* 🗑️ title: 'Por sextante', */
             /* ✨ */  title: [
               { tipo: 'oculto', texto: 'Ferulización periodontal ' },
               { tipo: 'normal', texto: 'Por sextante' },
@@ -3831,14 +3695,11 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'periodoncia-micro-cirugia': {
     slug: 'periodoncia-micro-cirugia',
     activeSubNavId: 'micro-cirugia',
-    /* 🗑️ seoTitle: "Micro-cirugía de Encías y Láser Periodontal | DKV Dentisalud", */
-    /* 🗑️ seoDescription: "Tratamientos periodontales avanzados. Gingivectomía, cirugía a colgajo, tecnología láser y plasma rico en plaquetas (PRGF).", */
     /* ✨ */ seoTitle: "Cirugía de Encías y Láser Periodontal | Periodoncia Avanzada",
     /* ✨ */ seoDescription: "Elimina infecciones profundas y regenera el hueso perdido. Alta precisión y cicatrización rápida con precios definitivos en tu clínica más cercana.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Periodoncia", href: "/tratamientos/periodoncia/basico" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Periodoncia", href: "/?modal=10#tratamientos" },
       { label: "Micro-Cirugía", href: "#" }
     ],
     hero: {
@@ -3865,7 +3726,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         detailedPrices: [
           {
             icon: '',
-            /* 🗑️ title: 'Por pieza dental', */
             /* ✨ */  title: [
               { tipo: 'oculto', texto: 'Cirugía periodontal a colgajo ' },
               { tipo: 'normal', texto: 'Por pieza dental' },
@@ -3876,7 +3736,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
           },
           {
             icon: '',
-            /* 🗑️ title: 'Por cuadrante completo', */
             /* ✨ */  title: [
               { tipo: 'oculto', texto: 'Cirugía periodontal a colgajo ' },
               { tipo: 'normal', texto: 'Por cuadrante completo' },
@@ -3907,7 +3766,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         detailedPrices: [
           {
             icon: '',
-            /* 🗑️ title: 'Cirugía periondontal de injerto', */
             /* ✨ */  title: [
               { tipo: 'normal', texto: 'Cirugía periodontal de injerto' },
               { tipo: 'oculto', texto: '. Precio: 130 €.' }
@@ -3917,7 +3775,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
           },
           {
             icon: '',
-            /* 🗑️ title: 'Membranas regenerativas', */
             /* ✨ */  title: [
               { tipo: 'normal', texto: 'Membranas regenerativas' },
               { tipo: 'oculto', texto: '. Precio: 150 €.' }
@@ -3927,7 +3784,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
           },
           {
             icon: '',
-            /* 🗑️ title: 'Ingerto autólogo', */
             /* ✨ */  title: [
               { tipo: 'normal', texto: 'Injerto autólogo' },
               { tipo: 'oculto', texto: '. Precio: 190 €.' }
@@ -3937,7 +3793,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
           },
           {
             icon: '',
-            /* 🗑️ title: 'Otros materiales de injerto.', */
             /* ✨ */  title: [
               { tipo: 'normal', texto: 'Otros materiales de injerto' },
               { tipo: 'oculto', texto: '. Precio: 150 €.' }
@@ -3961,7 +3816,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         detailedPrices: [
           {
             icon: '',
-            /* 🗑️ title: 'Gingivectomía total', */
             /* ✨ */  title: [
               { tipo: 'normal', texto: 'Gingivectomía total' },
               { tipo: 'oculto', texto: '. Precio: 17 €.' }
@@ -3971,7 +3825,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
           },
           {
             icon: '',
-            /* 🗑️ title: 'Alargamiento coronario', */
             /* ✨ */  title: [
               { tipo: 'normal', texto: 'Alargamiento coronario' },
               { tipo: 'oculto', texto: '. Precio: 100 €.' }
@@ -4081,14 +3934,11 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'cirugia-extracciones': {
     slug: 'cirugia-extracciones',
     activeSubNavId: 'extracciones',
-    /* 🗑️ seoTitle: "Extracciones Complejas y Muelas del Juicio | DKV Dentisalud", */
-    /* 🗑️ seoDescription: "Cirugía de muelas del juicio impactadas y amputaciones radiculares. Intervenciones precisas y seguras con la garantía de tu seguro DKV.", */
     /* ✨ */ seoTitle: "Extracción de Muelas del Juicio y Cirugía Oral Compleja",
     /* ✨ */ seoDescription: "Intervenciones seguras para dientes impactados o muy rotos. Máximo confort, recuperación rápida y un presupuesto claro. Pide valoración cerca de ti.",
     breadcrumbs: [
-      { label: "Inicio", href: "/" },
-      { label: "Tratamientos", href: "/tratamientos" },
-      { label: "Cirugía Avanzada", href: "/tratamientos/cirugia-avanzada/extracciones" },
+      { label: "Tratamientos", href: "/#tratamientos" },
+      { label: "Cirugía Avanzada", href: "/?modal=11#tratamientos" },
       { label: "Extracciones Complejas", href: "#" }
     ],
     hero: {
@@ -4115,21 +3965,18 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "(no muelas del juicio)",
             items: [
               { icon: '',
-                /* 🗑️ title: "Extracción dental simple", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Extracción dental simple' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "Diente visible en la boca, generalmente sin necesidad de incisión en la encía.", price: "Incluido"},
               { icon: '',
-                /* 🗑️ title: "Extracción dental compleja. Restos radiculares", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Extracción dental compleja. Restos radiculares' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "Raíces dentales fracturadas o remanentes de dientes que han perdido su corono. A menudo requiere incisión en encía para acceder a la raíz.", price: "Incluido"},
               { icon: '',
-                /* 🗑️ title: "Amputación radicular (hemisección)", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Amputación radicular (hemisección)' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
@@ -4142,21 +3989,18 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "",
             items: [
               { icon: '',
-                /* 🗑️ title: "Extracción Muela del juicio normal", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Extracción Muela del juicio normal' },
                   { tipo: 'oculto', texto: '. Precio: 15 €.' }
                 ],
                 description: "La muela ha salido ya completamente de la encía. A veces se sutura.", price: "15 €" },
               { icon: '',
-                /* 🗑️ title: "Extracción Muela del juicio submucosa", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Extracción Muela del juicio submucosa' },
                   { tipo: 'oculto', texto: '. Precio: 15 €.' }
                 ],
                 description: "La muela no ha erupcionado del todo, está cubierta al menos en parte por la encía, pero no llega a estar retenida en el hueso.", price: "15 €"},
               { icon: '',
-                /* 🗑️ title: "Cirugía Muela del juicio", */
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Cirugía Muela del juicio' },
                   { tipo: 'oculto', texto: '. Precio: 25 €.' }
@@ -4169,7 +4013,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             description: "Tras una extracción es muy recomendable para evitar que el hueso alveolar (donde estaba la raíz) se pierda o reabsorba, preparando la zona para un futuro implante.",
             items: [
               { icon: '',
-                /* 🗑️ title: "Una pieza", */
                 /* ✨ */  title: [
                   { tipo: 'oculto', texto: 'Tratamiento regenerativo alveolar post-exodoncia: ' },
                   { tipo: 'normal', texto: 'Una pieza' },
@@ -4177,7 +4020,6 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                 ],
                 description: "Tras sacar el diente, se coloca hueso artifical en el alveolo para favorecer la cicatrización ósea. Incluye materiales de relleno.", price: "80 €" },
               { icon: '',
-                /* 🗑️ title: "Más de una pieza", */
                 /* ✨ */  title: [
                   { tipo: 'oculto', texto: 'Tratamiento regenerativo alveolar post-exodoncia: ' },
                   { tipo: 'normal', texto: 'Más de una pieza' },
