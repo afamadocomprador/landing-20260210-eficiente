@@ -1,3 +1,4 @@
+// Ruta: components/hero/TreatmentsHero.tsx
 import React from "react";
 import Image from "next/image";
 
@@ -16,6 +17,21 @@ export default function TreatmentsHero({
   image 
 }: TreatmentsHeroProps) {
   
+  // 💡 LÓGICA INTELIGENTE: Detectamos si hay alguna palabra hiper-larga
+  const combinedTitle = `${title.dark} ${title.normal}`;
+  const words = combinedTitle.split(/[\s-]+/); // Separamos por espacios o guiones
+  const maxWordLength = Math.max(...words.map(word => word.length));
+  const hasLongWord = maxWordLength >= 12; // True si hay palabras de 12 o más letras
+
+  // Fijamos el interlineado original protegido
+  const baseTitleClasses = "font-lemon text-dkv-green-dark !leading-tight text-left";
+  
+  // 💡 SOLUCIÓN DEFINITIVA (Móviles Micro y Medianos ajustados al milímetro):
+  // Escalamos la fuente progresivamente aprovechando el espacio de 390px y 412/414px
+  const responsiveTitleClasses = hasLongWord
+    ? "text-2xl min-[360px]:text-[28px] min-[390px]:text-3xl min-[412px]:text-[32px] min-[430px]:text-4xl md:text-5xl lg:text-6xl" 
+    : "text-4xl md:text-5xl lg:text-6xl";
+
   return (
     <section className="bg-white pt-0 pb-12 md:pt-16 md:pb-24 border-b border-dkv-gray-border relative overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
@@ -41,7 +57,8 @@ export default function TreatmentsHero({
                 </div>
               )}
 
-              <h1 className="font-lemon text-4xl md:text-5xl lg:text-6xl text-dkv-green-dark leading-tight text-left">
+              {/* El h1 dinámico calibrado con escalones para 390 y 412/414 */}
+              <h1 className={`${baseTitleClasses} ${responsiveTitleClasses}`}>
                  {title.dark} <br />
                  <span className="text-dkv-green">{title.normal}</span>
               </h1>
