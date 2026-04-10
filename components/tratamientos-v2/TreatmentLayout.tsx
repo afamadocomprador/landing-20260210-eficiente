@@ -108,6 +108,58 @@ const OrtoIniFin5 = () => <img src="/images/icons/ortodoncia-inicial-final_-_ite
 
 
 
+// --- ICONOS ORTODONCIA LINGUAL ---
+const OrtoLingual1 = () => <img src="/images/icons/ortodoncia_lingual_-_item1.png" alt="Ortodoncia Lingual. Nadie la nota." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const OrtoLingual2 = () => <img src="/images/icons/ortodoncia_lingual_-_item2.png" alt="Ortodoncia Lingual. En la zona lingual del diente." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const OrtoLingual3 = () => <img src="/images/icons/ortodoncia_lingual_-_item3.png" alt="Ortodoncia Lingual. Control tridimensional de corrección ." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+
+
+// --- ICONOS ORTODONCIA ZAFIRO ---
+const OrtoZafiro1 = () => <img src="/images/icons/orto_zarifo_-_item1.png" alt="Ortodoncia Brackets de Zafiro. Cristal de Zafiro." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const OrtoZafiro2 = () => <img src="/images/icons/orto_zafiro_-_item4.png" alt="Ortodoncia Brackets de Zafiro no se tiñen." className="w-16 h-22 shrink-0 relative z-10 object-contain" />;
+const OrtoZafiro3 = () => <img src="/images/icons/orto_zafiro_-_item3.png" alt="Ortodoncia Brackets de Zafiro autoligables." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const OrtoZafiro4 = () => <img src="/images/icons/orto_autoligable_-_item1.png" alt="Ortodoncia Brackets de Zafiro autoligables sin gomitas." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+
+
+// --- ICONOS ORTODONCIA METALICA ---
+const OrtoMetal1 = () => <img src="/images/icons/OrtoMetal_-_item1.png" alt="Ortodoncia Brackets Metálicos. Robustos y fiables." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const OrtoMetal2 = () => <img src="/images/icons/OrtoMetal_-_item2.png" alt="Ortodoncia Brackets Metálicos. La solución más económica." className="w-16 h-22 shrink-0 relative z-10 object-contain" />;
+const OrtoMetal3 = () => <img src="/images/icons/OrtoMetal_-_item3.png" alt="Ortodoncia Brackets Metálicos. La solución más versátil." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const OrtoMetal4 = () => <img src="/images/icons/OrtoMetal_-_item4.png" alt="Ortodoncia Brackets Metálicos. Ideal para adolescentes." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const OrtoMetal5 = () => <img src="/images/icons/ortometal_auto_-_item1.png" alt="Ortodoncia Brackets Metálicos Autoligables." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+
+
+// --- ICONOS ORTODONCIA REMOVIBLE ---
+const OrtoRemo1 = () => <img src="/images/icons/ortoremo_-_item1.png" alt="Ortodoncia Removible. Control crecimiento arcadas." className="w-16 h-24 shrink-0 relative z-10 object-contain" />;
+const OrtoRemo2 = () => <img src="/images/icons/ortoremo_-_item2.png" alt="Ortodoncia Removible. Un aparato." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const OrtoRemo3 = () => <img src="/images/icons/ortoremo_-_item3.png" alt="Ortodoncia Removible. Dos aparatos." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const OrtoRemo4 = () => <img src="/images/icons/ortoremo_-_item4.png" alt="Ortodoncia Removible. Control mordida." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const OrtoRemo5 = () => <img src="/images/icons/ortoremo_-_item5.png" alt="Ortodoncia Removible. Control apiñamiento." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const OrtoRemo6 = () => <img src="/images/icons/ortoremorespi_-_item1.png" alt="Ortodoncia Removible. Control respiración. Respirar por boca error." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const OrtoRemo7 = () => <img src="/images/icons/ortoremorespi_-_item2.png" alt="Ortodoncia Removible. Control respiración. Respirar por nariz ok." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const OrtoRemo8 = () => <img src="/images/icons/ortoremorespi_-_item3.png" alt="Ortodoncia Removible. Control respiración. Reeducar músculos boca." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+
+// --- ICONOS ORTODONCIA REMOVIBLE ---
+const ImplInd1 = () => <img src="/images/icons/implind_-_item1.png" alt="Ortodoncia Removible. Control crecimiento arcadas." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ImplInd2 = () => <img src="/images/icons/implind_-_item2.png" alt="Ortodoncia Removible. Control crecimiento arcadas." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ImplInd3 = () => <img src="/images/icons/implind_-_item3.png" alt="Ortodoncia Removible. Control crecimiento arcadas." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ImplInd4 = () => <img src="/images/icons/implind_-_item4.png" alt="Ortodoncia Removible. Control crecimiento arcadas." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ImplInd5 = () => <img src="/images/icons/implind_-_item5.png" alt="Ortodoncia Removible. Control crecimiento arcadas." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ImplInd6 = () => <img src="/images/icons/implind_-_item6.png" alt="Ortodoncia Removible. Control crecimiento arcadas." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ImplInd7 = () => <img src="/images/icons/implind_-_item7.png" alt="Ortodoncia Removible. Control crecimiento arcadas." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ImplInd8 = () => <img src="/images/icons/implind_-_item8.png" alt="Ortodoncia Removible. Control crecimiento arcadas." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ImplInd9 = () => <img src="/images/icons/implind_-_item9.png" alt="Ortodoncia Removible. Control crecimiento arcadas." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ImplInd10 = () => <img src="/images/icons/implind_-_item10.png" alt="Ortodoncia Removible. Control crecimiento arcadas." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ImplInd11 = () => <img src="/images/icons/implind_-_item11.png" alt="Ortodoncia Removible. Control crecimiento arcadas." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ImplInd12 = () => <img src="/images/icons/implind_-_item12.png" alt="Ortodoncia Removible. Control crecimiento arcadas." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ImplInd13 = () => <img src="/images/icons/implind_-_item13.png" alt="Ortodoncia Removible. Control crecimiento arcadas." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+const ImplInd14 = () => <img src="/images/icons/implind_-_item14.png" alt="Ortodoncia Removible. Control crecimiento arcadas." className="w-16 h-24 shrink-0 relative z-10 object-contain" />;
+const ImplInd15 = () => <img src="/images/icons/implind_-_item15.png" alt="Ortodoncia Removible. Control crecimiento arcadas." className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
+
+
+
+
+//corregir alt de los anteriores
 
 
 
@@ -173,6 +225,41 @@ const IconMapRefined: Record<string, React.ElementType> = {
   OrtoIniFin3,
   OrtoIniFin4,
   OrtoIniFin5,
+  OrtoLingual1,
+  OrtoLingual2,
+  OrtoLingual3,
+  OrtoZafiro1,
+  OrtoZafiro2,
+  OrtoZafiro3,
+  OrtoZafiro4,
+  OrtoMetal1,
+  OrtoMetal2,
+  OrtoMetal3,
+  OrtoMetal4,
+  OrtoMetal5,
+  OrtoRemo1,
+  OrtoRemo2,
+  OrtoRemo3,
+  OrtoRemo4,
+  OrtoRemo5,
+  OrtoRemo6,
+  OrtoRemo7,
+  OrtoRemo8,
+  ImplInd1,
+  ImplInd2,
+  ImplInd3,
+  ImplInd4,
+  ImplInd5,
+  ImplInd6,
+  ImplInd7,
+  ImplInd8,
+  ImplInd9,
+  ImplInd10,
+  ImplInd11,
+  ImplInd12,
+  ImplInd13,
+  ImplInd14,
+  ImplInd15,
   AlarmClock,
   Coins,
   Smile,
