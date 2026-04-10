@@ -9,10 +9,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'estetica-blanqueamiento': {
     slug: 'estetica-blanqueamiento',
     activeSubNavId: 'blanqueamiento',
-     /* 🗑️  seoTitle: "Blanqueamiento Dental | Precios Cerrados DKV Dentisalud", */
-     /* 🗑️  seoDescription: "Rejuvenece tu sonrisa eliminando manchas sin dañar el esmalte. Descubre nuestras opciones de blanqueamiento dental láser y combinado con tarifas DKV.", */
-    /* ✨ */  seoTitle: "Blanqueamiento Dental Profesional | Resultados Rápidos",
-    /* ✨ */   seoDescription: "Recupera el blanco natural de tus dientes sin dañar el esmalte. Presupuesto claro y sin sorpresas. Encuentra tu clínica más cercana y luce sonrisa hoy.",
+    seoTitle: "Blanqueamiento Dental Profesional | Resultados Rápidos",
+    seoDescription: "Recupera el blanco natural de tus dientes sin dañar el esmalte. Presupuesto claro y sin sorpresas. Encuentra tu clínica más cercana y luce sonrisa hoy.",
     breadcrumbs: [
       { label: "Tratamientos", href: "/#tratamientos" },
       { label: "Estética Dental", href: "/?modal=1#tratamientos" },
@@ -39,8 +37,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         detailedPrices: [
           {
             icon: '',
-            /* ✨ */ title: [
-              { tipo: 'normal', texto: 'Blanqueamiento en consultorio' },
+            title: [
+              { tipo: 'normal', texto: 'Blanqueamiento en consulta' },
               { tipo: 'oculto', texto: '. Precio: 250 €.' }
             ],
             description: 'Tratamiento intensivo bajo supervisión para un aclarado rápido de color',
@@ -1037,7 +1035,10 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         secondaryImage: "/images/tratamientos/ortodoncia-brackets-metalico-standard-un-diente.png",
         subTitle: "El sistema tradicional, más robusto y económico.",
         points: [
-          { icon: '', text: <>Perfecto para corregir cualquier tipo de maloclusión, muy utilizado en adolescentes por su durabilidad.</> }
+          { icon: 'OrtoMetal1', text: <><strong className="text-dkv-green-dark font-bold">Robustez y Fiabilidad.</strong><br /> El sistema tradicional más robusto y probado.</> },
+          { icon: 'OrtoMetal2', text: <><strong className="text-dkv-green-dark font-bold">Solución económica. </strong><br />La opción de ortodoncia más asequible.</> },
+          { icon: 'OrtoMetal3', text: <><strong className="text-dkv-green-dark font-bold">Solución versátil. </strong><br />Corrige todo tipo de maloclusiones.</> },
+          { icon: 'OrtoMetal4', text: <><strong className="text-dkv-green-dark font-bold">Ideal para adolescentes. </strong><br /> Por su excepcional durabilidad y gran resistencia al desgaste.</> }
         ],
         priceGroups: [
           {
@@ -1082,7 +1083,7 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         secondaryImage: "/images/tratamientos/ortodoncia-brackets-metalico-autoligable-un-diente.png",
         subTitle: "Evolución tecnológica del bracket metálico tradicional que prescinde de ataduras.",
         points: [
-          { icon: '', text: <><strong>Por qué elegirlo:</strong> Poseen una pequeña "compuerta" que sujeta el arco, eliminando las gomitas elásticas. Esto reduce la fricción, aplica fuerzas más biológicas y facilita enormemente el cepillado diario.</> }
+          { icon: 'OrtoMetal5', text: <><strong className="text-dkv-green-dark font-bold"> Por qué elegirlo.</strong><br /> Poseen una pequeña "compuerta" que sujeta el arco, eliminando las gomitas elásticas. Esto reduce la fricción, aplica fuerzas más biológicas y facilita enormemente el cepillado diario.</> }
         ],
         priceGroups: [
           {
@@ -1212,8 +1213,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         secondaryImage: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png",
         subTitle: "Evolución estética del bracket metálico tradicional.",
         points: [
-          { icon: '', text: <>A diferencia de los antiguos brackets de plástico o cerámica convencional, nuestros brackets están tallados en <strong>cristal de zafiro puro</strong>.</> },
-          { icon: '', text: <><strong>La gran ventaja (No se tiñen):</strong> El zafiro mantiene su total transparencia durante todo el tratamiento. No importa si tomas café, té o vino tinto; el bracket seguirá siendo invisible y mimetizándose con el color natural de tu diente de principio a fin.</> }
+          { icon: 'OrtoZafiro1', text: <>A diferencia de los antiguos brackets de plástico o cerámica convencional, nuestros brackets están tallados en <strong>cristal de zafiro puro</strong>.</> },
+          { icon: 'OrtoZafiro2', text: <><strong>La gran ventaja (No se tiñen):</strong> El zafiro mantiene su total transparencia durante todo el tratamiento. No importa si tomas café, té o vino tinto; el bracket seguirá siendo invisible y mimetizándose con el color natural de tu diente de principio a fin.</> }
         ],
         priceGroups: [
           {
@@ -1265,8 +1266,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         secondaryImage: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-autoligable-un-diente.png",
         subTitle: "Evolución tecnológica del bracket estético de zafiro tradicional que prescinde de ataduras.",
         points: [
-          { icon: '', text: <>La combinación perfecta entre la más alta estética y la ingeniería biomecánica más avanzada.</> },
-          { icon: '', text: <><strong>Por qué elegirlo:</strong> Al ser autoligables, incorporan un clip de cierre invisible que sujeta el arco sin necesidad de "gomitas". Esto significa menos fricción, movimientos dentales más rápidos y orgánicos, menos molestias y una higiene diaria mucho más sencilla.</> }
+          { icon: 'OrtoZafiro3', text: <>La combinación perfecta entre la más alta estética y la ingeniería biomecánica más avanzada.</> },
+          { icon: 'OrtoZafiro4', text: <><strong>Por qué elegirlo:</strong> Al ser autoligables, incorporan un clip de cierre invisible que sujeta el arco sin necesidad de "gomitas". Esto significa menos fricción, movimientos dentales más rápidos y orgánicos, menos molestias y una higiene diaria mucho más sencilla.</> }
         ],
         priceGroups: [
           {
@@ -1379,34 +1380,32 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'ortodoncia-removible': {
     slug: 'ortodoncia-removible',
     activeSubNavId: 'ortodoncia-removible',
-     /* 🗑️  seoTitle: "Ortodoncia Removible Infantil | Precios DKV Dentisalud", */
-     /* 🗑️  seoDescription: "Aparatos de quita y pon para ensanchar el paladar y corregir hábitos en niños. Guiamos el crecimiento de su sonrisa con tarifas DKV.", */
-    /* ✨ */  seoTitle: "Ortodoncia Infantil de Quita y Pon | Ensancha su Paladar",
-    /* ✨ */   seoDescription: "Aparatos removibles para guiar el crecimiento dental de tus hijos. Previene ortodoncias complejas con un presupuesto transparente en tu clínica más cercana.",
+    seoTitle: "Aparato dental para Niños | Ensancha su Paladar a tiempo",
+    seoDescription: "Aparatos de quita y pon para guiar el crecimiento dental de tus hijos. Previene ortodoncias complejas con un presupuesto transparente en tu clínica más cercana.",
     breadcrumbs: [
       { label: "Tratamientos", href: "/#tratamientos" },
       { label: "Ortodoncia", href: "/?modal=2#tratamientos" },
-      { label: "Ortodoncia Removible", href: "#" }
+      { label: "Ortodoncia Infantil", href: "#" }
     ],
     hero: {
       badgeText: "Aparato infantil de Quita y Pon",
-      title: { dark: "ORTODONCIA", normal: "REMOVIBLE" },
+      title: { dark: "ORTODONCIA", normal: "INFANTIL" },
       description: [
-        "Muchos padres nos preguntan: '¿Por qué ponerle aparato ahora si aún tiene dientes de leche?'",
-        "La respuesta es sencilla: no estamos alineando dientes definitivos, estamos creando el espacio necesario en el hueso para que, cuando salgan los definitivos, quepan perfectamente."
+        "Muchos padres nos preguntan: '¿Por qué ponerle aparato ahora si se le van a caer los dientes de leche?'",
+        "La respuesta es sencilla: A esta edad no estamos poniendo los dientes rectos, estamos creando el espacio necesario en el hueso para que, cuando salgan los definitivos, quepan perfectamente, ahorrando años de brackets cuando el niño crezca."
       ]
     },
     rows: [
       {
         id: "aparatos-activos",
-        name: "Aparato activo (Expansor / Corrector)",
+        name: "Aparatos para ensanchar (Expansores)",
         price: "Desde 200 €",
         image: "/images/tratamientos/ortodoncia-removible.png",
-        subTitle: "Los motores del cambio.",
+        subTitle: "Haciendo sitio para los dientes nuevos.",
         points: [
-          { icon: '', text: <>El objetivo es ensanchar un paladar que se ha quedado estrecho, frenar una mandíbula que crece demasiado o estimular una que se ha quedado atrás.</> },
-          { icon: '', text: <><strong>Uno o dos aparatos:</strong> Cuando el problema está localizado en un solo hueso (generalmente el paladar superior, que necesita expansión) se usa un solo aparato. Sin embargo, cuando se necesita coordinar el crecimiento superior e inferior para que encajen como una caja y su tapa, hay que aplicar aparatos en ambos maxilares.</> },
-          { icon: '', text: <><strong>El beneficio:</strong> Evitan que los dientes definitivos salgan amontonados y corrigen "mordidas cruzadas" que, de no tratarse ahora, desgastarían los dientes de forma asimétrica y requerirían cirugía maxilofacial en la edad adulta.</> }
+          { icon: 'OrtoRemo1', text: <><strong className="text-dkv-green-dark font-bold">Control Desarrollo Arcadas.</strong><br />Hacer más ancho un paladar que se ha quedado estrecho, o ayudar a que la mandíbula de abajo crezca a la par que la de arriba.</> },
+          { icon: 'OrtoRemo2', text: <><strong className="text-dkv-green-dark font-bold"> Un aparato.</strong><br /> Generalmente cuando el problema está localizado en el paladar superior porque necesita expansión.</> },
+          { icon: 'OrtoRemo3', text: <><strong className="text-dkv-green-dark font-bold"> Dos aparatos. </strong><br /> Cuando necesitamos que la parte de arriba y la de abajo crezcan a la vez para que la boca cierre perfectamente, como si fuera una caja con su tapa.</> }
         ],
         priceGroups: [
           {
@@ -1419,40 +1418,40 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                   { tipo: 'normal', texto: 'Aparatología un maxilar' },
                   { tipo: 'oculto', texto: '. Precio: 200 €.' }
                 ],
-                description: "(superior ó inferior)", price: "200 €" },
+                description: "(Solo para arriba o solo para abajo)", price: "200 €" },
               { icon: '',
-                /* ✨ */ title: [
+                title: [
                   { tipo: 'oculto', texto: 'Ortodoncia removible: ' },
                   { tipo: 'normal', texto: 'Aparatología ambos maxilares' },
                   { tipo: 'oculto', texto: '. Precio: 400 €.' }
                 ],
-                description: "", price: "400 €"}
+                description: "(Para arriba y abajo a la vez)", price: "400 €"}
             ]
           },
           {
-            title: "Tratamientos asociados",
-            description: "",
+            title: "Mantenimineto y Revisiones",
+            description: "Ajustar los tornillos y ver cómo crece la boca es el 50% del éxito.",
             items: [
               { icon: '',
-                /* ✨ */ title: [
+                title: [
                   { tipo: 'oculto', texto: 'Ortodoncia removible: ' },
                   { tipo: 'normal', texto: 'Visita de revision' },
                   { tipo: 'oculto', texto: '. Precio: 25 €.' }
                 ],
-                description: "El seguimiento, la clave del éxito.", price: "25 €" }
+                description: "Vigiliancia períódica en consulta.", price: "25 €" }
             ]
           }
         ]
       },
       {
         id: "corrector-respiracion",
-        name: "Corrector de respiración por la boca",
+        name: "Corrector para niños que respiran por la boca",
         price: "87 €",
-        subTitle: "Salvando un riesgo.",
+        subTitle: "Cortando un mal hábito de raíz.",
         points: [
-          { icon: '', text: <><strong>¿Cuando es necesario?</strong>  La forma en que un niño respira o traga saliva define la forma de su cara.  Muchos niños respiran por la boca (por alergias, vegetaciones o simple hábito). Al tener la boca abierta siempre, la lengua no empuja el paladar y este se queda estrecho (cara alargada y ojeras).</> },
-          { icon: '', text: <><strong>El beneficio:</strong> Esta placa se coloca en la boca y obliga físicamente al niño a respirar por la nariz, reeducando su sistema respiratorio y permitiendo que su cara crezca con las proporciones correctas.</> },
-          { icon: '', text: <>Estos aparatos no "empujan" huesos directamente, sino que <strong>reeducan los músculos de la boca</strong>.</> }
+          { icon: 'OrtoRemo6', text: <><strong className="text-dkv-green-dark font-bold">El problema silencioso.</strong> Muchos niños respiran por la boca (por mocos o alergias) o se chupan el dedo. Al llevar la boca siempre abierta, el paladar se hunde y la cara se queda alargada y con ojeras.</> },
+          { icon: 'OrtoRemo7', text: <><strong className="text-dkv-green-dark font-bold"> El escudo protector.</strong> Esta placa se coloca en la boca y obliga físicamente al niño a respirar por la nariz, reeducando su sistema respiratorio y permitiendo que su cara crezca con las proporciones correctas.</> },
+          { icon: 'OrtoRemo8', text: <><strong className="text-dkv-green-dark font-bold"> Entrenamiento. </strong>Estos aparatos no 'empujan' huesos directamente, sino que <strong>entrenan los músculos de la cara</strong> para que vuelvan a trabajar correctamente.</> }
         ],
         detailedPrices: [
           {
@@ -1468,12 +1467,12 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       },
       {
         id: "corrector-posicion",
-        name: "Corrector de posición",
+        name: "Aparato para corregir la postura (La mordida)",
         price: "144 €",
-        subTitle: "Consiguiendo la mordida ideal.",
+        subTitle: "Entrenando la mordida perfecta.",
         points: [
-          { icon: '', text: <><strong>¿Cuando es necesario?</strong>  Suele emplearse en fases finales para asentar la mordida como si fuera un molde perfecto, o para guiar los dientes a su posición final aprovechando la propia fuerza de los músculos del niño al morderlo.</> },
-          { icon: '', text: <>Es un aparato elástico (parecido a los protectores de los boxeadores) que abraza los dientes de arriba y abajo a la vez.</> }
+          { icon: 'OrtoRemo4', text: <><strong className="text-dkv-green-dark font-bold">Corrección de mordida.</strong> Suele emplearse en fases finales de ortodoncia para asentar la mordida como si fuera un molde perfecto.</> },
+          { icon: 'OrtoRemo5', text: <><strong className="text-dkv-green-dark font-bold">Prevenciòn de apiñamiento. </strong> Ayuda a guiar el crecimiento de dientes definitivos evitando que se amontonen por falta de espacio.</> }
         ],
         detailedPrices: [
           {
@@ -1495,14 +1494,14 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         <AlertCircle className="w-12 h-12 mx-auto mb-6 text-dkv-green-light" />
         <h3 className="font-lemon text-xl mb-4 text-dkv-green-light uppercase tracking-wide">El Consejo Clínico para Padres</h3>
         <p className="text-xl font-medium leading-relaxed italic font-fsme max-w-3xl mx-auto relative z-10 text-white/90">
-          "La aparatología removible hace verdadera magia en las caras de los niños, pero tiene un 'talón de Aquiles' que debemos contarte: <strong>depende al 100% de la colaboración de tu hijo.</strong> El aparato debe llevarse un mínimo de 14 a 16 horas diarias (toda la noche y parte de la tarde en casa). Si el niño no se lo pone, el hueso no cambia. Como profesionales, nuestro trabajo es fabricar el aparato perfecto y ajustar los tornillos; el vuestro en casa es ser 'policías del aparato' durante unos meses. ¡El esfuerzo valdrá la pena para toda su vida!"
+          "Los aparatos de quita y pon hacen verdadera magia en las caras de los niños, pero tienen una norma innegociable: <strong>dependen al 100% de que el niño los use. </strong> El aparato debe llevarse un mínimo de 14 a 16 horas diarias (toda la noche y parte de la tarde en casa). Si el niño no se lo pone, el paladar no se ensancha. En consulta hacemos el aparato perfecto y ajustamos los tornillos, pero en casa os toca a vosotros hacer de 'policías' del aparato.¡El esfuerzo valdrá la pena para toda su vida!"
         </p>
       </div>
     ),
     cta: {
       title: "Anticípate al problema",
-      infoNote: "Recomendamos una primera visita con el ortodoncista a los 6 o 7 años de edad. Es el momento perfecto para evaluar el crecimiento de sus maxilares y detectar de forma temprana paladares estrechos o mordidas cruzadas.",
-      description: "Encuentra tu clínica DKV más cercana y pide una cita de valoración ortodóntica infantil:"
+      infoNote: "Lo ideal es llevar a los niños a su primera revisión de ortodoncia a los 6 o 7 años. A esa edad los huesos aún están blandos y es facilísimo solucionar un paladar estrecho o una mala mordida.",
+      description: "Encuentra tu clínica DKV DENTISALUD ELITE más cercana y pide una revisión para tu hijo:"
     }
   },
 
@@ -1533,8 +1532,9 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         image: "/images/tratamientos/ortodoncia-lingual.png",
         subTitle: "Máxima expresión de la ortodoncia estética.",
         points: [
-          { icon: '', text: <>Consiste en la colocación de brackets diseñados a medida en la <strong>cara interna (lingual) de los dientes</strong>.</> },
-          { icon: '', text: <><strong>Por qué elegirlo:</strong> Porque quedan totalmente ocultos a la vista de los demás. Nadie sabrá que llevas ortodoncia, ni siquiera en distancias cortas. Ofrece un control tridimensional del movimiento dental idéntico al de los brackets exteriores de alta gama, pero con cero impacto en tu estética facial durante el tratamiento.</> }
+          { icon: 'OrtoLingual1', text: <><strong className="text-dkv-green-dark font-bold"> Totalmente Invisible.</strong> Oculta a la vista de los demás. Nadie sabrá que llevas ortodoncia, ni siquiera en distancias cortas. </> },
+          { icon: 'OrtoLingual2', text: <><strong className="text-dkv-green-dark font-bold"> La cara oculta de la Luna.</strong> Consiste en la colocación de brackets diseñados a medida en la <strong>cara interna (lingual) de los dientes</strong>. </> },
+          { icon: 'OrtoLingual3', text: <><strong className="text-dkv-green-dark font-bold"> Corrección total en 3D. </strong> Control tridimensional del movimiento dental idéntico al de los brackets exteriores de alta gama, pero con cero impacto en tu estética facial durante el tratamiento..</> },
         ],
         priceGroups: [
           {
@@ -1668,7 +1668,7 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
           { icon: 'Invisalign2', text: <><strong className="text-dkv-green-dark font-bold"> Libertad Total.</strong> Removibles para comer con total normalidad.</> },
           { icon: 'Invisalign3', text: <><strong className="text-dkv-green-dark font-bold"> Higiene Perfecta.</strong> Cepillado sin obstátulos metálicos.</> },
           { icon: 'Invisalign4', text: <><strong className="text-dkv-green-dark font-bold">Previsibilidad.</strong> Programa 3D para ver tu sonrisa antes con software digital.</> },
-          { icon: 'Invisalign5', text: <><strong className="text-dkv-green-dark font-bold">Factor de Adaptación.</strong> Ligera presión inciial. Puede afectar levemente a la pronunciación los primeros días.</> }
+          { icon: 'Invisalign5', text: <><strong className="text-dkv-green-dark font-bold">Factor de Adaptación.</strong> Ligera presión inicial. Puede afectar levemente a la pronunciación los primeros días.</> }
         ],
         priceGroups: [
           {
@@ -1774,92 +1774,86 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'implante-individual': {
     slug: 'implante-individual',
     activeSubNavId: 'individual',
-     /* 🗑️  seoTitle: "Implante Dental Individual | Precios Cerrados DKV Dentisalud", */
-     /* 🗑️  seoDescription: "Repón un diente perdido con un implante de titanio de alta gama y corona a medida. Presupuesto cerrado con radiología 3D incluida y garantía DKV.", */
-    /* ✨ */  seoTitle: "Implantes Dentales de Titanio | Recupera tu Diente Perdido",
-    /* ✨ */   seoDescription: "Repón tu diente con la máxima naturalidad y seguridad. Cirugía avanzada y presupuesto totalmente transparente. Pide tu valoración en una clínica cercana.",
+    seoTitle: "Implante Dental de Titanio | Recupera tu Diente Fijo",
+    seoDescription: "Repón tu diente con la máxima naturalidad y seguridad. Cirugía avanzada y presupuesto totalmente transparente. Pide tu valoración en una clínica cercana.",
     breadcrumbs: [
       { label: "Tratamientos", href: "/#tratamientos" },
       { label: "Implantología", href: "/?modal=3#tratamientos" },
       { label: "Implante Individual", href: "#" }
     ],
     hero: {
-      badgeText: "Sustitución de 1 Pieza",
+      badgeText: "Como si fuera tu propio diente",
       title: { dark: "IMPLANTE", normal: "INDIVIDUAL" },
       description: [
-        "Para pacientes que habiendo perdido un diente (por caries, fractura o golpe), necesitan reponerlo con la máxima naturalidad sin dañar los dientes sanos vecinos."
+        "Perder un diente (por un golpe, una caries o una infección) afecta a tu forma de masticar y a tu confianza al sonreir. ",
+        "El implante es la solución más parecida a la naturaleza: Colocamos una 'raíz' nueva de titanio en tu maxilar sobre la que fijamos un 'diente' a medida, sin tener que limar ni estropear los dientes sanos que tienes al lado."
       ]
     },
     rows: [
       {
         id: "implante-individual",
-        name: "Rehabilitación Completa Individual",
+        name: "Implante y Diente Definitivo (Tratamiento completo)",
         price: "Desde 1.180 €",
-        image: "/images/tratamientos/implantes.png",
-        subTitle: "Recupera diente estético y funcional donde antes había un hueco.",
+        //image: "/images/tratamientos/implantes.png",
+        image: "/images/tratamientos/implind5.png",
+        subTitle: "Tu nuevo diente paso a paso y sin letra pequeña.",
         points: [
-          { icon: '', text: <><strong>Tratamiento base </strong> contemplando las fases de Diagnóstico, Quirúrgica y Prótésica, y procedimientos clínicos necesarios para devolverte un diente perfecto desde cero.</> }
+          { icon: 'ImplInd1', text: <><strong>Tratamiento base </strong> contemplando las fases diagnóstica, quirúrgica y prótésica, y procedimientos clínicos necesarios para devolverte un diente perfecto desde cero.</> }
         ],
         priceGroups: [
           {
-            title: "Fase de Diagnóstico (80 €)",
-            description: "Una planificación previa óptima es fundamental para tu tratamiento.",
+            title: "1. Estudio y Planificación (80 €)",
+            description: "No operamos a ciegas. Medimos exactamente cuánto hueso tienes para asegurar el éxito.",
             items: [
-              { icon: '',
-                /* ✨ */ title: [
+              { icon: 'ImplInd2',
+                title: [
+                  { tipo: 'normal', texto: 'Dental Scan' },
+                  { tipo: 'oculto', texto: '. Precio: 80 €.' }
+                ],
+                description: "1 Maxilar.", price: "80 €" },
+              { icon: 'ImplInd3',
+                title: [
                   { tipo: 'normal', texto: 'Estudio implantológico' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "", price: "Incluido" },
-              { icon: '',
-                /* ✨ */ title: [
-                  { tipo: 'normal', texto: 'Férula RX' },
+              { icon: 'ImplInd4',
+                title: [
+                  { tipo: 'normal', texto: 'Férula RX y Férula Quirúrgica' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "", price: "Incluido" },
-              { icon: '',
-                /* ✨ */ title: [
-                  { tipo: 'normal', texto: 'Férula Quirúgica' },
+              { icon: 'ImplInd5',
+                title: [
+                  { tipo: 'normal', texto: 'Ortopantomo-grafía' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "", price: "Incluido" },
-              { icon: '',
-                /* ✨ */ title: [
-                  { tipo: 'normal', texto: 'Ortopantomografía' },
-                  { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
-                ],
-                description: "", price: "Incluido" },
-              { icon: '',
-                /* ✨ */ title: [
-                  { tipo: 'normal', texto: 'Dental Scan' },
-                  { tipo: 'oculto', texto: '. Precio: 80 €.' }
-                ],
-                description: "1 Maxilar.", price: "80 €" }
+                description: "", price: "Incluido" }
             ]
           },
           {
-            title: "Fase Quirúrgica (550 €)",
-            description: "Implante en hueso.",
+            title: "2. La Cirugía. Tu nueva raíz (550 €)",
+            description: "Colocación del implante en el hueso bajo anestesia local.",
             items: [
-              { icon: '',
-                /* ✨ */ title: [
+              { icon: 'ImplInd6',
+                title: [
                   { tipo: 'normal', texto: 'Cirugía Pre-Protésica' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "", price: "Incluido" },
-              { icon: '',
-                /* ✨ */ title: [
+              { icon: 'ImplInd7',
+                title: [
                   { tipo: 'normal', texto: 'Tornillo de cicatrización' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "", price: "Incluido" },
-              { icon: '',
-                /* ✨ */ title: [
+              { icon: 'ImplInd8',
+                title: [
                   { tipo: 'normal', texto: 'Tornillo de cementación' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "", price: "Incluido" },
-              { icon: '',
+              { icon: 'ImplInd9',
                 /* ✨ */ title: [
                   { tipo: 'normal', texto: 'Implante de Titanio' },
                   { tipo: 'oculto', texto: '. Precio: 550 €.' }
@@ -1868,65 +1862,66 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             ]
           },
           {
-            title: "Fase Protésica (550 €)",
-            description: "El diente visible.",
+            title: "3. El Diente Nuevo: La Corona (550 €)",
+            description: "Una vez que el implante ha agarrado fuerte al hueso, fabricamos y atornillamos tu diente.",
             items: [
-              { icon: '',
+              { icon: 'ImplInd11',
                 /* ✨ */ title: [
                   { tipo: 'normal', texto: 'Aditamento Protésico' },
                   { tipo: 'oculto', texto: '. Precio: 247 €.' }
                 ],
-                description: "", price: "247 €" },
-              { icon: '',
+                description: "La pieza que une el implante que está dentro de la encía con el diente que está fuera.", price: "247 €" },
+              { icon: 'ImplInd10',
                 /* ✨ */ title: [
                   { tipo: 'normal', texto: 'Corona Metal-Cerámica' },
                   { tipo: 'oculto', texto: '. Precio: 303 €.' }
                 ],
-                description: "", price: "303 €" }
+                description: "El diente duro y resistente a la masticación.", price: "303 €" }
             ]
           }
         ],
-        footerNote: "* Según valoración clínica o estética pueden ser necesarios tratamientos adicionales.Consultar precios franquiciados."
+        footerNote: "* En función del estado de tu hueso podrían ser necesarios tratamientos previos. Consultar apartado."
       },
       {
         id: "estetica-adicional",
-        name: "Máxima Estética (Zonas Frontales y Provisionales)",
-        subTitle: "Según necesidad estética: Tratamientos adicionales posibles",
+        name: "Opciones de Alta Estética y Dientes Provisionales",
+        subTitle: "Alternativa para dientes que se ven al sonreír.",
         points: [
-          { icon: '', text: <>Si es un diente frontal, recomendamos cambiar la corona de metal-porcelana por una <strong>Corona de Zirconio</strong>, ya que no tiene metal y la luz la atraviesa como un diente real. También disponemos de <strong>Coronas de resina</strong> para fases provisionales si no quieres estar sin diente durante la integración.</> }
+          { icon: 'ImplInd12', text: <>Si el diente que te falta es visible al sonreir, recomendamos usar una <strong>Corona de Zirconio</strong> en lugar de una corona de metal-porcelana. El zirconio deja pasar la luz igual que un diente natural</> },
+          { icon: 'ImplInd13', text: <>Además, durante el tiempo en que el implante queda soldado al hueso, te podemos poner un <strong>diente provisional de resina</strong> para que no tengas que ir sin diente.</> }
         ],
         detailedPrices: [
           {
             icon: '',
-            /* ✨ */ title: [
+            title: [
               { tipo: 'normal', texto: 'Corona de Zirconio' },
               { tipo: 'oculto', texto: '. Precio: 325 €.' }
             ],
-            description: '(sobre implante)',
+            description: '(opción estética sobre la de metal-cerámica)',
             price: '325 €'
           },
           {
             icon: '',
-            /* ✨ */ title: [
+            title: [
               { tipo: 'normal', texto: 'Corona de resina' },
               { tipo: 'oculto', texto: '. Precio: 274 €.' }
             ],
-            description: '(provisional)',
+            description: '(diente temporal para el periodo de cicatrización -opcional-)',
             price: '274 €'
           }
         ]
       },
       {
         id: "angulos",
-        name: "Ajuste de Ángulo Protésico",
-        subTitle: "Según Valoración Clínica: Tratamientos adicionales posibles",
+        name: "Piezas Especiales (Para huesos difíciles)",
+        subTitle: "Cuando la anatomía nos obliga a esquivar nervios y trabajar el tornillo con inclinación, se hace necesaria una pieza adicional para dar la verticalidad adecuada a la corona.",
         points: [
-          { icon: '', text: <>Si el hueso disponible nos obliga a poner el implante inclinado (para asegurar la fijación), necesitaremos una pieza intermedia especial para enderezar el diente final y que la mordida sea perfecta.</> }
+          { icon: 'ImplInd14', text: <> En esos casos, necesitamos usar una pieza intermedia especial (como un 'codo' de fontanería) para que el diente final quede perfectamente recto y que la mordida sea perfecta.</> }
         ],
         detailedPrices: [
           {
             icon: '',
-            /* ✨ */ title: [
+            title: [
               { tipo: 'normal', texto: 'Falso muñón de titanio' },
               { tipo: 'oculto', texto: '. Precio: 216 €.' }
             ],
@@ -1939,7 +1934,7 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
               { tipo: 'normal', texto: 'Supra/Meso Estructuras' },
               { tipo: 'oculto', texto: '. Precio: 87 €.' }
             ],
-            description: '(por pieza)',
+            description: '(estructuras de adaptación, precio por pieza)',
             price: '87 €'
           }
         ]
@@ -1955,24 +1950,24 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             <span className="text-[#D4AF37] font-bold text-sm md:text-base uppercase tracking-[0.2em] font-fsme">Upgrade Premium</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-lemon mb-6 uppercase tracking-wide">
-            Cirugía Guiada 3D "Sin Puntos"
+            Cirugía 3D guiada por Ordenador:  "Sin Puntos"
           </h2>
           <p className="font-fsme text-lg mb-6 text-white/90 leading-relaxed">
-            ¿Tienes fobia al dentista o no puedes permitirte tener la cara hinchada mañana? Disponible <strong>EXCLUSIVAMENTE en nuestros Centros Propios Especiales</strong>, realizamos la cirugía primero en el ordenador. Fabricamos una plantilla que nos permite colocar el implante sin tener que usar bisturí ni dar puntos de sutura.
+            ¿Te da pánico el bisturí o no puedes permitirte tener la cara hinchada mañana para ir a trabajar? Disponible <strong>EXCLUSIVAMENTE en nuestros Centros Propios Especiales</strong>, realizamos la cirugía primero en el ordenador. Imprimimos una plantilla 3D que nos quía para colocar el implante <strong> sin tener que usar bisturí ni dar puntos de sutura </strong>.
           </p>
 
           <div className="bg-white/10 rounded-2xl p-6 border border-white/20 backdrop-blur-sm mt-8">
             <ul className="space-y-4">
               <li className="flex flex-col md:flex-row md:justify-between items-start md:items-center pb-3 border-b border-white/20">
-                <span className="font-bold text-white">Estudio o planificación de implantología guiada</span>
+                <span className="font-bold text-white">Planificación de cirugía por ordenador 3D</span>
                 <span className="font-lemon text-lg text-[#D4AF37] shrink-0 mt-1 md:mt-0">125 €</span>
               </li>
               <li className="flex flex-col md:flex-row md:justify-between items-start md:items-center pb-3 border-b border-white/20">
-                <span className="font-bold text-white">Suplemento de implantología guiada CAD-CAM</span>
+                <span className="font-bold text-white">Suplemento de software CAD-CAM</span>
                 <span className="font-lemon text-lg text-[#D4AF37] shrink-0 mt-1 md:mt-0">Incluido (0 €)</span>
               </li>
               <li className="flex flex-col md:flex-row md:justify-between items-start md:items-center">
-                <span className="font-bold text-white">Férula de cirugía guiada implantológica (Impresión 3D)</span>
+                <span className="font-bold text-white">Férula quirúrgica de guiado (Impresión 3D)</span>
                 <span className="font-lemon text-lg text-[#D4AF37] shrink-0 mt-1 md:mt-0">375 €</span>
               </li>
             </ul>
@@ -1985,9 +1980,9 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       </div>
     ),
     cta: {
-      title: "Planifica tu tratamiento",
-      infoNote: "La información reflejada en esta página tiene mero carácter orientativo. El diagnóstico profesional que necesitas (y la confirmación de si requieres tratamientos adicionales o tecnología guiada 3D) te lo proporcionará nuestro equipo de implantología.",
-      description: "Solicita tu cita y averigua si en tu clínica más cercana disponen de la tecnología exclusiva para realizar el Upgrade Premium de Cirugía Guiada \"Sin Puntos\". Encuentra tu centro:"
+      title: "Vuelve a morder con ganas.",
+      infoNote: "Cada boca es un mundo. Solo viendo un escáner 3D de tu hueso podemos confirmarte al 100% que tienes la base necesaria para soportar un implante, o si necesitas alguna preparación previa.",
+      description: "Pide una cita de valoración en tu clínica más cercana. Analizaremos tu caso y te daremos un plan claro para que recuperes tu diente:"
     }
   },
 
@@ -2007,8 +2002,9 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       badgeText: "Todos los Dientes Fijos",
       title: { dark: "ARCADA COMPLETA", normal: "FIJA" },
       description: [
-        "Para pacientes que van a perder o han perdido todos los dientes de un maxilar y desean una dentadura 100% fija que no haya que quitarse para dormir.",
-        "Devolvemos la función y estética a toda tu boca. Muerde manzanas y sonríe con total seguridad."
+        "Olvida para siempre la 'dentadura en el vaso de agua'. Si quedas sin ningún diente arriba o abajo, esta es la solución definitiva", 
+        "Colocamos una dentadura completa atornillada fijamente a 4 implantes.",
+        "No tiene paladar de plástico, no se quita para dormir y te permite volver a morder un bocadillo y sonreír a carcajadas con total seguridad."
       ]
     },
     rows: [
@@ -2016,12 +2012,13 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         id: "arcada-completa",
         name: "Rehabilitación Fija de Arcada Completa",
         price: "6.128 €",
-        image: "/images/tratamientos/protesis.png",
+        //image: "/images/tratamientos/protesis.png",
+        image: "/images/tratamientos/implante-arcada.png",
         subTitle: "Dentadura nueva completa fijada mediante implantes.",
         points: [
           {
             icon: '',
-            text: <>Este tratamiento contempla las fases, radiología avanzada y components necesarios para fijar la estructura a tu maxilar mediante 4 implantes de titanio.</>
+            text: <><strong>Tratamiento base </strong> contemplando las fases diagnóstica, quirúrgica y protésica, y procedimientos clínicos necesarios para fijar la estructura a tu maxilar mediante 4 implantes de titanio.</>
           }
         ],
         priceGroups: [
@@ -2029,67 +2026,62 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             title: "Fase de Diagnóstico (110 €)",
             description: "Una planificación previa óptima es fundamental para tu tratamiento.",
             items: [
-              { icon: '',
-                /* ✨ */  title: [
+              { icon: 'ImplInd2',
+                title: [
+                  { tipo: 'normal', texto: 'Dental Scan' },
+                  { tipo: 'oculto', texto: '. Precio: 110 €.' }
+                ],
+                description: "Ambos Maxilares.", price: "110 €" },
+              { icon: 'ImplInd3',
+                title: [
                   { tipo: 'normal', texto: 'Estudio implantológico' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "", price: "Incluido" },
-              { icon: '',
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Férula RX' },
+              { icon: 'ImplInd4',
+                title: [
+                  { tipo: 'normal', texto: 'Férula RX y Férula Quirúrgica' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "", price: "Incluido" },
-              { icon: '',
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Férula Quirúrgica' },
-                  { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
-                ],
-                description: "", price: "Incluido" },
+
               { icon: '',
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Teleradiografía lateral de cráneo' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "", price: "Incluido" },
-              { icon: '',
+              { icon: 'ImplInd5',
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Radiografía de ATM' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "", price: "Incluido" },
-              { icon: '',
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Dental Scan' },
-                  { tipo: 'oculto', texto: '. Precio: 110 €.' }
-                ],
-                description: "Ambos Maxilares.", price: "110 €" }
+                description: "", price: "Incluido" }
             ]
           },
           {
             title: "Fase Quirúrgica (2.200 €)",
             description: "Implantes en hueso.",
             items: [
-              { icon: '',
-                /* ✨ */  title: [
+              { icon: 'ImplInd6',
+                title: [
                   { tipo: 'normal', texto: 'Cirugía Pre-Protésica' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "", price: "Incluido" },
-              { icon: '',
-                /* ✨ */  title: [
+                description: "Cirugía x 4", price: "Incluido" },
+              { icon: 'ImplInd7',
+                title: [
                   { tipo: 'normal', texto: 'Tornillo de cicatrización' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "Tornillo x 4", price: "Incluido" },
-              { icon: '',
-                /* ✨ */  title: [
+              { icon: 'ImplInd8',
+                title: [
                   { tipo: 'normal', texto: 'Tornillo de cementación' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "Tornillo x 4", price: "Incluido" },
-              { icon: '',
+              { icon: 'ImplInd9',
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Implantes de Titanio' },
                   { tipo: 'oculto', texto: '. Precio: 2.220 €.' }
@@ -2101,14 +2093,14 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             title: "Fase Protésica (4.808 €)",
             description: "El diente visible.",
             items: [
-              { icon: '',
-                /* ✨ */  title: [
+              { icon: 'ImplInd11',
+                title: [
                   { tipo: 'normal', texto: 'Aditamentos Protésicos' },
                   { tipo: 'oculto', texto: '. Precio: 1.978 €.' }
                 ],
-                description: "Aditamentos (4 x 247 €)", price: "1.978 €" },
-              { icon: '',
-                /* ✨ */  title: [
+                description: "Adit... (4 x 247 €)", price: "1.978 €" },
+              { icon: 'ImplInd15',
+                title: [
                   { tipo: 'normal', texto: 'Dentadura Fija' },
                   { tipo: 'oculto', texto: '. Precio: 2.830 €.' }
                 ],
@@ -2116,7 +2108,7 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             ]
           }
         ],
-        footerNote: "* Según valoración clínica o estética pueden ser necesarios tratamientos adicionales.Consultar precios franquiciados."
+        footerNote: "* En función del estado de tu hueso podrían ser necesarios tratamientos previos. Consultar apartado."
       }
     ],
     premiumBlock: (
@@ -2171,8 +2163,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'implante-sobredentadura': {
     slug: 'implante-sobredentadura',
     activeSubNavId: 'sobredentadura',
-    /* ✨ */ seoTitle: "Sobredentadura sobre Implantes | Dentadura Firme con un Clic",
-    /* ✨ */ seoDescription: "Fija tu prótesis de quita y pon con implantes. La opción más económica para masticar seguro y sin roces. Descubre su precio exacto en tu clínica cercana.",
+    seoTitle: "Dentadura postiza de quita y pon con fijación sobre Implantes mediante mecanismo de corchete",
+    seoDescription: "Sujeta mediante un 'click' a dos implantes. No se te volverá a despegar. No más llagas ni pegamentos. Consulta el presupuesto aquí.",
     breadcrumbs: [
       { label: "Tratamientos", href: "/#tratamientos" },
       { label: "Implantología", href: "/?modal=3#tratamientos" },
@@ -2180,105 +2172,101 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     ],
     hero: {
       badgeText: "Económica y Segura",
-      title: { dark: "SOBREDENTADURA", normal: "REMOVIBLE" },
+      title: { dark: "DENTADURA POSTIZA CON ", normal: "'CLIC'" },
       description: [
-        "Pacientes sin dientes a los que su 'dentadura postiza' tradicional se les cae o les hace llagas. Busca seguridad total al hablar y comer, con un presupuesto más ajustado.",
-        "Una prótesis de quita y pon que hace 'clic' sobre implantes y queda perfectamente sujeta. Mínimamente invasiva, fácil de limpiar y totalmente estable."
+        "Para pacientes a los que su 'dentadura postiza' de abajo se les mueve constantemente, no pueden comer pan o les salen llagas en la encía.",
+        "Es una dentadura de quita y pon, pero que hace un fuerte 'clic' sobre dos implantes y queda bloqueada en su sitio. Solo te la quitarás tú para lavarla. Adiós a las pastas pegajosas y al miedo a sonreir.",
+        "Nota. Para mandíbula superior también es viable, necesitando más puntos de sujección por la fuerza de gravedad (3 o hasta 4 implantes en lugar de 2)."
       ]
     },
     rows: [
       {
         id: "sobredentadura-ideal",
-        name: "Sobredentadura removible sobre 2 Implantes",
+        name: "Dentadura anclada sobre 2 Implantes",
         price: "Desde 2.530 €",
-        subTitle: "Dentadura completa de quita y pon con un 'click'.",
+        subTitle: "La opción más inteligente y económica para estabilizar la mandíbula inferior.",
         points: [
           {
             icon: '',
-            text: <>En el caso de la mandíbula inferior suele bastar con anclaje en dos puntos, es decir, <strong>en dos implantes</strong>. Es la forma más inteligente y económica de estabilizar una mandíbula inferior. Tu nueva prótesis llevará unos 'broches' ocultos. Al ponértela, hace 'clic' sobre los 2 implantes y queda bloqueada. Podrás masticar con firmeza y solo te la quitarás tú para limpiarla.</>
+            text: <>Tu nueva dentadura llevará unos "broches" ocultos en su interior. Al ponértela, estos encajarán sobre los dos anclajes de titanio que habremos colocado en tu hueso. <br/> <strong> Quedará completamente sujeta. </strong> <br/> Podrás masticar cosas duras con firmeza y hablar sin que 'baile'.</>
           }
         ],
         priceGroups: [
           {
-            title: "Fase de Diagnóstico (80 €)",
-            description: "Una planificación previa óptima es fundamental para tu tratamiento.",
+            title: "1. Estudio y Planificación (80 €)",
+            description: "Comprobamos el grosor de tu hueso para colocar los anclajes de forma 100% segura.",
             items: [
-              { icon: '',
-                /* ✨ */  title: [
+              { icon: 'ImplInd2',
+                title: [
+                  { tipo: 'normal', texto: 'Dental Scan' },
+                  { tipo: 'oculto', texto: '. Precio: 80 €.' }
+                ],
+                description: "Un maxilar.", price: "80 €" },
+              { icon: 'ImplInd3',
+                title: [
                   { tipo: 'normal', texto: 'Estudio implantológico' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "", price: "Incluido" },
-              { icon: '',
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Férula RX' },
+              { icon: 'ImplInd4',
+                title: [
+                  { tipo: 'normal', texto: 'Férula RX y Férula Quirúrgica' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "", price: "Incluido" },
-              { icon: '',
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Férula Quirúrgica' },
-                  { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
-                ],
-                description: "", price: "Incluido" },
+
               { icon: '',
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Teleradiografía lateral de cráneo' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
                 description: "", price: "Incluido" },
-              { icon: '',
+              { icon: 'ImplInd5',
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Radiografía de ATM' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "", price: "Incluido" },
-              { icon: '',
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Dental Scan' },
-                  { tipo: 'oculto', texto: '. Precio: 80 €.' }
-                ],
-                description: "Un Maxilar.", price: "80 €" }
+                description: "", price: "Incluido" }
             ]
           },
           {
-            title: "Fase Quirúrgica (1.560 €)",
-            description: "Implantes en hueso.",
+            title: "2. Los Anclajes: La Cirugía (1.560 €)",
+            description: "Colocamos las dos 'raíces' de titanio y los 'corchetes' que sujetarán tu dentadura.",
             items: [
-              { icon: '',
-                /* ✨ */  title: [
+              { icon: 'ImplInd6',
+                title: [
                   { tipo: 'normal', texto: 'Cirugía Pre-Protésica' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "", price: "Incluido" },
-              { icon: '',
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Implantes de Titanio' },
+                description: "Preparación de la encía.", price: "Incluido" },
+              { icon: 'ImplInd9',
+                title: [
+                  { tipo: 'normal', texto: '2 Implantes de Titanio' },
                   { tipo: 'oculto', texto: '. Precio: 1.100 €.' }
                 ],
-                description: "Implante (2 x 550 €)", price: "1.100 €" },
-              { icon: '',
-                /* ✨ */  title: [
+                description: "Las nuevas raíces artificiales (2 x 550 €)", price: "1.100 €" },
+              { icon: 'ImplInd7',
+                title: [
                   { tipo: 'normal', texto: 'Sistemas de Fijación' },
                   { tipo: 'oculto', texto: '. Precio: 460 €.' }
                 ],
-                description: "Anclajes para sobredentaduras tipo Bolas/Locator (2 x 230 €)", price: "460 €" }
+                description: "Las dos cabezas de titanio con fomra de bola o corchete donde enganchará la dentadura (2 x 230 €)", price: "460 €" }
             ]
           },
           {
-            title: "Fase Protésica (890 €)",
-            description: "La dentadura visible.",
+            title: "3. Fase Protésica (890 €)",
+            description: "La dentadura visible y reforzada.",
             items: [
               { icon: '',
                 /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Sobredentadura' },
+                  { tipo: 'normal', texto: 'Dentadura Completa Especial (Sobredentadura)' },
                   { tipo: 'oculto', texto: '. Precio: 890 €.' }
                 ],
-                description: "Reforzada completa.", price: "890 €" }
+                description: "Fabricada en resina de alta resistencia, a tu medida y con los 'broches' instalados en su interior.", price: "890 €" }
             ]
           }
         ],
-        footerNote: "* Según valoración clínica o estética pueden ser necesarios tratamientos adicionales.Consultar precios franquiciados."
+        footerNote: "* Si tuvieras muy poco hueso podrían ser necesarios tratamientos previos. Consultar apartado."
       }
     ],
     premiumBlock: (
@@ -2333,48 +2321,49 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'regeneracion-hueso': {
     slug: 'regeneracion-hueso',
     activeSubNavId: 'hueso',
-    /* ✨ */ seoTitle: "Regeneración de Hueso Dental | Preparación para Implantes",
-    /* ✨ */ seoDescription: "Recupera el hueso perdido en tus maxilares con injertos y plasma rico en plaquetas. Cirugía segura con un presupuesto claro. Encuentra tu clínica más próxima.",
+      seoTitle: "Regeneración de Hueso Dental | Preparando los cimientos",
+      seoDescription: "Recupera el hueso perdido en tu boca para poder colocar implantes seguros. Hueso artifical y cicatrización rápido. Cirugía segura con un presupuesto claro. Encuentra tu clínica más próxima.",
     breadcrumbs: [
       { label: "Tratamientos", href: "/#tratamientos" },
       { label: "Implantología", href: "/?modal=3#tratamientos" },
       { label: "Reconstrucción Hueso", href: "#" }
     ],
     hero: {
-      badgeText: "Falta de hueso",
+      badgeText: "Preparando los cimientos",
       title: { dark: "REGENERACION DE", normal: "HUESO" },
       description: [
-        "Para pacientes que habiendo perdido un diente (por caries, fractura o golpe), necesitan reponerlo con la máxima naturalidad sin dañar los dientes sanos vecinos."
+        "Cuando pierdes un diente y pasa el tiempo, el hueso que lo sujetaba se atrofia y encoge. Es como intentar clavar un tornillo en una pared de pladur que se deshace.",
+        "Para que un implante sea firme y dure toda la vida, necesita unos cimientos sólidos. Con estas técnicas, volvemos a 'fabricar' hueso donde lo habías perdido para que la intervención sea un éxito rotundo."
       ]
     },
     rows: [
       {
         id: "regeneracion-biologica",
-        name: "Regeneración de Hueso y Cicatrización",
-        subTitle: "Según Valoración Clínica: Preparar el terreno es vital. Dependiendo del estado de tu hueso maxilar tras años de desgaste, podríamos necesitar acondicionarlo con alguno de estos procedimientos.",
+        name: "Acondicionamiento y nuevo hueso",
+        subTitle: "Según Valoración Clínica: Si tu escáner 3D nos dice que falta hueso, usaremos alguno de estos procedimientos para crearlo.",
         priceGroups: [
           {
-            title: "Falta de Hueso",
-            description: "Si perdiste la pieza hace tiempo, es posible que el hueso haya mermado. Usaremos material regenerativo y membranas para reconstruir los cimientos.",
+            title: "Fabricando Hueso Nuevo",
+            description: "Añadimos material de relleno para que tu propio cuerpo lo convierta en hueso duro y resistente en unos meses.",
             items: [
               { icon: '',
                 /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Elevación de seno cerrado' },
+                  { tipo: 'normal', texto: 'Ganar altura en el hueso (Elevación de seno cerrado)' },
                   { tipo: 'oculto', texto: '. Precio: 130 €.' }
                 ],
-                description: "", price: "130 €" },
+                description: "A veces, en las muelas superiores, falta altura porque las cavidades nadales están muy cerca. Empujamos suavemente hacia arriba para que quepa el implante de forma segura.", price: "130 €" },
               { icon: '',
                 /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Material de relleno regenerativo' },
+                  { tipo: 'normal', texto: 'Añadir hueso artificial (Material de relleno regenerativo)' },
                   { tipo: 'oculto', texto: '. Precio: 175 €.' }
                 ],
-                description: "", price: "175 €" },
+                description: "Pequeños gránulos de hueso esterilizado qie sirven de 'andamio' para que tu propio cuerpo genere hueso de forma natural.", price: "175 €" },
               { icon: '',
                 /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Membrana reabsorvible y/o Malla de Titanio' },
+                  { tipo: 'normal', texto: 'Malla protectora (Membrana reabsorvible y/o Malla de Titanio)' },
                   { tipo: 'oculto', texto: '. Precio: 200 €.' }
                 ],
-                description: "", price: "200 €" }
+                description: "Una especie de 'tirita' interna que sujeta el hueso nuevo en su sitio como si fuera una tienda de campaña, evitando que la encía se meta dentra del hueco antes de que se genere.", price: "200 €" }
             ]
           },
           {
@@ -2386,40 +2375,40 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                   { tipo: 'normal', texto: 'Plasma Rico en Plaquetas' },
                   { tipo: 'oculto', texto: '. Precio: 150 €.' }
                 ],
-                description: "(P.R.G.F.)", price: "150 €" }
+                description: "Sacamos una pequeña muestra de tu sangre, la centrifugamos y extraemos las defensas y factores de crecimiento. Lo aplicamos en la herida para reducir hinchazón y cicatrice a velocidad récord.", price: "150 €" }
             ]
           },
           {
-            title: "Acondicionamiento de Hueso",
-            description: "Si hay extracciones recientes o infecciones previas puede ser necesario nivelar el hueso maxilar.",
+            title: "Alisando el terreno",
+            description: "A veces sí hay hueso, pero está muy irregular por culpa de una infección antigua o una mala extracción del pasado.",
             items: [
               { icon: '',
                 /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Vestibuloplastia' },
+                  { tipo: 'normal', texto: 'Alisar bordes afilados (Alveoloplastia)' },
+                  { tipo: 'oculto', texto: '. Precio: 99 €.' }
+                ],
+                description: "Limamos los picos de hueso para que quede una superficie plana y perfecta donde situar el implante. Precio por cuadrante.", price: "99 €" },
+              { icon: '',
+                /* ✨ */  title: [
+                  { tipo: 'normal', texto: 'Remodelar la forma del hueso (Remodelación maxilar)' },
+                  { tipo: 'oculto', texto: '. Precio: 99 €.' }
+                ],
+                description: "Ajuste milimétrico de la forma del maxilar para asegurar el éxito.", price: "99 €" },
+              { icon: '',
+                /* ✨ */  title: [
+                  { tipo: 'normal', texto: 'Ajuste de encía (Vesibuloplastia)' },
                   { tipo: 'oculto', texto: '. Precio: 75 €.' }
                 ],
-                description: "(por cuadrante)", price: "75 €" },
-              { icon: '',
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Alveoloplastia' },
-                  { tipo: 'oculto', texto: '. Precio: 99 €.' }
-                ],
-                description: "", price: "99 €" },
-              { icon: '',
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Remodelación maxilar' },
-                  { tipo: 'oculto', texto: '. Precio: 99 €.' }
-                ],
-                description: "", price: "99 €" }
+                description: "Acondicionar la encía en caso necesario. Precio", price: "75 €" },
             ]
           }
         ]
       }
     ],
     cta: {
-      title: "Planifica tu tratamiento",
-      infoNote: "La información reflejada en esta página tiene mero carácter orientativo. El diagnóstico profesional que necesitas (y la confirmación de si requieres tratamientos adicionales o tecnología guiada 3D) te lo proporcionará nuestro equipo de implantología.",
-      description: "Solicita tu cita y averigua si en tu clínica más cercana disponen de la tecnología exclusiva para realizar el Upgrade Premium de Cirugía Guiada \"Sin Puntos\". Encuentra tu centro:"
+      title: "Crea una base sólida",
+      infoNote: "Muchos pacientes a los que les han dicho que 'no tienen hueso para implantes' pueden ser operados hoy en día con total éxito gracias a estas técnicas regenerativas.",
+      description: "Pide una valoración. Estudiaremos tu escáner 3D y te diremos exactamente cómo podemos preparar tu hueso para que vuelvas a sonreír con seguridad. Encuentra tu centro:"
     }
   },
 
@@ -2427,8 +2416,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'conservadora-reconstruccion': {
     slug: 'conservadora-reconstruccion',
     activeSubNavId: 'reconstruccion',
-    /* ✨ */ seoTitle: "Empastes y Reconstrucciones Dentales | Salva tu Diente",
-    /* ✨ */ seoDescription: "Frena la caries a tiempo y evita el dolor. Restauraciones estéticas duraderas con tarifas 100% transparentes. Acude a una revisión en tu clínica cercana.",
+    seoTitle: "Empastes y Reconstrucciones Dentales | Salva tu Diente",
+    seoDescription: "Frena la caries a tiempo y evita el dolor. Restauraciones estéticas duraderas con tarifas 100% transparentes. Acude a una revisión a tu clínica más cercana.",
     breadcrumbs: [
       { label: "Tratamientos", href: "/#tratamientos" },
       { label: "Odontología Conservadora", href: "/?modal=4#tratamientos" },
@@ -2438,46 +2427,44 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       badgeText: "Frenando la caries a tiempo",
       title: { dark: "RECONSTRUCCIÓN", normal: "DENTAL" },
       description: [
-        "Salvar tu diente natural es nuestra prioridad. No hay implante ni prótesis en el mundo que supere la obra de la naturaleza.",
-        "Cuando las bacterias de la caries atacan, el tiempo es vital. Limpiamos el tejido infectado y rellenamos el hueco para devolverle al diente su forma, fuerza y color natural."
+        "Salvar tu diente natural es nuestra primera opción. No hay implante ni prótesis en el mundo que supere la obra de la naturaleza.",
+        "Cuando la caries ataca o te partes una muela, el tiempo es oro. Limpiamos la zona  dañada y rellenamos el hueco para devolverle al diente su forma, fuerza y color blanco original."
       ]
     },
     rows: [
       {
         id: "empaste",
-        name: "Empaste", 
+        name: "Empaste Simple (Para caries pequeñas)", 
         price: "29 €",
         image: "/images/empaste.png",
         imageAlt: "Esquema visual de un empaste dental o obturación",
-        subTitle: "El clásico 'empaste'.",
+        subTitle: "Solución rápida e indolora.",
         points: [
-          { icon: '', text: <><strong>¿Qué es y cuándo se usa?</strong> Lo usamos cuando la caries es de tamaño pequeño o mediano.</> },
-          { icon: '', text: <><strong>El beneficio:</strong> Limpiamos la zona oscura, aplicamos una resina del color exacto de tu diente y la endurecemos con luz. Tu diente vuelve a estar sano y funcional en 20 minutos.</> }
+          { icon: '', text: <><strong>¿Cómo lo hacemos?</strong> Tratando la caries a tiempo, el arreglo es rapidísimo. Limpiamos la zona oscura, aplicamos una resina del color exacto de tu diente y la endurecemos con una luz especial. En 20 minutos te vas a casa con el diente perfecto, sano y funcional.</> }
         ],
         detailedPrices: [
           {
             /* ✨ */ title: [
-              { tipo: 'normal', texto: 'Obturación con o sin recubrimiento pulpar' },
-              { tipo: 'oculto', texto: '. Precio: 29 €.' }
+              { tipo: 'normal', texto: 'Empaste (Obturación)' },
+              { tipo: 'oculto', texto: ' Con o sin recubrimiento pulpar. Precio: 29 €.' }
             ],
             price: "29 €"
           }
         ],
-        footerNote: "Incluye recubrimiento pulpar en caso necesario."
+        footerNote: "Incluye recubrimiento pulpar en caso necesario (proteger el nervio si la caries era profunda)."
       },
       {
         id: "gran-reconstruccion",
-        name: "Reconstrucción",
+        name: "Gran Reconstrucción (Para daños extensos)",
         price: "40 €",
-        subTitle: "Daños extensos.",
+        subTitle: "Cuando falta un trozo de muela.",
         points: [
-          { icon: '', text: <><strong>¿Por qué hace falta?</strong> A veces, la caries ha destruido más de la mitad del diente o se te ha roto un trozo grande al morder algo duro. Un empaste normal no aguantaría la presión.</> },
-          { icon: '', text: <><strong>La técnica:</strong> Reconstruimos la anatomía completa de la muela, a menudo usando pequeños encofrados para darle su forma original.</> }
+          { icon: '', text: <><strong>¿Por qué hace falta?</strong> ¿Se te ha roto un trozo de muela al morder algo duro o la caries se ha comido la mitad del diente? Un empaste normal se caería al masticar. Necesitamos 'esculpir' la muela de nuevo, usando moldes especiales para devolverle su fuerza orginal.</> }
         ],
         priceGroups: [
           {
-            title: "Solución temporal",
-            description: "Si acudes con una urgencia y no hay tiempo para hacer la reconstrucción definitiva, o si estamos esperando a ver cómo reacciona el nervio, te ponemos una pasta temporal para que te vayas a casa sin agujeros y sin dolor.",
+            title: "Solución de urgencia (Provisional)",
+            description: "Si acudes de urgencia con mucho dolor y no hay tiempo para terminar el trabajo definitivo, te ponemos una pasta temporal para tapar el agujero y que te vayas a casa tranquilo.",
             items: [
               { icon: '',
                 /* ✨ */  title: [
@@ -2488,13 +2475,13 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             ]
           },
           {
-            title: "Suplemento Refuerzo de soporte",
-            description: "Cuando el diente está tan destruido eue la gran reconstrucción no tiene donde agarrarse, introducimos un pequeño 'poste' o pilar de fibra de vidrio en la raíz para que actúe como los cimientos de un edificio y sujete el material.",
+            title: "Refuerzo para que no se caiga (El 'Poste')",
+            description: "Si el diente está tan roto que la reconstrucción nueva no tiene de dónde agarrarse, introducimos un pequeño palito de fibra de vidrio en la raíz. Funciona como los pilares de un edificio, sujetando todas la pasta desde dentro para que no se parta al comer.",
             items: [
               { icon: '',
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Poste o pin' },
-                  { tipo: 'oculto', texto: '. Precio: + 8 €.' }
+                  { tipo: 'oculto', texto: ' de refuerzo. Precio: + 8 €.' }
                 ],
                 description: "(por Unidad)", 
                 price: <span className="text-dkv-green">+ 8 €</span>
@@ -2505,7 +2492,7 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         detailedPrices: [
           {
             /* ✨ */ title: [
-              { tipo: 'normal', texto: 'Reconstrucción' },
+              { tipo: 'normal', texto: 'Reconstrucción compleja' },
               { tipo: 'oculto', texto: '. Precio: 40 €.' }
             ],
             price: "40 €"
@@ -2515,12 +2502,12 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       },
       {
         id: "bioactivo",
-        name: "Sustitutivo dentinario bioactivo",
+        name: "Escudo Protector del Nervio (Material Bioactivo)",
         price: "70 €",
-        subTitle: "¡La última oportunidad del nervio!",
+        subTitle: "¡La última oportunidad para no matar el nervio!",
         points: [
-          { icon: '', text: <>Si la caries es tan profunda que casi toca el nervio, poner un empaste normal podría irritarlo y acabar en endodoncia.</> },
-          { icon: '', text: <>En su lugar, aplicamos este material "inteligente" (base cavitaria) que <strong>libera minerales, calma el nervio y ayuda a que el diente se cure a sí mismo por dentro</strong> antes de sellarlo definitivamente.</> }
+          { icon: '', text: <>A veces la caries es tan profunda que casi roza el nervio. Si ponemos un empaste normal directamente encima, el nervio se irritará, dolerá y acabará endoconcia (tendremos que matarlo).</> },
+          { icon: '', text: <>En vez de eso, ponemos una capa de este material 'inteligente'. Funciona como una tirita que <strong>libera minerales, calma el nervio y ayuda a que el diente se cure a sí mismo por dentro</strong> antes de sellarlo.</> }
         ],
         detailedPrices: [
           {
@@ -2531,15 +2518,15 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             price: "70 €"
           }
         ],
-        footerNote: "Incluye el composite necesario para sellar el diente."
+        footerNote: "Incluye el empaste necesario para sellar el diente por arriba."
       },
       {
         id: "reimplante",
-        name: "Reimplante de pieza dental",
+        name: "Urgencia por accidente (Reimplante)",
         price: "Incluido",
-        subTitle: "Segunda vida.",
+        subTitle: "Salvar un diente caido.",
         points: [
-          { icon: '', text: <><strong>Para accidentes:</strong> Si te das un golpe y se te sale un diente entero, ven corriendo a la clínica. Volvemos a colocarlo en su sitio y lo inmovilizamos para intentar que vuelva a agarrarse al hueso de forma natural.</> }
+          { icon: '', text: <><strong> Si te das un golpe y se te sale un diente entero de cuajo, no lo tires. </strong> Mételo en un vaso de leche fría o suero (¡nunca lo laves con agua ni toques la raíz!) y ven corriendo a la clínica. Te lo volvemos a colocar en su sitio y lo sujetamos para intentar que tu cuerpo lo vuelva a vuelva a aceptar.</> }
         ],
         detailedPrices: [
           {
@@ -2560,15 +2547,15 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         <div className="relative z-10">
           <h3 className="font-lemon text-xl mb-4 text-dkv-green-light uppercase tracking-wide">El Veredicto de tu Consultor</h3>
           <p className="font-fsme text-lg leading-relaxed italic text-white/90">
-            "No retrases el tratamiento de una caries por miedo al dentista. Un empaste de 29 € se hace en media hora y apenas molesta. Si lo dejas pasar, el 'bichito' llegará al nervio, el dolor será insoportable y el tratamiento (Endodoncia + Gran reconstrucción) pasará a costar más de 160 €, requiriendo varias citas. <strong>En la odontología conservadora, el tiempo es literalmente salud (y dinero).</strong>"
+            "No retrases el tratamiento de una caries por miedo al dentista o por dejarlo para otro mes. Un empaste simple de 29 € se hace en 20 minutos y apenas molesta. Si lo dejas pasar, la infección llegará al nervio, el dolor será insoportable y arreglarlo  (Endodoncia + Gran reconstrucción) pasará a costar más de 120 €, requiriendo varias visitas. <strong> En tus dientes, el tiempo el tiempo es literalmente salud (y dinero).</strong>"
           </p>
         </div>
       </div>
     ),
     cta: {
       title: "Actúa antes de que duela",
-      infoNote: "La caries en sus etapas iniciales es silenciosa. Cuando empieza a doler al beber cosas frías o dulces, significa que está profundizando hacia el nervio.",
-      description: "Solicita una cita en tu clínica más cercana. Un diagnóstico a tiempo con una radiografía (incluida en tu póliza) salvará tu diente de forma rápida y económica:"
+      infoNote: "La caries en sus etapas iniciales no duele, es silenciosa. Cuando empieza a doler al beber cosas frías o comer dulces, significa que el agujero ya es profundo y se acerca al nervio.",
+      description: "Un diagnóstico a tiempo con una simple radiografía (incluida) localizaremos las caries ocultas y salvaremos tu diente de forma rápida y barata. Solicita una cita en tu clínica más cercana. "
     }
   },
 
@@ -2576,8 +2563,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'conservadora-endodoncia': {
     slug: 'conservadora-endodoncia',
     activeSubNavId: 'endodoncias',
-    /* ✨ */ seoTitle: "Endodoncias y Tratamiento de Conductos | Alivia el Dolor",
-    /* ✨ */ seoDescription: "Salvamos tu muela cuando la caries llega al nervio. Intervención sin dolor con un presupuesto definitivo. Pide cita urgente en tu centro dental más cercano.",
+    seoTitle: "Matar el Nervio sin Dolor | Endodoncias y Urgencias",
+    seoDescription: "Salvamos tu muela cuando la caries llega al nervio. Quitamos el dolor de raíz con un presupuesto definitivo. Pide cita rápidamente en tu centro dental más cercano.",
     breadcrumbs: [
       { label: "Tratamientos", href: "/#tratamientos" },
       { label: "Odontología Conservadora", href: "/?modal=4#tratamientos" },
@@ -2587,68 +2574,75 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       badgeText: "Cuando el dolor no te deja dormir",
       title: { dark: "TRATAMIENTO DE", normal: "ENDODONCIA" },
       description: [
-        "El objetivo es salvar un diente en el que la caries ha llegado hasta el centro (la pulpa o nervio), causando una infección y ese dolor punzante y terrible que no se va con analgésicos.",
-        "Te explicamos cada paso del camino para conservar tu sonrisa sana y sin dolor."
+        "Ese dolor punzante que late al ritmo del corazón, que empeora al tumbarte y que ya no se va ni con pastillas ... significa que la caries ha atravesado el diente y está infectando el nervio.",
+        "Tranquilidad, tiene solución.  El objetivo es anestesiarte, limpiar esa infección por dentro y salvar tu muela para que no te la tengan que arrancar. Te explicamos cómo lo hacemos sin dolor."
       ]
     },
     rows: [
       {
         id: "tratamiento-conductos",
-        name: "Endodoncias",
+        name: "La Endodoncia (Matar el nervio)",
         price: "Desde 80 €",
         image: "/images/endodoncia.png",
         imageAlt: "Esquema de una endodoncia completa en un diente",
-        subTitle: "Salvando el conducto radicular.",
+        subTitle: "Limpiar por dentro para que deje de doler.",
+        points: [
+          { icon: '', text: <><strong>¿Cómo se hace?</strong> Vaciamos las raíces del diente infectado, las limpiamos a fondo y las rellenamos con un material plástico especial para sellarlas y que las bacterias no vuelvan a entrar jamás.</> },
+          { icon: '', text: <><strong>¿Por qué varían los precios?</strong> Depende de qué diente sea. Los dientes de delante (incisivos) solo tienen 1 raíz. Las muelas grandes del fondo pueden tener 3 o 4 raíces muy finas y curvadas, lo que requiere muchísimo más tiempo y precisión médica.</> }
+        ],
         priceGroups: [
           {
-            title: "Según la pieza dental",
-            description: "El tratamiento de una pieza dental incluye todas sus raíces.",
+            title: "Según el tamaño de la muela",
+            description: "El tratamiento te cubre la limpieza de todas las raíces que tenga ese diente.",
             items: [
               { icon: '',
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Endodoncia de un conducto' },
                   { tipo: 'oculto', texto: '. Precio: 80 €.' }
                 ],
-                description: "Normalmente para los incisivos y caninos, que solo tienen una raíz.", price: "80 €" },
+                description: "Para los dientes de delante (palas y colmillos), que solo tienen una raíz.", price: "80 €" },
               { icon: '',
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Endodoncia de dos conductos' },
                   { tipo: 'oculto', texto: '. Precio: 94 €.' }
                 ],
-                description: "Usada habitualmente para los dientes premolares.", price: "94 €" },
+                description: "Usada habitualmente para los piezas intermedias (premolares).", price: "94 €" },
               { icon: '',
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Endodoncia de tres o más conductos' },
                   { tipo: 'oculto', texto: '. Precio: 123 €.' }
                 ],
-                description: "Para las grandes muelas del fondo, que son más difíciles y laboriosas de tratar.", price: "123 €" },
+                description: "Para las grandes muelas del fondo. Son más difíciles y laboriosas de tratar.", price: "123 €" }
+           ]
+          },
+          {
+            title: "Limpieza Avanzada",
+            description: "Tecnología para asegurar el éxito.",
+            items: [
               { icon: '',
                 /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Suplemento sistema rotatorio' },
+                  { tipo: 'normal', texto: 'Suplemento Limpieza mecanizada (Sistema Rotatorio)' },
                   { tipo: 'oculto', texto: '. Precio: + 15 €.' }
                 ],
-                description: "En lugar de limpiar las raíces a mano con pequeñas limas, usamos un motor de precisión con limas súper flexibles. Limpia mejor, más rápido, y llega a las curvas más difíciles de tus raíces, asegurando el éxito del tratamiento.", 
+                description: "En lugar de limpiar las raíces a mano con pequeñas limas, usamos un motor de precisión con limas súper flexibles. Facilita y acelera la limpieza, llegando a las curvas más difíciles de tus raíces.", 
                 price: <span className="text-dkv-green">+ 15 €</span>
               }
             ]
           }
-        ],
-        points: [
-          { icon: '', text: <>Conocido coloquialmente como "matar el nervio". La técnica consiste en vaciar las raíces del diente, desinfectarlas por dentro y rellenarlas con un material plástico (gutapercha) para que las bacterias no vuelvan a entrar. El precio depende del número de raíces que tenga el diente:</> }
-        ],
+        ]
       },
       {
         id: "urgencias",
-        name: "Pulpectomía de urgencia",
+        name: "Cura de Urgencia (Alivio inmediato)",
         price: "30 €",
-        subTitle: "El alivio inmediato.",
+        subTitle: "Quitarte el dolor hoy mismo.",
         points: [
-          { icon: '', text: <>Si llegas a la clínica de urgencia llorando de dolor, te anestesiamos, abrimos el diente y sacamos la parte superior del nervio infectado. <strong>El dolor desaparece al instante. </strong> En este caso la endodoncia definitiva se terminará en una cita posterior.</> }
+          { icon: '', text: <>Si llegas a la clínica llorando de dolor nuestra prioridad es que dejes de sufrir. <br/> <strong> Te anestesiamos,  abrimos el diente para liberar la presión y la infección, y el dolor desaparece al instante. </strong> <br/> Te ponemos un medicamento y te vas a casa a descansar. La limpieza final (la endodoncia) te la terminaremos en una cita posterior con más calma. </> }
         ],
         detailedPrices: [
           {
             /* ✨ */ title: [
-              { tipo: 'normal', texto: 'Pulpectomía de urgencia' },
+              { tipo: 'normal', texto: 'Cura de urgencia (Pulpectomía)' },
               { tipo: 'oculto', texto: '. Precio: 30 €.' }
             ],
             price: "30 €"
@@ -2677,14 +2671,14 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
           </div>
 
           <p className="font-fsme text-lg mb-6 text-white/90 leading-relaxed max-w-2xl">
-            Las raíces de los dientes son conductos más finos que un cabello humano, y muchas veces están escondidos, curvados o calcificados. Trabajar a simple vista o con gafas lupa normales tiene sus límites.
+            Las raíces de los dientes son conductos más finos que un cabello humano, y muchas veces están escondidos, muy curvados o taponados. Intentar limpiarlos a simple vista o con gafas lupa normales tiene sus límites.
           </p>
 
           <div className="bg-white/5 rounded-2xl p-6 border border-white/10 backdrop-blur-sm mt-6">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 mb-4 border-b border-white/10">
               <div className="flex items-center gap-3">
                 <CheckCircle2 className="w-6 h-6 text-[#D4AF37] shrink-0" />
-                <h3 className="font-bold text-lg text-white">Suplemento por utilización de microscopía</h3>
+                <h3 className="font-bold text-lg text-white">Suplemento por utilización de Microscopía</h3>
               </div>
               <span className="bg-[#D4AF37] text-slate-900 px-4 py-1.5 rounded-full text-xl font-lemon font-bold mt-4 md:mt-0">
                 Incluido (0 €)
@@ -2692,15 +2686,15 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             </div>
             
             <p className="text-white/80 font-fsme leading-relaxed">
-              <strong>¿Por qué es un salto de calidad brutal?</strong> En nuestros centros especiales, realizamos la endodoncia utilizando un Microscopio Clínico Operatorio que amplía la visión hasta 20 o 30 veces. Nos permite encontrar micro-conductos que de otra forma pasarían desapercibidos (y que causarían dolor en el futuro), limpiar con una precisión absoluta y salvar dientes que en otras clínicas estarían desahuciados. <strong>Y lo mejor de todo: este despliegue tecnológico no tiene coste adicional para ti.</strong>
+              <strong>¿Por qué es un salto de calidad brutal?</strong> En nuestros centros propios especiales, realizamos la endodoncia utilizando un Microscopio Clínico Operatorio que amplía la visión hasta 20 o 30 veces. Nos permite encontrar micro-conductos que de otra forma pasarían por alto, limpiar con una precisión absoluta y salvar muelas que en otras clínicas estarían desahuciados. <strong>Y lo mejor de todo: este despliegue tecnológico no tiene coste adicional para ti.</strong>
             </p>
           </div>
         </div>
       </div>
     ),
     cta: {
-      title: "No sufras innecesariamente",
-      infoNote: "Si el dolor te despierta por la noche o necesitas tomar analgésicos constantemente, tu nervio dental necesita ayuda urgente. Un diagnóstico a tiempo salvará la muela de la extracción.",
+      title: "No sufras ni una noche más",
+      infoNote: "Si el dolor te despierta por la noche, empeora con el calor o necesitas tomar Ibuprofeno cada 4 horas, tu nervio dental está pidiendo ayuda urgente. Tratarlo a tiempo es la única forma de no perder la muela completa.",
       description: "Te invitamos a solicitar una cita de valoración en uno de nuestros centros dentales para estudiar tu caso y aliviar tu dolor inmediatamente. Encuentra tu centro:"
     }
   },
@@ -2709,30 +2703,30 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'conservadora-cirugia': {
     slug: 'conservadora-cirugia',
     activeSubNavId: 'casos-complejos',
-    /* ✨ */ seoTitle: "Reendodoncia y Cirugía Periapical | Evita la Extracción",
-    /* ✨ */ seoDescription: "La última oportunidad para salvar tu diente infectado. Apicectomías y tratamientos complejos con claridad en el precio. Especialistas muy cerca de ti.",
+    /* ✨ */ seoTitle: "Reendodoncia y Cirugía de Quistes | Evita la Extracción",
+    /* ✨ */ seoDescription: "¿Te duele un antigua endodoncia? Aún se podría curar esa infección rebelde, así como los quistes. Presupuesto claro muy cerca de ti.",
     breadcrumbs: [
       { label: "Tratamientos", href: "/#tratamientos" },
       { label: "Odontología Conservadora", href: "/?modal=4#tratamientos" },
       { label: "Cirugía y Casos Complejos", href: "#" }
     ],
     hero: {
-      badgeText: "Casos Complejos",
-      title: { dark: "SEGUNDAS OPORTUNIDADES", normal: "Y CIRUGÍA" },
+      badgeText: "Segundas Oportunidades",
+      title: { dark: "CIRUGIA Y CASOS", normal: "COMPLEJOS" },
       description: [
-        "¿Qué hacer cuando una endodoncia antigua vuelve a dar problemas o se infecta años después?",
-        "Agotar las opciones clínicas para preservar tu dentadura natural siempre será la alternativa biológica y económica más inteligente frente a la extracción."
+        "¿Qué para cuando una muela tratada hace tiempo te vuelve a doler o te sale un flemón? Significa que puede volver a tener bacterias, incluso formarse un quiste en el hueso por su causa.",
+        "Antes de arrancarte la muela y ponerte un implante (solución cara), vamos a agotar hasta la última solución médica para curar la infección y que conserves tu diente original."
       ]
     },
     rows: [
       {
         id: "reendodoncia",
-        name: "Reendodoncia",
+        name: "Repetir la Endodoncia (Reendodoncia)",
         price: "130 €",
-        subTitle: "Endodoncia de repetición.",
+        subTitle: "Limpiar a fondo lo que se volvió a ensuciar.",
         points: [
-          { icon: '', text: <><strong>¿En qué consiste?</strong> Hay que destapar el diente, sacar el material antiguo contaminado, volver a desinfectar todo el sistema de conductos a fondo y volver a sellar.</> },
-          { icon: '', text: <>Es un trabajo muy minucioso (generalmente provocado por filtraciones en coronas antiguas o bacterias resistentes) cuyo único fin es intentar no tener que extraer la muela.</> }
+          { icon: '', text: <><strong>¿Por qué sucede?</strong> En general, la necesidad de una reendodoncia no es frecuente, pero pueden darse casos, por ejemplo, de filtraciones por desplazamiento de coronas antiguas, dando lugar a nueva infección de la pieza.</> },
+          { icon: '', text: <><strong>¿En qué consiste?</strong> Destapamos el diente, sacamos la pasta antigua que se ha contaminado con los años, desinfectamos a conciencia todos los canales de la raíz y volvemos a sellar.</> }
         ],
         detailedPrices: [
           {
@@ -2743,18 +2737,18 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             price: "130 €"
           }
         ],
-        footerNote: "Precio por diente (independiente del número de raices)."
+        footerNote: "Precio por diente (independiente del número de raices que tenga)."
       },
       {
         id: "apicectomia",
-        name: "Apicectomía (Cirugía periapical)",
+        name: "Cortar el quiste de raíz (Apicectomía)",
         price: "38 €",
         image: "/images/apicectomia.png",
         imageAlt: "Ilustración visual de una apicectomía o cirugía periapical",
-        subTitle: "La alternativa quirúrgica.",
+        subTitle: "Cuando limpiar por dentro no es suficiente.",
         points: [
-          { icon: '', text: <>Si la infección en la punta de la raíz (el ápice) no se cura ni siquiera repitiendo la endodoncia y se ha enquistado en el hueso, debemos intervenir desde fuera.</> },
-          { icon: '', text: <>Abrimos un poquito la encía, cortamos la punta infectada de la raíz, extirpamos el quiste y sellamos la raíz desde abajo.</> }
+          { icon: '', text: <>A veces, el quiste al final de la raíz se hace rebelde y no es posible eliminarlo limpiando desde dentro de la misma.</> },
+          { icon: '', text: <><strong> La alternativa quirúrgica: </strong> Abrimos un poquito la encía, cortamos solo la punta infectada de la raíz (el ápice), extirpamos el quiste y sellamos la raíz desde abajo. Problema resuelto salvando tu diente.</> }
         ],
         detailedPrices: [
           {
@@ -2768,12 +2762,12 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       },
       {
         id: "apicoformacion",
-        name: "Apicoformación",
+        name: "Cerrar raíces jóvenes (Apicoformación)",
         price: "54 €",
-        subTitle: "Para dientes inmaduros.",
+        subTitle: "Para dientes definitivos que aún estaban creciendo.",
         points: [
-          { icon: '', text: <>Tratamiento especial, generalmente para jóvenes, que han sufrido un traumatismo severo en un diente definitivo cuya raíz aún no se había formado por completo.</> },
-          { icon: '', text: <>Utilizamos materiales especiales biocerámicos para ayudar a "cerrar" y crear una barrera artificial dura en la punta de esa raíz inmadura de forma química.</> }
+          { icon: '', text: <><strong> El problema. </strong> Si tu hijo adolescente sufre un accidente en una pieza dental definitiva y se la parte, es probable que la raíz de ese diente aún no haya terminado de formarse.</> },
+          { icon: '', text: <><strong> La solución. </strong> Utilizamos 'cementos inteligentes' (biocerámicos) que estimulan al diente y crean un 'tapón' artificial en la punta de la raíz. Así conseguimos que se cierre y salvamos el diente definitivo para toda la vida. </> }
         ],
         detailedPrices: [
           {
@@ -2789,8 +2783,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     ],
     cta: {
       title: "La última frontera",
-      infoNote: "Agotar las opciones clínicas y restauradoras para preservar su dentadura natural siempre será la alternativa biológica, estética y económicamente más inteligente frente a la extracción y los implantes.",
-      description: "Si te han dicho que tu muela no tiene salvación, pide una segunda opinión. Nuestros especialistas evaluarán si la cirugía periapical o la reendodoncia pueden salvarla:"
+      infoNote: "Un implante, siendo muy buena solución, siempre debe ser la opción 'B'. Tu propio diente es el mejor implante que existe. Luchar por él con estos tratamientos es la solución biológica y económica más inteligente.",
+      description: "Si te han dicho que tu muela 'no tiene arreglo' y hay que extraerla, ven a vernos. Nuestros especialistas evaluarán si la cirugía periapical o la reendodoncia pueden salvarla:"
     }
   },
 
