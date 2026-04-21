@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>http://localhost:3000/sitemap-paginas.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>http://localhost:3000/sitemap-tratamientos.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>http://localhost:3000/sitemap-paises.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>http://localhost:3000/sitemap-comunidades.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>http://localhost:3000/sitemap-provincias.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>http://localhost:3000/sitemap-comarcas.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>http://localhost:3000/sitemap-hubs.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>http://localhost:3000/sitemap-municipios.xml</loc>
+  </sitemap>
+</sitemapindex>
