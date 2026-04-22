@@ -1,6 +1,8 @@
 //app/admin/seo/page.tsx
+
 import { createClient } from '@supabase/supabase-js';
 import SeoTable from './SeoTable';
+import SeoDoctor from '@/components/seo/SeoDoctor'; // <-- Importamos nuestro nuevo componente
 
 export const revalidate = 0;
 
@@ -17,14 +19,23 @@ export default async function SeoDashboardPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 p-8 text-slate-800">
-      <div className="max-w-7xl mx-auto">
-        <header className="mb-8">
+      <div className="max-w-7xl mx-auto space-y-8">
+        
+        <header>
           <h1 className="text-3xl font-bold text-slate-900">Observatorio SEO</h1>
-          <p className="text-slate-500">Análisis de landings y centros dentales.</p>
+          <p className="text-slate-500">Auditoría en tiempo real y análisis estructural de la red de clínicas.</p>
         </header>
 
-        {/* Pasamos los datos al componente de cliente */}
-        <SeoTable initialData={audits || []} />
+        {/* 1. SECCIÓN: DOCTOR SEO (Auditoría manual rápida) */}
+        <section>
+          <SeoDoctor />
+        </section>
+
+        {/* 2. SECCIÓN: TABLA HISTÓRICA (El crawler masivo) */}
+        <section>
+          <SeoTable initialData={audits || []} />
+        </section>
+
       </div>
     </div>
   );
