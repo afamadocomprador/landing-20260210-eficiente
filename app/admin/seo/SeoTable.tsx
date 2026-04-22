@@ -55,7 +55,7 @@ const JsonNode = ({ data, name, initiallyExpanded = false }: { data: any, name?:
         {isExpanded && (
           <div className="flex flex-col">
             <div className="pl-4 ml-1.5 border-l border-dashed border-indigo-200 flex flex-col my-0.5">
-              {entries.map(([key, val], idx) => (
+              {entries.map(([key, val]: [string, any], idx: number) => (
                 <div key={key} className="flex">
                   <JsonNode data={val} name={isObject ? key : undefined} initiallyExpanded={false} />
                   {idx < entries.length - 1 && <span className="text-slate-400">,</span>}
