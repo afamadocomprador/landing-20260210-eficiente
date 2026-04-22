@@ -1,3 +1,5 @@
+// app/(home)/page.tsx
+
 "use client"; // ⚡️ IMPORTANTE: Necesitamos interactividad
 
 import React, { useState, useEffect } from 'react';
