@@ -348,7 +348,7 @@ export async function getLevelData(
     "@type": ["InsuranceAgency", "Organization"],
     "@id": `${currentUrl}#local-agency`,
     "mainEntityOfPage": currentUrl,
-    "name": `Clínicas Dentales DKV ${locationName} - Precios Pactados`,
+    "name": `Cuadro Médico DKV DENTISALUD en ${locationName} - Precios Pactados`,
     "legalName": "Bernardo Sobrecasas Gallizo - Agente de Seguros Exclusivo DKV",
     "identifier": "C016125451380V",
     "description": `Cuadro médico oficial DKV en ${locationName}. Acceso a la Red Dental Élite con precios máximos garantizados en implantes, ortodoncia e Invisalign para asegurados.`,
@@ -388,7 +388,8 @@ export async function getLevelData(
           "@type": "Service",
           "name": `Implante Dental en ${locationName}`,
           "description": `Precio baremado oficial en clínicas de ${locationName}. Incluye cirugía y corona.`,
-          "areaServed": { "@type": "AdministrativeArea", "name": locationName }
+          "areaServed": { "@type": "AdministrativeArea", "name": locationName },
+          "provider": { "@id": `${currentUrl}#local-agency` }
         },
         "price": "1100.00",
         "priceCurrency": "EUR"
@@ -399,7 +400,8 @@ export async function getLevelData(
           "@type": "Service",
           "name": `Ortodoncia Invisible (Invisalign) en ${locationName}`,
           "description": "Tratamiento completo con alineadores transparentes y estudio digital incluido.",
-          "areaServed": { "@type": "AdministrativeArea", "name": locationName }
+          "areaServed": { "@type": "AdministrativeArea", "name": locationName },
+          "provider": { "@id": `${currentUrl}#local-agency` }
         },
         "price": "2950.00",
         "priceCurrency": "EUR"
@@ -410,7 +412,8 @@ export async function getLevelData(
           "@type": "Service",
           "name": "Limpieza Dental y Fluoración",
           "description": "Servicio incluido sin coste adicional para asegurados en la red local.",
-          "areaServed": { "@type": "AdministrativeArea", "name": locationName }
+          "areaServed": { "@type": "AdministrativeArea", "name": locationName },
+          "provider": { "@id": `${currentUrl}#local-agency` }
         },
         "price": "0.00",
         "priceCurrency": "EUR"
@@ -456,6 +459,9 @@ export async function getLevelData(
       "@type": "MedicalClinic",
       "@id": `${currentUrl}#clinica-${safeClinicId}`,
       "name": clinic.name || clinic.nombre_centro,
+      "memberOf": { 
+        "@id": `${currentUrl}#local-agency` 
+      },
       "telephone": clinic.phone || clinic.telefono,
       "address": {
         "@type": "PostalAddress",
