@@ -16,7 +16,7 @@ const JsonNode = ({ data, name, initiallyExpanded = false }: { data: any, name?:
   const isArray = Array.isArray(data);
 
   if (isObject || isArray) {
-    const entries = isObject ? Object.entries(data) : data.map((item, i) => [i.toString(), item]);
+    const entries = isObject ? Object.entries(data) : data.map((item: any, i: number) => [i.toString(), item]);
     const isEmpty = entries.length === 0;
 
     if (isEmpty) {
