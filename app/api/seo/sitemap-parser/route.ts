@@ -52,7 +52,7 @@ export async function POST(req: Request) {
     // Limpiamos la lista: 
     // 1. Quitamos duplicados (por si acaso)
     // 2. Filtramos posibles PDFs o imágenes que se hayan colado en el sitemap
-    const cleanUrls = [...new Set(rawUrls)].filter(url => {
+    const cleanUrls = Array.from(new Set(rawUrls)).filter(url => {
       const lowerUrl = url.toLowerCase();
       return !lowerUrl.endsWith('.pdf') && !lowerUrl.endsWith('.jpg') && !lowerUrl.endsWith('.png');
     });
