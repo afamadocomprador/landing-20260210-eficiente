@@ -5,7 +5,14 @@ import dynamic from 'next/dynamic';
 import { SITE_CONFIG } from '@/constants/config';
 import MainHero from '@/components/hero/MainHero';
 import FooterLegal from '@/components/FooterLegal';
-import InteractiveContent from './InteractiveContent';
+//import InteractiveContent from './InteractiveContent';
+// ⚡️ LA SOLUCIÓN AL TTI: 
+// Importamos dinámicamente la interactividad y forzamos a que no bloquee el servidor
+const InteractiveContent = dynamic(() => import('./InteractiveContent'), {
+  ssr: false, // Asegura que solo se renderice en el cliente
+});
+
+
 
 // Carga dinámica del banner para no penalizar el tiempo de carga inicial
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), {
