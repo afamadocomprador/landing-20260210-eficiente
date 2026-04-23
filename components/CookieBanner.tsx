@@ -79,7 +79,7 @@ const CookieBanner = () => {
                 Utilizamos cookies propias y de terceros para fines analíticos y para mostrarte 
                 publicidad personalizada en base a un perfil elaborado a partir de tus hábitos 
                 de navegación. Puedes aceptar todas las cookies pulsando 
-                <span className="font-bold text-dkv-green-dark mx-1">"Aceptar Todas"</span>, 
+                <span className="font-bold text-dkv-green-dark mx-1">&quot;Aceptar Todas&quot;</span>, 
                 rechazarlas o configurarlas a tu gusto.
               </p>
             </div>
@@ -151,6 +151,7 @@ const CookieBanner = () => {
                     className="sr-only peer"
                     checked={preferences.marketing}
                     onChange={(e) => setPreferences({...preferences, marketing: e.target.checked})}
+                    aria-label="Activar o desactivar cookies de Publicidad y Análisis"
                   />
                   {/* Fondo del toggle: Gris si off, Verde DKV si on */}
                   <div className="w-12 h-6 bg-dkv-gray/30 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-dkv-green shadow-inner"></div>
