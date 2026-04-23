@@ -1,8 +1,10 @@
-//app/admin/seo/page.tsx
+// app/admin/seo/page.tsx
 
 import { createClient } from '@supabase/supabase-js';
 import SeoTable from './SeoTable';
-import SeoDoctor from '@/components/seo/SeoDoctor'; // <-- Importamos nuestro nuevo componente
+import SeoDoctor from '@/components/seo/SeoDoctor'; 
+import GlobalScanner from './GlobalScanner'; 
+import SeoAnalytics from './SeoAnalytics'; // <-- Importamos nuestra nueva analítica
 
 export const revalidate = 0;
 
@@ -26,12 +28,22 @@ export default async function SeoDashboardPage() {
           <p className="text-slate-500">Auditoría en tiempo real y análisis estructural de la red de clínicas.</p>
         </header>
 
-        {/* 1. SECCIÓN: DOCTOR SEO (Auditoría manual rápida) */}
+        {/* 1. SECCIÓN: DOCTOR SEO */}
         <section>
           <SeoDoctor />
         </section>
 
-        {/* 2. SECCIÓN: TABLA HISTÓRICA (El crawler masivo) */}
+        {/* 2. SECCIÓN: AUDITORÍA GLOBAL */}
+        <section>
+          <GlobalScanner />
+        </section>
+
+        {/* 3. SECCIÓN: ANALÍTICA CRUZADA (¡El paso 3!) */}
+        <section>
+          <SeoAnalytics audits={audits || []} />
+        </section>
+
+        {/* 4. SECCIÓN: TABLA HISTÓRICA */}
         <section>
           <SeoTable initialData={audits || []} />
         </section>
