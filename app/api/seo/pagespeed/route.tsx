@@ -1,9 +1,7 @@
 // app/api/seo/pagespeed/route.ts
 
-
 import { NextResponse } from 'next/server';
 
-// Limpiamos el Markdown de las descripciones de Google [texto](url)
 const cleanDescription = (desc: string) => {
   if (!desc) return '';
   return desc.replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1'); 
@@ -13,32 +11,22 @@ export async function POST(req: Request) {
   try {
     const { url, strategy = 'mobile' } = await req.json();
 
-    if (!url) {
-      return NextResponse.json({ success: false, error: 'Falta la URL' }, { status: 400 });
-    }
+    if (!url) return NextResponse.json({ success: false, error: 'Falta la URL' }, { status: 400 });
 
     const encodedUrl = encodeURIComponent(url);
     const categories = '&category=performance&category=accessibility&category=best-practices&category=seo';
-    
     const apiKey = process.env.GOOGLE_PAGESPEED_API_KEY;
     const keyParam = apiKey ? `&key=${apiKey}` : ''; 
     
-    // MAGIA AQUÍ: Añadimos &hl=es para que Google nos devuelva descripciones y soluciones en castellano
     const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodedUrl}&strategy=${strategy}${categories}${keyParam}&hl=es`;
 
     const response = await fetch(apiUrl);
-    
-    if (!response.ok) {
-      if (response.status === 429) {
-        throw new Error('Google está saturado (Status 429: Demasiadas peticiones). Espera 1 minuto o configura tu API Key en .env.');
-      }
-      throw new Error(`Error de Google PSI. Status: ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`Error de Google PSI. Status: ${response.status}`);
     
     const data = await response.json();
     const lighthouse = data.lighthouseResult;
 
-    if (!lighthouse) throw new Error('No se recibió el reporte de Lighthouse de Google');
+    if (!lighthouse) throw new Error('No se recibió el reporte de Lighthouse');
 
     const scores = {
       performance: Math.round(lighthouse.categories.performance?.score * 100) || 0,
@@ -47,26 +35,41 @@ export async function POST(req: Request) {
       seo: Math.round(lighthouse.categories.seo?.score * 100) || 0,
     };
 
+    // Restauramos las métricas principales
     const metrics = {
       lcp: lighthouse.audits['largest-contentful-paint']?.displayValue || 'N/A',
       cls: lighthouse.audits['cumulative-layout-shift']?.displayValue || 'N/A',
       speedIndex: lighthouse.audits['speed-index']?.displayValue || 'N/A',
     };
 
-    // Extraemos TODAS las auditorías que tengan puntuación numérica (0 a 1)
     const getDetailedIssues = (categoryKey: string) => {
       const refs = lighthouse.categories[categoryKey]?.auditRefs || [];
       return refs
-        .map((ref: any) => lighthouse.audits[ref.id])
-        .filter((audit: any) => audit && typeof audit.score === 'number') // Sin límite de nota, las cogemos TODAS
-        .map((audit: any) => ({
-           id: audit.id,
-           title: audit.title,
-           description: cleanDescription(audit.description),
-           displayValue: audit.displayValue || null,
-           score: audit.score // De 0 (Crítico) a 1 (Perfecto)
-        }))
-        .sort((a: any, b: any) => a.score - b.score); // Los peores arriba, los perfectos abajo
+        .map((ref: any) => {
+          const audit = lighthouse.audits[ref.id];
+          if (!audit) return null;
+
+          let responsibleElement = null;
+          if (audit.details?.items?.[0]?.node?.snippet) {
+            responsibleElement = audit.details.items[0].node.snippet;
+          }
+
+          return {
+            id: audit.id,
+            title: audit.title,
+            description: cleanDescription(audit.description),
+            displayValue: audit.displayValue || null,
+            score: audit.score,
+            responsibleElement
+          };
+        })
+        // 🌟 CORRECCIÓN: Ahora no borramos el LCP, aceptamos las métricas informativas
+        .filter((audit: any) => audit && (typeof audit.score === 'number' || audit.displayValue))
+        .sort((a: any, b: any) => {
+           const scoreA = typeof a.score === 'number' ? a.score : 0;
+           const scoreB = typeof b.score === 'number' ? b.score : 0;
+           return scoreA - scoreB;
+        });
     };
 
     const detailedIssues = {
