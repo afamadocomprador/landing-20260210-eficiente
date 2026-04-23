@@ -1,12 +1,13 @@
+//app/layout.tsx
+
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Script from "next/script";
 import "./globals.css";
-// Importamos el Header migrado
+// IMPORTANTE: Ruta correcta del Header migrado
 import Header from "@/components/layout/Header";
 
-
-// Configuración de Fuentes Corporativas (Mismo setup V2, mapeado a V1)
+// Configuración de Fuentes Corporativas (Setup original del proyecto)
 const lemonMilk = localFont({
   src: "./fonts/LemonMilkPro-Bold.woff2",
   variable: "--font-lemon-milk",
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
   title: "DKV Dentisalud Élite | Bernardo Sobrecasas",
   description: "Tratamientos dentales con precios pactados. Implantes a 1.200€ y menores incluidos.",
   verification: {
-    google: 'ZcZv1ys4X1ftnI0uYOf6EfLkxGXAUsuaiK_9h1DaRv0', // Tu código de Search Console
+    google: 'ZcZv1ys4X1ftnI0uYOf6EfLkxGXAUsuaiK_9h1DaRv0', // Código de Search Console original
   },
 };
 
@@ -38,8 +39,6 @@ export default function RootLayout({
     <html lang="es" className="scroll-smooth">
       <head>
         {/* 1. GOOGLE CONSENT MODE v2 (CRÍTICO - LEGALIDAD) */}
-        {/* <Script id="google-consent-mode" strategy="beforeInteractive"> */}
-        {/*  lo cambiamos a afterInteractive para que se dibuje todo antes */}
         <Script id="google-consent-mode" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
@@ -60,13 +59,12 @@ export default function RootLayout({
         </Script>
       </head>
       
-      {/* CAMBIO CRÍTICO: Usamos 'font-fsme' en lugar de 'font-body' para coincidir con tailwind.config.ts */}
       <body className={`${lemonMilk.variable} ${fsMe.variable} font-fsme antialiased bg-white`}>
         
-        {/* Header V1 Inyectado */}
+        {/* Header V1 Restaurado (Ruta: @/components/layout/Header) */}
         <Header />
 
-        {/* Ajuste de padding-top para compensar el header fijo (110px iniciales) */}
+        {/* Padding-top de 110px para compensar el header fijo y no tapar el Hero */}
         <main className="pt-[110px] min-h-screen">
           {children}
         </main>
