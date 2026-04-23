@@ -1,10 +1,12 @@
+// components/hero/MainHero.tsx
+
 import React from "react";
 import Image from "next/image";
 
 /**
  * MainHero: Componente visual estático para la Landing Principal (Home).
  * Estilo: Basado en V1 (DKV Corporativo "Bonito").
- * OPTIMIZACIÓN: Convertido a Server Component (RSC) para mejorar LCP.
+ * OPTIMIZACIÓN: Convertido a Server Component (RSC) puro para mejorar LCP y FCP.
  */
 export default function MainHero() {
   return (
@@ -25,17 +27,14 @@ export default function MainHero() {
                 <div className="absolute -right-[9px] -bottom-[9px] w-4 h-4 bg-white border-2 border-dkv-green-dark rounded-full z-20"></div>
               </div>
             </div>
-
+            
             <div className="relative z-20 space-y-4 pt-1">
               <span className="inline-block py-1 px-3 bg-dkv-green/10 text-dkv-green-dark font-bold text-xs uppercase tracking-wider rounded-full">
                 DKV Dentisalud Élite
               </span>
-              
               <h1 className="text-4xl lg:text-6xl font-lemon text-dkv-green-dark leading-tight">
-                Lo fácil es cuidar <br />
-                <span className="text-dkv-green">tu sonrisa.</span>
+                Lo fácil es cuidar <br /> <span className="text-dkv-green">tu sonrisa.</span>
               </h1>
-              
               <p className="text-lg lg:text-xl text-dkv-gray font-fsme max-w-lg">
                 <strong>Acceso</strong> sin rodeos. Atención dental de <strong>Calidad</strong>. Y{" "}
                 <strong>Precios Claros</strong> que entiendes desde el principio.
@@ -46,41 +45,20 @@ export default function MainHero() {
 
         {/* --- BLOQUE DE IMAGEN --- */}
         <div className="w-full lg:w-1/2 relative flex justify-center lg:block">
-          
           {/* Círculo contenedor de la imagen */}
           <div className="relative w-full max-w-[280px] lg:max-w-md aspect-square mx-auto bg-dkv-green rounded-full overflow-hidden border-8 border-white shadow-2xl z-20">
-            {/* NOTA: La imagen debe estar en /public/images/hero-dkv.png 
-               Usa el placeholder gris hasta que generes el asset con el prompt.
-            */}
             <div className="relative w-full h-full bg-neutral-100 flex items-center justify-center">
-               <Image
-                //src="/images/hero-dkv.png"
-                src="/images/hero-dkv.webp"
-                alt="Cliente feliz DKV Dentisalud"
-                fill
-                className="object-cover"
-                priority
-                // sizes="(max-width: 768px) 100vw, 50vw"
-                // ⚠️ CAMBIO CRÍTICO AQUÍ:
-                // Le decimos explícitamente: "En pantallas de móvil (hasta 640px), la imagen NUNCA pasará de 400px de ancho".
-                //sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 450px"
-
-                // ⬇️ AQUÍ ESTÁ LA MAGIA ⬇️
-                // Antes: (max-width: 640px) 100vw -> "Descarga ancho de pantalla completo" (MAL)
-                // Ahora: (max-width: 1024px) 280px -> "En móvil/tablet la imagen mide FIJO 280px"
-                sizes="(max-width: 1024px) 280px, 450px"
-
-                /* se suprime al quitar "use client"
-                  onError={(e) => {
-                      // Fallback elegante si la imagen no existe aún
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
-                  }}
-                */
+              {/* ⚡️ OPTIMIZACIÓN LCP: priority true y sizes explícitos para móviles y desktop */}
+              <Image 
+                src="/images/hero-dkv.webp" 
+                alt="Cliente feliz DKV Dentisalud" 
+                fill 
+                className="object-cover" 
+                priority={true}
+                sizes="(max-width: 1024px) 280px, 450px" 
               />
             </div>
           </div>
-
         </div>
 
       </div>
