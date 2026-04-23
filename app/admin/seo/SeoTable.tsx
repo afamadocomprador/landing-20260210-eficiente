@@ -1,6 +1,4 @@
-//app/admin/seo/SeoTable.tsx
-
-// app/admin/seo/SeoTable.tsx
+/ app/admin/seo/SeoTable.tsx
 'use client';
 
 import React, { useState, useMemo } from 'react';
