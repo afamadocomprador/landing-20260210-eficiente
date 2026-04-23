@@ -1,14 +1,81 @@
 // components/seo/SeoDoctor.tsx
 
+// components/seo/SeoDoctor.tsx
+
 'use client';
 
 import React, { useState } from 'react';
 import { 
   Search, AlertOctagon, AlertTriangle, CheckCircle, Activity, 
-  Image as ImageIcon, Link as LinkIcon, FileText, Gauge, 
-  Zap, Accessibility, Wrench, ChevronDown, ChevronUp, CheckCircle2
+  ImageIcon, Link as LinkIcon, FileText, Gauge, 
+  Zap, Accessibility, Wrench, ChevronDown, ChevronUp, CheckCircle2,
+  Share2, Eye
 } from 'lucide-react';
 
+// --- SUB-COMPONENTE: Nodo Jerárquico de Entidades con Tintas ---
+const EntityNode = ({ data, level = 0 }: { data: any, level?: number }) => {
+  const [isOpen, setIsOpen] = useState(level === 0);
+  
+  if (!data || typeof data !== 'object') return <span className="text-slate-500">{String(data)}</span>;
+
+  const getEntityStyle = (type: any) => {
+    const t = Array.isArray(type) ? type[0] : String(type);
+    if (t?.includes('Agency') || t?.includes('Organization') || t?.includes('Person')) 
+      return 'bg-blue-50 border-blue-200 text-blue-700'; 
+    if (t?.includes('Service') || t?.includes('Offer') || t?.includes('MedicalTherapy')) 
+      return 'bg-emerald-50 border-emerald-200 text-emerald-700'; 
+    if (t?.includes('WebPage') || t?.includes('Breadcrumb')) 
+      return 'bg-purple-50 border-purple-200 text-purple-700'; 
+    return 'bg-slate-50 border-slate-200 text-slate-700'; 
+  };
+
+  const type = data['@type'] || (data['@graph'] ? 'GRAPH (Contenedor)' : 'Object');
+  const style = getEntityStyle(type);
+
+  return (
+    <div className={`my-2 border rounded-lg overflow-hidden ${level > 0 ? 'ml-4 border-l-2' : ''}`}>
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className={`w-full px-3 py-2 flex items-center justify-between text-[11px] font-bold ${style} hover:opacity-80 transition-opacity`}
+      >
+        <div className="flex items-center gap-2">
+          {isOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+          <span className="uppercase tracking-tight">
+            {Array.isArray(type) ? type.join(' / ') : type}
+          </span>
+          {data.name && <span className="opacity-70 font-normal italic">| {data.name}</span>}
+        </div>
+      </button>
+
+      {isOpen && (
+        <div className="p-3 bg-white space-y-2 border-t border-slate-100">
+          {Object.entries(data).map(([key, value]) => {
+            if (key === '@type' || key === '@context') return null;
+            
+            return (
+              <div key={key} className="text-[10px]">
+                <span className="text-slate-400 font-mono font-bold mr-2">{key}:</span>
+                {typeof value === 'object' && value !== null ? (
+                  Array.isArray(value) ? (
+                    <div className="mt-1 space-y-1">
+                      {value.map((v, i) => <EntityNode key={i} data={v} level={level + 1} />)}
+                    </div>
+                  ) : (
+                    <EntityNode data={value} level={level + 1} />
+                  )
+                ) : (
+                  <span className="text-slate-800 break-all">{String(value)}</span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// --- SUB-COMPONENTE: Círculo de Puntuación ---
 const ScoreCircle = ({ label, score }: { label: string, score: number }) => {
   let colorClass = 'text-red-500';
   let strokeClass = 'stroke-red-500';
@@ -47,13 +114,12 @@ const ScoreCircle = ({ label, score }: { label: string, score: number }) => {
   );
 };
 
-// --- COMPONENTE MEJORADO: Lista de TODAS las auditorías con colores ---
+// --- SUB-COMPONENTE RESTAURADO: Lista de Parámetros de PageSpeed ---
 const IssueList = ({ title, icon: Icon, issues }: { title: string, icon: any, issues: any[] }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   if (!issues || issues.length === 0) return null;
 
-  // Calculamos cuántos hay de cada para el resumen del botón
   const criticalCount = issues.filter(i => i.score < 0.5).length;
   const warningCount = issues.filter(i => i.score >= 0.5 && i.score < 0.9).length;
   const passedCount = issues.filter(i => i.score >= 0.9).length;
@@ -68,7 +134,6 @@ const IssueList = ({ title, icon: Icon, issues }: { title: string, icon: any, is
           <Icon className="w-5 h-5 text-slate-600" />
           <h4 className="font-bold text-slate-800">{title}</h4>
           
-          {/* Etiquetas de resumen */}
           <div className="hidden sm:flex gap-1.5 ml-2">
             {criticalCount > 0 && <span className="bg-red-100 text-red-700 text-[10px] font-black px-2 py-0.5 rounded-md">{criticalCount} Errores</span>}
             {warningCount > 0 && <span className="bg-amber-100 text-amber-700 text-[10px] font-black px-2 py-0.5 rounded-md">{warningCount} Mejoras</span>}
@@ -138,10 +203,11 @@ export default function SeoDoctor() {
   const [loadingSpeed, setLoadingSpeed] = useState(false);
   const [speedReport, setSpeedReport] = useState<any>(null);
   const [error, setError] = useState('');
+  const [showRawText, setShowRawText] = useState(false);
 
   const handleStaticAnalyze = async () => {
     if (!url) return;
-    setLoadingStatic(true); setError(''); setStaticReport(null);
+    setLoadingStatic(true); setError(''); setStaticReport(null); setShowRawText(false);
 
     try {
       const validUrl = url.startsWith('http') ? url : `https://${url}`;
@@ -150,9 +216,14 @@ export default function SeoDoctor() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: validUrl })
       });
+      
       const data = await res.json();
-      if (data.success) setStaticReport(data.report);
-      else setError(data.error);
+      
+      if (!res.ok || data.error) {
+        setError(data.error || 'Error desconocido al analizar la URL.');
+      } else {
+        setStaticReport(data);
+      }
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -224,7 +295,6 @@ export default function SeoDoctor() {
                 2. Core Web Vitals (Google PSI)
               </button>
             </div>
-            {loadingSpeed && <p className="text-emerald-400 text-xs mt-3 text-center animate-pulse">Descargando reporte oficial en español (puede tardar 15s)...</p>}
           </div>
         </div>
       </div>
@@ -235,6 +305,7 @@ export default function SeoDoctor() {
         </div>
       )}
 
+      {/* --- SECCIÓN PAGERATING / SPEED --- */}
       {speedReport && (
         <div className="bg-slate-50/50">
           <div className="p-8 border-b border-slate-200">
@@ -243,47 +314,30 @@ export default function SeoDoctor() {
               <h3 className="font-bold text-slate-800 text-lg">Puntuación Oficial de Google (Móvil)</h3>
             </div>
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-6">
               <ScoreCircle label="Rendimiento" score={speedReport.scores.performance} />
               <ScoreCircle label="Accesibilidad" score={speedReport.scores.accessibility} />
               <ScoreCircle label="Prácticas" score={speedReport.scores.bestPractices} />
               <ScoreCircle label="SEO" score={speedReport.scores.seo} />
             </div>
-
-            <div className="bg-white rounded-xl border border-slate-200 p-6 flex flex-col md:flex-row gap-8 justify-around">
-              <div className="text-center">
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Carga Principal (LCP)</p>
-                <p className={`text-xl font-black ${parseFloat(speedReport.metrics.lcp) <= 2.5 ? 'text-emerald-600' : 'text-red-500'}`}>
-                  {speedReport.metrics.lcp}
-                </p>
-              </div>
-              <div className="text-center">
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Estabilidad Visual (CLS)</p>
-                <p className={`text-xl font-black ${parseFloat(speedReport.metrics.cls) <= 0.1 ? 'text-emerald-600' : 'text-red-500'}`}>
-                  {speedReport.metrics.cls}
-                </p>
-              </div>
-              <div className="text-center">
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Índice de Velocidad</p>
-                <p className="text-xl font-black text-slate-700">{speedReport.metrics.speedIndex}</p>
-              </div>
-            </div>
           </div>
 
-          <div className="p-8 space-y-4">
-            <div className="flex items-center gap-2 mb-6">
-              <Activity className="w-5 h-5 text-slate-700" />
-              <h3 className="font-bold text-slate-800 text-lg">Todos los Parámetros Evaluados</h3>
+          {/* 🌟 AQUÍ ESTÁ EL BLOQUE CORREGIDO: Usando 'detailedIssues' */}
+          {speedReport.detailedIssues && (
+            <div className="p-8 bg-slate-100/50 border-b border-slate-200 space-y-4">
+              <h4 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-4">
+                Desglose Detallado de Parámetros (Aprobados y Fallidos)
+              </h4>
+              <IssueList title="Rendimiento y Velocidad" icon={Zap} issues={speedReport.detailedIssues.performance} />
+              <IssueList title="Accesibilidad Web" icon={Accessibility} issues={speedReport.detailedIssues.accessibility} />
+              <IssueList title="Mejores Prácticas" icon={Wrench} issues={speedReport.detailedIssues.bestPractices} />
+              <IssueList title="SEO Técnico" icon={Search} issues={speedReport.detailedIssues.seo} />
             </div>
-            
-            <IssueList title="Rendimiento y Carga" icon={Zap} issues={speedReport.detailedIssues?.performance} />
-            <IssueList title="Accesibilidad Web" icon={Accessibility} issues={speedReport.detailedIssues?.accessibility} />
-            <IssueList title="Mejores Prácticas" icon={Wrench} issues={speedReport.detailedIssues?.bestPractices} />
-            <IssueList title="SEO Técnico" icon={Search} issues={speedReport.detailedIssues?.seo} />
-          </div>
+          )}
         </div>
       )}
 
+      {/* --- SECCIÓN STATIC REPORT (JERÁRQUICA) --- */}
       {staticReport && (
         <div className="p-8 bg-white">
            <div className="flex items-center gap-2 mb-6">
@@ -292,38 +346,48 @@ export default function SeoDoctor() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center gap-4">
-              <div className="p-3 bg-blue-100 text-blue-600 rounded-lg"><FileText className="w-5 h-5" /></div>
-              <div>
-                <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Palabras (Texto)</p>
-                <p className="text-xl font-black text-slate-700">{staticReport.stats.words}</p>
+            <div className={`bg-slate-50 p-4 rounded-xl border flex items-center justify-between gap-4 transition-colors ${staticReport.stats?.words < 100 ? 'border-amber-200' : 'border-slate-100'}`}>
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-blue-100 text-blue-600 rounded-lg"><FileText className="w-5 h-5" /></div>
+                <div>
+                  <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Palabras</p>
+                  <p className="text-xl font-black text-slate-700">{staticReport.stats?.words || 0}</p>
+                </div>
               </div>
+              <button 
+                onClick={() => setShowRawText(!showRawText)} 
+                className={`p-2 rounded-lg transition-colors ${staticReport.stats?.words < 100 ? 'bg-amber-100 text-amber-600 hover:bg-amber-200' : 'bg-slate-100 text-slate-500 hover:bg-slate-200'}`} 
+                title="Auditar texto visible capturado"
+              >
+                <Eye size={18} />
+              </button>
             </div>
+            
             <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center gap-4">
               <div className="p-3 bg-indigo-100 text-indigo-600 rounded-lg"><Activity className="w-5 h-5" /></div>
               <div>
-                <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Etiquetas HTML (H)</p>
-                <p className="text-xl font-black text-slate-700">{staticReport.stats.headersTotal || 0}</p>
+                <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Etiquetas H1</p>
+                <p className="text-xl font-black text-slate-700">{staticReport.stats?.h1 || 0}</p>
               </div>
             </div>
             <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center gap-4">
-              <div className="p-3 bg-purple-100 text-purple-600 rounded-lg"><ImageIcon className="w-5 h-5" /></div>
+              <div className="p-3 bg-purple-100 text-purple-600 rounded-lg"><LinkIcon className="w-5 h-5" /></div>
               <div>
-                <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Imágenes</p>
-                <p className="text-xl font-black text-slate-700">{staticReport.stats.images || 0}</p>
+                <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Enlaces</p>
+                <p className="text-xl font-black text-slate-700">{staticReport.stats?.links || 0}</p>
               </div>
             </div>
             <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 flex items-center gap-4">
-              <div className="p-3 bg-emerald-100 text-emerald-600 rounded-lg"><LinkIcon className="w-5 h-5" /></div>
+              <div className="p-3 bg-emerald-100 text-emerald-600 rounded-lg"><Share2 className="w-5 h-5" /></div>
               <div>
-                <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Entidades (Schema)</p>
-                <p className="text-xl font-black text-slate-700">{staticReport.stats.entities || 0}</p>
+                <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Entidades Totales</p>
+                <p className="text-xl font-black text-slate-700">{staticReport.stats?.entities || 0}</p>
               </div>
             </div>
           </div>
 
-          <div className="space-y-4">
-            {staticReport.critical.length > 0 && (
+          <div className="space-y-4 mb-6">
+            {staticReport.critical?.length > 0 && (
               <div className="bg-white border border-red-200 rounded-xl shadow-sm overflow-hidden">
                 <div className="bg-red-50 px-4 py-3 border-b border-red-100 flex items-center gap-2">
                   <AlertOctagon className="w-4 h-4 text-red-600" />
@@ -331,7 +395,7 @@ export default function SeoDoctor() {
                 </div>
                 <ul className="p-4 space-y-3">
                   {staticReport.critical.map((msg: string, i: number) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-slate-700 font-medium leading-snug">
+                    <li key={i} className="flex items-start gap-2 text-xs text-slate-700 font-medium leading-snug">
                       <span className="text-red-500 font-black mt-0.5">•</span> {msg}
                     </li>
                   ))}
@@ -339,7 +403,7 @@ export default function SeoDoctor() {
               </div>
             )}
 
-            {staticReport.warnings.length > 0 && (
+            {staticReport.warnings?.length > 0 && (
               <div className="bg-white border border-amber-200 rounded-xl shadow-sm overflow-hidden">
                 <div className="bg-amber-50 px-4 py-3 border-b border-amber-100 flex items-center gap-2">
                   <AlertTriangle className="w-4 h-4 text-amber-600" />
@@ -347,8 +411,8 @@ export default function SeoDoctor() {
                 </div>
                 <ul className="p-4 bg-amber-50/20 space-y-3">
                   {staticReport.warnings.map((msg: string, i: number) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-slate-700 leading-snug">
-                      <span className="text-amber-500 font-black mt-0.5 text-[10px] uppercase tracking-widest">TIP:</span> 
+                    <li key={i} className="flex items-start gap-2 text-xs text-slate-700 leading-snug">
+                      <span className="text-amber-500 font-black mt-0.5 tracking-widest">TIP:</span> 
                       <span>{msg}</span>
                     </li>
                   ))}
@@ -356,7 +420,7 @@ export default function SeoDoctor() {
               </div>
             )}
 
-            {staticReport.good.length > 0 && (
+            {staticReport.good?.length > 0 && (
               <div className="bg-white border border-emerald-200 rounded-xl shadow-sm overflow-hidden">
                 <div className="bg-emerald-50 px-4 py-3 border-b border-emerald-100 flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-emerald-600" />
@@ -364,13 +428,40 @@ export default function SeoDoctor() {
                 </div>
                 <ul className="p-4 space-y-2">
                   {staticReport.good.map((msg: string, i: number) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
+                    <li key={i} className="flex items-start gap-2 text-xs text-slate-600">
                       <span className="text-emerald-500 font-black mt-0.5">✓</span> {msg}
                     </li>
                   ))}
                 </ul>
               </div>
             )}
+          </div>
+
+          {showRawText && (
+            <div className="mt-6 bg-amber-50 rounded-xl border-2 border-amber-200 overflow-hidden animate-in fade-in slide-in-from-top-2">
+              <div className="bg-amber-100 px-6 py-3 border-b border-amber-200 flex justify-between items-center">
+                <span className="text-xs font-bold text-amber-900 uppercase flex items-center gap-2 tracking-tight"><FileText size={16}/> Auditoría de Contenido: Texto Visible Capturado por el Motor</span>
+                <button onClick={() => setShowRawText(false)} className="text-amber-900 font-bold text-xs hover:text-amber-700">Cerrar Visor</button>
+              </div>
+              <div className="p-6 bg-white border-t border-amber-200">
+                <div className="bg-amber-50 p-5 rounded-xl border border-amber-100 max-h-[400px] overflow-y-auto shadow-inner">
+                  <p className="text-[13px] text-slate-800 leading-relaxed font-serif italic">
+                    "{staticReport.visibleText || 'No se pudo recuperar el texto legible.'}"
+                  </p>
+                </div>
+                <div className="mt-3 flex gap-2 items-center text-amber-700 bg-amber-100/50 p-3 rounded-lg text-xs font-medium">
+                  <AlertTriangle size={16}/>
+                  <p>* Este es el bloque de texto filtrado (sin menús, scripts ni pie de página) que el algoritmo utiliza para valorar la densidad de contenido de la página. Úsalo para determinar si es un falso positivo.</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="mt-12 border-t pt-8">
+            <h3 className="font-bold text-slate-800 text-lg mb-6 flex items-center gap-2.5"><Share2 size={20} className="text-indigo-600"/> Explorador Jerárquico de Entidades JSON-LD</h3>
+            <div className="max-h-[500px] overflow-y-auto pr-3 custom-scrollbar">
+              {staticReport.entities?.map((e: any, i: number) => <EntityNode key={i} data={e} />)}
+            </div>
           </div>
         </div>
       )}
