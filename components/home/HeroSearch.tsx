@@ -4,12 +4,14 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Search, MapPin, Navigation, Loader2 } from "lucide-react";
-import { createClient } from "@supabase/supabase-js";
 
+/* ********** lo dejamos para que vaya cargando a su marcha y no penalice el dibujo inicial
+import { createClient } from "@supabase/supabase-js";
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
+********** */
 
 interface SearchItem {
   n: string;
@@ -27,11 +29,33 @@ export default function HeroSearch() {
   const [dictionary, setDictionary] = useState<SearchItem[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
-  
   const [isNavigating, setIsNavigating] = useState(false);
-  
+ 
   const router = useRouter();
   const wrapperRef = useRef<HTMLDivElement>(null);
+
+  // Guardamos la instancia de supabase en una ref
+  const supabaseRef = useRef<any>(null);
+  // 🚀 ESTRATEGIA IDLE: Cargamos Supabase en segundo plano una vez que la web ya se ha pintado
+  useEffect(() => {
+
+    // Si ya existe la conexión, no hacemos nada
+    if (supabaseRef.current) return;
+
+    // Usamos importación dinámica. Esto crea un chunk separado.
+    import("@supabase/supabase-js").then(({ createClient }) => {
+
+      // 2. Doble comprobación por seguridad
+      if (!supabaseRef.current) {
+         supabaseRef.current = createClient(
+           process.env.NEXT_PUBLIC_SUPABASE_URL!,
+           process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+         );
+      }
+
+    });
+  }, []);
+
 
   // 🌟 ESTADOS PARA EL PLACEHOLDER ANIMADO
   const [typedPlaceholder, setTypedPlaceholder] = useState("");
@@ -103,7 +127,7 @@ export default function HeroSearch() {
     
     setIsLoading(true);
     try {
-      const { data, error } = await supabase
+      const { data, error } = await supabaseRef.current
         .from('vw_search_predictive')
         .select('*');
 
@@ -115,6 +139,33 @@ export default function HeroSearch() {
       setIsLoading(false);
     }
   };
+
+
+  // 🌟 EL NUEVO FETCH ADAPTADO
+  const fetchDictionary = async () => {
+    // Si supabase aún no ha terminado de cargar en segundo plano, esperamos.
+    // Esto es casi inmediato, por lo que el usuario rara vez notará latencia.
+    if (!supabaseRef.current) return; 
+
+    setIsLoading(true);
+    try {
+      if (!supabaseRef.current) return; // Por si el usuario hace clic rapidísimo antes de que cargue de fondo
+      const { data, error } = await supabaseRef.current
+        .from("ciudades")
+        .select("n, t, s")
+        .order("n");
+
+      if (error) throw error;
+      setDictionary(data as SearchItem[]);
+    } catch (err) {
+      console.error("Error cargando diccionario:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (isNavigating) return; 
