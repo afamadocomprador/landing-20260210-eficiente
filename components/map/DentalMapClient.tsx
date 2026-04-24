@@ -1,3 +1,5 @@
+// componentes/map/DentalMapClient.tsx
+
 "use client";
 
 import { MapContainer, TileLayer, Marker, useMap, ZoomControl, GeoJSON, useMapEvents, Polygon } from "react-leaflet";
@@ -66,7 +68,7 @@ function MapController({ marks, modo, initialCenter, initialZoom, setMapInstance
       const pts = marks.filter((m: any) => m.lat != null).map((m: any) => [m.lat, m.lng] as [number, number]);
       if (pts.length > 0) {
         if (marks[0]?.tipo === 'provincia' || marks[0]?.tipo === 'comunidad' || pts.length <= 6) { map.flyToBounds(L.latLngBounds(pts), { paddingTopLeft: [15, 60], paddingBottomRight: [15, 120], maxZoom: 12, animate: true, duration: 1.5 });
-        } else { const main = marks.reduce((p, c) => ((p.count || 0) > (c.count || 0)) ? p : c); map.flyTo([main.lat, main.lng], 11, { animate: true, duration: 1.5 }); }
+        } else { const main = marks.reduce((p: MapMarkerData, c: MapMarkerData) => ((p.count || 0) > (c.count || 0)) ? p : c); map.flyTo([main.lat, main.lng], 11, { animate: true, duration: 1.5 }); }
       }
     }
   }, [marks, modo, initialCenter, initialZoom, map, setMapInstance]);
