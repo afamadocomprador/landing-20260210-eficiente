@@ -267,6 +267,7 @@ export default function HeroSearch() {
           <input
             type="text"
             placeholder="" // Siempre vacío. Si hacen clic, queda inmaculado.
+            aria-label="Buscador de dentistas y centros dentales por localidad o provincia en España"
             className={`w-full bg-transparent border-none focus:ring-0 px-2 py-3 text-lg outline-none transition-colors
               ${isNavigating ? 'text-gray-400 cursor-wait' : 'text-gray-700'}
             `}
