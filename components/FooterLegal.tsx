@@ -69,8 +69,12 @@ const FooterLegal: React.FC = () => {
             {/* Copyright e Identificación breve */}
             <div className="text-[11px] font-bold text-dkv-gray uppercase tracking-wider font-fsme text-center md:text-left">
               <p>&copy; {currentYear} RED DENTAL ÉLITE.</p>
-              <p className="mt-1 opacity-70">Bernardo Sobrecasas Gallizo - Agente Exclusivo DKV</p>
+              {/* Le quitamos el opacity-70 para asegurar el contraste de lectura *********
+                 <p className="mt-1 opacity-70">Bernardo Sobrecasas Gallizo - Agente Exclusivo DKV</p>
+               ***************   */}
+              <p className="mt-1 text-dkv-gray/90">Bernardo Sobrecasas Gallizo - Agente Exclusivo DKV</p>
             </div>
+
             
             {/* Navegación Legal Crítica */}
             <nav className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-[11px] font-bold text-dkv-gray font-fsme uppercase tracking-widest">
@@ -88,12 +92,17 @@ const FooterLegal: React.FC = () => {
 
           {/* Nota legal mínima obligatoria en la zona clara */}
           <div className="mt-8 pt-8 border-t border-gray-200/50">
+            {/* Cambiamos text-dkv-gray/60 por text-dkv-gray/90 (o simplemente text-dkv-gray)  *************
             <p className="text-[10px] leading-relaxed text-dkv-gray/60 text-center font-fsme max-w-3xl mx-auto">
+            ************* */}
+            <p className="text-[10px] leading-relaxed text-dkv-gray/90 text-center font-fsme max-w-3xl mx-auto">
               La actividad de mediación de seguros está sujeta a la supervisión de la DGSFP. 
               Los datos identificativos completos del mediador y las condiciones de uso del portal 
               se encuentran detallados en el Aviso Legal.
             </p>
           </div>
+
+
         </div>
       </div>
     </footer>
