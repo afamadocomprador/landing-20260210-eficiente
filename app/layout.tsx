@@ -28,6 +28,10 @@ export const metadata: Metadata = {
   verification: {
     google: 'ZcZv1ys4X1ftnI0uYOf6EfLkxGXAUsuaiK_9h1DaRv0', // Código de Search Console original
   },
+
+  alternates: {
+    canonical: 'https://landing-20260210-eficiente.vercel.app', // Pon aquí la URL oficial y definitiva
+  },
 };
 
 export default function RootLayout({
