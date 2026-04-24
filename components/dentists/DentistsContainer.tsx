@@ -18,30 +18,11 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-/* ********* Sustituimos para que haga lezy-load del mapa y no atasque todo lo demás 
+// 1. Definimos el componente dinámico de forma limpia
+
 const DentalMapClient = dynamic(() => import("@/components/map/DentalMapClient"), {
   ssr: false,
   loading: () => <div className="w-full h-full bg-gray-100 animate-pulse flex items-center justify-center">Cargando mapa...</div>
-});
-**************** */
-
-// 1. Cargamos el componente dinámicamente con un pequeño retraso controlado y tipado correcto
-const DentalMapClient = dynamic<any>(() => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(import("@/components/map/DentalMapClient"));
-    }, 800); 
-  });
-}, {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-full bg-gray-100/50 animate-pulse flex flex-col items-center justify-center gap-3">
-       <Loader2 className="w-8 h-8 animate-spin text-dkv-green/40" />
-       <span className="text-xs font-bold text-gray-400 uppercase tracking-widest font-lemon">
-         Iniciando mapa interactivo...
-       </span>
-    </div>
-  )
 });
 
 
@@ -55,6 +36,22 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
   const [localClinics, setLocalClinics] = useState(initialData.lista.clinics);
   const [isUpdatingMap, setIsUpdatingMap] = useState(false); 
   const [dynamicMapMode, setDynamicMapMode] = useState<any>(initialData.mapa.modo);
+
+
+  // 2. Añadimos un estado de control de carga
+  const [shouldLoadMap, setShouldLoadMap] = useState(false);
+
+  useEffect(() => {
+    // 3. Activamos el mapa solo cuando la página esté totalmente "ociosa" (Idle)
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      window.requestIdleCallback(() => setShouldLoadMap(true));
+    } else {
+      // Fallback para navegadores antiguos
+      setTimeout(() => setShouldLoadMap(true), 2000);
+    }
+  }, []);
+
+
 
   useEffect(() => {
     updateNavigation(initialData);
@@ -219,6 +216,8 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
         )}
         
         <div className="absolute inset-0 z-10">
+          {/* 4. Solo renderizamos el mapa si el navegador está libre de tareas pesadas */}
+          {shouldLoadMap ? (
             <DentalMapClient 
                 marks={localMarks}
                 modo={dynamicMapMode}
@@ -233,6 +232,11 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
                 enableClustering={currentLevel === "00"}
                 onMapClick={handleMapClick}
             /> 
+          ) : (
+           <div className="w-full h-full bg-gray-50 flex items-center justify-center">
+              <span className="text-xs text-gray-400 font-lemon uppercase">Preparando mapa...</span>
+           </div>
+          )}
         </div>
 
         <AnimatePresence>
