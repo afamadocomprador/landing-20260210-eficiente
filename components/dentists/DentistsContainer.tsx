@@ -25,10 +25,9 @@ const DentalMapClient = dynamic(() => import("@/components/map/DentalMapClient")
 });
 **************** */
 
-// 1. Cargamos el componente dinámicamente con un pequeño retraso controlado
-const DentalMapClient = dynamic(() => {
+// 1. Cargamos el componente dinámicamente con un pequeño retraso controlado y tipado correcto
+const DentalMapClient = dynamic<any>(() => {
   return new Promise((resolve) => {
-    // Retrasamos la carga 800ms para dar prioridad absoluta al contenido textual y SEO
     setTimeout(() => {
       resolve(import("@/components/map/DentalMapClient"));
     }, 800); 
@@ -44,7 +43,6 @@ const DentalMapClient = dynamic(() => {
     </div>
   )
 });
-
 
 
 const formatter = new Intl.NumberFormat('es-ES');
