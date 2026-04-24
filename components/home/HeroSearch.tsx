@@ -256,7 +256,7 @@ export default function HeroSearch() {
           {/* PLACEHOLDER FALSO ANIMADO */}
           {!isOpen && query.length === 0 && !isNavigating && (
             <span 
-              className={`absolute left-2 text-gray-400 italic text-lg pointer-events-none transition-all duration-300 ${
+              className={`absolute left-2 text-gray-600 italic text-lg pointer-events-none transition-all duration-300 ${
                 isAnimatingUp ? '-translate-y-4 opacity-0' : 'translate-y-0 opacity-100'
               }`}
             >
@@ -319,7 +319,7 @@ export default function HeroSearch() {
                 </div>
                 <span className="text-gray-800 font-medium text-base sm:text-lg">{item.n}</span>
               </div>
-              <span className="text-xs font-bold uppercase tracking-wider text-gray-500 bg-gray-100 px-3 py-1 rounded-full group-hover:bg-green-50 group-hover:text-dkv-green transition-colors whitespace-nowrap ml-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-gray-600 bg-gray-100 px-3 py-1 rounded-full group-hover:bg-green-50 group-hover:text-dkv-green transition-colors whitespace-nowrap ml-2">
                 {item.t}
               </span>
             </div>
