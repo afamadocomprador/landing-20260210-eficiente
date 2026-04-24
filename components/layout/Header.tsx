@@ -1,11 +1,10 @@
-// components/Header.tsx
+// components/layout/Header.tsx
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-// 🌟 1. Se añade el icono 'Home' a las importaciones
 import { Menu, X, Stethoscope, MapPin, MessageCircle, Calculator, Home } from "lucide-react";
 
 interface HeaderProps {
@@ -20,33 +19,33 @@ interface NavItem {
   icon: React.ElementType;
 }
 
-// 🌟 2. Se añade "Inicio" como primer elemento del menú
+// 🌟 1. Restauramos los anclajes NATIVOS (sin la "/") para recuperar el scroll suave
 const NAV_ITEMS: NavItem[] = [
   { 
     label: "Inicio", 
     subLabel: "Página principal",
-    href: "/", 
+    href: "/", // Inicio siempre va a la raíz
     ariaLabel: "Ir al inicio de la página",
     icon: Home
   },
   { 
     label: "Tratamientos", 
     subLabel: "Ver precios y coberturas",
-    href: "/#tratamientos", 
+    href: "#tratamientos", 
     ariaLabel: "Ver precios de tratamientos cubiertos",
     icon: Stethoscope
   },
   { 
     label: "Dentistas", 
     subLabel: "Encuentra tu clínica cercana",
-    href: "/#dentistas", 
+    href: "#dentistas", 
     ariaLabel: "Buscar dentistas en toda España o cerca de mí",
     icon: MapPin
   },
   { 
     label: "Consultas", 
     subLabel: "Plantéanos tus dudas",
-    href: "/#información", 
+    href: "#información", 
     ariaLabel: "Plantéanos cualquier duda o comentario que necesites",
     icon: MessageCircle
   },
@@ -54,6 +53,8 @@ const NAV_ITEMS: NavItem[] = [
 
 export default function Header({ onOpenCalculator }: HeaderProps) {
   const pathname = usePathname();  
+  const isHome = pathname === "/";
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [showCta, setShowCta] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -89,8 +90,21 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
         }`}
       >
         <div className="container mx-auto h-full px-4 md:px-6 flex items-center justify-between">
+          
+          {/* --- LOGOTIPO --- */}
           <div className="relative flex items-center h-full shrink-0 z-50">
-             <Link href="/" className="relative flex items-center transition-all duration-300" onClick={() => setIsMobileMenuOpen(false)}>
+             <Link 
+                href="/" 
+                className="relative flex items-center transition-all duration-300"
+                onClick={(e) => {
+                  setIsMobileMenuOpen(false);
+                  // 🌟 Si tocamos el logo estando en Home, hacemos scroll suave arriba
+                  if (isHome) {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }
+                }}
+             >
                <div className={`relative transition-all duration-300 overflow-hidden flex items-center ${isScrolled ? 'w-[140px]' : 'w-[180px] md:w-[220px]'}`}>
                   <Image 
                     src="/images/dkv-logo.png"
@@ -103,12 +117,21 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
              </Link>
           </div>
 
+          {/* --- NAVEGACIÓN DESKTOP --- */}
           <div className="flex items-center gap-6 lg:gap-10 z-50">
             <nav className="hidden md:flex gap-6 lg:gap-8">
               {NAV_ITEMS.map((item) => (
                 <Link
                   key={item.label}
-                  href={item.href}
+                  // 🌟 2. Lógica Dinámica: Si es Inicio usa "/", si no, evalúa si estamos en la Home o en otra página
+                  href={item.label === "Inicio" ? "/" : (isHome ? item.href : `/${item.href}`)}
+                  onClick={(e) => {
+                    // 🌟 3. Intercepción: Si pulsamos Inicio y ya estamos en Home, forzamos scroll suave arriba
+                    if (item.label === "Inicio" && isHome) {
+                      e.preventDefault();
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }
+                  }}
                   className="text-white/90 font-fsme text-sm lg:text-base font-bold hover:text-white transition-colors uppercase tracking-widest relative group py-2"
                 >
                   {item.label}
@@ -117,13 +140,16 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
               ))}
             </nav>
             
+            {/* CTA STICKY DESKTOP */}
             <div className={`transition-all duration-500 transform hidden md:block ${showCta ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}>
               <Link href="/presupuesto" className="bg-white text-dkv-green hover:bg-gray-100 font-lemon tracking-widest text-xs md:text-sm h-10 px-6 rounded-btn shadow-lg transition-all uppercase font-bold flex items-center">
                 Calcula tu precio
               </Link>
             </div>
 
-            <button className="md:hidden text-white p-2" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+            <button className="md:hidden text-white p-2" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    aria-label={isMobileMenuOpen ? "Cerrar menú principal" : "Abrir menú principal"}
+            >
               <div className={`transition-transform duration-300 ${isMobileMenuOpen ? 'rotate-90' : 'rotate-0'}`}>
                 {isMobileMenuOpen ? <X size={32} /> : <Menu size={32} />}
               </div>
@@ -132,7 +158,7 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
         </div>
       </header>
 
-      {/* 🌟 MENÚ MÓVIL CON ILUSTRACIÓN Y TEXTOS CORREGIDOS */}
+      {/* --- MENÚ MÓVIL FULL-SCREEN --- */}
       <div className={`md:hidden fixed inset-0 z-[1010] bg-dkv-green/98 backdrop-blur-xl transition-all duration-400 flex flex-col justify-center px-6 pb-20 pt-28 overflow-hidden ${isMobileMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"}`}>
         
         <div className={`w-full max-w-sm mx-auto bg-white/95 rounded-[2rem] shadow-2xl overflow-hidden flex flex-row relative z-10 transition-all duration-500 ${isMobileMenuOpen ? 'scale-100' : 'scale-95'}`}>
@@ -151,8 +177,16 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
               return (
                 <Link
                   key={item.label}
-                  href={item.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  // Lógica Dinámica también aplicada en móvil
+                  href={item.label === "Inicio" ? "/" : (isHome ? item.href : `/${item.href}`)}
+                  onClick={(e) => {
+                    setIsMobileMenuOpen(false);
+                    // Mismo control manual de scroll para Inicio
+                    if (item.label === "Inicio" && isHome) {
+                      e.preventDefault();
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }
+                  }}
                   className={`group p-4 pr-3 flex items-center gap-4 rounded-2xl hover:bg-gray-50 transition-all ${index !== NAV_ITEMS.length - 1 ? 'border-b border-gray-100 rounded-b-none' : ''}`}
                 >
                   <div className="w-10 h-10 rounded-full bg-dkv-green/5 text-dkv-green flex items-center justify-center shrink-0">
@@ -172,6 +206,7 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
           </nav>
         </div>
 
+        {/* CTA BOTTOM MÓVIL */}
         <div className={`w-full max-w-sm mx-auto mt-6 transition-all duration-500 delay-150 ${isMobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <Link href="/presupuesto" onClick={() => setIsMobileMenuOpen(false)} className="w-full bg-white text-dkv-green py-4 rounded-[1.5rem] font-lemon text-base font-bold uppercase tracking-widest shadow-xl flex items-center justify-center gap-3">
             <Calculator className="w-5 h-5" />
