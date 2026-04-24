@@ -59,7 +59,7 @@ const PricingCards = () => {
               <div className="flex justify-between items-end mb-6 pb-6 border-b border-dkv-gray-border">
                 <div className="text-left">
                   <p className="text-xs text-dkv-gray uppercase font-bold mb-1 font-lemon">Precio Mercado Est.*</p>
-                  <p className="text-2xl text-dkv-gray-disabled line-through font-lemon">~1.850 €</p>
+                  <p className="text-2xl text-gray-500 line-through font-lemon">~1.850 €</p>
                 </div>
                 <div className="text-right">
                   {/* Etiqueta pequeña: La mantenemos oscura para que se lea bien */}
@@ -133,7 +133,7 @@ const PricingCards = () => {
             </div>
 
             <div className="mt-10 pt-6 border-t border-dkv-gray-border">
-              <p className="text-[10px] text-dkv-gray/60 text-justify leading-tight font-fsme">
+              <p className="text-[10px] text-dkv-gray text-justify leading-tight font-fsme">
                 *Precios de mercado estimados a título orientativo basados en tarifas medias de clínicas privadas en España (2024). 
                 Condiciones sujetas a las Cláusulas Generales y Particulares de la póliza DKV Dentisalud Élite.
               </p>
