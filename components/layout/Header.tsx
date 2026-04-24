@@ -166,7 +166,13 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
           {/* ILUSTRACIÓN IZQUIERDA */}
           <div className="w-[28%] border-r border-dkv-green/5 relative bg-dkv-green/5 flex flex-col justify-end">
             <div className="absolute inset-0 opacity-60">
+                {/* cantaba un poco en rendimiento **************
                 <Image src="/images/utensilios-dental.png" alt="Decoración" fill className="object-cover object-bottom pt-8 pb-4" />
+                ************************** */}
+                <Image src="/images/utensilios-dental.png" alt="Decoración" fill className="object-cover object-bottom pt-8 pb-4" 
+  sizes="(max-width: 768px) 30vw, 150px"
+/>
+
             </div>
           </div>
 
