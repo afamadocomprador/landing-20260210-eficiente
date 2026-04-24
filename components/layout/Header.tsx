@@ -112,6 +112,7 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
                     width={220} height={90}
                     className="w-full h-auto object-contain object-left"
                     priority 
+                    style={{ width: "auto" }} // <--- AÑADE ESTA LÍNEA
                   />
                </div>
              </Link>
