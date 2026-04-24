@@ -80,9 +80,26 @@ export default function InteractiveContent() {
                         <ArrowRight className="w-4 h-4 text-dkv-green-dark opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                       </div>
                     </div>
+{/* PARA NO TRAER IMGS BESTIAS *************************
+
                     <div className="w-full flex-1 flex items-center justify-center relative overflow-hidden bg-white group-hover:bg-dkv-green/5">
                       {item.image ? (
                         <img src={item.image} alt={item.title} className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" />
+                      ) : (
+                        <Icon className="w-10 h-10 text-dkv-green" />
+                      )}
+                    </div>
+****************************** */}
+{/* LO SUSTITUIMOS POR ESTO *** */}
+                    <div className="w-full flex-1 flex items-center justify-center relative overflow-hidden bg-white group-hover:bg-dkv-green/5">
+                      {item.image ? (
+                        <Image 
+                          src={item.image} 
+                          alt={item.title} 
+                          fill
+                          sizes="(max-width: 768px) 50vw, 25vw"
+                          className="object-cover transition-transform group-hover:scale-110 duration-500" 
+                        />
                       ) : (
                         <Icon className="w-10 h-10 text-dkv-green" />
                       )}
