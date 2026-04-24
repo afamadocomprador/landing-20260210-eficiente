@@ -1,7 +1,9 @@
+// components\map\DentalMapClient.tsx
+
 "use client";
 
-import { MapContainer, TileLayer, Marker, useMap, ZoomControl, GeoJSON, useMapEvents } from "react-leaflet";
-import MarkerClusterGroup from 'react-leaflet-cluster'; // 🌟 1. IMPORTAMOS EL CLUSTER
+import { MapContainer, TileLayer, Marker, useMap, ZoomControl, GeoJSON, useMapEvents, Polygon } from "react-leaflet";
+import MarkerClusterGroup from 'react-leaflet-cluster'; 
 
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -10,699 +12,182 @@ import { useRouter } from "next/navigation";
 import * as topojson from "topojson-client";
 
 export interface MapMarkerData {
-  name: string; 
-  lat: number; 
-  lng: number; 
-  count: number; 
-  slug: string;
+  name: string; lat: number; lng: number; count: number; slug: string;
   tipo?: 'centro' | 'comunidad' | 'provincia' | 'municipio' | 'comarca' | 'hub';
-  codigo_ine?: string; // <--- NUEVA PROPIEDAD
+  codigo_ine?: string;
 }
 
 interface MapProps {
-  marks?: MapMarkerData[];
-  initialCenter?: [number, number];
-  initialZoom?: number;
-  modo?: 'FIT_BOUNDS' | 'CENTER_ZOOM';
-  tileStyle?: string; 
-  geoJsonUrl?: string; // <--- SOLO EL TIPO (sin el valor)
-  // 1. NUEVA PROP: Callback para delegar el click al padre
-  onMarkerClick?: (id: string) => void;
-  activeBoundaryId?: string; // <--- AÑADIMOS ESTO
-  activeCenterExternal?: string | null; // <--- AÑADIR ESTA LÍNEA para detectar click en ficha de centro 
-
-  // 🟠 MODIFICADO: Ahora el mapa nos enviará también el objeto 'bounds' (los límites)
-  // onMapMove?: (newCenter: { lat: number, lng: number }, zoom: number) => void;
+  marks?: MapMarkerData[]; initialCenter?: [number, number]; initialZoom?: number;
+  modo?: 'FIT_BOUNDS' | 'CENTER_ZOOM'; tileStyle?: string; geoJsonUrl?: string; 
+  onMarkerClick?: (id: string) => void; activeBoundaryId?: string; 
+  activeCenterExternal?: string | null; 
   onMapMove?: (center: { lat: number, lng: number }, zoom: number, bounds: L.LatLngBounds) => void;
-  // 🟢 AÑADIDO: Interruptor para encender/apagar el Clustering
-  enableClustering?: boolean;
-  // 🟢 AÑADIDO: Detectar clic en el mapa vacío para cerrar la tarjeta flotante
-  onMapClick?: () => void;
+  enableClustering?: boolean; onMapClick?: () => void;
 }
 
-
-// 2. TYPESCRIPT ESTRICTO: Interfaz para el controlador en lugar de usar 'any'
-interface MapControllerProps {
-  marks?: MapMarkerData[];
-  modo?: 'FIT_BOUNDS' | 'CENTER_ZOOM';
-  initialCenter?: [number, number];
-  initialZoom?: number;
-  //setReady: (ready: boolean) => void;
-  // Cambiamos setReady por setMapInstance
-  setMapInstance: (map: L.Map) => void;
-}
-
+const createInvertedMask = (features: any[]) => {
+  const worldBounds: [number, number][] = [[90, -180], [90, 180], [-90, 180], [-90, -180], [90, -180]];
+  const holes = features.flatMap((feature) => {
+    const geometry = feature.geometry;
+    if (!geometry) return [];
+    const rings = geometry.type === "Polygon" ? [geometry.coordinates[0]] : geometry.coordinates.map((c: any) => c[0]);
+    return rings.map((ring: any) => {
+      const coords = ring.map((c: any) => [c[1], c[0]] as [number, number]);
+      if (coords.length > 0) {
+        const first = coords[0];
+        const last = coords[coords.length - 1];
+        if (first[0] !== last[0] || first[1] !== last[1]) coords.push([first[0], first[1]]);
+      }
+      return coords;
+    });
+  }).filter(h => h.length > 2);
+  return [worldBounds, ...holes];
+};
 
 const createCustomIcon = (count: number, name: string, isActive: boolean = false) => {
   const displayName = name.length > 25 ? name.substring(0, 22) + "..." : name;
-
-  // 🎨 NUEVOS COLORES: Invertimos el cartelito al estar activo
-  const pinColor = "#849700"; // El globo siempre verde
-  const labelBgColor = isActive ? "#033B37" : "white";    // Fondo verde oscuro si activo
-  const labelTextColor = isActive ? "white" : "#033B37"; // Letra blanca si activo
-  
-  const scale = isActive 
-    ? "transform: scale(1.15) translateY(-5px); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000;" 
-    : "transition: all 0.3s ease;";
-
-  const htmlContent = `
-    <div style="display: flex; flex-direction: column; align-items: center; width: 80px; cursor: pointer; ${scale}">
-      <div style="position: relative; width: 38px; height: 46px;">
-        <svg width="38" height="46" viewBox="0 0 38 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M19 0.5C8.78273 0.5 0.5 8.78273 0.5 19C0.5 30.5 19 45.5 19 45.5C19 45.5 37.5 30.5 37.5 19C37.5 8.78273 29.2173 0.5 19 0.5Z" fill="${pinColor}" stroke="white" stroke-width="1"/>
-          <circle cx="19" cy="19" r="14" fill="white"/>
-        </svg>
-        <div style="position: absolute; top: 6px; left: 0; width: 38px; height: 26px; display: flex; align-items: center; justify-content: center; color: #033B37; font-weight: 700; font-size: 14px; font-family: sans-serif; pointer-events: none;">${count}</div>
-      </div>
-      <div style="margin-top: 4px; background-color: ${labelBgColor}; border: 1px solid #849700; color: ${labelTextColor}; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; white-space: nowrap; box-shadow: 0 2px 4px rgba(0,0,0,0.1); line-height: 1.1;">${displayName}</div>
-    </div>`.replace(/\s+/g, ' ').trim();
-    
-  return L.divIcon({ className: 'custom-pin', html: htmlContent, iconSize: [80, 75], iconAnchor: [40, 46] });
+  const pinColor = "#849700"; const labelBgColor = isActive ? "#033B37" : "white"; const labelTextColor = isActive ? "white" : "#033B37"; 
+  const scale = isActive ? "transform: scale(1.15) translateY(-5px);" : "";
+  const html = `<div style="display: flex; flex-direction: column; align-items: center; width: 80px; cursor: pointer; ${scale}"><div style="position: relative; width: 38px; height: 46px;"><svg width="38" height="46" viewBox="0 0 38 46" fill="none"><path d="M19 0.5C8.78273 0.5 0.5 8.78273 0.5 19C0.5 30.5 19 45.5 19 45.5C19 45.5 37.5 30.5 37.5 19C37.5 8.78273 29.2173 0.5 19 0.5Z" fill="${pinColor}" stroke="white" stroke-width="1"/><circle cx="19" cy="19" r="14" fill="white"/></svg><div style="position: absolute; top: 6px; left: 0; width: 38px; height: 26px; display: flex; align-items: center; justify-content: center; color: #033B37; font-weight: 700; font-size: 14px; font-family: sans-serif;">${count}</div></div><div style="margin-top: 4px; background-color: ${labelBgColor}; border: 1px solid #849700; color: ${labelTextColor}; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 11px; text-transform: uppercase; white-space: nowrap; line-height: 1.1;">${displayName}</div></div>`.replace(/\s+/g, ' ').trim();
+  return L.divIcon({ className: 'custom-pin', html, iconSize: [80, 75], iconAnchor: [40, 46] });
 };
 
-
-
-
-// 🌟 2. DISEÑO DEL CLUSTER (La burbuja que agrupa)
-const createClusterCustomIcon = function (cluster: any) {
-  const count = cluster.getChildCount(); // Cuántas clínicas hay dentro de este grupo
-  
-  // Hacemos que la burbuja sea un poquito más grande si tiene muchas clínicas
-  const size = count > 50 ? 55 : count > 20 ? 45 : 40; 
-
-  const htmlContent = `
-    <div style="
-      background-color: #033B37; 
-      color: white; 
-      width: ${size}px; 
-      height: ${size}px; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      border-radius: 50%; 
-      font-weight: bold; 
-      font-size: 15px;
-      border: 3px solid #849700; 
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      transition: all 0.3s ease;
-    ">
-      ${count}
-    </div>
-  `;
-
-  return L.divIcon({
-    html: htmlContent,
-    className: 'custom-marker-cluster',
-    iconSize: L.point(size, size, true),
-  });
+const createClusterCustomIcon = (cluster: any) => {
+  const count = cluster.getChildCount(); const size = count > 50 ? 55 : 40; 
+  const html = `<div style="background-color: #033B37; color: white; width: ${size}px; height: ${size}px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; border: 3px solid #849700;">${count}</div>`;
+  return L.divIcon({ html, className: 'custom-marker-cluster', iconSize: L.point(size, size, true) });
 };
 
-
-
-
-
-function MapController({ marks, modo, initialCenter, initialZoom, setMapInstance }: MapControllerProps) {
+function MapController({ marks, modo, initialCenter, initialZoom, setMapInstance }: any) {
   const map = useMap();
-  
   useEffect(() => {
-    if (!map) return;
-    setMapInstance(map); 
-    map.invalidateSize();
-
-    if (modo === 'CENTER_ZOOM' && initialCenter) {
-      map.flyTo(initialCenter, initialZoom || 6, { animate: true, duration: 1.5 });
-      
+    if (!map) return; setMapInstance(map); map.invalidateSize();
+    if (modo === 'CENTER_ZOOM' && initialCenter) { map.flyTo(initialCenter, initialZoom || 6, { animate: true, duration: 1.5 });
     } else if (modo === 'FIT_BOUNDS' && marks && marks.length > 0) {
-      const validMarks = marks.filter((m: any) => m.lat != null);
-      const pts = validMarks.map((m: any) => [m.lat, m.lng] as [number, number]);
-      
+      const pts = marks.filter((m: any) => m.lat != null).map((m: any) => [m.lat, m.lng] as [number, number]);
       if (pts.length > 0) {
-        
-        // 1. Detectar qué estamos viendo usando el 'tipo' del primer marcador
-        const tipoMarcador = validMarks[0]?.tipo;
-
-        // 2. Si vemos Provincias (ej: Andalucía) O hay pocos puntos: Encuadre Clásico
-        // NUNCA hacemos "Hero Centering" cuando queremos ver la visión general de la Comunidad.
-        if (tipoMarcador === 'provincia' || pts.length <= 6) {
-          map.flyToBounds(L.latLngBounds(pts), {
-            paddingTopLeft: [15, 60],
-            paddingBottomRight: [15, 120],
-            maxZoom: 12, 
-            animate: true,
-            duration: 1.5
-          });
-        } 
-        // 3. Si vemos Municipios/Centros y hay muchos (ej: Sevilla, Barcelona): Modo Hero
-        else {
-          // Buscamos el "Hero": El municipio con más clínicas (la capital)
-          const mainMarker = validMarks.reduce((prev, current) => ((prev.count || 0) > (current.count || 0)) ? prev : current);
-          
-          // 🚨 CLAVE: Usamos Zoom 11. 
-          // Esto acerca la cámara al área metropolitana, esparciendo los pines que estaban pegados.
-          const heroZoom = 11; 
-          
-          map.flyTo([mainMarker.lat, mainMarker.lng], heroZoom, {
-            animate: true,
-            duration: 1.5
-          });
-        }
+        if (marks[0]?.tipo === 'provincia' || pts.length <= 6) { map.flyToBounds(L.latLngBounds(pts), { paddingTopLeft: [15, 60], paddingBottomRight: [15, 120], maxZoom: 12, animate: true, duration: 1.5 });
+        } else { const main = marks.reduce((p, c) => ((p.count || 0) > (c.count || 0)) ? p : c); map.flyTo([main.lat, main.lng], 11, { animate: true, duration: 1.5 }); }
       }
     }
   }, [marks, modo, initialCenter, initialZoom, map, setMapInstance]);
-  
   return null;
 }
 
-
-
-// 🟠 MODIFICADO: El espía ahora extrae map.getBounds()
-// 🟠 MODIFICADO: El espía ahora detecta también los clics en el mapa
-//function MapMoveListener({ onMapMove }: { onMapMove?: (center: {lat: number, lng: number}, zoom: number, bounds: L.LatLngBounds) => void }) {
-
-
-function MapMoveListener({ 
-  onMapMove, 
-  onMapClick // <--- 🌟 AÑADIDO: Declaramos que recibimos esta variable
-}: { 
-  onMapMove?: (center: {lat: number, lng: number}, zoom: number, bounds: L.LatLngBounds) => void,
-  onMapClick?: () => void // <--- 🌟 AÑADIDO: Le decimos a TypeScript que es una función sin parámetros
-}) {
-
-
+function MapMoveListener({ onMapMove, onMapClick }: any) {
   const map = useMapEvents({
-    moveend: () => {
-      if (onMapMove) {
-        const center = map.getCenter();
-        const bounds = map.getBounds(); // 🌟 Extraemos las coordenadas de la pantalla
-        onMapMove({ lat: center.lat, lng: center.lng }, map.getZoom(), bounds);
-      }
-    },
-    // 🟢 AÑADIDO: Si pinchas en el agua o una calle sin pin, avisa al padre
-    click: () => {
-      if (onMapClick) {
-        onMapClick();
-      }
-    },
-    // 🌟 AÑADIDO: Si el usuario "agarra" el mapa para moverlo, también cerramos la tarjeta
-    dragstart: () => {
-      if (onMapClick) {
-        onMapClick();
-      }
-    }
+    moveend: () => { if (onMapMove) onMapMove({ lat: map.getCenter().lat, lng: map.getCenter().lng }, map.getZoom(), map.getBounds()); },
+    click: () => { if (onMapClick) onMapClick(); },
+    dragstart: () => { if (onMapClick) onMapClick(); }
   });
   return null;
 }
 
-
 export default function DentalMapClient({ 
-  marks = [], 
-  initialCenter = [40.41, -3.70],
-  initialZoom = 6,
-  modo = 'CENTER_ZOOM',
-  tileStyle = 'light_all',
-  geoJsonUrl = "/maps/autonomous_regions.geojson", // <--- AQUÍ VA EL VALOR POR DEFECTO
-  onMarkerClick, // Recibimos la nueva prop
-  activeBoundaryId, // <--- LO RECIBIMOS AQUÍ
-  activeCenterExternal, // <--- Recibimos la prop aquí
-  onMapMove, // <--- 🌟 AÑADIR AQUÍ
-  enableClustering = false, // 🟢 AÑADIDO: Por defecto apagado
-  onMapClick // <--- 🟢 AÑADIDO
+  marks = [], initialCenter = [40.41, -3.70], initialZoom = 6, modo = 'CENTER_ZOOM', tileStyle = 'light_all', geoJsonUrl = "/maps/autonomous_regions.geojson", onMarkerClick, activeBoundaryId, activeCenterExternal, onMapMove, enableClustering = false, onMapClick
 }: MapProps) {
-  //const [mapIsReady, setMapIsReady] = useState(false);
-  //Para poder manejar el mapa
+  
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null);
-  // 👉 NUEVO ESTADO: Para saber qué clínica hemos pulsado
   const [activeCenter, setActiveCenter] = useState<string | null>(null);
-  // 4. TYPESCRIPT: Evitamos el 'any' implícito al inicializar con null
-  //const [geoJsonData, setGeoJsonData] = useState(null); // <--- 4. Estado para los datos
   const [geoJsonData, setGeoJsonData] = useState<any | null>(null);
-  // Estado para saber qué región debe iluminarse en rojo
   const [highlightedRegion, setHighlightedRegion] = useState<string | null>(null);
-
-
-
-
   const router = useRouter();
 
-  //const tileUrl = `https://{s}.basemaps.cartocdn.com/${tileStyle}/{z}/{x}/{y}{r}.png`;
-  // --- CONFIGURACIÓN DE TILES DINÁMICA ---
-
-/* *******************
-  const isOSM = tileStyle === 'osm';
+  const tileUrl = tileStyle === 'osm' ? `https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png` : `https://{s}.basemaps.cartocdn.com/${tileStyle}/{z}/{x}/{y}{r}.png`; 
   
-  const tileUrl = isOSM 
-    ? `https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png` // Nivel 4+: Callejero a todo color y detallado
-    : `https://{s}.basemaps.cartocdn.com/${tileStyle}/{z}/{x}/{y}{r}.png`; // Niveles 1-3: Mapa limpio de CARTO
-    
-  // Por temas legales, hay que cambiar la atribución (el textito de la esquina) según el mapa que usemos
-  const tileAttribution = isOSM 
-    ? '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' 
-    : '&copy; CARTO';
-
-******************** */
-
-// Usamos Voyager para el callejero (elegante y con colores suaves)
-  const isOSM = tileStyle === 'osm';
-  
-  const tileUrl = isOSM 
-    ? `https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png` 
-    : `https://{s}.basemaps.cartocdn.com/${tileStyle}/{z}/{x}/{y}{r}.png`; 
-    
-  const tileAttribution = '&copy; <a href="https://carto.com/attributions">CARTO</a>';
-
-
-/* ********************
-// Usamos ESRI para el callejero (muy detallado y profesional)
-  const isOSM = tileStyle === 'osm';
-  
-  const tileUrl = isOSM 
-    ? `https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}` 
-    : `https://{s}.basemaps.cartocdn.com/${tileStyle}/{z}/{x}/{y}{r}.png`; 
-    
-  const tileAttribution = isOSM 
-    ? '&copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012' 
-    : '&copy; CARTO';
-
-*************** */
-
-/* *******
-// Usamos el mismo mapa gris (light_all) para todo. Minimalismo puro.
-  const tileUrl = `https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png`; 
-  const tileAttribution = '&copy; <a href="https://carto.com/attributions">CARTO</a>';
-***** */
-
-  // --- 5. Efecto para cargar el fichero externo ---
   useEffect(() => {
-    if (!geoJsonUrl) {
-        setGeoJsonData(null);
-        return;
-    }
-    
-    fetch(geoJsonUrl)
-        .then(response => {
-            if (!response.ok) throw new Error("Error al cargar GeoJSON");
-            return response.json();
-        })
-        .then(data => {
-            // MAGIA: Si el fichero es TopoJSON (municipios), lo pasamos a GeoJSON al vuelo
-            if (data.type === "Topology") {
-                // Extrae la primera capa que encuentre en el archivo (municipalities)
-                const objectKey = Object.keys(data.objects)[0];
-                const geoData = topojson.feature(data, data.objects[objectKey] as any);
-                setGeoJsonData(geoData);
-            } else {
-                // Si ya es GeoJSON (comunidades o provincias), lo deja tal cual
-                setGeoJsonData(data);
-            }
-        })
-        .catch(err => console.error("Error cargando contorno:", err));
+    if (!geoJsonUrl) return;
+    fetch(geoJsonUrl).then(res => res.json()).then(data => {
+      if (data.type === "Topology") {
+        const key = Object.keys(data.objects)[0];
+        setGeoJsonData(topojson.feature(data, data.objects[key] as any));
+      } else { setGeoJsonData(data); }
+    });
   }, [geoJsonUrl]);
 
-
-
-
-
-
-// 🌟 ESCUCHADOR EXTERNO: Cuando la lista nos manda un centro
   useEffect(() => {
     if (activeCenterExternal && mapInstance) {
-      const targetMark = marks.find(m => m.name === activeCenterExternal);
-      
-      if (targetMark && targetMark.lat != null) {
-        setActiveCenter(targetMark.name); 
-        
-        const targetZoom = 18; // <--- ZOOM OBJETIVO
-        const mapHeight = mapInstance.getSize().y;
-        
-        // 👉 CLAVE: Proyectamos y des-proyectamos usando el zoom 16
-        const targetPoint = mapInstance.project([targetMark.lat, targetMark.lng], targetZoom);
-        targetPoint.y += (mapHeight / 3); 
-        const targetLatLng = mapInstance.unproject(targetPoint, targetZoom);
-        
-        mapInstance.flyTo(targetLatLng, targetZoom, {
-          animate: true,
-          duration: 0.8 
-        });
+      const target = marks.find(m => m.name === activeCenterExternal);
+      if (target && target.lat != null) {
+        setActiveCenter(target.name); const z = 18; const p = mapInstance.project([target.lat, target.lng], z);
+        p.y += (mapInstance.getSize().y / 3); mapInstance.flyTo(mapInstance.unproject(p, z), z, { animate: true, duration: 0.8 });
       }
-    } else if (activeCenterExternal === null) {
-      // 🟢 AÑADIDO: Si el padre nos manda null, deseleccionamos el centro activo
-      setActiveCenter(null);
-    }
+    } else if (activeCenterExternal === null) { setActiveCenter(null); }
   }, [activeCenterExternal, mapInstance, marks]);
 
-
-
-
-
-
-
-
-
+  const activeFeatures = useMemo(() => {
+    if (!activeBoundaryId || !geoJsonData?.features) return [];
+    const cleanId = String(activeBoundaryId).replace(/\D/g, '');
+    return geoJsonData.features.filter((f: any) => {
+      const fid = String(f.properties?.cod_prov || f.id || f.properties?.id || "");
+      return cleanId.length <= 2 ? fid.startsWith(cleanId) : fid === cleanId;
+    });
+  }, [activeBoundaryId, geoJsonData]);
 
   const renderedMarkers = useMemo(() => {
     if (!mapInstance) return null; 
-
     return marks.filter(m => m.lat != null).map((m, idx) => {
-      // 🌟 SABER SI ES EL ACTIVO: ¿Es un centro y su nombre coincide con el estado?
       const isActive = m.tipo === 'centro' && activeCenter === m.name;
-
       return (
-       <Marker 
-        // Al añadir isActive a la key, forzamos a React a redibujar el pin instantáneamente
-        key={`m-${idx}-${m.slug}-${isActive}`}
-        position={[m.lat, m.lng]} 
-        icon={createCustomIcon(m.count, m.name, isActive)}
-        zIndexOffset={isActive ? 1000 : 0}
-        eventHandlers={{
-          click: () => {
-            // Si es un centro, ignoramos su slug roto y enviamos SU NOMBRE EXACTO
+       <Marker key={`m-${idx}-${isActive}`} position={[m.lat, m.lng]} icon={createCustomIcon(m.count, m.name, isActive)} zIndexOffset={isActive ? 1000 : 0}
+        eventHandlers={{ click: () => {
             if (m.tipo === 'centro' && onMarkerClick) {
-
-              // 🌟 ILUMINAR PIN: Guardamos el nombre para que React lo repinte activo
-              setActiveCenter(m.name);
-
-              // ES UNA CLÍNICA: Avisamos al contenedor para que haga scroll en la lista
-              onMarkerClick(m.name);
-
-              // 2. MAGIA UX: Calculamos el offset para centrar en el 1/3 superior usando zoom 16
-              const targetZoom = 18;
-              const mapHeight = mapInstance.getSize().y;
-              
-              // Proyectamos el marcador a píxeles absolutos usando el zoom destino
-              const targetPoint = mapInstance.project([m.lat, m.lng], targetZoom);
-              
-              // Desplazamos el "centro matemático" del mapa hacia ABAJO un tercio de la pantalla.
-              // Efecto visual: el marcador SUBE hasta el centro del 1/3 superior.
-              targetPoint.y += (mapHeight / 3); 
-              
-              // Volvemos a convertir esos píxeles a coordenadas GPS
-              const targetLatLng = mapInstance.unproject(targetPoint, targetZoom);
-              
-              // Volamos suavemente a la nueva coordenada
-              mapInstance.flyTo(targetLatLng, targetZoom, {
-                animate: true,
-                duration: 0.8 
-              });
-
-            } else if (m.slug) {
-              // ES NAVEGABLE (comunidad, provincia, municipio, hub...):
-              setHighlightedRegion(m.codigo_ine || m.name);
-
-              // Pausa dramática para ver el efecto
-              setTimeout(() => {
-                router.push(`/dentistas/${m.slug}`, {scroll: false});
-              }, 400);
-            }
-          },
-        }}
-      />
-     ); // Cerramos el return del marcador
-  }); // Cerramos la llave del map
-  // 👇 CRUCIAL: Añadimos activeCenter a las dependencias para que recalcule si cambia
-  }, [marks, mapInstance, router, onMarkerClick, activeCenter]);
-
-
-  // Estilo del contorno (puedes parametrizarlo también si quieres)
-  /* ********
-  const geoJsonStyle = {
-    color: "#033B37", // Color del borde (Naranja/Rojo)
-    weight: 1,        // Grosor
-    opacity: 0.2,        // Grosor
-    fillColor: "#FFFFFF",
-    fillOpacity: 0.5  // Transparencia del relleno (muy sutil)
-  };
-  ********** */
-
-
-  // =====================================================================
-  // ---> PASO 1: EXTRAER LOS IDs DE LAS PROVINCIAS/COMUNIDADES VÁLIDAS
-  // Lo ponemos justo antes del return.
-  // =====================================================================
-  // 1. Extraemos los IDs
-  /* *********************************
-  const validIds = marks
-    .map(m => m.codigo_ine ? String(m.codigo_ine).replace('CA-', '').replace('PR-', '') : null)
-    .filter(Boolean);
-
-  if (geoJsonData && geoJsonData.features && geoJsonData.features.length > 0) {
-     const sampleFeature = geoJsonData.features[0];
-     const sampleId = sampleFeature.properties?.cod_prov || sampleFeature.id || sampleFeature.properties?.id;
-  }
-  ********************************** */
-  // --- 1. LÓGICA PARA COMUNIDADES Y PROVINCIAS ---
-  const validIds = marks
-    .map(m => m.codigo_ine ? String(m.codigo_ine).replace(/\D/g, '') : null) // \D quita letras como CA- o PR-
-    .filter(Boolean);
-
-  // --- 2. LÓGICA PARA MUNICIPIOS (El truco del prefijo INE) ---
-  const currentProvincePrefix = useMemo(() => {
-    if (validIds.length > 0) {
-      // Pillamos cualquier código que haya en pantalla y sacamos sus 2 primeros dígitos (la provincia)
-      return validIds[0]?.substring(0, 2); 
-    }
-    return null;
-  }, [validIds]);
-
-
-// =====================================================================
-  // 🕵️‍♂️ TRAZAS DE DIAGNÓSTICO PARA EL NIVEL 4 (MUNICIPIOS)
-  // =====================================================================
-  console.log("📍 [MAPA] Nivel Actual - geoJsonUrl:", geoJsonUrl);
-  console.log("📍 [MAPA] ID de límite activo (activeBoundaryId):", activeBoundaryId);
-
-  if (activeBoundaryId && geoJsonData?.features) {
-    const cleanBoundaryId = activeBoundaryId.replace(/\D/g, '');
-    console.log("📍 [MAPA] ID limpio que vamos a buscar en el fichero:", cleanBoundaryId);
-
-    // Vamos a buscar manualmente si el polígono existe en los datos descargados
-    const municipioEncontrado = geoJsonData.features.find((f: any) => {
-      const featureId = String(f.properties?.cod_prov || f.id || f.properties?.id);
-      return featureId === cleanBoundaryId;
+              setActiveCenter(m.name); onMarkerClick(m.name); const z = 18; const p = mapInstance.project([m.lat, m.lng], z);
+              p.y += (mapInstance.getSize().y / 3); mapInstance.flyTo(mapInstance.unproject(p, z), z, { animate: true, duration: 0.8 });
+            } else if (m.slug) { setHighlightedRegion(m.codigo_ine || m.name); setTimeout(() => { router.push(`/dentistas/${m.slug}`, {scroll: false}); }, 400); }
+        }}} />
+      );
     });
-
-    if (municipioEncontrado) {
-      console.log("✅ [MAPA] ¡Polígono ENCONTRADO en el fichero! Datos:", municipioEncontrado.id, municipioEncontrado.properties);
-    } else {
-      console.log("❌ [MAPA] Polígono NO ENCONTRADO. El ID no coincide con ninguno de los 8.131 municipios.");
-      // Si no lo encuentra, sacamos el primero del fichero para ver qué formato de ID usan
-      console.log("💡 [MAPA] Ejemplo de un municipio del fichero para comparar:", geoJsonData.features[0].id, geoJsonData.features[0].properties);
-    }
-  }
-  // =====================================================================
-
+  }, [marks, mapInstance, router, onMarkerClick, activeCenter]);
 
   return (
     <div style={{ height: "100%", width: "100%" }}>
       <MapContainer center={initialCenter} zoom={initialZoom} style={{ height: "100%", width: "100%" }} zoomControl={false}>
-        {/*  <MapController marks={marks} modo={modo} initialCenter={initialCenter} initialZoom={initialZoom} setReady={setMapIsReady} /> */}
         <MapController marks={marks} modo={modo} initialCenter={initialCenter} initialZoom={initialZoom} setMapInstance={setMapInstance} />
-
-        {/* 🌟 AÑADIMOS EL ESPÍA AQUÍ */}
-        {/* <MapMoveListener onMapMove={onMapMove} /> */}
-        {/* 🟠 MODIFICADO: Pasamos el evento de clic en el mapa */}
         <MapMoveListener onMapMove={onMapMove} onMapClick={onMapClick} />
-
         <ZoomControl position="topright" />
-
-        {/* <TileLayer url={tileUrl} attribution='&copy; CARTO' /> */}
-        <TileLayer url={tileUrl} attribution={tileAttribution} />
+        <TileLayer url={tileUrl} attribution='&copy; CARTO' />
         
-        {/* --- 6. Renderizado del Contorno --- */}
-        {/* 
-        {geoJsonData && <GeoJSON data={geoJsonData} style={geoJsonStyle} filter={(feature) => {
-            // A veces la propiedad es "name", "nombre" o "NAME_1". Revisa tu archivo.
-            return feature.properties.name === "Aragón" || feature.properties.nombre === "Aragón";
-         }}/>}
-         */}
+        {activeFeatures.length > 0 && (
+          <>
+            <Polygon 
+              key={`mask-${activeBoundaryId}-${activeFeatures.length}`} 
+              positions={createInvertedMask(activeFeatures)}
+              pathOptions={{ fillColor: 'white', fillOpacity: 0.85, stroke: false, interactive: false, fillRule: 'evenodd' }}
+            />
+            <GeoJSON 
+              key={`borders-${activeBoundaryId}-${activeFeatures.length}`}
+              data={{ type: "FeatureCollection", features: activeFeatures }}
+              style={{ color: '#033B37', weight: 1, opacity: 0.3, fillColor: 'transparent', className: 'pointer-events-none' }}
+            />
+          </>
+        )}
 
-
-         {/* --- Renderizado del Contorno --- */}
-         {/*
-         {geoJsonData && (
-             <GeoJSON 
-                 data={geoJsonData} 
-                 style={geoJsonStyle} 
-             />
-         )}
-         */}
- 
-
-
-
-        {/* --- Renderizado del Contorno Dinámico --- */}
-        {geoJsonData && (
-          <GeoJSON 
-            // TRUCO PRO: Forzamos el redibujado completo si cambia el archivo
-            key={geoJsonUrl}
-            data={geoJsonData} 
-
-            // =====================================================================
-            // ---> PASO 2: EL NUEVO FILTRO
-            // Comprobamos si el polígono pertenece a los marcadores que estamos viendo
-            // =====================================================================
-            filter={(feature: any) => {
-              const featureId = String(feature.properties?.cod_prov || feature.id || feature.properties?.id);
-              // Si el ID de este polígono está en nuestra lista de validIds, lo dibuja
-
-
-              // 🌟 A) NIVEL 4 (Dentro de un Municipio): Nos pasan un ID explícito a dibujar
-              if (activeBoundaryId) {
-                // cuando solo pintábamos las fronteras del municipio en cuestión
-                //const cleanBoundaryId = activeBoundaryId.replace(/\D/g, '');
-                //return featureId === cleanBoundaryId;
-                // ¡CAMBIO CLAVE! Devolvemos 'true' para TODOS. 
-                // Necesitamos que existan todos los polígonos para poder pintarlos de blanco y tapar el mapa.
-                return true;
-              }
-
-
-
-              // 🌟 B) NIVEL 3 (Provincia): Dibujamos todos los municipios que empiecen por nuestro prefijo
+        {!activeBoundaryId && geoJsonData && (
+          <GeoJSON key={geoJsonUrl} data={geoJsonData} 
+            filter={(f: any) => {
+              const id = String(f.properties?.cod_prov || f.id || f.properties?.id);
+              const vIds = marks.map(m => m.codigo_ine ? String(m.codigo_ine).replace(/\D/g, '') : null).filter(Boolean);
               if (geoJsonUrl.includes('municipalities')) {
-                // Solo pintamos el municipio si empieza por los 2 dígitos de nuestra provincia (ej: "50...")
-                return currentProvincePrefix ? featureId.startsWith(currentProvincePrefix) : false;
+                const prefix = vIds[0]?.substring(0, 2);
+                return prefix ? id.startsWith(prefix) : false;
               }
-              
-              // 🌟 C) NIVELES 1 y 2 (España o Comunidad): Usamos los validIds de los marks
-              return validIds.includes(featureId);
+              return vIds.includes(id);
             }}
-
-
-            // =====================================================================
-            // ---> ESTILO MULTINIVEL
-            // =====================================================================
-            style={(feature: any) => {
-
-
-              // 3. Obtenemos el ID del GeoJSON (puede venir en la raíz o en properties)
-              //const featureId = feature.id || feature.properties?.id;
-              // SÚPER-BÚSQUEDA: 
-              // - feature.properties.cod_prov (para el archivo de provincias de GitHub)
-              // - feature.id / feature.properties.id (para el de comunidades)
-              //const featureId = String(feature.properties?.cod_prov || feature.id || feature.properties?.id);
-              const featureId = feature.properties?.cod_prov || feature.id || feature.properties?.id;
-
-
-              // --- ESTILO FIJO PARA NIVEL 4 (El borde del municipio en el que estamos) ---
-              /* ***********************************************
-              if (activeBoundaryId && featureId === activeBoundaryId.replace(/\D/g, '')) {
-                return {
-                  color: '#033B37', // Verde DKV o el color corporativo para el borde
-                  weight: 1,        // Borde un poco más grueso para delimitar bien la zona
-                  opacity: 0.8,  //opacity: 0.8,
-                  fillColor: 'transparent', // Sin relleno para ver las calles perfectas
-                  fillOpacity: 0,
-                  dashArray: '5, 5', // Opcional: Borde punteado queda muy elegante para límites municipales
-                  className: 'pointer-events-none' // CRUCIAL: Para que el polígono no bloquee los clics en el mapa
-                };
-                **************************************************** */
-
-              if (activeBoundaryId) {
-
-                const cleanBoundaryId = activeBoundaryId.replace(/\D/g, '');
-                
-                // 1. EL MUNICIPIO ACTIVO (Foco)
-                if (featureId === cleanBoundaryId) {
-                  return {
-                    color: '#033B37', // Borde corporativo
-                    weight: 3,        
-                    opacity: 0.8,
-                    fillColor: 'transparent', // Cristalino para ver las calles perfectas
-                    fillOpacity: 0,
-                    dashArray: '5, 5', 
-                    className: 'pointer-events-none'
-                  };
-                } 
-                // 2. EL RESTO DE MUNICIPIOS (La Máscara Blanca)
-                else {
-                  return {
-                    stroke: false, // SIN bordes, para que no se vea una "malla" negra de fondo
-                    weight: 0,
-                    fillColor: '#FFFFFF', // Blanco total
-                    fillOpacity: 0.85, // 0.85 deja intuir un 15% del mundo real. Si quieres bloqueo total, pon 1.
-                    interactive: false, // CRUCIAL para rendimiento: evita que reaccionen al ratón
-                    className: 'pointer-events-none'
-                  };
-                }
-              }
-
-
-              // 1. Si no hay nada seleccionado, devolvemos el estilo base inmediatamente (optimización de rendimiento)
-              if (!highlightedRegion) {
-                // Estilo por defecto (inactivo)
-                return { color: '#849700', weight: 1, fillColor: '#849700', fillOpacity: 0.05 };
-              }
-
-              // 2. Limpiamos nuestro código (ej: "CA-02" pasa a ser "02")
-              //const targetId = highlightedRegion.replace('CA-', '');
-              // Limpiamos el ID que el usuario pinchó dejando solo números
-              const targetId = highlightedRegion.replace(/\D/g, '');
-
-
-              // 4. Comparación directa (ya que nos confirmas que trae el 0)
-              //const isHighlighted = String(featureId) === targetId;
-              const isHighlighted = featureId === targetId;
-
-              // 5. Devolvemos el estilo resaltado en rojo si hay coincidencia
-              return {
-                //color: isHighlighted ? '#e60000' : '#849700',
-                color: isHighlighted ? '#e60000' : '#FFFFFFF',
-                weight: isHighlighted ? 1 : 1,
-                opacity: isHighlighted ? 1 : 0.2,
-                //fillColor: isHighlighted ? '#e60000' : '#849700',
-                fillColor: isHighlighted ? '#e60000' : '#FFFFFF',
-                //fillOpacity: isHighlighted ? 0.02 : 0.05,
-                fillOpacity: isHighlighted ? 0.02 : 0.1,
-                // Nota: Leaflet a veces requiere que las transiciones se manejen vía clases CSS, 
-                // pero si el motor de renderizado lo soporta, hará un fundido suave.
-                className: 'transition-all duration-300' 
-              };
+            style={(f: any) => {
+              const id = f.properties?.cod_prov || f.id || f.properties?.id;
+              const isH = id === highlightedRegion?.replace(/\D/g, '');
+              return { color: isH ? '#e60000' : '#FFFFFF', weight: 1, opacity: isH ? 1 : 0.2, fillColor: isH ? '#e60000' : '#FFFFFF', fillOpacity: isH ? 0.02 : 0.1, className: 'transition-all duration-300' };
             }}
           />
         )}
 
-
-
-        {/* --- Renderizado de los Pines Individuales y Clústers --- */}
-
-        {/*  {renderedMarkers} */}
-
-        {/*
-        <MarkerClusterGroup 
-          chunkedLoading 
-          iconCreateFunction={createClusterCustomIcon}
-          maxClusterRadius={50} // Los píxeles de distancia para decidir si dos pines se fusionan
-        >
-          {renderedMarkers}
-        </MarkerClusterGroup>
-        */}
-
-
-        {/* 🟠 MODIFICADO: Renderizado Condicional del Clustering */}
         {enableClustering ? (
-          <MarkerClusterGroup 
-            chunkedLoading 
-            iconCreateFunction={createClusterCustomIcon}
-            maxClusterRadius={50} 
-          >
+          <MarkerClusterGroup chunkedLoading iconCreateFunction={createClusterCustomIcon} maxClusterRadius={50}>
             {renderedMarkers}
           </MarkerClusterGroup>
-        ) : (
-          <>{renderedMarkers}</>
-        )}
-
-
-
-
-
-
-
-
-
-
-
-
-
+        ) : <>{renderedMarkers}</>}
       </MapContainer>
     </div>
   );
