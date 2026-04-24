@@ -1,5 +1,7 @@
-"use client";
+// components\dentists\DentistsContainer.tsx
 
+
+"use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
 import dynamic from "next/dynamic";
@@ -16,10 +18,34 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
+/* ********* Sustituimos para que haga lezy-load del mapa y no atasque todo lo demás 
 const DentalMapClient = dynamic(() => import("@/components/map/DentalMapClient"), {
   ssr: false,
   loading: () => <div className="w-full h-full bg-gray-100 animate-pulse flex items-center justify-center">Cargando mapa...</div>
 });
+**************** */
+
+// 1. Cargamos el componente dinámicamente con un pequeño retraso controlado
+const DentalMapClient = dynamic(() => {
+  return new Promise((resolve) => {
+    // Retrasamos la carga 800ms para dar prioridad absoluta al contenido textual y SEO
+    setTimeout(() => {
+      resolve(import("@/components/map/DentalMapClient"));
+    }, 800); 
+  });
+}, {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full bg-gray-100/50 animate-pulse flex flex-col items-center justify-center gap-3">
+       <Loader2 className="w-8 h-8 animate-spin text-dkv-green/40" />
+       <span className="text-xs font-bold text-gray-400 uppercase tracking-widest font-lemon">
+         Iniciando mapa interactivo...
+       </span>
+    </div>
+  )
+});
+
+
 
 const formatter = new Intl.NumberFormat('es-ES');
 
@@ -396,4 +422,3 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
     </div>
   );
 }
-
