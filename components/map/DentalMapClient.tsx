@@ -142,7 +142,7 @@ export default function DentalMapClient({
             />
             <GeoJSON 
               key={`borders-${activeBoundaryId}`}
-              data={{ type: "FeatureCollection", features: activeFeatures }}
+              data={{ type: "FeatureCollection", features: activeFeatures } as any}
               style={{ color: '#033B37', weight: 1.2, opacity: 0.3, fillColor: 'transparent', className: 'pointer-events-none' }}
             />
           </>
