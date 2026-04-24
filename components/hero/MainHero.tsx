@@ -49,6 +49,7 @@ export default function MainHero() {
           <div className="relative w-full max-w-[280px] lg:max-w-md aspect-square mx-auto bg-dkv-green rounded-full overflow-hidden border-8 border-white shadow-2xl z-20">
             <div className="relative w-full h-full bg-neutral-100 flex items-center justify-center">
               {/* ⚡️ OPTIMIZACIÓN LCP: priority true y sizes explícitos para móviles y desktop */}
+              {/* *******************
               <Image 
                 src="/images/hero-dkv.webp" 
                 alt="Cliente feliz DKV Dentisalud" 
@@ -57,6 +58,17 @@ export default function MainHero() {
                 priority={true}
                 sizes="(max-width: 1024px) 280px, 450px" 
               />
+              ************************* */}
+              <Image 
+                src="/images/hero-dkv.webp" 
+                alt="Cliente feliz DKV Dentisalud" 
+                fill 
+                className="object-cover" 
+                priority={true}
+                fetchPriority="high"
+                sizes="(max-width: 768px) 280px, (max-width: 1200px) 448px, 448px"
+              />
+ 
             </div>
           </div>
         </div>
