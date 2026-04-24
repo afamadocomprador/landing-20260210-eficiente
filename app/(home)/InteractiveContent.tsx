@@ -135,7 +135,7 @@ export default function InteractiveContent() {
             </p>
             <Link 
               href="/comentarios"
-              className="inline-flex items-center justify-center rounded-dkv font-fsme font-bold bg-dkv-green text-white hover:bg-dkv-green-hover shadow-xl hover:scale-105 transition-transform text-xl px-8 py-6"
+              className="inline-flex items-center justify-center rounded-dkv font-fsme font-extrabold bg-dkv-green-dark text-white shadow-xl hover:scale-105 hover:shadow-2xl active:scale-95 transition-all duration-300 text-xl px-8 py-6"
             >
               Plantear Consulta
             </Link>
