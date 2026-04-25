@@ -23,7 +23,7 @@ const FooterLegal: React.FC = () => {
                <h4 className="font-bold mb-6 text-lg uppercase tracking-wide font-lemon text-white">DKV DENTISALUD ELITE</h4>
                <ul className="space-y-4 opacity-90">
                  <li>
-                   <Link href="/#dentistas" className="hover:underline hover:text-white/80 transition-colors">
+                   <Link href="/dentistas" className="hover:underline hover:text-white/80 transition-colors">
                      Dentistas y Centros Dentales en España
                    </Link>
                  </li>
