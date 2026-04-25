@@ -92,7 +92,6 @@ const cirugiaSubOptions = [
 ];
 
 export default function InteractiveContent() {
-  // Aceptamos string o number para soportar 'contacto' y los IDs numéricos
   const [activeFloatingId, setActiveFloatingId] = useState<number | string | null>(null); 
   
   const neumorphicBase = "shadow-[8px_8px_12px_#033b3720,-5px_-5px_10px_#ffffff]";
@@ -107,7 +106,6 @@ export default function InteractiveContent() {
     return () => { document.body.style.overflow = ''; }; 
   }, [activeFloatingId]);
 
-  // Gestión combinada de Scroll y Apertura de Modales desde URL
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const modalId = params.get('modal');
@@ -116,7 +114,6 @@ export default function InteractiveContent() {
     }
   }, []);
 
-  // ⚡️ TU LÓGICA DINÁMICA DE RUTEO DEL MODAL INTACTA
   const activeCategory = tratamientosList.find(t => t.id === activeFloatingId);
   const isEstetica = activeFloatingId === 1;
   const isOrtodoncia = activeFloatingId === 2;
@@ -197,7 +194,6 @@ export default function InteractiveContent() {
                     } : undefined}
                     className={`w-full relative flex flex-col overflow-hidden rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ease-out aspect-square hover:scale-[1.02] active:scale-[0.98] ${neumorphicBase} ${neumorphicActive}`}
                   >
-                    {/* EL ESCUDO INVISIBLE: Esto evita que el clic falle al pulsar sobre el texto o imagen */}
                     {item.hasSub && <div className="absolute inset-0 z-50 cursor-pointer" />}
 
                     <div className="w-full bg-white flex flex-col justify-start text-left px-3.5 pt-3.5 pb-3 md:px-5 md:pt-5 md:pb-4 relative z-10 pointer-events-none">
@@ -250,18 +246,18 @@ export default function InteractiveContent() {
         </div>
       </section>
 
-      <section id="información" className="py-20 bg-white border-t border-dkv-gray-border scroll-mt-28 relative z-30">
+      <section id="informacion" className="py-20 bg-white border-t border-dkv-gray-border scroll-mt-28 relative z-30">
          <ScrollReveal>
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-4xl font-lemon text-dkv-green-dark mb-6 uppercase tracking-wide">¿Algo que comentar?</h2>
             <p className="text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-10 leading-relaxed text-balance">
                 Plantéanos cualquier duda sobre tus circunstancias y cómo te puedes beneficiar de nuestros tratamientos.
             </p>
-            {/* CONVERTIDO EN BOTÓN QUE ABRE EL MODAL DE CONTACTO */}
+            {/* ⚡️ BOTÓN RESTAURADO: Verde oscuro dkv, extrabold y con los efectos hover shadow-2xl */}
             <button 
               type="button"
               onClick={() => setActiveFloatingId('contacto')}
-              className="inline-flex items-center justify-center rounded-dkv font-fsme font-bold duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-dkv-green text-white hover:bg-dkv-green-hover focus:ring-dkv-green disabled:bg-dkv-gray-disabled shadow-xl hover:scale-105 transition-transform gap-3 text-xl px-8 py-6 h-auto z-50 relative"
+              className="inline-flex items-center justify-center rounded-dkv font-fsme font-extrabold bg-dkv-green-dark text-white shadow-xl hover:scale-105 hover:shadow-2xl active:scale-95 transition-all duration-300 text-xl px-8 py-6 h-auto z-50 relative"
             >
               Plantear Consulta
             </button>
@@ -275,7 +271,6 @@ export default function InteractiveContent() {
         <PricingCards />
       </div>
 
-      {/* ⚡️ TU PANEL FLOTANTE DINÁMICO EXACTO */}
       <div 
         className={`fixed inset-0 z-[100] flex flex-col justify-end md:justify-center items-center px-4 pb-0 md:p-4 transition-all duration-500 ease-out ${
           activeFloatingId !== null ? 'pointer-events-auto' : 'pointer-events-none'
@@ -319,12 +314,10 @@ export default function InteractiveContent() {
             </p>
 
             {isContacto ? (
-              // ÁREA RESERVADA PARA EL FORMULARIO DE CONTACTO
               <div className="border-t border-gray-300 pt-6">
                 <p className="text-sm text-gray-500 italic">Formulario de contacto en desarrollo (Supabase / Telegram)...</p>
               </div>
             ) : (
-              // TU LISTA DE OPCIONES ORIGINAL
               <div className="flex flex-col border-t border-gray-300 pt-2">
                 {subOptions.map((sub: any) => {
                   if (sub.isSeparator) {
