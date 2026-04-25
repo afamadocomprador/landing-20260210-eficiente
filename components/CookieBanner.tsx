@@ -73,9 +73,9 @@ const CookieBanner = () => {
                 <span>Privacidad y Transparencia</span>
               </div>
               {/* Titular en Lemon Milk + Verde Oscuro */}
-              <h3 className="text-xl font-lemon font-bold text-dkv-green-dark">
+              <p className="text-xl font-lemon font-bold text-dkv-green-dark">
                 Tu privacidad es nuestra prioridad
-              </h3>
+              </p>
               {/* Texto legal en Gris Corporativo */}
               <p className="text-sm text-dkv-gray leading-relaxed text-justify md:text-left font-fsme">
                 Utilizamos cookies propias y de terceros para fines analíticos y para mostrarte 
@@ -118,7 +118,7 @@ const CookieBanner = () => {
           /* --- VISTA DE CONFIGURACIÓN (Detallada) --- */
           <div className="p-6 md:p-8 bg-dkv-gray-light/50">
             <div className="flex justify-between items-center mb-6 border-b border-dkv-gray-border pb-4">
-              <h3 className="font-lemon font-bold text-dkv-green-dark text-xl">Configuración de Privacidad</h3>
+              <p className="font-lemon font-bold text-dkv-green-dark text-xl">Configuración de Privacidad</p>
               <button onClick={() => setShowConfig(false)} className="text-dkv-gray hover:text-dkv-green-dark transition-colors p-2 rounded-full hover:bg-white">
                 <X className="w-6 h-6" />
               </button>
