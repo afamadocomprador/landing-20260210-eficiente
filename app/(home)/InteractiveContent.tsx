@@ -126,7 +126,7 @@ export default function InteractiveContent() {
       </section>
 
       {/* RESTAURACIÓN: SECCIÓN ¿Algo que comentar? */}
-      <section id="información" className="py-20 bg-white border-t border-dkv-gray-border scroll-mt-28 relative z-30">
+      <section id="informacion" className="py-20 bg-white border-t border-dkv-gray-border scroll-mt-28 relative z-30">
          <ScrollReveal>
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-4xl font-lemon text-dkv-green-dark mb-6 uppercase tracking-wide">¿Algo que comentar?</h2>
