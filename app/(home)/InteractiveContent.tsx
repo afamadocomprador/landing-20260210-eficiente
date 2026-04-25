@@ -198,9 +198,9 @@ export default function InteractiveContent() {
 
                     <div className="w-full bg-white flex flex-col justify-start text-left px-3.5 pt-3.5 pb-3 md:px-5 md:pt-5 md:pb-4 relative z-10 pointer-events-none">
                       <div className="flex justify-between items-start w-full gap-1.5">
-                        <span className="block font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-[17px] md:text-xl leading-tight tracking-tight line-clamp-2">
+                        <h3 className="block font-fsme normal-case m-0 font-bold text-dkv-green-dark group-hover:text-dkv-green transition-colors text-[17px] md:text-xl leading-tight tracking-tight line-clamp-2">
                           {item.title}
-                        </span>
+                        </h3>
                         <div className="w-6 h-6 md:w-7 md:h-7 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-dkv-green/10 group-hover:scale-110 transition-all duration-300 shrink-0">
                           <ChevronRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-dkv-green-dark group-hover:text-dkv-green group-hover:translate-x-0.5 transition-all duration-300" strokeWidth={2.5} />
                         </div>
