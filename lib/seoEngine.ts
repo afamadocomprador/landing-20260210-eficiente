@@ -1,5 +1,6 @@
 // lib/seoEngine.ts
 import * as cheerio from 'cheerio';
+import puppeteer from 'puppeteer';
 
 /**
  * Función interna para validación: Extrae entidades de forma recursiva 
@@ -25,11 +26,31 @@ export async function runSeoEngine(url: string, category: string = 'general') {
   }
 
   const urlObj = new URL(validUrl);
+
+  // ⚡️ NUEVO MOTOR: Usamos Puppeteer para ejecutar JavaScript
+  const browser = await puppeteer.launch({ 
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox'] 
+  });
+
+  const page = await browser.newPage();
   
+  // Le decimos que espere hasta que no haya conexiones de red (JS ejecutado)
+  await page.goto(validUrl, { waitUntil: 'networkidle2', timeout: 30000 });
+  
+  // Extraemos el HTML FINAL, con todo el JS ya cargado
+  const html = await page.content();
+  await browser.close();
+
+  // Le pasamos el HTML completo a Cheerio
+  const $ = cheerio.load(html);
+  
+  /* sustituimos todo esto para usar puppeteer en su lugar y procesar javascript y de todo ****
   const response = await fetch(validUrl, { cache: 'no-store' });
   if (!response.ok) throw new Error(`El servidor devolvió un error HTTP: ${response.status}`);
   const html = await response.text();
   const $ = cheerio.load(html);
+  ****** */ 
 
   const errors: string[] = [];
   const warnings: string[] = [];
