@@ -1,14 +1,36 @@
+// app\dentistas\[[...slug]]\page.tsx
+
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { Metadata, Viewport, ResolvingMetadata } from "next";
 import { SITE_CONFIG } from '@/constants/config'; 
+//import dynamic from 'next/dynamic'; // ⚡️ IMPORTACIÓN CLAVE
+// 1. ⚡️ IMPORTACIÓN CON ALIAS (cambiamos 'dynamic' por 'nextDynamic')
+import nextDynamic from 'next/dynamic';
 
 // Motor de datos
 import { getLevelData } from "@/lib/level-engine";
 
 // Componentes UI
-import DentistsContainer from "@/components/dentists/DentistsContainer";
+//import DentistsContainer from "@/components/dentists/DentistsContainer";
+// Componentes UI
+// 2. ⚡️ USAMOS EL ALIAS AQUÍ
+const DentistsContainer = nextDynamic(() => import('@/components/dentists/DentistsContainer'), {
+  ssr: false, // Desactiva SSR para evitar el Hydration Mismatch del mapa
+  loading: () => (
+    <div className="w-full h-[600px] bg-gray-100 animate-pulse rounded-dkv flex items-center justify-center">
+      <div className="flex flex-col items-center text-gray-400">
+        <svg className="w-10 h-10 mb-2 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <span className="font-fsme text-sm">Cargando mapa de clínicas...</span>
+      </div>
+    </div>
+  )
+});
+
 import DentistHero from "@/components/hero/DentistHero";
 import FixedBreadcrumb from "@/components/layout/FixedBreadcrumb";
 import ScrollToMapButton from "@/components/dentists/ScrollToMapButton";
