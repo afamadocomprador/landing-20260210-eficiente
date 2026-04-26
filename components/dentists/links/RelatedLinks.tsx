@@ -4,15 +4,16 @@ import { RelatedLinksData, LinkSection } from "@/services/getEnlaces";
 
 interface RelatedLinksProps {
   data: RelatedLinksData;
+  locationName?: string; // 👈 Añadimos la prop para el nombre de la ciudad/zona
 }
 
 // Subcomponente reutilizable
 const RenderSection = ({ section, icon: Icon, type }: { section: LinkSection, icon: any, type: 'grid' | 'list' }) => (
   <div className="space-y-5">
-    <h2 className="text-dkv-gray text-xs font-bold uppercase tracking-widest flex items-center gap-2 border-b border-gray-100 pb-2">
+    <h3 className="text-dkv-gray text-xs font-bold uppercase tracking-widest flex items-center gap-2 border-b border-gray-100 pb-2">
       <Icon className="w-4 h-4 text-dkv-green" />
       {section.title}
-    </h2>
+    </h3>
     
     <div className={`
       ${type === 'grid' 
@@ -41,7 +42,11 @@ const RenderSection = ({ section, icon: Icon, type }: { section: LinkSection, ic
   </div>
 );
 
-export default function RelatedLinks({ data }: RelatedLinksProps) {
+export default function RelatedLinks({ data, locationName }: RelatedLinksProps) {
+
+  // Si no hay datos, fuera
+  if (!data || !locationName) return null;
+
   // Protección (Incluyendo la nueva sección)
   if (!data || (
       !data.madre && 
@@ -57,6 +62,11 @@ export default function RelatedLinks({ data }: RelatedLinksProps) {
   return (
     <section className="py-16 bg-gray-50 border-t border-gray-200 font-fsme">
       <div className="container mx-auto px-4 md:px-10 space-y-16">
+
+      {/* 🚀 NUEVO H2 MAESTRO PARA SEO */}
+      <h2 className="font-lemon text-2xl text-dkv-green-dark uppercase tracking-tight">
+        Búsquedas relacionadas con {locationName || "tu zona"}
+      </h2>
         
         {/* 1. MADRE */}
         {data.madre && data.madre.items.length > 0 && (
