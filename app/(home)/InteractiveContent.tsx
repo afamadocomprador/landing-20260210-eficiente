@@ -1,19 +1,13 @@
 // app/(home)/InteractiveContent.tsx
-
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic'; 
-import Link from 'next/link';   
+import React from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
-import { ChevronRight, X, ArrowRight, Stethoscope, HeartPulse, Sparkles, Activity, Smile, Baby, Zap, ShieldCheck, Moon, Scissors } from "lucide-react"; 
+import { ChevronRight, X, ArrowRight, Stethoscope, HeartPulse, Sparkles, Activity, Smile, Baby, Zap, ShieldCheck, Moon, Scissors } from "lucide-react";
 
-import HeroSearch from '@/components/home/HeroSearch';
 import ScrollReveal from '@/components/ui/ScrollReveal';
-
-// Componentes pesados con carga diferida
-const Archetypes = dynamic(() => import('@/components/Archetypes'), { ssr: false });
-const PricingCards = dynamic(() => import('@/components/PricingCards'), { ssr: false });
+import { useInteractiveHome } from '@/hooks/useInteractiveHome';
 
 // ⚡️ TUS DATOS ORIGINALES EXACTOS
 const tratamientosList = [
@@ -30,17 +24,17 @@ const tratamientosList = [
 ];
 
 const esteticaSubOptions = [
-  { id: 'blanqueamiento', title: 'Blanqueamiento', href: '/tratamientos-v2/estetica-blanqueamiento', tag: 'Luz y armonía' }, 
+  { id: 'blanqueamiento', title: 'Blanqueamiento', href: '/tratamientos-v2/estetica-blanqueamiento', tag: 'Luz y armonía' },
   { id: 'carillas', title: 'Carillas y Diseño', href: '/tratamientos-v2/estetica-carillas', tag: 'Hollywood Smile' },
   { id: 'incrustaciones', title: 'Incrustaciones', href: '/tratamientos-v2/estetica-incrustaciones', tag: 'Reconstrucción' },
   { id: 'sep-orto-estetica', isSeparator: true, title: 'Alineación Estética' },
-  { id: 'invisalign-est', title: 'Invisalign', href: '/tratamientos-v2/ortodoncia-invisalign', tag: 'Ortodoncia Invisible' }, 
+  { id: 'invisalign-est', title: 'Invisalign', href: '/tratamientos-v2/ortodoncia-invisalign', tag: 'Ortodoncia Invisible' },
   { id: 'lingual-est', title: 'Ortodoncia Lingual', href: '/tratamientos-v2/ortodoncia-lingual', tag: 'Aparato Interior' },
   { id: 'zafiro-est', title: 'Brackets de Zafiro', href: '/tratamientos-v2/ortodoncia-zafiro', tag: 'Estética Fija' },
 ];
 
 const ortodonciaSubOptions = [
-  { id: 'invisalign', title: 'Invisalign', href: '/tratamientos-v2/ortodoncia-invisalign', tag: 'Invisible' }, 
+  { id: 'invisalign', title: 'Invisalign', href: '/tratamientos-v2/ortodoncia-invisalign', tag: 'Invisible' },
   { id: 'lingual', title: 'Lingual', href: '/tratamientos-v2/ortodoncia-lingual', tag: 'Interior' },
   { id: 'zafiro', title: 'Zafiro', href: '/tratamientos-v2/ortodoncia-zafiro', tag: 'Estética Fija' },
   { id: 'metalica', title: 'Metálica', href: '/tratamientos-v2/ortodoncia-metalica', tag: 'Tradicional' },
@@ -91,28 +85,23 @@ const cirugiaSubOptions = [
   { id: 'extracciones', title: 'Extracciones', href: '/tratamientos-v2/cirugia-extracciones', tag: 'Muelas del juicio y más' }
 ];
 
-export default function InteractiveContent() {
-  const [activeFloatingId, setActiveFloatingId] = useState<number | string | null>(null); 
+// ⚡️ NUEVA INTERFAZ PARA RECIBIR LOS SERVER COMPONENTS
+interface InteractiveContentProps {
+  dentistasSection: React.ReactNode;
+  archetypesSection: React.ReactNode;
+  pricingCardsSection: React.ReactNode;
+}
+
+export default function InteractiveContent({
+  dentistasSection,
+  archetypesSection,
+  pricingCardsSection
+}: InteractiveContentProps) {
+  // ⚡️ ESTADO AISLADO EN EL HOOK
+  const { activeFloatingId, setActiveFloatingId } = useInteractiveHome(); 
   
   const neumorphicBase = "shadow-[8px_8px_12px_#033b3720,-5px_-5px_10px_#ffffff]";
   const neumorphicActive = "active:shadow-[inset_4px_4px_8px_#033b3730,inset_-4px_-4px_8px_#ffffff]";
-
-  useEffect(() => {
-    if (activeFloatingId !== null) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => { document.body.style.overflow = ''; }; 
-  }, [activeFloatingId]);
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const modalId = params.get('modal');
-    if (modalId) {
-      setActiveFloatingId(parseInt(modalId));
-    }
-  }, []);
 
   const activeCategory = tratamientosList.find(t => t.id === activeFloatingId);
   const isEstetica = activeFloatingId === 1;
@@ -162,7 +151,6 @@ export default function InteractiveContent() {
     <>
       <section id="tratamientos" className="py-20 bg-[#F0F0F0] border-t border-dkv-gray-border scroll-mt-28 relative z-40">
         <div className="container mx-auto max-w-5xl px-6 md:px-8">
-
           <ScrollReveal>
             <h2 className="text-4xl md:text-5xl font-lemon text-dkv-green-dark mb-6 text-left md:text-center uppercase tracking-wide">
               Tratamientos.
@@ -228,23 +216,8 @@ export default function InteractiveContent() {
         </div>
       </section>
 
-      <section id="dentistas" className="py-24 bg-white border-t border-dkv-gray-border scroll-mt-28 relative overflow-visible">
-        <div className="container mx-auto px-4 text-center relative z-40">
-           <ScrollReveal>
-            <h2 className="text-4xl md:text-5xl font-lemon text-dkv-green-dark mb-6 uppercase tracking-wide">Dentistas.</h2>
-           </ScrollReveal>
-           <ScrollReveal delay={100}>
-            <p className="text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-10 text-left md:text-center leading-relaxed">
-              Nuestra red está formada por más de 2.600 dentistas en más de 1.450 centros dentales en toda España. Encuentra el tuyo.
-            </p>
-           </ScrollReveal>
-           <ScrollReveal delay={200}>       
-            <div className="max-w-4xl mx-auto mb-8">
-              <HeroSearch />
-            </div>
-           </ScrollReveal>
-        </div>
-      </section>
+      {/* ⚡️ SECCIÓN DENTISTAS RENDERIZADA EN EL SERVIDOR */}
+      {dentistasSection}
 
       <section id="informacion" className="py-20 bg-white border-t border-dkv-gray-border scroll-mt-28 relative z-30">
          <ScrollReveal>
@@ -253,7 +226,6 @@ export default function InteractiveContent() {
             <p className="text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-10 leading-relaxed text-balance">
                 Plantéanos cualquier duda sobre tus circunstancias y cómo te puedes beneficiar de nuestros tratamientos.
             </p>
-            {/* ⚡️ BOTÓN RESTAURADO: Verde oscuro dkv, extrabold y con los efectos hover shadow-2xl */}
             <button 
               type="button"
               onClick={() => setActiveFloatingId('contacto')}
@@ -265,10 +237,11 @@ export default function InteractiveContent() {
          </ScrollReveal>
       </section>
 
-      <Archetypes />
+      {/* ⚡️ COMPONENTES DINÁMICOS PESADOS RENDERIZADOS EN EL SERVIDOR */}
+      {archetypesSection}
 
       <div className="scroll-mt-28 relative z-30">
-        <PricingCards />
+        {pricingCardsSection}
       </div>
 
       <div 

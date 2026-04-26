@@ -1,23 +1,31 @@
 // app/(home)/page.tsx
 
+// app/(home)/page.tsx
+
 import { Viewport } from 'next';
 import dynamic from 'next/dynamic';
 import { SITE_CONFIG } from '@/constants/config';
 import MainHero from '@/components/hero/MainHero';
 import FooterLegal from '@/components/FooterLegal';
-//import InteractiveContent from './InteractiveContent';
+
+// ⚡️ Importaciones necesarias para las secciones que ahora renderizará el servidor
+import HeroSearch from '@/components/home/HeroSearch';
+import ScrollReveal from '@/components/ui/ScrollReveal';
+
 // ⚡️ LA SOLUCIÓN AL TTI: 
 // Importamos dinámicamente la interactividad y forzamos a que no bloquee el servidor
 const InteractiveContent = dynamic(() => import('./InteractiveContent'), {
   ssr: false, // Asegura que solo se renderice en el cliente
 });
 
-
-
 // Carga dinámica del banner para no penalizar el tiempo de carga inicial
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), {
   ssr: false, 
 });
+
+// Carga dinámica que tenías originalmente en InteractiveContent.tsx, trasladada aquí
+const Archetypes = dynamic(() => import('@/components/Archetypes'), { ssr: false });
+const PricingCards = dynamic(() => import('@/components/PricingCards'), { ssr: false });
 
 export const viewport: Viewport = {
    themeColor: [
@@ -56,6 +64,27 @@ const nationalMasterSchema = {
 };
 
 export default function LandingPage() {
+  // ⚡️ Construimos el bloque del buscador puramente aquí, fuera del "use client"
+  const dentistasSection = (
+    <section id="dentistas" className="py-24 bg-white border-t border-dkv-gray-border scroll-mt-28 relative overflow-visible">
+      <div className="container mx-auto px-4 text-center relative z-40">
+         <ScrollReveal>
+          <h2 className="text-4xl md:text-5xl font-lemon text-dkv-green-dark mb-6 uppercase tracking-wide">Dentistas.</h2>
+         </ScrollReveal>
+         <ScrollReveal delay={100}>
+          <p className="text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-10 text-left md:text-center leading-relaxed">
+            Nuestra red está formada por más de 2.600 dentistas en más de 1.450 centros dentales en toda España. Encuentra el tuyo.
+          </p>
+         </ScrollReveal>
+         <ScrollReveal delay={200}>       
+          <div className="max-w-4xl mx-auto mb-8">
+            <HeroSearch />
+          </div>
+         </ScrollReveal>
+      </div>
+    </section>
+  );
+
   return (
     <div className="min-h-screen bg-white text-dkv-gray selection:bg-dkv-green selection:text-white relative">
       <CookieBanner />
@@ -67,8 +96,12 @@ export default function LandingPage() {
         {/* Sección estática de alto impacto (LCP) */}
         <MainHero /> 
 
-        {/* Bloque que encapsula la interactividad y secciones de contenido */}
-        <InteractiveContent />
+        {/* ⚡️ Bloque interactivo recibiendo los Server Components por props */}
+        <InteractiveContent 
+          dentistasSection={dentistasSection}
+          archetypesSection={<Archetypes />}
+          pricingCardsSection={<PricingCards />}
+        />
 
         <FooterLegal />
       </main>
