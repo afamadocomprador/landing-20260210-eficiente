@@ -37,10 +37,13 @@ export default function DentistHero({ h1, totalDentistas, totalCentros }: Dentis
               </span>
             </div>
 
-            <h1 className="font-lemon text-4xl md:text-5xl lg:text-6xl text-dkv-green-dark leading-tight text-left">
-               {h1.dark} <br />
-               <span className="text-dkv-green">{h1.normal}.</span>
-            </h1>
+            {/* Contenedor que bloquea el Layout Shift matemáticamente   */}
+            <div className="min-h-[90px] md:min-h-[120px] lg:min-h-[150px] flex flex-col justify-end">
+              <h1 className="font-lemon text-4xl md:text-5xl lg:text-6xl text-dkv-green-dark leading-tight text-left">
+                 {h1.dark} <br />
+                 <span className="text-dkv-green">{h1.normal}.</span>
+              </h1>
+            </div>
             
             {/* ✅ ACCESIBILIDAD: Contraste verificado (text-gray-700) */}
             <p className="font-fsme text-gray-700 text-lg md:text-xl leading-relaxed max-w-2xl text-left">
