@@ -20,7 +20,7 @@ const FooterLegal: React.FC = () => {
   
              {/* Columna Izquierda: Opciones de la página */}
              <div>
-               <h4 className="font-bold mb-6 text-lg uppercase tracking-wide font-lemon text-white">DKV DENTISALUD ELITE</h4>
+               <p className="font-bold mb-6 text-lg uppercase tracking-wide font-lemon text-white">DKV DENTISALUD ELITE</p>
                <ul className="space-y-4 opacity-90">
                  <li>
                    <Link href="/dentistas" className="hover:underline hover:text-white/80 transition-colors">
@@ -40,7 +40,7 @@ const FooterLegal: React.FC = () => {
 
              {/* Columna Derecha: Contacto Urgente */}
              <div className="md:text-right">
-               <h4 className="font-bold mb-6 text-lg uppercase tracking-wide font-lemon text-white">CONTACTO NACIONAL</h4>
+               <p className="font-bold mb-6 text-lg uppercase tracking-wide font-lemon text-white">CONTACTO NACIONAL</p>
                <ul className="space-y-4 opacity-90">
                  <li>
                    <a href="tel:+34976217463" className="hover:underline text-xl font-bold flex md:justify-end items-center gap-2 font-fsme">
