@@ -150,7 +150,7 @@ export default function ClinicCard({ clinic, onSelectClinic, isSelected = false 
               <a 
                 href={`tel:${clinic.phone.toString().replace(/\D/g, "")}`}
                 onClick={(e) => e.stopPropagation()}
-                aria-label={`Llamar a ${clinic.name}`}
+                aria-label={`Llamar al teléfono ${clinic.phone} de ${clinic.name}`}
                 className="flex items-center gap-3 px-6 py-3.5 bg-dkv-green-dark text-white rounded-2xl text-base font-bold shadow-md hover:bg-dkv-green transition-all active:scale-95"
               >
                 <Phone className="w-5 h-5" aria-hidden="true" />
