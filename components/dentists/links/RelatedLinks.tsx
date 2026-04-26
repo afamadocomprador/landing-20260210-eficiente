@@ -9,10 +9,10 @@ interface RelatedLinksProps {
 // Subcomponente reutilizable
 const RenderSection = ({ section, icon: Icon, type }: { section: LinkSection, icon: any, type: 'grid' | 'list' }) => (
   <div className="space-y-5">
-    <h3 className="text-dkv-gray text-xs font-bold uppercase tracking-widest flex items-center gap-2 border-b border-gray-100 pb-2">
+    <h2 className="text-dkv-gray text-xs font-bold uppercase tracking-widest flex items-center gap-2 border-b border-gray-100 pb-2">
       <Icon className="w-4 h-4 text-dkv-green" />
       {section.title}
-    </h3>
+    </h2>
     
     <div className={`
       ${type === 'grid' 
