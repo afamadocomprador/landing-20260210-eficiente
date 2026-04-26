@@ -20,6 +20,7 @@ export default function ScrollToMapButton() {
   return (
     <div className="flex justify-center mb-8 relative z-20">
       <button
+        aria-label="Desplazarse al mapa de clínicas"
         onClick={handleScroll}
         className="bg-dkv-green text-white p-4 rounded-full shadow-xl hover:bg-dkv-green-dark transition-all animate-bounce"
       >
