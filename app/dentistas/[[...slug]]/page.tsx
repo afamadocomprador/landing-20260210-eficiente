@@ -359,7 +359,10 @@ export default async function DentistasPage({ params }: PageProps) {
           <MapLazyLoader initialData={navigationData} />
         </section>
 
-        <RelatedLinks data={navigationData.relatedLinks} />
+        <RelatedLinks 
+          data={navigationData.relatedLinks} 
+          locationName={locationName} 
+        />
 
         <FooterLegal />
       </div>
