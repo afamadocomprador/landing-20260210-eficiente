@@ -35,7 +35,7 @@ export default function ClinicCard({ clinic, onSelectClinic, isSelected = false 
   };
 
   return (
-    <article 
+    <div 
       // Usamos el ID real de base de datos (el Hash que tú mismo has visto)
       id={`clinic-${clinic.clinic_id}`}
       role="button"
@@ -176,6 +176,6 @@ export default function ClinicCard({ clinic, onSelectClinic, isSelected = false 
           </div>
         </div>
       </div>
-    </article>
+    </div>
   );
 }
