@@ -14,8 +14,13 @@ import ScrollReveal from '@/components/ui/ScrollReveal';
 
 // ⚡️ LA SOLUCIÓN AL TTI: 
 // Importamos dinámicamente la interactividad y forzamos a que no bloquee el servidor
+//const InteractiveContent = dynamic(() => import('./InteractiveContent'), {
+//  ssr: false, // Asegura que solo se renderice en el cliente
+//});
+//hay que reservar espacio para evitarl CLS
 const InteractiveContent = dynamic(() => import('./InteractiveContent'), {
-  ssr: false, // Asegura que solo se renderice en el cliente
+  ssr: false,
+  loading: () => <div className="w-full min-h-[800px] bg-[#F0F0F0] animate-pulse" />
 });
 
 // Carga dinámica del banner para no penalizar el tiempo de carga inicial
@@ -24,8 +29,19 @@ const CookieBanner = dynamic(() => import('@/components/CookieBanner'), {
 });
 
 // Carga dinámica que tenías originalmente en InteractiveContent.tsx, trasladada aquí
-const Archetypes = dynamic(() => import('@/components/Archetypes'), { ssr: false });
-const PricingCards = dynamic(() => import('@/components/PricingCards'), { ssr: false });
+//const Archetypes = dynamic(() => import('@/components/Archetypes'), { ssr: false });
+// para no penalizar CLS
+const Archetypes = dynamic(() => import('@/components/Archetypes'), { 
+  ssr: false,
+  loading: () => <div className="w-full min-h-[400px] bg-white animate-pulse" />
+});
+
+//const PricingCards = dynamic(() => import('@/components/PricingCards'), { ssr: false });
+// para no penalizar CLS
+const PricingCards = dynamic(() => import('@/components/PricingCards'), { 
+  ssr: false,
+  loading: () => <div className="w-full min-h-[600px] bg-white animate-pulse" />
+});
 
 export const viewport: Viewport = {
    themeColor: [
