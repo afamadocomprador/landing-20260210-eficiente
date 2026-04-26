@@ -77,17 +77,11 @@ export default function ClinicCard({ clinic, onSelectClinic, isSelected = false 
             </div>
           )}
 
-          {/*
-          <h3 className="font-lemon text-dkv-green-dark text-lg md:text-xl leading-tight mb-3 group-hover:text-dkv-green transition-colors">
-            {clinic.name}
-          </h3>
-          */}
-
-           <h3 className={`font-lemon text-lg md:text-xl leading-tight mb-3 transition-colors
+           <h2 className={`font-lemon text-lg md:text-xl leading-tight mb-3 transition-colors
             ${isSelected ? 'text-dkv-green' : 'text-dkv-green-dark group-hover:text-dkv-green'}
           `}>
             {clinic.name}
-          </h3>
+          </h2>
 
           {/* Acordeón de Especialistas */}
           {(clinic.staff_count ?? 0) > 0 && (
