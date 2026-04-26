@@ -1,6 +1,21 @@
 // lib/seoEngine.ts
+
+// lib/seoEngine.ts
 import * as cheerio from 'cheerio';
 import puppeteer from 'puppeteer';
+
+/**
+ * Función robusta para limpiar y parsear JSON-LD
+ * Evita fallos de parseo por etiquetas HTML o espacios inyectados
+ */
+function parseJsonLd(content: string) {
+  try {
+    const cleanJson = content.replace(/<\/?[^>]+(>|$)/g, "").trim();
+    return JSON.parse(cleanJson);
+  } catch (e) {
+    return null;
+  }
+}
 
 /**
  * Función interna para validación: Extrae entidades de forma recursiva 
@@ -34,10 +49,34 @@ export async function runSeoEngine(url: string, category: string = 'general') {
   });
 
   const page = await browser.newPage();
+
+  // ⚡️ MEJORA 1: Viewport de escritorio para capturar más componentes de un vistazo
+  await page.setViewport({ width: 1920, height: 1080 });
   
   // Le decimos que espere hasta que no haya conexiones de red (JS ejecutado)
   await page.goto(validUrl, { waitUntil: 'networkidle2', timeout: 30000 });
   
+
+  // ⚡️ MEJORA 2: Auto-scroll hacia abajo para disparar los componentes "ScrollReveal" y "next/dynamic"
+  await page.evaluate(async () => {
+    await new Promise<void>((resolve) => {
+      let totalHeight = 0;
+      const distance = 300;
+      const timer = setInterval(() => {
+        const scrollHeight = document.body.scrollHeight;
+        window.scrollBy(0, distance);
+        totalHeight += distance;
+
+        if (totalHeight >= scrollHeight - window.innerHeight) {
+          clearInterval(timer);
+          resolve();
+        }
+      }, 100); // Baja cada 100ms
+    });
+  });
+  // Damos 1 segundo extra de gracia para que React termine de hidratar e inyectar el texto
+  await new Promise(resolve => setTimeout(resolve, 1000));
+
   // Extraemos el HTML FINAL, con todo el JS ya cargado
   const html = await page.content();
   await browser.close();
@@ -45,13 +84,6 @@ export async function runSeoEngine(url: string, category: string = 'general') {
   // Le pasamos el HTML completo a Cheerio
   const $ = cheerio.load(html);
   
-  /* sustituimos todo esto para usar puppeteer en su lugar y procesar javascript y de todo ****
-  const response = await fetch(validUrl, { cache: 'no-store' });
-  if (!response.ok) throw new Error(`El servidor devolvió un error HTTP: ${response.status}`);
-  const html = await response.text();
-  const $ = cheerio.load(html);
-  ****** */ 
-
   const errors: string[] = [];
   const warnings: string[] = [];
   const good: string[] = [];
@@ -78,12 +110,19 @@ export async function runSeoEngine(url: string, category: string = 'general') {
   const hierarchyEntities: any[] = [];
   const flatEntitiesForTest: any[] = [];
 
+  // ⚡️ MEJORA APLICADA: Extracción robusta de JSON-LD usando .html() y parseJsonLd
   $('script[type="application/ld+json"]').each((_, el) => {
-    try {
-      const json = JSON.parse($(el).text().trim());
+    const content = $(el).html() || $(el).text(); // Priorizamos html() para evitar codificaciones de texto
+
+    // ⚡️ CHIVATO AÑADIDO: Veremos en la terminal de Vercel/Local si detecta el script
+    console.log("\n--- DETECTADO SCRIPT JSON-LD ---");
+    console.log("Contenido crudo (primeros 150 chars):", content.substring(0, 150));
+
+    const json = parseJsonLd(content);
+    if (json) {
       hierarchyEntities.push(json); 
       internalDeepSearch(json, flatEntitiesForTest); 
-    } catch (e) {}
+    }
   });
 
   const isAgency = flatEntitiesForTest.some(e => {
@@ -136,15 +175,31 @@ export async function runSeoEngine(url: string, category: string = 'general') {
   }
 
   // --- ACCESIBILIDAD Y SEGURIDAD ---
-  $('img').each((_, el) => { if (!$(el).attr('alt')) warnings.push('ACCESIBILIDAD: Imagen sin ALT.'); });
-  if (html.includes('http://') && !isLocalhost) warnings.push('SEGURIDAD: Contenido mixto (HTTP).');
+  $('img')
+    .not('.leaflet-tile, .leaflet-marker-icon, .maplibregl-canvas, [src*="cartocdn.com"], [role="presentation"]')
+    .each((_, el) => {
+      if (!$(el).attr('alt')) warnings.push('ACCESIBILIDAD: Imagen sin ALT.');
+    });
+
+  if (!isLocalhost) {
+    let hasMixedContent = false;
+    $('img, script, iframe, link[rel="stylesheet"]').each((_, el) => {
+      const src = $(el).attr('src') || '';
+      const href = $(el).attr('href') || '';
+      if (src.startsWith('http://') || href.startsWith('http://')) {
+        hasMixedContent = true;
+      }
+    });
+
+    if (hasMixedContent) {
+      warnings.push('SEGURIDAD: Contenido mixto. Se están cargando imágenes, scripts o estilos a través de HTTP.');
+    }
+  }
 
   // --- EXTRACCIÓN DE TEXTO VISIBLE Y CONTEO ---
   const $clean = cheerio.load(html);
-  // Eliminamos elementos que no aportan contenido textual real al SEO
   $clean('script, style, nav, header, footer, noscript, iframe, svg, symbol').remove();
   
-  // Limpiamos el texto: normalizamos espacios y eliminamos saltos de línea excesivos
   const rawText = $clean('body').text().replace(/\s+/g, ' ').trim();
   const words = rawText.split(/\s+/).filter(w => w.length > 2).length;
   
@@ -164,7 +219,7 @@ export async function runSeoEngine(url: string, category: string = 'general') {
     errors, 
     warnings, 
     good,
-    visibleText: rawText, // Enviamos el texto capturado para auditoría visual
+    visibleText: rawText,
     stats: { 
       h1: h1Count, 
       words, 
