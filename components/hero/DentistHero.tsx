@@ -37,11 +37,10 @@ export default function DentistHero({ h1, totalDentistas, totalCentros }: Dentis
               </span>
             </div>
 
-            {/* Contenedor que bloquea el Layout Shift matemáticamente   */}
-            <div className="min-h-[100px] md:min-h-[140px] lg:min-h-[170px] flex flex-col justify-start">
-              <h1 className="font-lemon text-4xl md:text-5xl lg:text-6xl text-dkv-green-dark leading-[1.1] tracking-tight text-left line-clamp-2">
-                 {h1.dark} <br />
-                 <span className="text-dkv-green">{h1.normal}.</span>
+            <div className="min-h-[130px] md:min-h-[180px] lg:min-h-[220px] flex flex-col justify-start">
+              <h1 className="font-lemon text-4xl md:text-5xl lg:text-6xl text-dkv-green-dark leading-[1.1] tracking-tight text-left">
+                {h1.dark} <br />
+                <span className="text-dkv-green">{h1.normal}.</span>
               </h1>
             </div>
             
