@@ -110,9 +110,11 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
           <button onClick={() => setIsListOpen(!isListOpen)} className="h-[80px] px-6 flex items-center justify-between border-b cursor-pointer">
             <div className="flex items-center gap-4">
               <Stethoscope className="w-5 h-5 text-dkv-green" />
-              <h3 className="font-fsme text-dkv-green-dark uppercase font-bold">
+
+              <span className="block font-fsme font-bold text-2xl text-dkv-green-dark uppercase leading-tight">
                 <span className="text-dkv-green">{formatter.format(localClinics.reduce((acc, c) => acc + (Number(c.staff_count) || 0), 0))}</span> DENTISTAS
-              </h3>
+              </span>
+
             </div>
             {isListOpen ? <ChevronDown /> : <ChevronUp />}
           </button>
