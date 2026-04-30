@@ -1,3 +1,5 @@
+// lib/level-engine.ts
+
 import { SupabaseClient } from "@supabase/supabase-js";
 import { NavigationState } from "@/context/NavigationContext";
 import { getDatosComunidades } from '@/services/getComunidades';
@@ -546,7 +548,9 @@ export async function getLevelData(
       breadcrumbs: breadcrumbItems,
       enlacesSugeridos: [], 
       title: `${landing.nombre_ine} | DKV Dentisalud`,
-      description: "",
+      //description: "",
+      // 🌟 Aquí conectas el nuevo campo de la base de datos
+      description: landing.seo_txt_contextual || "",
       schemaData: schemaJsonLd 
     },
     relatedLinks: relatedLinks 
