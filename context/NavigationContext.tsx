@@ -1,3 +1,5 @@
+// context/NavigationContext.tsx
+
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
@@ -8,6 +10,7 @@ export interface NavigationState {
   nivelFinal: string;
   entidadId: string | null;
   codigo_ine?: string; 
+  nivel?: string; // 🌟 AÑADIDO: Propiedad 'nivel' en la raíz para evitar errores de TypeScript
   mapa: {
     marks: any[];
     modo: 'FIT_BOUNDS' | 'CENTER_ZOOM';
@@ -22,6 +25,7 @@ export interface NavigationState {
     estadoInicial: 'CLOSED' | 'HALF' | 'EXPANDED';
   };
   seo: {
+    nivel?: string; // 🌟 AÑADIDO: Por si acaso también lo necesitas dentro de seo (ya que lo buscas ahí en tu page.tsx)
     totalDentistasHero: number;
     totalCentrosHero: number;
     h1: { dark: string; normal: string; };
