@@ -555,6 +555,8 @@ export async function getLevelData(
       //description: "",
       // 🌟 Aquí conectas el nuevo campo de la base de datos
       description: landing.seo_txt_contextual || "",
+      // 👈 ¡AÑADE ESTA LÍNEA AQUÍ!
+      nivel: landing.nivel, 
       schemaData: schemaJsonLd 
     },
     relatedLinks: relatedLinks 
