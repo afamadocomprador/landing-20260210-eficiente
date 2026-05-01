@@ -544,10 +544,14 @@ export async function getLevelData(
     seo: {
       totalDentistasHero: totalHeroDentistas || 0, 
       totalCentrosHero: totalHeroCentros || 0,
-      h1: { dark: "Encuentra tu dentista en", normal: landing.breadcrumb },
+      // 🌟 Usamos el nuevo campo seo_h1 como fuente principal del título
+      //h1: { dark: "Encuentra tu dentista en", normal: landing.breadcrumb },
+      h1: { dark: "Encuentra tu dentista en", normal: landing.seo_h1 || landing.breadcrumb }, 
       breadcrumbs: breadcrumbItems,
       enlacesSugeridos: [], 
-      title: `${landing.nombre_ine} | DKV Dentisalud`,
+      // 🌟 Mejoramos también la etiqueta <title> usando seo_h1
+      //title: `${landing.nombre_ine} | DKV Dentisalud`,
+      title: `${landing.seo_h1 || landing.breadcrumb} | DKV Dentisalud Elite`,
       //description: "",
       // 🌟 Aquí conectas el nuevo campo de la base de datos
       description: landing.seo_txt_contextual || "",
