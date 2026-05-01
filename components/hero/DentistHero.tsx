@@ -3,19 +3,21 @@ import React from "react";
 
 interface DentistHeroProps {
   h1: { dark: string; normal: string; };
-  totalDentistas: number;
-  totalCentros: number;
+  //totalDentistas: number;
+  //totalCentros: number;
+  description?: string; // 🌟 Añadimos la prop para el texto SEO
 }
 
-export default function DentistHero({ h1, totalDentistas, totalCentros }: DentistHeroProps) {
-  const formatter = new Intl.NumberFormat('de-DE');
+//export default function DentistHero({ h1, totalDentistas, totalCentros }: DentistHeroProps) {
+export default function DentistHero({ h1, description }: DentistHeroProps) {
+  //const formatter = new Intl.NumberFormat('de-DE');
   
-  const locationName = h1.normal; 
-  const isSpain = locationName.toLowerCase() === 'españa';
-  const showPlusPrefix = totalDentistas > 300; 
+  //const locationName = h1.normal; 
+  //const isSpain = locationName.toLowerCase() === 'españa';
+  //const showPlusPrefix = totalDentistas > 300; 
 
-  const formattedProfessionals = formatter.format(totalDentistas);
-  const formattedClinics = formatter.format(totalCentros);
+  //const formattedProfessionals = formatter.format(totalDentistas);
+  //const formattedClinics = formatter.format(totalCentros);
 
   return (
     <section className="relative pt-16 pb-8 px-safe-x md:px-6 container mx-auto">
@@ -45,12 +47,21 @@ export default function DentistHero({ h1, totalDentistas, totalCentros }: Dentis
             </div>
             
             {/* ✅ ACCESIBILIDAD: Contraste verificado (text-gray-700) */}
+            {/* ********************** sustituido va al cuerpo general de la página
             <p className="font-fsme text-gray-700 text-lg md:text-xl leading-relaxed max-w-2xl text-left">
               Accede al Cuadro Médico Dental DKV. {showPlusPrefix && "Más de "} 
               <strong className="text-dkv-green"> {formattedProfessionals} </strong> dentistas disponibles en 
               <strong className="text-dkv-green"> {formattedClinics} </strong> centros dentales y precios pactados en 
               {isSpain ? " todo el territorio nacional" : ` ${locationName}`}.
             </p>
+            *********************  */}
+            {/* 🌟 AQUÍ PINTAMOS EL TEXTO SEO (si existe) DENTRO DEL HERO */}
+            {description && (
+              <p className="font-fsme text-gray-700 text-lg md:text-xl leading-relaxed max-w-2xl text-left">
+                {description}
+              </p>
+            )}
+ 
           </div>
         </div>
       </div>
