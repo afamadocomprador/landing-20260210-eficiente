@@ -350,6 +350,15 @@ export default async function DentistasPage({ params }: PageProps) {
           totalCentros={navigationData.seo.totalCentrosHero}
         />
 
+        {/* 🌟 AQUÍ INSERTAMOS EL TEXTO SEO CONTEXTUAL */}
+        {navigationData.seo.description && (
+          <section className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 pb-2 text-center">
+            <p className="text-base sm:text-lg text-gray-700 font-fsme leading-relaxed">
+              {navigationData.seo.description}
+            </p>
+          </section>
+        )}
+
         <div className="pt-10">
           <ScrollToMapButton />
         </div>
