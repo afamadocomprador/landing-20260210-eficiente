@@ -54,16 +54,15 @@ interface PageProps {
      const currentPath = params.slug ? params.slug.join('/') : '';
      const canonicalUrl = `/dentistas/${currentPath}`.replace(/\/$/, "");
      
-     // 1. SEO PARA GOOGLE (Mantenemos el clásico para no perder posicionamiento)
+     // 1. SEO PARA GOOGLE
      const title = seo.title || `Dentistas en ${seo.h1.normal} | DKV Dentisalud Elite`;
      const description = seo.description || `Cuadro médico DKV en ${seo.h1.normal}.`;
 
-     // 2. 🌟 SEO PARA WHATSAPP / REDES SOCIALES (Textos dinámicos con singular/plural)
+     // 2. 🌟 SEO PARA WHATSAPP / REDES SOCIALES
      const formatter = new Intl.NumberFormat('es-ES');
      const numDentistas = seo.totalDentistasHero || 0;
      const numCentros = seo.totalCentrosHero || 0;
      
-     // Evaluamos singular y plural
      const palabraDentistas = numDentistas === 1 ? "dentista" : "dentistas";
      const palabraCentros = numCentros === 1 ? "centro" : "centros";
      
@@ -78,8 +77,8 @@ interface PageProps {
          canonical: canonicalUrl,
        },
        openGraph: {
-         title: ogTitle,        // 🌟 Aquí inyectamos la negrita dinámica para WhatsApp
-         description: ogDesc,   // 🌟 Aquí inyectamos el texto gris para WhatsApp
+         title: ogTitle,
+         description: ogDesc,
          url: canonicalUrl,
          siteName: 'DKV Dentisalud Élite',
          locale: 'es_ES',
@@ -103,13 +102,8 @@ interface PageProps {
      const currentPath = params?.slug ? params.slug.join('/') : '';
      const lastSegment = params?.slug ? params.slug[params.slug.length - 1] : '';
      
-     // =======================================================================
-     // 🌟 CAMINO ESTRELLA: Si comparten una clínica con "share-" (EN CUALQUIER RUTA)
-     // =======================================================================
      if (lastSegment && lastSegment.startsWith('share-')) {
-       
        const clinicId = lastSegment.replace('share-', ''); 
-
        try {
          const { createServerClient } = require('@supabase/ssr');
          const { cookies } = require('next/headers');
@@ -162,9 +156,6 @@ interface PageProps {
        }
      }
 
-     // =======================================================================
-     // 📍 CAMINO A: "Cerca de ti" genérico (Sin clínica específica)
-     // =======================================================================
      if (currentPath.includes('cerca-de-ti') || currentPath.includes('cerca-de-mi')) {
        return {
          metadataBase: new URL(baseUrl),
@@ -189,9 +180,6 @@ interface PageProps {
        };
      }
 
-     // =======================================================================
-     // 🏠 CAMINO B: Cualquier otro error -> Fallback a la HOME
-     // =======================================================================
      return {
        metadataBase: new URL(baseUrl),
        title: 'DKV Dentisalud Élite | Seguro Dental con Precios Pactados',
@@ -229,14 +217,12 @@ export default async function DentistasPage({ params }: PageProps) {
   let cleanSlug = params?.slug ? [...params.slug] : [];
   let sharedClinicId = null;
 
-  // Si la URL trae un share, lo guardamos y limpiamos el slug virtualmente
   if (cleanSlug.length > 0 && cleanSlug[cleanSlug.length - 1].startsWith('share-')) {
     sharedClinicId = cleanSlug[cleanSlug.length - 1].replace('share-', '');
     cleanSlug = cleanSlug.slice(0, -1);
   }
 
   try {
-    // Pasamos el slug limpio y el ID de la clínica compartida (si existe)
     const navigationData = await getPageData(cleanSlug, sharedClinicId);
 
      // --- 4. GENERACIÓN DE JSON-LD DINÁMICO ---
@@ -322,6 +308,37 @@ export default async function DentistasPage({ params }: PageProps) {
             }
           }))
     };
+
+    // 🌟 IDENTIFICAMOS EL NIVEL ACTUAL
+    const currentNivel = navigationData.nivel || navigationData.seo?.nivel;
+    const isLevel04 = currentNivel === '04';
+
+    // 🌟 FORMATEO DE NÚMEROS
+    const totalDentistas = navigationData.seo.totalDentistasHero || 0;
+    const totalCentros = navigationData.seo.totalCentrosHero || 0;
+    const formatter = new Intl.NumberFormat('de-DE');
+    const formattedProfessionals = formatter.format(totalDentistas);
+    const formattedClinics = formatter.format(totalCentros);
+    const isSpain = locationName.toLowerCase() === 'españa';
+    const showPlusPrefix = totalDentistas > 300;
+
+    // 🌟 CAPTURAMOS EL TEXTO GENERAL DE LA BASE DE DATOS Y LO DIVIDIMOS
+    const rawDescription = navigationData.seo.description; 
+    let htmlContentZone1 = null;
+    let htmlContentZone2 = null;
+
+    // Si es municipio (Nivel 04) y tiene texto, preparamos el HTML y gestionamos el SPLIT
+    if (isLevel04 && rawDescription) {
+      const processedHtml = rawDescription
+        .replace(/{totalCentros}/g, formattedClinics)
+        .replace(/{totalDentistas}/g, formattedProfessionals)
+        .replace(/{locationName}/g, locationName);
+        
+      // Partimos el texto usando la etiqueta de separación
+      const parts = processedHtml.split('---SPLIT---');
+      htmlContentZone1 = parts[0] || null;
+      htmlContentZone2 = parts.length > 1 ? parts[1] : null;
+    }
  
     return (
       <div className="flex flex-col min-h-screen bg-white font-fsme">
@@ -344,19 +361,40 @@ export default async function DentistasPage({ params }: PageProps) {
  
         <FixedBreadcrumb items={navigationData.seo.breadcrumbs} />
 
+        {/* 🌟 HERO CONDICIONAL */}
         <DentistHero 
           h1={navigationData.seo.h1}
-          totalDentistas={navigationData.seo.totalDentistasHero}
-          totalCentros={navigationData.seo.totalCentrosHero}
+          description={isLevel04 ? undefined : rawDescription}
         />
 
-        {/* 🌟 AQUÍ INSERTAMOS EL TEXTO SEO CONTEXTUAL */}
-        {navigationData.seo.description && (
-          <section className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 pb-2 text-center">
-            <p className="text-base sm:text-lg text-gray-700 font-fsme leading-relaxed">
-              {navigationData.seo.description}
-            </p>
-          </section>
+        {/* 🌟 TEXTO EN EL CUERPO CONDICIONAL (ZONA 1 - ARRIBA DEL MAPA) */}
+        {isLevel04 ? (
+          /* --- A) RENDERIZADO PARA MUNICIPIOS (NIVEL 04) - ZONA 1 --- */
+          htmlContentZone1 && (
+            <section className="container mx-auto px-safe-x md:px-6 pt-4 pb-6 text-left">
+              <div className="max-w-4xl relative">
+                <div className="pl-8 md:pl-10 pr-4">
+                  <div dangerouslySetInnerHTML={{ __html: htmlContentZone1 }} />
+                </div>
+              </div>
+            </section>
+          )
+        ) : (
+          /* --- B) RENDERIZADO PARA ESPAÑA, CCAA Y PROVINCIA (NIVELES 01, 02, 03) --- */
+          (totalDentistas > 0 || totalCentros > 0) && (
+            <section className="container mx-auto px-safe-x md:px-6 pt-2 pb-6 text-left">
+              <div className="max-w-4xl relative">
+                <div className="pl-8 md:pl-10 pr-4">
+                  <p className="text-lg md:text-xl text-gray-700 font-fsme leading-relaxed">
+                    Accede al Cuadro Médico Dental DKV. {showPlusPrefix && "Más de "} 
+                    <strong className="text-dkv-green"> {formattedProfessionals} </strong> dentistas disponibles en 
+                    <strong className="text-dkv-green"> {formattedClinics} </strong> centros dentales y precios pactados en 
+                    {isSpain ? " todo el territorio nacional" : ` ${locationName}`}.
+                  </p>
+                </div>
+              </div>
+            </section>
+          )
         )}
 
         <div className="pt-10">
@@ -364,9 +402,19 @@ export default async function DentistasPage({ params }: PageProps) {
         </div>
 
         <section id="mapa-buscador" className="relative flex-1 flex flex-col pt-4">
-          {/* ⚡️ REEMPLAZO EXACTO AQUÍ */}
           <MapLazyLoader initialData={navigationData} />
         </section>
+
+        {/* 🌟 NUEVO BLOQUE: TEXTO SEO PARA MUNICIPIOS (ZONA 2 - DEBAJO DEL MAPA) */}
+        {isLevel04 && htmlContentZone2 && (
+            <section className="container mx-auto px-safe-x md:px-6 pt-8 pb-6 text-left">
+              <div className="max-w-4xl relative">
+                <div className="pl-8 md:pl-10 pr-4">
+                  <div dangerouslySetInnerHTML={{ __html: htmlContentZone2 }} />
+                </div>
+              </div>
+            </section>
+        )}
 
         <RelatedLinks 
           data={navigationData.relatedLinks} 
