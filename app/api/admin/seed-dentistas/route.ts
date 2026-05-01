@@ -3,6 +3,9 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
+// AÑADIR ESTA LÍNEA: Bloquea la ejecución en el build
+export const dynamic = 'force-dynamic';
+
 // ----------------------------------------------------------------------------
 // 1. CONFIGURACIÓN
 // ----------------------------------------------------------------------------
@@ -11,16 +14,6 @@ if (process.env.NODE_ENV === 'development') {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 }
 
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false,
-    },
-  }
-);
 
 // ----------------------------------------------------------------------------
 // 2. LÓGICA DE NORMALIZACIÓN
@@ -172,6 +165,20 @@ export async function GET() {
   if (process.env.NODE_ENV !== 'development') {
     return NextResponse.json({ error: 'Endpoint solo disponible en desarrollo' }, { status: 403 });
   }
+
+
+  const supabaseAdmin = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    }
+  );
+
+
 
   try {
     console.log("🚀 [SEED] Carga Final Dentistas...");
