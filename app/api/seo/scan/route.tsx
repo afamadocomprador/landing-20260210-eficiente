@@ -6,12 +6,17 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { runSeoEngine } from '@/lib/seoEngine';
 
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+// 1. AÑADE ESTO: Bloquea la pre-renderización en el build
+export const dynamic = 'force-dynamic';
+
 
 export async function POST(req: Request) {
+
+  const supabaseAdmin = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+
   try {
     const { url, category = 'general' } = await req.json();
     if (!url) return NextResponse.json({ success: false, error: 'Falta URL' }, { status: 400 });
