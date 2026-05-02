@@ -337,6 +337,17 @@ export default async function DentistasPage({ params }: PageProps) {
       htmlContentZone1 = parts[0] || null;
       htmlContentZone2 = parts.length > 1 ? parts[1] : null;
     }
+
+    // ⚡️ MAGIA DEL BREADCRUMB: Modificamos solo la parte visual para que el ancla funcione
+    const visualBreadcrumbs = (navigationData.seo.breadcrumbs || []).map((item: any) => {
+      // Si el enlace apunta genéricamente a la raíz de dentistas, lo redirigimos a la sección del buscador
+      //if (item.href === '/dentistas' || item.href === '/dentistas/' || item.href === '/') {
+      // 👇 Eliminamos la comprobación de la raíz '/' para no pisar el inicio
+      if (item.href === '/dentistas' || item.href === '/dentistas/') {
+        return { ...item, href: '/#dentistas' };
+      }
+      return item;
+    });
  
     return (
       <div className="flex flex-col min-h-screen bg-white font-fsme">
@@ -357,7 +368,8 @@ export default async function DentistasPage({ params }: PageProps) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(navigationSchema) }}
         />
  
-        <FixedBreadcrumb items={navigationData.seo.breadcrumbs} />
+        {/* ⚡️ Usamos nuestros visualBreadcrumbs mapeados con el # */}
+        <FixedBreadcrumb items={visualBreadcrumbs} />
 
         {/* 🌟 HERO CONDICIONAL */}
         <DentistHero 
@@ -436,3 +448,4 @@ export default async function DentistasPage({ params }: PageProps) {
     return notFound();
   }
 }
+
