@@ -129,7 +129,8 @@ export default function HeroSearch() {
     try {
       const { data, error } = await supabaseRef.current
         .from('vw_search_predictive')
-        .select('*');
+        .select('*')
+        .limit(15000); // 🌟 AQUÍ ESTÁ LA MAGIA: Forzamos que traiga todo el diccionario
 
       if (error) throw error;
       setDictionary(data as SearchItem[]);
