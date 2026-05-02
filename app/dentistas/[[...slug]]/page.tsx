@@ -309,10 +309,6 @@ export default async function DentistasPage({ params }: PageProps) {
           }))
     };
 
-    // 🌟 IDENTIFICAMOS EL NIVEL ACTUAL
-    const currentNivel = navigationData.nivel || navigationData.seo?.nivel;
-    const isLevel04 = currentNivel === '04';
-
     // 🌟 FORMATEO DE NÚMEROS
     const totalDentistas = navigationData.seo.totalDentistasHero || 0;
     const totalCentros = navigationData.seo.totalCentrosHero || 0;
@@ -322,13 +318,15 @@ export default async function DentistasPage({ params }: PageProps) {
     const isSpain = locationName.toLowerCase() === 'españa';
     const showPlusPrefix = totalDentistas > 300;
 
-    // 🌟 CAPTURAMOS EL TEXTO GENERAL DE LA BASE DE DATOS Y LO DIVIDIMOS
-    const rawDescription = navigationData.seo.description; 
+    // 🌟 LÓGICA POR LONGITUD DE TEXTO
+    const rawDescription = navigationData.seo.description || "";
+    const isLongDescription = rawDescription.length >= 100;
+
     let htmlContentZone1 = null;
     let htmlContentZone2 = null;
 
-    // Si es municipio (Nivel 04) y tiene texto, preparamos el HTML y gestionamos el SPLIT
-    if (isLevel04 && rawDescription) {
+    // Si la descripción es larga, preparamos el HTML y gestionamos el SPLIT
+    if (isLongDescription) {
       const processedHtml = rawDescription
         .replace(/{totalCentros}/g, formattedClinics)
         .replace(/{totalDentistas}/g, formattedProfessionals)
@@ -364,12 +362,12 @@ export default async function DentistasPage({ params }: PageProps) {
         {/* 🌟 HERO CONDICIONAL */}
         <DentistHero 
           h1={navigationData.seo.h1}
-          description={isLevel04 ? undefined : rawDescription}
+          description={isLongDescription ? undefined : rawDescription}
         />
 
         {/* 🌟 TEXTO EN EL CUERPO CONDICIONAL (ZONA 1 - ARRIBA DEL MAPA) */}
-        {isLevel04 ? (
-          /* --- A) RENDERIZADO PARA MUNICIPIOS (NIVEL 04) - ZONA 1 --- */
+        {isLongDescription ? (
+          /* --- A) RENDERIZADO PARA TEXTOS LARGOS (MÁS DE 100 CARACTERES) - ZONA 1 --- */
           htmlContentZone1 && (
             <section className="container mx-auto px-safe-x md:px-6 pt-4 pb-6 text-left">
               <div className="max-w-4xl relative">
@@ -380,7 +378,7 @@ export default async function DentistasPage({ params }: PageProps) {
             </section>
           )
         ) : (
-          /* --- B) RENDERIZADO PARA ESPAÑA, CCAA Y PROVINCIA (NIVELES 01, 02, 03) --- */
+          /* --- B) RENDERIZADO PARA TEXTOS CORTOS (MENOS DE 100 CARACTERES) --- */
           (totalDentistas > 0 || totalCentros > 0) && (
             <section className="container mx-auto px-safe-x md:px-6 pt-2 pb-6 text-left">
               <div className="max-w-4xl relative">
@@ -405,8 +403,8 @@ export default async function DentistasPage({ params }: PageProps) {
           <MapLazyLoader initialData={navigationData} />
         </section>
 
-        {/* 🌟 NUEVO BLOQUE: TEXTO SEO PARA MUNICIPIOS (ZONA 2 - DEBAJO DEL MAPA) */}
-        {isLevel04 && htmlContentZone2 && (
+        {/* 🌟 TEXTO SEO PARA TEXTOS LARGOS (ZONA 2 - DEBAJO DEL MAPA) */}
+        {isLongDescription && htmlContentZone2 && (
             <section className="container mx-auto px-safe-x md:px-6 pt-8 pb-6 text-left">
               <div className="max-w-4xl relative">
                 <div className="pl-8 md:pl-10 pr-4">
