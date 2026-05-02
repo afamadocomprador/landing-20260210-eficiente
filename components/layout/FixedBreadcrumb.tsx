@@ -87,23 +87,12 @@ export default function FixedBreadcrumb({ items, behavior = "fixed" }: FixedBrea
             flex items-center justify-start gap-2 
             text-sm text-gray-500 font-fsme uppercase tracking-wider 
             whitespace-nowrap
-            overflow-x-auto    
+            overflow-x-auto   
             scrollbar-hide     
             mask-linear-fade   
-            pr-8               
+            pr-8                
           "
         >
-          {/*
-          <Link 
-            href="/" 
-            className="hover:text-dkv-green flex items-center gap-1 transition-colors shrink-0"
-          >
-            <Home className="w-3 h-3" /> 
-            <span className="sr-only">Dentistas</span> 
-            <span aria-hidden="true">Dentistas</span>
-          </Link>
-          */}
-
           <Link 
             href="/" 
             className="hover:text-dkv-green flex items-center justify-center transition-colors shrink-0"
@@ -113,21 +102,24 @@ export default function FixedBreadcrumb({ items, behavior = "fixed" }: FixedBrea
             <span className="sr-only">Inicio</span> 
           </Link>
 
-
-          
           {items.map((item, index) => {
             const isLast = index === items.length - 1;
+            // ⚡️ Detectamos si el enlace apunta a una sección específica (ancla)
+            const isAnchorLink = item.href.includes('#');
 
             return (
               <div 
-                key={item.href} 
+                //key={item.href} 
+                // 👇 AÑADE EL ÍNDICE AQUÍ PARA QUE SEA 100% ÚNICO 👇
+                key={`${item.href}-${index}`}
                 className="flex items-center gap-2 shrink-0"
               >
                 <ChevronRight className="w-3 h-3 text-gray-600" />
                 
                 <Link
                   href={item.href}
-                  scroll={false} 
+                  // Si es un enlace con #, dejamos que haga scroll. Si no, mantenemos tu lógica original
+                  scroll={isAnchorLink ? true : false} 
                   aria-current={isLast ? "page" : undefined}
                   className={`
                     transition-colors
@@ -136,6 +128,17 @@ export default function FixedBreadcrumb({ items, behavior = "fixed" }: FixedBrea
                       : "hover:text-dkv-green"
                     }
                   `}
+                  onClick={(e) => {
+                    // Magia extra: Si estamos yendo a un ancla en la misma página principal, forzamos scroll suave
+                    if (isAnchorLink && item.href.startsWith('/#') && window.location.pathname === '/') {
+                      const targetId = item.href.split('#')[1];
+                      const element = document.getElementById(targetId);
+                      if (element) {
+                        e.preventDefault(); // Evitamos el salto brusco estándar
+                        element.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }
+                  }}
                 >
                   {item.label}
                 </Link>
