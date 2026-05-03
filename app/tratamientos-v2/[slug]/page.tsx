@@ -1,9 +1,12 @@
 // Ruta: app/tratamientos-v2/[slug]/page.tsx
+
 import { notFound } from 'next/navigation';
 import { Metadata, ResolvingMetadata } from 'next';
 import { getTreatmentDefinition, treatmentsRegistry } from '@/data/treatments';
 import { TreatmentLayout } from '@/components/tratamientos-v2/TreatmentLayout';
 import { DetailedPriceItem, TrozoTexto } from '@/types/treatments';
+// 👇 AÑADE ESTA IMPORTACIÓN (Ajusta la ruta si lo guardaste en otro sitio)
+import { ScrollToTop } from '@/components/tratamientos-v2/ScrollToTop'; 
 
 interface Props {
   params: { slug: string };
@@ -96,8 +99,6 @@ const extractCleanText = (trozos: TrozoTexto[]): string => {
 
 const extractNumericPrice = (priceNode: any): string | null => {
   if (typeof priceNode !== 'string') {
-    // Si es un nodo React (ej. <span>+ 50 €</span>), intentamos extraer los números si pasaron como string dentro de un objeto, 
-    // pero por seguridad en Server Components, devolvemos null para evitar crasheos si es muy complejo.
     try {
       const stringified = JSON.stringify(priceNode);
       const match = stringified.match(/\d+([.,]\d+)?/);
@@ -129,7 +130,6 @@ export default function TreatmentPage({ params }: Props) {
   let minPrice = Infinity;
   let maxPrice = 0;
 
-  // Recorremos la estructura de tu data para extraer todas las variantes de precios
   treatment.rows.forEach(row => {
     const processItems = (items: DetailedPriceItem[]) => {
       items.forEach(item => {
@@ -181,7 +181,6 @@ export default function TreatmentPage({ params }: Props) {
     }
   ];
 
-  // Si hemos logrado extraer precios válidos, los adjuntamos como un AggregateOffer al procedimiento
   if (schemaOffers.length > 0) {
     schemaGraph[1].offers = {
       "@type": "AggregateOffer",
@@ -204,6 +203,8 @@ export default function TreatmentPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      {/* 👇 AÑADIMOS EL COMPONENTE INVISIBLE AQUÍ */}
+      <ScrollToTop />
       <TreatmentLayout treatment={treatment} />
     </>
   );
