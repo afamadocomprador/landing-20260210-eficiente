@@ -1012,7 +1012,7 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   // 7. ORTODONCIA METÁLICA
   'ortodoncia-metalica': {
     slug: 'ortodoncia-metalica',
-    activeSubNavId: 'lingual', 
+    activeSubNavId: 'metalica', 
      /* 🗑️  seoTitle: "Ortodoncia Fija Metálica | Precios Cerrados DKV Dentisalud", */
      /* 🗑️  seoDescription: "Tratamientos de ortodoncia metálica convencional y autoligable. Eficacia probada y durabilidad con precios exclusivos para asegurados DKV.", */
     /* ✨ */  seoTitle: "Ortodoncia Fija Metálica | Dientes Alineados y Resistentes",
