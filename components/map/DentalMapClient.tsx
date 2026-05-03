@@ -62,13 +62,25 @@ const createCustomIcon = (count: number, name: string, isActive: boolean = false
 function MapController({ marks, modo, initialCenter, initialZoom, setMapInstance }: any) {
   const map = useMap();
   useEffect(() => {
-    if (!map) return; setMapInstance(map); map.invalidateSize();
-    if (modo === 'CENTER_ZOOM' && initialCenter) { map.flyTo(initialCenter, initialZoom || 6, { animate: true, duration: 1.5 });
+    if (!map) return; 
+    setMapInstance(map); 
+    map.invalidateSize();
+    
+    if (modo === 'CENTER_ZOOM' && initialCenter) { 
+      map.flyTo(initialCenter, initialZoom || 6, { animate: true, duration: 1.5 });
     } else if (modo === 'FIT_BOUNDS' && marks && marks.length > 0) {
       const pts = marks.filter((m: any) => m.lat != null).map((m: any) => [m.lat, m.lng] as [number, number]);
       if (pts.length > 0) {
-        if (marks[0]?.tipo === 'provincia' || marks[0]?.tipo === 'comunidad' || pts.length <= 6) { map.flyToBounds(L.latLngBounds(pts), { paddingTopLeft: [15, 60], paddingBottomRight: [15, 120], maxZoom: 12, animate: true, duration: 1.5 });
-        } else { const main = marks.reduce((p: MapMarkerData, c: MapMarkerData) => ((p.count || 0) > (c.count || 0)) ? p : c); map.flyTo([main.lat, main.lng], 11, { animate: true, duration: 1.5 }); }
+        // 🌟 Usamos SIEMPRE flyToBounds para asegurar que se vean todos los iconos.
+        // Al subir el maxZoom a 16, si solo hay 1 clínica (o están muy pegadas), 
+        // bajará hasta nivel de calle.
+        map.flyToBounds(L.latLngBounds(pts), { 
+          paddingTopLeft: [15, 60], 
+          paddingBottomRight: [15, 120], 
+          maxZoom: 16, // <--- LA MAGIA ESTÁ AQUÍ
+          animate: true, 
+          duration: 1.5 
+        });
       }
     }
   }, [marks, modo, initialCenter, initialZoom, map, setMapInstance]);
