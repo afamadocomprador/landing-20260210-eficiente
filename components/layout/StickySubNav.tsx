@@ -1,69 +1,72 @@
+// components/layout/StickySubNav.tsx
+
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
 interface StickySubNavProps {
-  // ⚡️ Tipado genérico: Ahora acepta cualquier string, haciendo el componente infinitamente escalable.
   activeId: string; 
 }
 
-// ⚡️ DICCIONARIO CENTRALIZADO DE NAVEGACIÓN TRANSVERSAL
-// Aquí agrupamos los tratamientos por "clusters" lógicos.
+// ⚡️ DICCIONARIO CENTRALIZADO DE NAVEGACIÓN TRANSVERSAL (CORREGIDO)
 const NAVIGATION_CLUSTERS = {
+  estetica: [
+    { id: 'blanqueamiento', label: 'BLANQUEAMIENTO', href: '/tratamientos-v2/estetica-blanqueamiento' },
+    { id: 'carillas', label: 'CARILLAS', href: '/tratamientos-v2/estetica-carillas' },
+    { id: 'incrustaciones', label: 'INCRUSTACIONES', href: '/tratamientos-v2/estetica-incrustaciones' },
+  ],
   ortodoncia: [
-    { id: 'metalica', label: 'Metálica', href: '/tratamientos/ortodoncia/metalica' },
-    { id: 'zafiro', label: 'Zafiro', href: '/tratamientos/ortodoncia/zafiro' },
-    { id: 'invisalign', label: 'Invisalign', href: '/tratamientos/ortodoncia/invisalign' },
-    { id: 'lingual', label: 'Lingual', href: '/tratamientos/ortodoncia/lingual' },
-    { id: 'ortodoncia-removible', label: 'Removible', href: '/tratamientos/ortodoncia/removible' },
+    { id: 'invisalign', label: 'INVISALIGN', href: '/tratamientos-v2/ortodoncia-invisalign' },
+    { id: 'lingual', label: 'LINGUAL', href: '/tratamientos-v2/ortodoncia-lingual' },
+    { id: 'zafiro', label: 'ZAFIRO', href: '/tratamientos-v2/ortodoncia-zafiro' },
+    { id: 'metalica', label: 'METÁLICA', href: '/tratamientos-v2/ortodoncia-metalica' },
+    { id: 'ortodoncia-removible', label: 'REMOVIBLE', href: '/tratamientos-v2/ortodoncia-removible' },
   ],
   implantologia: [
-    { id: 'individual', label: 'Implante Individual', href: '/tratamientos/implantologia/implante-individual' },
-    { id: 'arcada', label: 'Arcada Fija', href: '/tratamientos/implantologia/arcada-completa-fija' },
-    { id: 'sobredentadura', label: 'Sobredentadura', href: '/tratamientos/implantologia/sobredentadura' },
-  ],
-  estetica: [
-    { id: 'blanqueamiento', label: 'Blanqueamiento', href: '/tratamientos/estetica/blanqueamiento' },
-    { id: 'carillas', label: 'Carillas', href: '/tratamientos/estetica/carillas' },
-    { id: 'incrustaciones', label: 'Incrustaciones', href: '/tratamientos/estetica/incrustaciones' },
-  ],
-  protesis: [
-    { id: 'fija', label: 'Fijas', href: '/tratamientos/protesis/fijas' },
-    { id: 'removible', label: 'Removibles', href: '/tratamientos/protesis/removibles' },
-    { id: 'bruxismo', label: 'Bruxismo', href: '/tratamientos/protesis/bruxismo' },
-    { id: 'reparaciones', label: 'Reparaciones', href: '/tratamientos/protesis/reparaciones-y-ajustes' },
-  ],
-  odontopediatria: [
-    { id: 'prevencion', label: 'Prevención', href: '/tratamientos/odontopediatria/prevencion' },
-    { id: 'conservadora-pediatria', label: 'Conservadora', href: '/tratamientos/odontopediatria/conservadora' },
-    { id: 'endodoncia-pediatria', label: 'Endodoncia', href: '/tratamientos/odontopediatria/endodoncia' },
-    { id: 'cirugia-pediatria', label: 'Cirugía y Espacio', href: '/tratamientos/odontopediatria/cirugia-y-espacio' },
+    { id: 'individual', label: 'IMPLANTE INDIVIDUAL', href: '/tratamientos-v2/implante-individual' },
+    { id: 'arcada', label: 'ARCADA FIJA', href: '/tratamientos-v2/implante-arcada' },
+    { id: 'sobredentadura', label: 'SOBREDENTADURA', href: '/tratamientos-v2/implante-sobredentadura' },
+    { id: 'hueso', label: 'RECONSTRUCCIÓN HUESO', href: '/tratamientos-v2/regeneracion-hueso' },
   ],
   conservadora: [
-    { id: 'reconstruccion', label: 'Reconstrucción', href: '/tratamientos/odontologia-conservadora/reconstruccion' },
-    { id: 'endodoncias', label: 'Endodoncias', href: '/tratamientos/odontologia-conservadora/endodoncias' },
-    { id: 'casos-complejos', label: 'Cirugía y Complejos', href: '/tratamientos/odontologia-conservadora/cirugia-y-complejos' },
+    { id: 'reconstruccion', label: 'RECONSTRUCCIÓN', href: '/tratamientos-v2/conservadora-reconstruccion' },
+    { id: 'endodoncias', label: 'ENDODONCIAS', href: '/tratamientos-v2/conservadora-endodoncia' },
+    { id: 'casos-complejos', label: 'CIRUGÍA Y COMPLEJOS', href: '/tratamientos-v2/conservadora-cirugia' },
   ],
-  // ⚡️ NUEVOS CLUSTERS FINALES:
+  protesis: [
+    { id: 'fija', label: 'FIJAS', href: '/tratamientos-v2/protesis-fijas' },
+    { id: 'removible', label: 'REMOVIBLES', href: '/tratamientos-v2/protesis-removibles' },
+    { id: 'bruxismo', label: 'BRUXISMO', href: '/tratamientos-v2/protesis-bruxismo' },
+  ],
+  medicina_sueno: [
+    { id: 'apnea', label: 'APNEA', href: '/tratamientos-v2/apnea' }
+  ],
+  odontopediatria: [
+    { id: 'prevencion', label: 'PREVENCIÓN', href: '/tratamientos-v2/pediatria-prevencion' },
+    { id: 'conservadora-pediatria', label: 'CONSERVADORA', href: '/tratamientos-v2/pediatria-conservadora' },
+    { id: 'endodoncia-pediatria', label: 'ENDODONCIA', href: '/tratamientos-v2/pediatria-endodoncia' },
+    { id: 'cirugia-pediatria', label: 'CIRUGÍA Y ESPACIO', href: '/tratamientos-v2/pediatria-extracciones-y-espacio' },
+  ],
   prevencion: [
-    { id: 'primera-visita', label: 'Primera Visita', href: '/tratamientos/prevencion/primera-visita' },
-    { id: 'higiene', label: 'Higiene', href: '/tratamientos/prevencion/higiene' },
+    { id: 'primera-visita', label: 'PRIMERA VISITA', href: '/tratamientos-v2/prevencion-primera-visita' },
+    { id: 'higiene', label: 'HIGIENE', href: '/tratamientos-v2/prevencion-higiene' },
   ],
   periodoncia: [
-    { id: 'diagnostico-basico', label: 'Diagnóstico', href: '/tratamientos/periodoncia/basico' },
-    { id: 'estabilizacion', label: 'Estabilización', href: '/tratamientos/periodoncia/estabilizacion' },
-    { id: 'micro-cirugia', label: 'Micro-cirugía', href: '/tratamientos/periodoncia/micro-cirugia' },
+    { id: 'diagnostico-basico', label: 'DIAGNÓSTICO', href: '/tratamientos-v2/periodoncia-basica' },
+    { id: 'estabilizacion', label: 'ESTABILIZACIÓN', href: '/tratamientos-v2/periodoncia-estabilizacion' },
+    { id: 'micro-cirugia', label: 'MICRO-CIRUGÍA', href: '/tratamientos-v2/periodoncia-micro-cirugia' },
   ],
   cirugia_avanzada: [
-    { id: 'extracciones', label: 'Extracciones', href: '/tratamientos/cirugia-avanzada/extracciones' },
-    { id: 'hueso', label: 'Hueso e Injertos', href: '/tratamientos/cirugia-avanzada/reconstruccion-osea' },
+    { id: 'extracciones', label: 'EXTRACCIONES', href: '/tratamientos-v2/cirugia-extracciones' },
   ]
 };
 
 export default function StickySubNav({ activeId }: StickySubNavProps) {
   const [isVisible, setIsVisible] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
+  // Lógica de visibilidad al hacer scroll
   useEffect(() => {
     const handleScroll = () => {
       // Aparece al pasar la primera visualización (hero)
@@ -76,13 +79,30 @@ export default function StickySubNav({ activeId }: StickySubNavProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // ⚡️ LÓGICA DE RUTEO INTELIGENTE AUTOMÁTICO (Refactorizado)
-  // Escanea automáticamente todos los clusters. ¡Ya no hacen falta interminables if/else!
+  // ⚡️ LÓGICA DE AUTO-SCROLL A LA PÍLDORA ACTIVA
+  useEffect(() => {
+    if (isVisible && scrollContainerRef.current) {
+      const activeElement = document.getElementById(`pill-${activeId}`);
+      const container = scrollContainerRef.current;
+
+      if (activeElement && container) {
+        // Calculamos la posición para dejar el botón en el centro de la pantalla
+        const scrollLeft = activeElement.offsetLeft - (container.offsetWidth / 2) + (activeElement.offsetWidth / 2);
+        
+        // Ejecutamos el scroll de forma suave
+        container.scrollTo({
+          left: scrollLeft,
+          behavior: 'smooth'
+        });
+      }
+    }
+  }, [isVisible, activeId]);
+
+  // ⚡️ LÓGICA DE RUTEO INTELIGENTE AUTOMÁTICO
   const activeCluster = Object.values(NAVIGATION_CLUSTERS).find(cluster => 
     cluster.some(item => item.id === activeId)
   );
 
-  // Si pasamos un ID que no está mapeado, no renderizamos el menú para no confundir al usuario
   if (!activeCluster) return null;
 
   return (
@@ -94,19 +114,24 @@ export default function StickySubNav({ activeId }: StickySubNavProps) {
         ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-[150%] opacity-0'}
       `}
     >
-      <div className="bg-white/90 backdrop-blur-xl border border-dkv-gray-border shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)] rounded-full p-1.5 flex items-center justify-center gap-1 overflow-x-auto hide-scrollbar max-w-full pointer-events-auto">
+
+      <div 
+        ref={scrollContainerRef}
+        className="bg-[#022A27]/95 backdrop-blur-xl border border-white/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.3)] rounded-full p-1.5 flex items-center justify-start gap-2 overflow-x-auto hide-scrollbar max-w-full pointer-events-auto"
+      >
         
         {activeCluster.map((item) => {
           const isActive = item.id === activeId;
 
           return (
             <Link 
-              key={item.id} 
+              key={item.id}
+              id={`pill-${item.id}`} 
               href={item.href}
-              className={`snap-start shrink-0 px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 text-center ${
+              className={`snap-start shrink-0 px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 text-center ${
                 isActive 
-                  ? 'bg-dkv-green text-white shadow-md' 
-                  : 'text-dkv-gray hover:bg-dkv-gray-light/50 hover:text-dkv-green-dark'
+                  ? 'bg-dkv-green text-white shadow-lg' 
+                  : 'text-white/70 hover:bg-white/10 hover:text-white'
               }`}
             >
               {item.label}
