@@ -1,3 +1,5 @@
+// components/dentists/ClinicCard.tsx
+
 "use client";
 
 import { useState, KeyboardEvent } from "react";
@@ -22,7 +24,7 @@ export default function ClinicCard({ clinic, onSelectClinic, isSelected = false 
 
   // --- AÑADE ESTO ---
   if (isSelected) {
-      console.log("💳 [PASO 7] Tarjeta iluminada. El ID real de este componente es:", clinic.clinic_id);
+      //console.log("💳 [PASO 7] Tarjeta iluminada. El ID real de este componente es:", clinic.clinic_id);
   }
   // ------------------
 
