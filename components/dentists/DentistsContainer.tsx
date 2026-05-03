@@ -8,13 +8,10 @@ import { useRouter } from "next/navigation";
 import { ChevronUp, ChevronDown, Stethoscope, Loader2, X } from "lucide-react";
 import { useNavigation, NavigationState } from "@/context/NavigationContext";
 import ClinicList from "@/components/dentists/ClinicList";
-import { createClient } from "@supabase/supabase-js";
 import { motion, AnimatePresence } from "framer-motion";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+// 🌟 IMPORTACIÓN DEL SINGLETON PARA EVITAR MÚLTIPLES INSTANCIAS
+import { getSupabaseClient } from "@/lib/supabase-client";
 
 const DentalMapClient = dynamic<any>(() => import("@/components/map/DentalMapClient"), {
   ssr: false,
@@ -26,6 +23,9 @@ const formatter = new Intl.NumberFormat('es-ES');
 export default function DentistsContainer({ initialData }: { initialData: NavigationState }) {
   const { updateNavigation } = useNavigation();
   const router = useRouter();
+
+  // 🌟 Referencia local para el cliente Singleton
+  const supabase = getSupabaseClient();
 
   const [localMarks, setLocalMarks] = useState(initialData.mapa.marks);
   const [localClinics, setLocalClinics] = useState(initialData.lista.clinics);
@@ -73,6 +73,7 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
     setDynamicMapMode('FREE');
     setIsUpdatingMap(true);
     try {
+      // 🌟 Llamada RPC a la base de datos utilizando el cliente único
       const { data, error } = await supabase.rpc('get_centros_en_bounds', {
           sw_lat: bounds.getSouthWest().lat, sw_lng: bounds.getSouthWest().lng,
           ne_lat: bounds.getNorthEast().lat, ne_lng: bounds.getNorthEast().lng,
@@ -84,7 +85,7 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
         name: c.name, lat: c.latitude, lng: c.longitude, slug: c.clinic_id, count: c.staff_count, tipo: 'centro'
       })));
     } catch (e) { console.error(e); } finally { setIsUpdatingMap(false); }
-  }, [currentLevel]);
+  }, [currentLevel, supabase]);
 
   return (
     <div className="relative w-full h-[85dvh] min-h-[600px] md:h-[80vh] md:min-h-[750px] bg-white flex flex-col pt-4 pb-12 px-4 md:px-10 font-fsme">
@@ -119,7 +120,15 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
             {isListOpen ? <ChevronDown /> : <ChevronUp />}
           </button>
           <div className="flex-1 overflow-y-auto bg-gray-50/30">
-            <ClinicList clinics={localClinics} onSelectClinic={(id) => { setSelectedClinicId(id); const c = localClinics.find((x:any) => x.clinic_id === id); if(c) setSelectedFromList(c.name); }} selectedClinicId={selectedClinicId} />
+            <ClinicList 
+              clinics={localClinics} 
+              onSelectClinic={(id) => { 
+                setSelectedClinicId(id); 
+                const c = localClinics.find((x:any) => x.clinic_id === id); 
+                if(c) setSelectedFromList(c.name); 
+              }} 
+              selectedClinicId={selectedClinicId} 
+            />
           </div>
         </div>
       </div>
