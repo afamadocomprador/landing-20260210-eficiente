@@ -1,3 +1,5 @@
+// data/treatments.tsx
+
 
 import { TreatmentDefinition } from '@/types/treatments';
 import { Diamond, ShieldCheck, Smile, Sparkles, Layers, Settings, Activity, Wind, CheckCircle2, AlertCircle, Info, Bug, HeartPulse, Stethoscope, Microscope, RefreshCcw, Scissors, Moon, Heart, Zap, Baby, ShieldAlert, ArrowLeftRight, ClipboardList, Scan, Brain, Paintbrush, BookOpen, Ruler, Droplet, CalendarCheck, ShieldPlus, Link as LinkIcon, MoveUp } from 'lucide-react'; 
@@ -7,10 +9,10 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   
   // 1. BLANQUEAMIENTO DENTAL
   'estetica-blanqueamiento': {
-    slug: 'estetica-blanqueamiento',
+    slug: 'estetica-blanqueamientoo',
     activeSubNavId: 'blanqueamiento',
     seoTitle: "Blanqueamiento Dental Profesional | Resultados Rápidos",
-    seoDescription: "Recupera el blanco natural de tus dientes sin dañar el esmalte. Presupuesto claro y sin sorpresas. Encuentra tu clínica más cercana y luce sonrisa hoy.",
+    seoDescription: "Recupera el blanco natural de tus dientes sin dañar el esmalte. Presupuesto claro y sin sorpresas. Encuentra tu clínica más cercana y luce tu sonrisa hoy.",
     breadcrumbs: [
       { label: "Tratamientos", href: "/#tratamientos" },
       { label: "Estética Dental", href: "/?modal=1#tratamientos" },
@@ -26,7 +28,7 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     rows: [
       {
         id: "blanqueamiento-consultorio",
-        name: "Blanqueamiento en Clínica",
+        name: "Blanqueamiento Dental en Consulta",
         subTitle: "El tratamiento ideal si buscas resultados casi inmediatos.",
         points: [
           { icon: 'Consultorio1', text: <>Sesión aproximada de <strong className="text-dkv-green-dark font-bold">una hora.</strong> Rápido y eficaz.</> },
@@ -38,7 +40,7 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
           {
             icon: '',
             title: [
-              { tipo: 'normal', texto: 'Blanqueamiento en consulta' },
+              { tipo: 'normal', texto: 'Blanqueamiento Dental en consulta' },
               { tipo: 'oculto', texto: '. Precio: 250 €.' }
             ],
             description: 'Tratamiento intensivo bajo supervisión para un aclarado rápido de color',
@@ -49,7 +51,7 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       },
       {
         id: "blanqueamiento-domicilio",
-        name: "Blanqueamiento con férulas (en casa)",
+        name: "Blanqueamiento Dental con férulas (en casa)",
         subTitle: "Perfecto para dientes sensibles. Un aclarado de color cómodo y respetuoso.",
         points: [
           { icon: 'Ferulas1', text: <><strong className="text-dkv-green-dark font-bold">Suave y progresivo.</strong><br />Blanqueamiento cómodo en tu hogar.</> },
@@ -61,7 +63,7 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
           {
             icon: '',
             /* ✨ */ title: [
-              { tipo: 'normal', texto: 'Blanqueamiento en domicilio' },
+              { tipo: 'normal', texto: 'Blanqueamiento Dental en domicilio' },
               { tipo: 'oculto', texto: '. Precio: 216 €.' }
             ],
             description: 'Sistema gradual con férulas nocturnas adaptadas.',
@@ -72,7 +74,7 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       },
       {
         id: "blanqueamiento-combinado",
-        name: "Blanqueamiento Combinado",
+        name: "Blanqueamiento Dental Combinado",
         subTitle: <>Choque rápido en la clínica + mantenimiento en casa. El estándar de oro médico para un blanco más profundo y duradero.</>,
         points: [
           { icon: 'Combinado1', text: <><strong className="text-dkv-green-dark font-bold">Sesión Intensiva en Clínica.</strong><br />Aproximadamente una hora activada por luz de plasma o láser.</> },
@@ -83,8 +85,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
           {
             icon: '',
             /* ✨ */ title: [
-              { tipo: 'normal', texto: 'Blanqueamiento combinado' },
-              { tipo: 'oculto', texto: '. Precio: 300 €.' }
+              { tipo: 'normal', texto: 'Blanqueamiento Dental combinado' },
+              { tipo: 'oculto', texto: ' (en casa y en domicilio). Precio: 300 €.' }
             ],
             description: 'Enérgico en clíncia + estabilización en casa.',
             price: '300 €'
@@ -94,7 +96,7 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       },
       {
         id: "blanqueamiento-interno",
-        name: "Blanqueamiento Interno (Dientes oscuros)",
+        name: "Blanqueamiento Dental Interno (Dientes oscuros)",
         subTitle: <>Devuelve la luz a un diente oscurecido tras un golpe o una endodoncia.</>,
         points: [
           { icon: 'DienteOscuro', text: <><strong className="text-dkv-green-dark font-bold">Diente oscurecido.</strong><br />Tras un fuerte golpe o una endodoncia.</> },
@@ -105,7 +107,7 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
           {
             icon: '',
             /* ✨ */ title: [
-              { tipo: 'normal', texto: 'Blanqueamiento no vital' },
+              { tipo: 'normal', texto: 'Blanqueamiento Dental diente no vital' },
               { tipo: 'oculto', texto: '. Precio: 50 €.' }
             ],
             description: 'Focalizado para recuperar el tono de un diente oscurecido.',
@@ -2792,8 +2794,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'apnea': {
     slug: 'apnea',
     activeSubNavId: 'apnea',
-    /* ✨ */ seoTitle: "Férula para Apnea del Sueño y Ronquidos | Duerme Mejor",
-    /* ✨ */ seoDescription: "Trata el SAHS leve o moderado con dispositivos de avance mandibular. Presupuesto sin sorpresas para cuidar tu descanso. Descubre tu clínica más cercana.",
+    seoTitle: "Férula para Apnea del Sueño y Ronquidos | Vuelve a Descansasr",
+    seoDescription: "¿Roncas o usas máquina CPAP? Descubre la férula a medida que abre tu garganta para dormir del tirón.. Presupuesto sin sorpresas para cuidar tu descanso. Descubre tu clínica más cercana.",
     breadcrumbs: [
       { label: "Tratamientos", href: "/#tratamientos" },
       { label: "Medicina del Sueño", href: "/?modal=9#tratamientos" },
@@ -2801,85 +2803,84 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     ],
     hero: {
       badgeText: "Medicina Dental del Sueño",
-      title: { dark: "FERULA DE", normal: "APNEA (SAHS)" },
+      title: { dark: "FERULA DE APNEA", normal: "Y RONQUIDO" },
       description: [
-        "El Síndrome de Apnea-Hipopnea del Sueño (SAHS) no es solo una molestia. Puede ser el síntoma de una patología grave que pone en riesgo tu corazón.",
-        "La principal alternativa cómoda y eficaz a la máquina CPAP es el Dispositivo de Avance Mandibular (DAM) o 'Férula de Apnea'. Se trata de una férula fabricada a medida que mantiene adelantada tu mandíbula, favoreciendo la apertura de la vía aérea.",
-        "En nuestros centros propios especialistas."
+        "Roncar muy fuerte o hacer pausas al respirar (apneas) no es solo molestar a tu parej; es un riesgo porque a tu cerebro le falta oxígeno durante la noche.",
+        "Si tienes apnea leve o moderada, o simplemente no soportas dormir con la mascarilla de la máquina de aire (CPAP), tenemos la solución más cómoda: Una férula a medida que despeja tu garganta para que el aire fluya sin ruidos."
       ]
     },
     rows: [
       {
         id: "dam",
-        name: "Dispositivo de Avance Mandibular (DAM)",
+        name: "Férula Antirronquidos (Dispositivo d eAvande Mandibular -DAM-)",
         price: "875 €",
-        subTitle: "Sueño reparador.",
+        subTitle: "Vuelve a dormir del tirón desde la primera noche.",
         points: [
-          { icon: '', text: <>Fabricamos a medida tus férulas duales conectadas. El beneficio es inmediato: despeja la garganta, elimina el ronquido y permite un sueño reparador desde la primera noche.</> }
+          { icon: '', text: <><strong>¿Cómo funciona?</strong> Es una funda doble (para los dientes de arriba y de abajo) que te pones solo para dormir. Unos tensores empujan tu mandíbula inferior unos milímetros hacia adelante. Al hacer esto, tu garganta se abre, tu lengua no se cae hacia atrás y <strong>el ronquido desaparece de inmediato</strong>.</> }
         ],
         priceGroups: [
           {
-            title: "Dispositivo de Avance Mandibular",
-            description: "",
+            title: "El Aparato DAM",
+            description: "Fabricación a medida con materiales confortables que no rozan.",
             items: [
               {
-                /* ✨ */  title: [
+                title: [
                   { tipo: 'normal', texto: 'Férula Apnea (SAHS)' },
-                  { tipo: 'oculto', texto: '. Precio: 800 €.' }
+                  { tipo: 'oculto', texto: '(Dispositivo DAM). Precio: 800 €.' }
                 ],
-                description: "Dos años de garantía.",
+                description: "Fabricación individualizada con 2 años de garantía.",
                 price: "800 €"
               }
             ]
           },
           {
-            title: "Preparación",
-            description: "Es necesario medir cuánto podemos adelantar tu mandíbula de forma segura para tu articulación.",
+            title: "Preparación (El 'traje a medida')",
+            description: "No es buena idea comprarla por internet. Es necesario medir tu boca para no dañar tus articulaciones al adelantar la mandíbula.",
             items: [
               {
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Estudio Biomecánico' },
-                  { tipo: 'oculto', texto: '. Precio: 75 €.' }
+                title: [
+                  { tipo: 'normal', texto: 'Estudio de tu mordida' },
+                  { tipo: 'oculto', texto: ' (biomecánido). Precio: 75 €.' }
                 ],
-                description: "Estudio, montaje en articulador y toma de registros.",
+                description: "(Estudio biomécanico). Calculamos al milímetro cuanto podemos adeltnar tu barbilla de forma 100% cómoda y segura.",
                 price: "75 €"
               },
               {
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Tele-Radiografía' },
+                title: [
+                  { tipo: 'normal', texto: 'Radiografía de perfil (Tele-Radiografía)' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "",
+                description: "Para ver la vía aérea de tu garganta.",
                 price: "Incluido"
               },
               {
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Ortopantomografía' },
+                title: [
+                  { tipo: 'normal', texto: 'Radiografí general (Ortopantomografía)' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "",
+                description: "Para comprobar que tus dientes están fuertes como para sujetar la férula.",
                 price: "Incluido"
               }
             ]
           },
           {
             title: "Revisión Periódica",
-            description: "",
+            description: "Acompañamiento clínico para mejorar tus resultados.",
             items: [
               {
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Ajuste de férula' },
+                title: [
+                  { tipo: 'normal', texto: 'Visita de ajuste de férula' },
                   { tipo: 'oculto', texto: '. Precio: 35 €.' }
                 ],
-                description: "Revisión periódica del avance y comodidad de tu musculatura.",
+                description: "Ajustamos los tensores poco a poco hasta encontrar el punto exacto donde dejas de roncar y duermes cómodo.",
                 price: "35 €"
               },
               {
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Reparación y Rebase' },
+                title: [
+                  { tipo: 'normal', texto: 'Mantenimiento (Reparación y Rebase)' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "",
+                description: "Si la férula se afloja con el tiempo, la reajustamos sin coste.",
                 price: "Incluido"
               }
             ]
@@ -2893,17 +2894,20 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
           <Heart className="w-32 h-32 text-white" />
         </div>
         <div className="relative z-10">
-          <h3 className="font-lemon text-xl mb-4 text-dkv-green-light uppercase tracking-wide">El Consejo Clínico</h3>
-          <p className="font-fsme text-lg leading-relaxed italic text-white/90">
-               Exclusivo en Centros Propios Especiales DKV.
-          </p>
+          <h3 className="font-lemon text-xl mb-4 text-dkv-green-light uppercase tracking-wide">El Consejo Clínico: Exige Especialistas</h3>
+          <p className="font-fsme text-lg leading-relaxed italic text-white/90 mb-4">
+               Tratar la apnea no consiste en comprar un molde de plástico estándar y morderlo. Eso puede destrozar la articulación de tu mandíbula. Requiere un profundo conocimiento de la medicina del sueño y de cómo se comporta la musculatura de tu cuello mientras estás inconsciente.          
+         </p>
+         <p className="font-fsme text-lg leading-relaxed italic text-white/90">
+               Por eso, este tratamiento se realiza <strong>exclusivamente en nuestros Centros Propios Especiales DKV</strong>, donde contamos con odontólogos formados específicamente en vías aéreas y trastornos del sueño.
+         </p>
         </div>
       </div>
     ),
     cta: {
-      title: "Recupera tus mañanas",
-      infoNote: "Este tratamiento está indicado para ronquido simple y SAHS leve o moderado. En casos graves, el DAM puede ser un complemento excelente a otros tratamientos médicos.",
-      description: "Si te levantas cansado, con dolor de cabeza o tu pareja nota pausas en tu respiración, localiza tu Centro Propio DKV más cercano para un estudio del sueño:"
+      title: "Recupera tus mañanas y tu energía",
+      infoNote: "Este tratamiento está totalmente indicado para ronquido simple o Apnea (SAHS) leve o moderada. Si tu caso es muy grave, la férula puede usarse combinada con la máquina CPAP, permitiéndote bajar la presión del aire de la máquina para que sea mucho más soportable.",
+      description: "Si te levantas cansado, con dolor de cabeza por las mañanas o tu pareja se asusta por tus pausas al respirar, localiza tu Centro Propio DKV más cercano:"
     }
   },
 
@@ -2911,8 +2915,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'pediatria-prevencion': {
     slug: 'pediatria-prevencion',
     activeSubNavId: 'prevencion',
-    /* ✨ */ seoTitle: "Prevención Dental Infantil | Protege la Sonrisa de tu Hijo",
-    /* ✨ */ seoDescription: "Selladores y fluorizaciones para evitar las caries desde pequeños. Inversión en salud con tarifas transparentes. Encuentra tu odontopediatra más cercano.",
+    seoTitle: "Sin miedo al dentista infantil | Revisiones y Prevención",
+    /* ✨ */ seoDescription: "Protege la sonrisa de tus hijos desde pequeños. Limpiezas, flúor y selladores y infantiles. La mayoría gratis con su tarjeta. Encuentra tu dentista más cercano.",
     breadcrumbs: [
       { label: "Tratamientos", href: "/#tratamientos" },
       { label: "Odontopediatría", href: "/?modal=6#tratamientos" },
@@ -2920,81 +2924,81 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     ],
     hero: {
       badgeText: "El escudo protector",
-      title: { dark: "EDUCACION Y", normal: "PREVENCION" },
+      title: { dark: "PREVENCION Y", normal: "EDUCACION DENTAL" },
       description: [
-        "Cuidar la boca de los más pequeños no es solo curar caries; es educar, prevenir y guiar el crecimiento de sus huesos y dientes definitivos.",
-        "El objetivo es evitar que aparezca la caries enseñando buenos hábitos y fortaleciendo el esmalte antes de que los problemas empiecen."
+        "Traer a tus hijos al dentista desde pequeñitos no es solo para curar caries; es para que pierdan el miedo, aprendan a cepillarse jugando y tengan unos dientes fuertes.",
+        "De hecho, el mejor dentista es el que no tiene que usar el torno. Nuestro objetivo es poner un 'escudo' a sus dientes antes de que los bichitos ataquen."
       ]
     },
     rows: [
       {
         id: "higiene-educacion",
-        name: "Educación y Tratamientos Preventivos",
-        subTitle: "Los niños no nacen sabiendo cepillarse.",
+        name: "Higiene y Protección",
+        subTitle: "Los niños no nacen sabiendo cepillarse, ¡hay que enseñarles!",
         points: [
-          { icon: '', text: <>De forma lúdica, instauramos un hábito que les ahorrará muchos problemas y dolor en el futuro.</> }
+          { icon: '', text: <>A través de juegos y sin hacerles ningún daño, les enseñamos hábitos que les ahorrarán muchísimo dolor (y a tí muchísimo dinero) en el futuro.</> }
         ],
         priceGroups: [
           {
-            title: "Educación y Limpieza Base",
-            description: "",
+            title: "Escuela de Cepillado y Limpieza",
+            description: "La base para unas encías sanas que no sangren al lavarse los dientes.",
             items: [
               {
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Cursillo Odontológico' },
+                title: [
+                  { tipo: 'normal', texto: 'Aprender a cepillarse (Cursillo Odontológico)' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "Enseñanza de cepillado y técnicas de higiene bucal para padres y niños.",
+                description: "Les enseñamos trucos para llegar a los rincones difíciles y usar el hilo dental.",
                 price: "Incluido"
               },
               {
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Limpieza de boca' },
+                title: [
+                  { tipo: 'normal', texto: 'Limpieza de boca infantil' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "Retiramos la placa bacteriana y el sarro que el cepillo de casa no logra quitar, evitando la inflamación de las encías.",
+                description: "Retiramos con suavidad la placa bacteriana y el sarro que el cepillo de casa no logra quitar.",
                 price: "Incluido"
               }
             ]
           },
           {
             title: "Reforzando el Esmalte",
-            description: "El flúor es un mineral esencial que el diente absorve, actuando como un 'escudo', endureciendo el esmalte de forma inmediata y haciéndolo super resistente a los ataques de los ácidos de las bacterias.",
+            description: "Las vitaminas que sus dientes necesitan para hacerse duros como piedras.",
             items: [
               {
                 /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Fluorización Tópica' },
+                  { tipo: 'normal', texto: 'Baño de Flúor (Fluorización Tópica)' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "Aplicamos un gel o barniz de flúor de alta concentración sobre los dientes del niño.",
+                description: "Pintamos sus dientes con un gel de flúor que se abserve y crea un escudo super resistente contra los ácidos de las golosinas y el azúcar.",
                 price: "Incluido"
               }
             ]
           },
           {
-            title: "Evitando Primer Foco de Caries",
-            description: "Las primeras muelas definitivas salen a los 6 años. Suelen tener uno surcos muy profundos, donde las cerdas del cepillo no llegan, y ahí es donde empiezan el 90% de las caries infantiles.",
+            title: "El Mejor invento Anti-Caries",
+            description: "A los 6 años salen las primera muelas de adulto. Tienen unos surcos tan profundos que las cerdas del cepillo difícilmente llegan al fondo, y ahí empiezan el 90% de las caries infantiles.",
             items: [
               {
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Selladores de Fisuras' },
+                title: [
+                  { tipo: 'normal', texto: 'Pintar los surcos (Selladores de Fisuras)' },
                   { tipo: 'oculto', texto: '. Precio: 17 €.' }
                 ],
-                description: "Pintamos esos surcos con una resina transparente que los 'sella' dejándolos completamente lisos.",
+                description: "Pintamos esos surcos con una resina transparente que los 'sella' dejándolos completamente lisos. Los bichitos ya no pueden esconderse.",
                 price: "17 €"
               }
             ]
           },
           {
             title: "Vigilando Caries escondidas",
-            description: "Mediante pruebas fundamentales e indoloras el odontopediatra puede ver si hay caries escondidas entre los dientes que no se detectan a simple vista.",
+            description: "Las caries más traicioneras son las que se esconden justo entre medio de dos dientes. No se ven a simple vista hasta que ya es tarde.",
             items: [
               {
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Radiovisiografía Digital (RVG)' },
+                title: [
+                  { tipo: 'normal', texto: 'Radiografía rápida (RVG Digital)' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "Radiografía intra-oral digital de última generación con una dosis de radiación mínima (casi nula).",
+                description: "Una 'foto' digital de los dientes súper rápida y con una radiación casi nula (totalmente segura).",
                 price: "Incluido"
               }
             ]
@@ -3005,10 +3009,17 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     premiumBlock: (
       <div className="mt-12 bg-dkv-green-dark text-white p-8 md:p-10 rounded-3xl shadow-xl relative overflow-hidden">
         <div className="absolute top-0 right-0 p-8 opacity-10">
-          <Heart className="w-32 h-32 text-white" />
+          <Baby className="w-32 h-32 text-white" />
         </div>
         <div className="relative z-10">
-          <h3 className="font-lemon text-xl mb-4 text-dkv-green-light uppercase tracking-wide">El Consejo Clínico</h3>
+          <h3 className="font-lemon text-xl mb-4 text-dkv-green-light uppercase tracking-wide">El gran mito de los "Dientes de leche"</h3>
+          <p className="font-fsme text-lg leading-relaxed italic text-white/90">
+            Seguro que has oído a alguien decir: "Total, como son de leche y se le van a caer, ¿para qué arreglarlos?". ¡Es el mayor error de salud! Una caries en un diente de leche avanza rapidísimo hacia el nervio causando un dolor horrible al niño. Además, <strong>la infección pasa al hueso y puede manchar o destruir el diente definitivo que está creciendo debajo</strong>.
+          </p>
+          <p className="font-fsme text-lg leading-relaxed italic text-white/90 mt-4">
+            La prevención no es un gasto, es salud. Y como ves, <strong>casi todos estos tratamientos de prevención están cubiertos a coste cero</strong> con DKV Dentisalud Elite.
+          </p>
+
           <p className="font-fsme text-lg leading-relaxed italic text-white/90">
             "Un mantenedor de espacio o un simple sellador hoy te puede ahorrar un tratamiento de ortodoncia de miles de euros mañana. La odontopediatría no es un gasto, es la inversión más rentable en la salud estructural de tus hijos. Además, verás que <strong>la inmensa mayoría de los tratamientos preventivos están incluidos a coste cero</strong> en DKV Dentisalud Elite."
           </p>
@@ -3016,9 +3027,9 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       </div>
     ),
     cta: {
-      title: "Su primera visita",
-      infoNote: "\"Total, como se le van a caer, ¿para qué arreglar los dientes de leche?\". Este gran mito es el origen de muchísimos problemas de espacio, dolores e infecciones graves.",
-      description: "Acostumbra a tu hijo a visitar al dentista desde pequeño en un entorno amigable y sin dolor. Pide cita para su primera revisión y limpieza sin coste:"
+      title: "Que su primera vez sea jugando",
+      infoNote: "Recomendamos hacer la primera visita al dentista cuando cumplen 1 añito y una revisión general cada 6 meses. Si vienen cuando no les duele nada, jamás le tendrán miedo al sillón.",
+      description: "Acostumbra a tu hijo a visitarnos en un entorno amigable. Pide cita para su primera revisión y limpieza (sin coste en consulta para tí):"
     }
   },
 
@@ -3026,8 +3037,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'pediatria-conservadora': {
     slug: 'pediatria-conservadora',
     activeSubNavId: 'conservadora-pediatria',
-    /* ✨ */ seoTitle: "Empastes y Coronas para Niños | Odontopediatría sin Miedo",
-    /* ✨ */ seoDescription: "Curamos la caries infantil para que coman y sonrían sin dolor. Trato amable y un presupuesto claro desde el primer minuto. Pide cita en una clínica cercana.",
+    /* ✨ */ seoTitle: "Empastes Infantiles | Curamos sus Caries sin generarles Miedo",
+    /* ✨ */ seoDescription: "Curamos la caries de tu hijo con paciencia y cariño. Empastes (sin cargo en consulta para menores de 15 años) y coronas. Busca tu dentista aquí.",
     breadcrumbs: [
       { label: "Tratamientos", href: "/#tratamientos" },
       { label: "Odontopediatría", href: "/?modal=6#tratamientos" },
@@ -3037,57 +3048,57 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       badgeText: "Curando al bichito",
       title: { dark: "ODONTOLOGÍA", normal: "CONSERVADORA" },
       description: [
-        "Cuando la prevención no ha sido suficiente y aparece la caries, nuestro objetivo es actuar rápido.",
-        "Limpiamos la infección y restauramos el diente para que tu hijo pueda volver a comer y sonreír sin dolor."
+        "Cuando el cepillado no ha sido suficiente y los 'bichitos' (las bacterias) han hecho un agujerito en el diente, nuestro objetivo es actuar súper rápido y con muchísimo tacto.",
+        "Limpiamos la infección, sin que apenas se den cuenta, y tapamos el diente para que tu hijo vuelva a comer y sonreir sin dolor."
       ]
     },
     rows: [
       {
         id: "obturacion",
         name: "Caries: Hola y Adios",
-        subTitle: "Empastes y más.",
+        subTitle: "Magia para tapar agujeritos.",
         points: [
-          { icon: '', text: <>En función del avance de la caries tendremos que aplicar diferentes medidas para erradicarla.</> }
+          { icon: '', text: <>Dependiendo de lo grande que sea la cueva que ha hecho el 'bichito' en el diente, usaremos una técnica u otra para que quede como nuevo.</> }
         ],
         priceGroups: [
           {
-            title: "caries inicial",
-            description: "Limpiamos cuidadosamente la caries y rellenamos el hueco con una resina estética del mismo color del diente para devolverle su función y forma.",
+            title: "El agujerito pequeño (Caries inicial)",
+            description: "Limpiamos el diente con cuidado y rellenamos el hueco con una 'plastilina' blanca del mismo color del diente, que endurecemos con una linterna mágica de luz azul.",
             items: [
               {
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Obturación' },
+                title: [
+                  { tipo: 'normal', texto: 'Empaste infantil (Obturación)' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "100% incluido para menores de 15 años",
+                description: "100% incluido para niños menores de 15 años",
                 price: "Incluido"
               }
             ]
           },
           {
-            title: "Caries avanzada",
-            description: "Cuando la caries es tan grande que ha destruido una parte considerable de la estructura del diente, tal que un empaste no aguantaría la fuerza de la masticación.",
+            title: "Falta un trozo de muela (Caries avanzada)",
+            description: "A veces la caries es enorme y se ha comido media muela de las que ya son definitivas (las que ya no se caen). Un empaste normal así de grande se caería al masticar pan o carne.",
             items: [
               {
                 /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Reconstrucción molares definitivos' },
+                  { tipo: 'normal', texto: 'Gran reconstrucción (Molares definitivos)' },
                   { tipo: 'oculto', texto: '. Precio: 40 €.' }
                 ],
-                description: "Reconstruimos la anatomía completa del diente para devolverle toda su fuerza original.",
+                description: "Reconstruimos la forma completa de la muela adulta, con unos moldes especiales, para devolverle la fuerza y que le dure muchísimo tiempo.",
                 price: "40 €"
               }
             ]
           },
           {
-            title: "Caries total",
-            description: "Imagina que una muela de leche está destrozada por la caries, pero el niño aún tiene 5 años y esa muela no se va a caer de forma natural hasta los 10 años. No podemos sacarla porque perderíamos el espacio para el diente definitivo, y tampoco podemos hacer un empaste normal porque se rompería. ",
+            title: "La muela destrozada (Caries total)",
+            description: "Imagina una muela de leche destrozada por la caries en un niño de 5 años. Esa muela no se va a caer hasta los 10 años. No podemos arranccarla (porque perderíamos el hueco para el diente nuevo), y una gran reconstrucción de tal tamaño no aguantaría 5 años de masticación.",
             items: [
               {
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Corona prefabricada metálica (acero)' },
+                title: [
+                  { tipo: 'normal', texto: 'Casquito de superhéroe (Corona de acero)' },
                   { tipo: 'oculto', texto: '. Precio: 65 €.' }
                 ],
-                description: "Limpiaremos la muela y le pondremos un 'casquito' de acero inoxidable que la protege hasta que llegue el momento de que se caiga sola.",
+                description: "Limpiamos la muela y le ponemos una 'armadura' o 'casquito' de acero inoxidable. Protege la muela perfectamente hasta que llegue el día en que se caiga sola.",
                 price: "65 €"
               }
             ]
@@ -3095,10 +3106,23 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
         ]
       }
     ],
+premiumBlock: (
+      <div className="mt-16 bg-dkv-green-dark text-white p-8 md:p-12 mb-12 rounded-3xl shadow-2xl relative overflow-hidden">
+        <div className="absolute top-0 right-0 p-8 opacity-10">
+          <Heart className="w-32 h-32 text-white" />
+        </div>
+        <div className="relative z-10">
+          <h3 className="font-lemon text-xl mb-4 text-dkv-green-light uppercase tracking-wide">El Consejo para Padres</h3>
+          <p className="font-fsme text-lg leading-relaxed italic text-white/90">
+            "Los niños tienen una tolerancia al dolor diferente. A veces tienen una caries enorme y no se quejan hasta que la infección ha llegado al nervio y se les hincha la cara. Cuando un niño deja de comer por un lado de la boca o rechaza cosas frías, <strong>actúa rápido</strong>. Empastar una muela a tiempo, además de ser <strong>gratis en consulta</strong>, le evitará lloros, infecciones y tener que tomar antibióticos."
+          </p>
+        </div>
+      </div>
+    ),
     cta: {
-      title: "No esperes a que duela",
-      infoNote: "Los niños a menudo no avisan de que tienen una molestia hasta que la caries ya ha llegado al nervio. Las revisiones periódicas nos permiten detectar y empastar estas pequeñas lesiones a tiempo (y sin coste para ti).",
-      description: "Acude con tu pequeño a tu clínica DKV más cercana. Trataremos esa caries en un ambiente relajado y con las técnicas menos invasivas:"
+      title: "No esperes a que llore por la noche",
+      infoNote: "Las revisiones periódicas nos ayudan a detectar estas pequeñas lesiones a tiempo, empastándolas en 15 minutos sin que el niño sufra absolutamente nada.",
+      description: "Acude con tu pequeño a tu dentista DKV DENTISALUD ELITE más cercano. Curaremos al 'bichito' en un ambiente relajado y pensado para ellos. Encuentra tu consulta:"
     }
   },
 
@@ -3106,96 +3130,96 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'pediatria-endodoncia': {
     slug: 'pediatria-endodoncia',
     activeSubNavId: 'endodoncia-pediatria',
-    /* ✨ */ seoTitle: "Pulpotomías y Endodoncia Infantil | Salva el Diente de Leche",
-    /* ✨ */ seoDescription: "Curamos infecciones profundas en niños para no perder el espacio. Intervención sin dolor y con precio definitivo. Urgencias en tu clínica dental más próxima.",
+    seoTitle: "Curar el Nervio en Niños | Adios al Dolor de Muelas",
+    seoDescription: "Curamos la caries profunda en dientes de leche para quitar el dolor sin tener que arrancarlos. Trato con cariño y precio definitivo. No esperes para pedir cita.",
     breadcrumbs: [
       { label: "Tratamientos", href: "/#tratamientos" },
       { label: "Odontopediatría", href: "/?modal=6#tratamientos" },
       { label: "Endodoncia Infantil", href: "#" }
     ],
     hero: {
-      badgeText: "Cuando la caries llega al nervio",
-      title: { dark: "ENDODONCIA", normal: "INFANTIL" },
+      badgeText: "Cuando el dolor no le deja dormir",
+      title: { dark: "CURAR EL NERVIO", normal: "INFANTIL" },
       description: [
-        "Salvar un diente de leche que duele es fundamental para no tener que extraerlo antes de tiempo y perder el espacio.",
-        "Sí, ¡los dientes de leche también tienen nervio y raíz! Descubre cómo curamos las infecciones profundas sin dolor."
+        "Sí, ¡los dientes de leche también tiene raíces y nervios! Cuando una caries es muy grande y llega hasta él, el niño siente un dolor horrible, sobre todo por las noches.",
+        "Nuestra prioridad número uno es quitarle el dolor al instante. Y lo segunda: Curar la infección por dentro con mucha suavidad para no tener que arrancarle la muela antes de tiempo."
       ]
     },
     rows: [
       {
         id: "infeccion",
-        name: "Infección: Hola y Adios",
-        subTitle: "Haciendo frente a la infección.",
+        name: "Curando la infección paso a paso",
+        subTitle: "Tratamientos para que deje de doler en el acto.",
         points: [
-          { icon: '', text: <>En función del grado de avance de la <strong> infección </strong> en el diente del niño, tomaremos las medidas necesarias para erradicarla.</> }
+          { icon: '', text: <>Dependiendo de cuánto haya avanzado el 'bichito' hacia el interior de la muela, usaremos una 'tirita' u otra para curar el nervio de tu peque.</> }
         ],
         priceGroups: [
           {
-            title: "Infección leve",
-            description: "La caries es muy profunda pero solo ha tocado la parte superior de la cámara del nervio.",
+            title: "Cuando la caries acaba de tocar el nervio",
+            description: "La infección es profunda, pero solo ha llegado a rozar el nervio.",
             items: [
               {
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Endodoncia a medias (Pulpotomía)' },
+                title: [
+                  { tipo: 'normal', texto: 'Limpieza parcial del nervio (Pulpotomía)' },
                   { tipo: 'oculto', texto: '. Precio: 44 €.' }
                 ],
-                description: "Quitamos solo la parte infectada, aplicamos medicamento para calmar el tejido sano restanto y sellamos la muela. El diente deja de doler inmediatamente y se mantiene vivo y sano en sus raíces hasta que se caiga de forma natural.",
+                description: "Dormimos la muela, limpiamos solo la parte superior del nervio afectada, y ponemos una 'medicina' para calmarlo. El diente deja de doler en el acto y sigue vivo hasta que se caiga de forma natural.",
                 price: "44 €"
               }
             ]
           },
           {
-            title: "Infección importante",
-            description: "La infección ha avanzado tanto que ha llegado hasta el final de las raíces del diente de leche.",
+            title: "Cuando la infección llega a las raíces",
+            description: "La infección ha bajado hasta el final de las raíces del diente de leche.",
             items: [
               {
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Endodoncia infantil (Pulpectomía)' },
+                title: [
+                  { tipo: 'normal', texto: 'Limpieza total del nervio (Pulpectomía)' },
                   { tipo: 'oculto', texto: '. Precio: 36 €.' }
                 ],
-                description: "Limpiamos de bacterias los conductos completos y los rellenamos de una pasta especial, que se reabsorverá por sí sola cuando la raíz de leche desaparezca por el empuje del diente definitivo.",
+                description: "Limpiamos todos los conductos de la raíz y los rellenamos con una pasta especial, que se reabsorverá por sí sola cuando la raíz de leche desaparezca por el empuje del diente definitivo.",
                 price: "36 €"
               }
             ]
           },
           {
-            title: "Salvando raiz definitiva",
-            description: "Si tu hijo se da un golpe fuerte jugando y se rompe un diente definitivo que acaba de salir, seguramente no habrá terminado de formar su raíz por completo dentro del hueso.",
+            title: "Golpe en un diente nuevo",
+            description: "Tu hijo se da un golpe fuerte jugando y se parte un diente definitivo que acaba de salir. Es un drama, porque la raíz de ese diente aún no se había terminado de formar por dentro de la encía.",
             items: [
               {
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Apicoformación' },
+                title: [
+                  { tipo: 'normal', texto: 'Ayudar a que la raíz de cierre (Apicoformación)' },
                   { tipo: 'oculto', texto: '. Precio: 20 €.' }
                 ],
-                description: "Estimulamos la raíz mediante medicamentos especiales en varias sesiones para que termine de crecer y cerrarse. Salvamos la pieza para toda la vida. Precio por sesión.",
+                description: "En varias sesiones, le ponemos uno medicamentos especiales a la raíz rota para que termine de crecer y cerrarse por sí sola. Así le salvamos su diente definitivo. (Precio por sesión)",
                 price: "20 €"
               }
             ]
           },
           {
-            title: "Salvando diente definitivo",
-            description: "Si tu hijo se da un golpe en el parque o haciendo deporte y un diente definitivo sale volando entero (de cuajo, con su raíz), no lo des por perdido.",
+            title: "¡Del golpe se le ha caido el diente entero!",
+            description: "Si tu peque se cae en el parque y un dienteo de los que no se caen ya (definitivo) sale volando entero (con su raíz amarilla incluída), ¡no lo des por perdido!",
             items: [
               {
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: '1) Recoge el diente.' }
+                title: [
+                  { tipo: 'normal', texto: '1) Cógelo por la parte blanca.' }
                 ],
-                description: "Siempre por la corona. Nunca toques la raíz amarilla.",
+                description: "Nunca toques la raíz amarilla con los dedos.",
                 price: ""
               },
               {
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: '2) Conserva el diente.' }
+                title: [
+                  { tipo: 'normal', texto: '2) Mételo en un vaso.' }
                 ],
-                description: "Sumerge el diente en un vaso con leche fría o suero. Nunca en agua ni lo frotes.",
+                description: "Usa leche fría o suero de la farmacia. ¡Nunca lo laves con agua ni lo frotes!",
                 price: ""
               },
               {
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: '3) Ven corriendo.' },
+                title: [
+                  { tipo: 'normal', texto: '3) Ven corriendo a la consulta.' },
                   { tipo: 'oculto', texto: ' Reimplante de pieza dental. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "Lo volveremos a colocar en su sitio para tratar de salvarlo.",
+                description: "Trataremos de volver a 'plantarlo' en su hueco y sujetarlo para el que cuerpo lo acepte.",
                 price: "Incluido"
               }
             ]
@@ -3204,9 +3228,9 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       }
     ],
     cta: {
-      title: "Salva el diente a tiempo",
-      infoNote: "El dolor espontáneo por la noche, o al beber cosas frías y calientes, es el principal síntoma de que la caries ha llegado al nervio. Actuar rápido es clave para evitar flemones.",
-      description: "Si tu hijo se queja de dolor de muelas, no esperes. Nuestros especialistas en odontopediatría le atenderán de urgencia con la máxima delicadeza:"
+      title: "Salva su muela a tiempo",
+      infoNote: "El dolor de muelas al beber cosas frías o calientes, o que le despierte por la noche, es la señal de alarma. Actuar rápido evitará que se le hinche la cara con un flemón doloroso.",
+      description: "Si tu hijo se queja de la boca, no le des solo jarabe. Nuestros dentistas le atenderán con paciencia y delicadeza para que deje de sufrir. Encuentra su dentista:"
     }
   },
 
@@ -3214,75 +3238,75 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'pediatria-extracciones-y-espacio': {
     slug: 'pediatria-extracciones-y-espacio',
     activeSubNavId: 'cirugia-pediatria',
-    /* ✨ */ seoTitle: "Extracciones Infantiles y Mantenedores de Espacio",
-    /* ✨ */ seoDescription: "Guiamos el recambio dental de tus hijos extrayendo dientes que estorban. Evita ortodoncias futuras con tarifas claras en tu odontopediatra más cercano.",
+    /* ✨ */ seoTitle: "Quitar Dientes de Leche y Guardasitios Infantil",
+    /* ✨ */ seoDescription: "Guiamos el recambio de sus dientes. Evita que le salgan torcidos o atrapados con los mantenedores de espacio. Tarifas claras en tu clínica más cercana.",
     breadcrumbs: [
       { label: "Tratamientos", href: "/#tratamientos" },
       { label: "Odontopediatría", href: "/?modal=6#tratamientos" },
       { label: "Extracciones y Espacio", href: "#" }
     ],
     hero: {
-      badgeText: "Guiando el recambio",
-      title: { dark: "EXTRACCIONES Y GESTIÓN", normal: "DEL ESPACIO" },
+      badgeText: "Evitando el atasco dental",
+      title: { dark: "QUITAR DIENTES", normal: "Y GUARDAR EL SITIO" },
       description: [
-        "El objetivo: Asegurar que los dientes definitivos tengan sitio para salir rectos y evitar ortodoncias complejísimas en el futuro.",
-        "Para ello extraemos a tiempo las piezas que estorban y colocamos aparatología sencilla para guardar el sitio cuando una muela se pierde prematuramente."
+        "El objetivo es asegurar que los dientes de adulto tengan sitio de sobra para salir rectos, evitando tratamientos de ortodoncia largos y costosos en el futuro.",
+        "A veces, la mejor forma de ayudar es quitar a tiempo un diente de leche que estorba, o colocar un pequeño aparato para 'guardarle el sitio' al nuevo diente si se pierde una muela de leche antes de tiempo."
       ]
     },
     rows: [
       {
         id: "extracciones",
-        name: "Extracciones dentales y Mantenedores de espacio",
-        subTitle: "Gestionando piezas faltantes.",
+        name: "Quitar dientes y 'Guardasitios'",
+        subTitle: "Dirigiendo el tráfico en la boca de tu peque.",
         priceGroups: [
           {
-            title: "Extracciones",
-            description: "Solo en casos extremos, de dientes de leche muy infectados o bien que obstruyan la salida de dientes definitivos.",
+            title: "Quitar el diente (solo cuando es necesario)",
+            description: "No nos gusta arrancar dientes, pero a veces es inevitable si están destrozados por la infección o si se han puesto 'rebeldes' y no dejan sitio para el nuevo.",
             items: [
               {
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Extracción Dental simple' },
+                title: [
+                  { tipo: 'normal', texto: 'Quitar un diente de leche (Extracción Dental simple)' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "Dientes de leche my infectados, o que no se caen a tiempo.",
+                description: "Para muelas imposibles de curar, o para ese típico diente de leche que se resiste a caer y está haciendo que el definitivo salga torcido o por detrás (doble fila).",
                 price: "Incluido"
               },
               {
                 /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Extracción Supernumerario retenido' },
+                  { tipo: 'normal', texto: 'Quitar el diente intruso (Extracción Supernumerario retenido)' },
                   { tipo: 'oculto', texto: '. Precio: 25 €.' }
                 ],
-                description: "Dientre extra atrapado en el hueso bloqueando a los dientes normales. Precio por unidad.",
+                description: "A veces, la naturaleza se equivoca y fabrica un diente extra que se queda atrapado en la encía, sin terminar de salir y taponando la salida de dientes normales. Precio por unidad.",
                 price: "25 €"
               }
             ]
           },
           {
-            title: "Guardar espacio al diente definitivo",
-            description: "Si se pierde una muela de leche antes de tiempo, es necesario mantener el hueco hasta que salga debajo la muela definitiva. En otro caso el resto de dientes se torcerán para tapar el hueco y la muela definitiva se verá atrapada al salir.",
+            title: "El 'Guardasitios' (Mantenedores de espacio)",
+            description: "Imagina que a tu peque de 5 años hay que quitarle una muela por caries. El problema es que el diente nuevo no saldrá hasta los 10 años. Si no ponemos un 'guardasitios', los dientes vecinos se irán juntando hasta cerrar el hueco, y el diente definitivo se quedará atrapado para siempre en el hueso.",
             items: [
               {
                 /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Mantenedor fijo unilateral' },
+                  { tipo: 'normal', texto: 'Guardasitios para un hueco (Mantenedor fijo unilateral)' },
                   { tipo: 'oculto', texto: '. Precio: 58 €.' }
                 ],
-                description: "Pegado a un solo lado de la boca para guardar un hueco concreto.",
+                description: "Un anillito de metal pegado a la muela de al lado con un tope para que nadie le quiete el sitio al diente que ha de salir.",
                 price: "58 €"
               },
               {
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Mantenedor fijo bilateral' },
+                title: [
+                  { tipo: 'normal', texto: 'Guardasitio para varios huecos (Mantenedor fijo bilateral)' },
                   { tipo: 'oculto', texto: '. Precio: 87 €.' }
                 ],
-                description: "Arco metálico que cruza por detrás de los dientes para sujetar espacios a ambos lados a la vez.",
+                description: "Un pequeño alambre que cruza por detrás de los dientes para sujetar los espacios de los dos lados de la boca a la vez.",
                 price: "87 €"
               },
               {
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Mantenedor removible' },
+                title: [
+                  { tipo: 'normal', texto: 'Guardasitios de quita y pon (Mantenedor removible)' },
                   { tipo: 'oculto', texto: '. Precio: 72 €.' }
                 ],
-                description: "Aparato de resina de quita y pon, que además de guardar el sitio puede llevar un diente falso por estética.",
+                description: "Aparato de resina que tu peque se puede quitar, y que si hace falta en los dientes de delante, puede llevar un dientecito falso para que pueda sonreir tranquilo.",
                 price: "72 €"
               }
             ]
@@ -3291,9 +3315,9 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       }
     ],
     cta: {
-      title: "Prevenir es Ahorrar",
-      infoNote: "\"Un mantenedor de espacio de 58 € hoy te puede ahorrar un tratamiento de ortodoncia de 3.000 € mañana.\"",
-      description: "Acude con tu pequeño a una revisión gratuita. Nuestro equipo de odontopediatría evaluará si el recambio dental se está produciendo correctamente."
+      title: "Prevenir hoy te ahorra miles de euros mañana",
+      infoNote: "\"Un mantenedor de espacio de 58 € hoy te puede ahorrar literalmente un tratamiento de ortodoncia compleja de 3.000 € en el futuro.\"",
+      description: "Acude con tu peque a una revisión gratuita en consulta. Nuestro equipo de dentistas  vigilará que el recambio de sus dientes se desarrolle de forma correcta."
     }
   },
 
@@ -3301,8 +3325,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'prevencion-primera-visita': {
     slug: 'prevencion-primera-visita',
     activeSubNavId: 'primera-visita',
-    /* ✨ */ seoTitle: "Revisión Dental Completa y Diagnóstico | Tu Salud al Día",
-    /* ✨ */ seoDescription: "Anticipate al dolor con una exploración general y radiografías. Descubre el estado de tu boca sin sorpresas y en un centro dental muy cerca de ti.",
+    seoTitle: "Tu ITV Dental Anual | Revisión y diagnóstico sin coste en consulta",
+    seoDescription: "Anticipate al dolor con una revisión completa, radiografías y prespuesto, de ser necesarios, sin coste en consulta. Encuentra nuestro centro dental más próximo.",
     breadcrumbs: [
       { label: "Tratamientos", href: "/#tratamientos" },
       { label: "Prevención", href: "/?modal=7#tratamientos" },
@@ -3312,57 +3336,57 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       badgeText: "Tu ITV Dental",
       title: { dark: "REVISIÓN Y", normal: "DIAGNÓSTICO" },
       description: [
-        "Para todo el mundo. Es la puerta de entrada a la clínica. El objetivo aquí no es curar, sino evitar que te enfermes y descubrir a tiempo cualquier pequeño problema antes de que duela (y cueste dinero).",
-        "En esta fase evaluamos tu salud total y ponemos nombre a lo que te duele."
+        "Para todo el mundo. Es la puerta de entrada a la clínica. Aquí el objetivo no es curar, sino hacerte un chequeo a fondo para evitar que enfermes y localizar cualquier problema por pequeño que sea antes de que duela (y cueste dinero).",
+        "Evaluamos tu boca por completo, le ponemos nombre a lo que te duele y te hacemos un plan a medida. Y lo mejor: Casi todo en esta fase sin coste en consulta."
       ]
     },
     rows: [
       {
         id: "consulta",
-        name: "Primera visita y revisiones",
+        name: "La Consulta: Hablar y Revisar",
         price: "Incluido",
-        subTitle: "Valorando tu salud dental.",
+        subTitle: "Valorando el estado real de tu boca.",
         priceGroups: [
           {
-            title: "Consulta Inicial y Revisión",
-            description: "Solo en casos extremos, de dientes de leche muy infectados o bien que obstruyan la salida de dientes definitivos.",
+            title: "Primera visita y chequeos",
+            description: "Nos sentamos contigo, estudiamos tu boca y te explicamos con claridad.",
             items: [
               {
                 /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Consulta, presupuesto y plan de tratamiento' },
+                  { tipo: 'normal', texto: 'Primera visita y plan a medida' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "Nuestros doctores analizan tu casi sin compromiso para trazar la hoja de ruta.",
+                description: "Nuestros doctores analizan tu caso sin compromiso y te proporcionan la 'hoja de ruta' exacta para lo que necesitas.",
                 price: "Incluido"
               },
               {
                 /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Visita de revisión o control' },
+                  { tipo: 'normal', texto: 'Tu ITV anual (Visita de revisión)' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "Tu revisión anual obligatoria para mantener tus dientes bajo estricto control.",
+                description: "El chequeo de control anual obligatorio para asegurar que tu boca sigue perfecta.",
                 price: "Incluido"
               },
               {
                 /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Consulta dolor facial' },
+                  { tipo: 'normal', texto: 'Consulta de dolor extraño (Cara y mandíbula)' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "Neuralgia, Dolor facial o Parálisis. No siempre el dolor es causado por una caries. A veces el origen es neurológico o muscular.",
+                description: "A veces te duele la cabeza, la cara o el oido y no es por una caries. Un motivo puede ser la tensión muscular o el bruxismo. Comprobamos en dicho sentido para confirmar la causa.",
                 price: "Incluído"
               }
             ]
           },
           {
             title: "Radiografías",
-            description: "Tipos de radiografías instantáneas imprescindibles para ver debajo de la encía, o confirmar si hay caries escondidas entre los dientes donde el ojo no llega.",
+            description: "Son instantáneas e imprescindibles para ver debajo de la encía y entre los dientes, donde el ojo humano no llega.",
             items: [
               {
                 /* ✨ */  title: [
                   { tipo: 'normal', texto: 'Radiografía Intrabucal' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "",
+                description: "Esa plaquita pequeña que te introducimos en la boca. Indolora, nos permite ver si una caries ha llegado al nervio o si hay una infección en la raíz.",
                 price: "Incluído"
               },
               {
@@ -3386,23 +3410,23 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
                   { tipo: 'normal', texto: 'Ortopantomografía' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "",
+                description: "La máquina grande que da vueltas alrededor de tu cabeza. Nos da un mapa completo de toda tu boca, el hueso y las muelas del juicio de un solo vistazo.",
                 price: "Incluído"
               },
               {
                 /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Radiografías de control' },
+                  { tipo: 'normal', texto: 'Radiografías de seguimiento' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "",
+                description: "Las radiografías que hacemos durante o después de un tratamiento para asegurarnos de que todo va perfecto.",
                 price: "Incluído"
               },
               {
                 /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Radiografías Oclusales' },
+                  { tipo: 'normal', texto: 'Radiografía de mordida (Oclusal)' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "Radiografías de mordida para valorar grandes áreas del maxilar de un solo vistazo.",
+                description: "Muerdes una placa y nos permite ver el paladar entero desde arriba para buscar dientes que no han salido o quistes grandes.",
                 price: "Incluido"
               }
             ]
@@ -3411,9 +3435,9 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       }
     ],
     cta: {
-      title: "Prevenir cuesta 0 €",
-      infoNote: "El 80% de los problemas graves (y costosos) en odontología podrían evitarse con una simple revisión anual de 20 minutos. Aprovecha las coberturas gratuitas de tu póliza.",
-      description: "Encuentra tu clínica dental DKV más cercana y reserva hoy mismo tu Primera Visita y revisión general:"
+      title: "Prevenir sin coste en consulta",
+      infoNote: "El 80% de los problemas graves (y costosos) en odontología podrían evitarse acudiendo a tu revisión anual de 20 minutos. Si no vas, estás desaprovechando las mejores coberturas gratuitas.",
+      description: "Encuentra nuestra clínica dental más cercana y reserva hoy mismo tu primera visita y chequeo general:"
     }
   },
 
@@ -3421,8 +3445,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'prevencion-higiene': {
     slug: 'prevencion-higiene',
     activeSubNavId: 'higiene',
-    /* ✨ */ seoTitle: "Limpieza Dental Profesional y Tartrectomía | Dientes Sanos",
-    /* ✨ */ seoDescription: "Elimina el sarro y las manchas superficiales para prevenir la gingivitis. Mantenimiento esencial con tarifas claras. Pide cita en tu clínica más cercana.",
+    seoTitle: "Limpieza de Boca y Quitar Manchas | Tu Sonrisa al 100%",
+    seoDescription: "Elimina el sarro duro y las manchas de café y tabaco sin dolor. La famosa limpieza dental, sin cargo en consulta. Pide cita en tu centro dental más cercano.",
     breadcrumbs: [
       { label: "Tratamientos", href: "/#tratamientos" },
       { label: "Prevención", href: "/?modal=7#tratamientos" },
@@ -3430,67 +3454,67 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     ],
     hero: {
       badgeText: "El escudo protector",
-      title: { dark: "HIGIENE Y", normal: "PREVENCIÓN" },
+      title: { dark: "HIGIENE Y", normal: "LIMPIEZA DENTAL" },
       description: [
-        "Tratamientos esenciales para mantener tus dientes limpios y fuertes frente a las bacterias.",
-        "De nada sirve curar si no prevenimos. Aprovecha al máximo las coberturas gratuitas de tu póliza para blindar tu sonrisa."
+        "El sarro es esa placa dura que se pega a los dientes y que el cepillo de casa ya no puede eliminar. Si lo dejas ahí, las encías se inflaman, sangran y causan mal aliento.",
+        "Una buena limpieza profesional al año es el secreto para no tener problemas graves. Aprovecha la cobertura sin cargo en consulta para salir con los dientes impecables."
       ]
     },
     rows: [
       {
         id: "limpieza-prevencion",
-        name: "Medidas preventivas",
+        name: "Limpieza profunda y protección",
         price: "Incluido",
-        subTitle: "Más vale prevenir.",
+        subTitle: "Más vale prevenir que curar (y pagar).",
         priceGroups: [
           {
-            title: "Limpieza de boca",
-            description: "",
+            title: "Limpieza y Brillo",
+            description: "Despedimos al sarro y a las manchas superficiales.",
             items: [
               {
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Limpieza dental' },
+                title: [
+                  { tipo: 'normal', texto: 'Limpieza de boca (Eliminar el sarro)' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "Elimina el sarro superficial que el cepillado no puede quitar.",
+                description: "Usamos una punta de ultrasonidos que vibra suavemente con agua para despegar el sarro endurecido que se acumula (sobre todo detrás de los dientes de abajo) sin dañar tu esmalte.",
                 price: "Incluido"
               },
               {
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Bicarbonato' },
+                title: [
+                  { tipo: 'normal', texto: 'Chorro antimanchas (Bicarbonato)' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "Aeropulidor para eliminar manchas de café, té o tabaco, devolviendo el brillo a tus dientes sin dañar la superficie.",
+                description: "Un lavado a presión con agua y polvos especiales para borrar las manchas oscuras del café, el té o el tabaco, devolviendo el brillo natural a tu sonrisa.",
                 price: "Incluido"
               },
               {
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Fluorización tópica' },
+                title: [
+                  { tipo: 'normal', texto: 'Baño de Flúor (Fluorización tópica)' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "Aplicación de flúor para que tus dientes resistan mejor los ataques ácidos de las bacterias.",
+                description: "Aplicamos un gel que tus dientes absorben, haciéndose muy resistentes a los ataques ácidos de las bacterias.",
                 price: "Incluído"
               }
             ]
           },
           {
-            title: "Higienización",
-            description: "",
+            title: "Protección Extra",
+            description: "Pequeños trucos frente a las caries.",
             items: [
               {
                 /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Sellado de fisuras' },
+                  { tipo: 'normal', texto: 'Tapar los surcos (Sellado de fisuras)' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "Relleno de surcos profundos de muelas adultas para que no entre comida ni se forme placa bacteriana.",
+                description: "Rellenamos las 'arrugas' profundas de las muelas con una resina invisible para que la comida no se queda atrapada. ¡Adiós caries de masticación!",
                 price: "Incluído"
               },
               {
                 /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Formación Higiene' },
+                  { tipo: 'normal', texto: 'Trucos de cepillado (Formación)' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "Capacitacion sobre la técnica correcta de cepillado, uso del hilo dental y de cepillos interproximales.",
+                description: "Te enseñamos a usar bien el hilo dental y los cepillos pequeños (interdentales) para que no te sangren las encías jamás en casa.",
                 price: "Incluído"
               }
             ]
@@ -3499,9 +3523,9 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       }
     ],
     cta: {
-      title: "Tu sonrisa al 100%",
-      infoNote: "Si notas tus dientes ásperos, manchas superficiales o hace más de un año que no te haces una limpieza profesional, es el momento perfecto para blindar tu boca.",
-      description: "Disfruta de tu \"ITV dental\" y sal de la clínica con los dientes limpios, pulidos y fortalecidos sin pagar absolutamente nada. Busca tu centro:"
+      title: "Tu sonrisa al 100% sin pagar de más",
+      infoNote: "Si notas tus dientes ásperos al pasar la lengua, ves manchas oscuras en los bordes o hace más de un año que no te haces una limpieza profesional, es el momento perfecto para blindar tu boca.",
+      description: "Disfruta de tu limpieza anual sin cargo en consulta y sal de la clínica con los dientes limpios, pulidos y fortalecidos. Busca tu centro:"
     }
   },
 
@@ -3509,8 +3533,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'periodoncia-basica': {
     slug: 'periodoncia-basica',
     activeSubNavId: 'diagnostico-basico',
-    /* ✨ */ seoTitle: "Tratamiento de Encías y Curetajes | Frena la Gingivitis",
-    /* ✨ */ seoDescription: "Detén el sangrado y la pérdida de hueso con limpiezas profundas de raíces. Presupuesto transparente para salvar tus dientes en tu especialista más cercano.",
+    seoTitle: "Tratamiento de Encías y Piorrea | Salva tus dientes",
+    seoDescription: "Si te sangran las encías, tienes una infección. Frena la pérdida de hueso con limpiezas profundas (curetajes) sin dolor y con presupuesto trasparente.",
     breadcrumbs: [
       { label: "Tratamientos", href: "/#tratamientos" },
       { label: "Periodoncia", href: "/?modal=10#tratamientos" },
@@ -3518,74 +3542,74 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     ],
     hero: {
       badgeText: "Fase inicial de la enfermedad",
-      title: { dark: "ENCÍAS Y", normal: "PERIODONCIA" },
+      title: { dark: "SANGRADO DE ENCIAS", normal: "(PIORREA)" },
       description: [
-        "Si te sangran las encías al cepillarte, tienes mal aliento crónico o notas que algún diente se mueve, puedes sufrir una tenes enfermedad periodontal como la gingivitis o la 'piorrea'.",
-        "De nada sirve un diente sin caries si el hueso y la encía que lo sujetan están enfermos."
+        "Si te sangran las encías al lavarte los dientes o notal mal aliento crónico, tu boca te está pidiendo auxilio. Tienes una infección activa (Gingivitis o Piorrea).",
+        "De nada sirve tener unos dientes preciosos y sin caries, si el hueso y la encía que los sujeta por debajo se están deshaciendo. El objetivo aquí es frenar la infección en seco para que tus dientes no empiecen a moverse."
       ]
     },
     rows: [
       {
         id: "periodontograma",
-        name: "Diagnóstico y medición (Periodontograma)",
+        name: "Midiendo el daño (Periodontograma)",
         price: "Incluido",
         subTitle: (
           <div className="flex flex-col gap-2 mb-2">
-            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme">Fase Inicial de la enfermedad</span>
+            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme">Medir antes de curar</span>
           </div>
         ),
         points: [
-          { icon: '', text: <><strong className="text-dkv-green-dark font-bold"> El mapa.</strong> Para tratar la enfermedad de las encías, primero necesitamos saber exactamente dónde está y qué profundidad tiene.</> },
-          { icon: '', text: <><strong className="text-dkv-green-dark font-bold">Medición precisa.</strong> Utilizando una pequeña sonda milimetrada, medimos el espacio entre el diente y la encía (la "bolsa periodontal") diente por diente. Así sabemos milímetro a milímetro cuánto hueso de soporte has perdido y dónde debemos atacar la infección.</> }
+          { icon: '', text: <><strong className="text-dkv-green-dark font-bold"> El mapa de tu boca.</strong> Para curar las encías, primero necesitamos saber exactamente dónde está escondida la infección y cuánto hueso dse ha 'comido'.</> },
+          { icon: '', text: <><strong className="text-dkv-green-dark font-bold">Una regla milimétrica.</strong> Usamos una pequeña sonda (una minúscula regla) para medir el espacio entre tu diente y la encía. Así sabemos, milímetro a milímetro, dónde tenemos que atacar a las bacterias.</> }
         ]
       },
       {
         id: "detartraje",
-        name: "Detartraje subgingival",
+        name: "Limpieza bajo la encía (Detartraje)",
         price: "Incluido",
         subTitle: (
           <div className="flex flex-col gap-2 mb-2">
-            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme">Limpieza profunda</span>
+            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme">Un paso más allá en limpieza.</span>
           </div>
         ),
         points: [
-          { icon: '', text: <><strong className="text-dkv-green-dark font-bold">Bajo las encías.</strong><br />A diferencia de la limpieza normal (que solo quita el sarro visible), el detartraje es una limpieza un poco más profunda y focalizada que nos permite eliminar la placa bacteriana que ha empezado a esconderse justo por debajo de la encía.</> }
+          { icon: '', text: <><strong className="text-dkv-green-dark font-bold">Buscando lo invisible bajo las encías.</strong><br />A diferencia de la limpieza de boca normal (que solo quita el sarro que se ve a simple vista), esta es una limpieza un poco más profunda enfocada en sacar la placa pegajosa que ya ha empezado a metersa por debajo de la lìnea de la encía.</> }
         ]
       },
       {
         id: "curetaje",
-        name: "Curetaje",
+        name: "Limpieza de las raíces (Curetajes)",
         price: "40 €",
         subTitle: (
           <div className="flex flex-col gap-2 mb-2">
-            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme">Limpieza de raíces</span>
+            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme">Raspado  hasta la raíz</span>
           </div>
         ),
         points: [
-          { icon: '', text: <><strong>¿Cuando es necesario?</strong> Las bacterias han penetrado muy por debajo de la encía, y han llegado a crear duras costras pegadas a la raíz de tu diente.</> },
-          { icon: '', text: <><strong>¿En qué consiste?</strong> Con anestesia local, introducimos unas herramientas especiales llamadas curetas con las que alisamos y pulimos las raíces de tus dientes. Esto elimina las bacterias que se están comiendo tu hueso y permite que la encía vuelva a pegarse al diente.</> }
+          { icon: '', text: <><strong>¿Cuando hace falta?</strong> Cuando las bacterias llevan tiempo ahí abajo, se convierten en unas costras duras y tóxicas pegadas a la raíz del diente, escondidas bajo la encía. El cepillo de dientes no les hace ni cosquillas.</> },
+          { icon: '', text: <><strong>¿Cómo lo hacemos?</strong> Para tu total comodidad te ponemos anestesia local. Usamos unas herramientas finitas (curetas) para raspar, alisar y pulir la raíz de tu diente por debajo de la encía. Al quitar esa costra, tu encía sana y vuelve a abrazar al diente con fuerza.</> }
         ],
-        footerNote: "* Precio por cuadrante."
+        footerNote: "* Precio por cuadrante (la boca se divide en 4 partes)."
       },
       {
         id: "fluor-sensibilidad",
-        name: "Aplicación gel de flúor",
+        name: "Gel calmante para la sensibilidad",
         price: "Incluido",
         subTitle: (
           <div className="flex flex-col gap-2 mb-2">
-            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme">Alivio post-tratamiento para sensibilidad dentinaria</span>
+            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme">Alivio inmediato</span>
           </div>
         ),
         points: [
-          { icon: '', text: <><strong>¿Cuando es necesario?</strong> Tras realizar los curetajes y quitar el sarro que "abrigaba" la raíz, los dientes pueden quedar temporalmente sensibles a los alimentos y bebidas frías.</> },
-          { icon: '', text: <><strong>¿En qué consiste?</strong> Aplicamos un gel desensibilizante de flúor de alta concentración que sella los poros del diente y proporciona un alivio inmediato.</> }
+          { icon: '', text: <><strong>El efecto secundario: </strong> Tras hacerte los curetajes y quitarte ese sarro que 'abrigaba' la raíz, es normal que los dientes se queden unos días sensibles al beber agua fría o comer cosas calientes.</> },
+          { icon: '', text: <><strong>La solución: </strong> Te aplicamos un gel especial de flúor muy concentrado que sella los poros microscópicos del diente, dándote un alivio inmediato para que te vayas a casa con toda tranquilidad.</> }
         ]
       }
     ],
     cta: {
-      title: "Actúa antes de perder hueso",
-      infoNote: "El sangrado de encías nunca es normal. Es el primer grito de auxilio de tu boca indicando que hay una infección activa comiéndose el hueso que soporta tus dientes.",
-      description: "No esperes a que tus dientes se muevan. Un diagnóstico periodontal a tiempo (incluido en tu póliza) puede salvar tu sonrisa. Busca tu clínica:"
+      title: "El sangrado es un grito de auxilio",
+      infoNote: "Las encías sanas NUNCA sangran. Si escupes sangre al lavarte los dientes, hay una infección comiéndose el hueso que soporta tu dentadura.",
+      description: "No esperes a que tus dientes empiecen a moverse. Un buen diagnóstico a tiempo (sin coste en consulta) salvará tu sonrisa. Busca tu clínica:"
     }
   },
 
@@ -3593,40 +3617,40 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'periodoncia-estabilizacion': {
     slug: 'periodoncia-estabilizacion',
     activeSubNavId: 'estabilizacion',
-    /* ✨ */ seoTitle: "Mantenimiento Periodontal | Evita que tus Dientes se Muevan",
-    /* ✨ */ seoDescription: "Revisiones exhaustivas y ferulización para estabilizar piezas móviles. Controla la piorrea con tarifas sin letra pequeña en tu centro dental más próximo.",
+    seoTitle: "Frenar la Piorrea y Sujetar Dientes | Mantenimiento de Encías",
+    seoDescription: "Evita que tus dientes se caigan. Revisiones periódicas y estabilización de dientes con precios claros. Cuida tus encías en nuestro centro dental más cercano.",
     breadcrumbs: [
       { label: "Tratamientos", href: "/#tratamientos" },
       { label: "Periodoncia", href: "/?modal=10#tratamientos" },
       { label: "Estabilización", href: "#" }
     ],
     hero: {
-      badgeText: "Control crónico",
-      title: { dark: "MANTENIMIENTO Y", normal: "ESTABILIZACIÓN" },
+      badgeText: "Control para toda la vida",
+      title: { dark: "MANTENIMIENTO Y", normal: "FIJACION DE DIENTES" },
       description: [
-        "La 'piorrea' (enfermedad periodontal) es crónica. De nada sirve limpiar a fondo si no mantenemos la infección a raya a lo largo del tiempo.",
-        "Toca consolidar los resultados del tratamiento básico y estabilizar los dientes que han empezado a moverse por la pérdida de hueso."
+        "La 'piorrea' (enfermedad de las encías) es como la diabetes, es decir, no se llega a curar, pero se controla perfectamente. De nada sirve hacer una limpieza profunda si luego nos olvidamos de revisar.",
+        "Ahora toca mantener a las bacterias a raya y sujetar esos dientes que han empezado a moverse para que vuelvas a comer sin miedo y con total seguridad."
       ]
     },
     rows: [
       {
         id: "revisiones-periodontales",
-        name: "Control Periodontal",
+        name: "Mantenimiento (Para que la infección no vuelva)",
         subTitle: (
           <div className="flex flex-col gap-2 mb-2">
             <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme">Vigilancia constante</span>
           </div>
         ),
         points: [
-          { icon: '', text: <><strong>Revisión períódica.</strong> Evaluamos periódicamente el estado de tus encías, la profundidad de las bolsas periodontales y tu índice de placa para asegurarnos de que la enfermedad está inactiva y detenida.</> },
-          { icon: '', text: <> <strong>Limpieza periodontal.</strong>Cada 4 o 6 meses es estrictamente necesario que los pacientes con problemas de encías se sometan a una limpieza médica súper exhaustiva para que la infección no vuelva a penetrar bajo la encía.</> },
-          { icon: '', text: <><strong>Importante. </strong> Saltarse estos mantenimientos es la principal causa de recaída. La limpieza dental estándar anual no es suficiente para los pacientes que ya han perdido soporte óseo.</> }
+          { icon: '', text: <><strong>La revisión.</strong> Miramos con lupa que la infección permanezca inactiva, y que no se sigue comiendo el hueso midiendo tu encía.</> },
+          { icon: '', text: <><strong>La limpieza especial.</strong> Cada 4 o 6 meses toca hacer una limpieza médica (más a fondo que la normal). Es vital para mantener a raya a las bacterias que intentan volver a meterse debajo de la encía.</> },
+          { icon: '', text: <><strong>La regla de oro. </strong> Saltarse estas visitas es el motivo número uno por el que la piorrea vuelve a atacar. Si has perdido hueso, la limpieza anual normal ya no es suficiente para tu boca.</> }
         ],
         detailedPrices: [
           {
             icon: '',
-            /* ✨ */  title: [
-              { tipo: 'normal', texto: 'Revisión periódica' },
+            title: [
+              { tipo: 'normal', texto: 'Revisión de control de encías' },
               { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
             ],
             description: '',
@@ -3634,54 +3658,55 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
           },
           {
             icon: '',
-            /* ✨ */  title: [
-              { tipo: 'normal', texto: 'Limpieza periodontal' },
-              { tipo: 'oculto', texto: '. Precio: 65 €.' }
+            title: [
+              { tipo: 'normal', texto: 'Limpieza especial de mantenimiento' },
+              { tipo: 'oculto', texto: ' (Limpieza periodontal). Precio: 65 €.' }
             ],
-            description: '',
+            description: 'Limpieza periodontal profunda',
             price: "65 €"
           }
         ]
       },
       {
         id: "ferulizacion",
-        name: "Ferulización Periodontal",
+        name: "Sujetar los dientes que se mueven (Ferulización)",
         subTitle: (
           <div className="flex flex-col gap-2 mb-2">
-            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme mt-4">Firmeza estructural dental</span>
+            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme mt-4">Recuperar firmeza al masticar</span>
           </div>
         ),
         points: [
-          { icon: '', text: <><strong>El beneficio:</strong> Si tus dientes se mueven porque han perdido hueso, los unimos a otros firmes por la parte de atrás con una fibra invisible o alambre trenzado adherido con resina. Esto reparte las fuerzas masticatorias, dándoles firmeza para que puedas morder sin miedo a que se caigan.</> }
+          { icon: '', text: <><strong>El truco invisible:</strong> Si has perdido hueso y notas que algún diente 'baila', no te asustes. Lo que hacemos es "atarlos" por detrás a los dientes vecinos que están más fuertes, usando una fibra blanca invisible y un poco de resina.</> },
+          { icon: '', text: <><strong>El beneficio:</strong> Al unirlos todos en bloque, la fuerza al masticar se reparte y el diente flojo deja de moverse. Volveras a masticar sin miedo a que se caiga.</> }
         ],
         detailedPrices: [
           {
             icon: '',
-            /* ✨ */  title: [
+            title: [
               { tipo: 'oculto', texto: 'Ferulización periodontal ' },
-              { tipo: 'normal', texto: 'Por pieza dental' },
+              { tipo: 'normal', texto: 'Fijar un solo diente' },
               { tipo: 'oculto', texto: '. Precio: 18 €.' }
             ],
-            description: '',
+            description: 'Precio por pieza dental atada.',
             price: '18 €'
           },
           {
             icon: '',
             /* ✨ */  title: [
               { tipo: 'oculto', texto: 'Ferulización periodontal ' },
-              { tipo: 'normal', texto: 'Por sextante' },
+              { tipo: 'normal', texto: 'Fijar un tramo entero (6 dientes)' },
               { tipo: 'oculto', texto: '. Precio: 100 €.' }
             ],
-            description: 'Tramo completo de colmillo a colmillo.',
+            description: 'Tramo completo unido (por ejemplo de colmillo a colmillo).',
             price: "100 €"
           }
         ]
       }
     ],
     cta: {
-      title: "No des tu diente por perdido",
-      infoNote: "Incluso los dientes con una gran movilidad pueden salvarse durante años si logramos detener la infección bacteriana y los ferulizamos a tiempo.",
-      description: "Acude a uno de nuestros especialistas en periodoncia para valorar si tus dientes tienen salvación. Encuentra tu centro DKV más cercano:"
+      title: "Tus dientes aún tienen mucha vida",
+      infoNote: "Incluso los dientes que se mueven bastante pueden durarte muchísimos años si logramos frenar la infección a tiempo y los sujetamos a sus vecinos sanos.",
+      description: "Acude a uno de nuestros especialistas en periodoncia para ver si podemos salvar tus dientes. Encuentra tu centro más cercano:"
     }
   },
 
@@ -3689,40 +3714,40 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'periodoncia-micro-cirugia': {
     slug: 'periodoncia-micro-cirugia',
     activeSubNavId: 'micro-cirugia',
-    /* ✨ */ seoTitle: "Cirugía de Encías y Láser Periodontal | Periodoncia Avanzada",
-    /* ✨ */ seoDescription: "Elimina infecciones profundas y regenera el hueso perdido. Alta precisión y cicatrización rápida con precios definitivos en tu clínica más cercana.",
+    seoTitle: "Cirugía de Encías y Láser | Periodoncia salvando tus Dientes sin Dolor",
+    seoDescription: "Limpieza profunda de encías, injertos de hueso y cirugía láser sin sangrado. Recuperación rápida con precios claros. Encuentra tu centro dental más cercano.",
     breadcrumbs: [
       { label: "Tratamientos", href: "/#tratamientos" },
       { label: "Periodoncia", href: "/?modal=10#tratamientos" },
       { label: "Micro-Cirugía", href: "#" }
     ],
     hero: {
-      badgeText: "Intervenciones de precisión",
-      title: { dark: "MICRO-CIRUGÍA", normal: "DE ENCÍAS" },
+      badgeText: "Limpieza profunda y reconstrucción",
+      title: { dark: "CIRUGÍA AVANZADA", normal: "DE ENCÍAS" },
       description: [
-        "Tratamientos quirúrgicos especializados para modelar, sanar y acceder a las zonas más profundas de tus encías.",
-        "Descubre la vanguardia en periodoncia quirúrgica para erradicar las infecciones más rebeldes y mejorar la estética de tu sonrisa."
+        "A veces, el sarro y la infección están tan profundos que una limpieza normal no llega al fondo del problema. Si no actuamos, el diente acabará cayéndose.",
+        "Con estas intervenciones de precisión, abrimos un poquito para limpiar la raíz viéndola directamente, y si hace falta, rellenamos con hueso nuevo las zonas dañadas para salvar tu pieza."
       ]
     },
     rows: [
       {
         id: "colgajo",
-        name: "Cirugía periodontal a colgajo",
+        name: "Limpieza Quirúrgica Profunda (Cirugía a colgajo)",
         subTitle: (
           <div className="flex flex-col gap-2 mb-2">
-            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme mt-4">Sin tregua</span>
+            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme mt-4">Sin escondites para el sarro</span>
           </div>
         ),
         points: [
-          { icon: '', text: <><strong>¿Por qué hace falta?</strong> Si la infección es tan profunda que el curetaje tradicional no llega a limpiar el fondo de la bolsa periodontal.</> },
-          { icon: '', text: <>Bajo anestesia, apartamos suavemente la encía como si fuera la solapa de un sobre, limpiamos el hueso y las raíces directamente visualizando el daño, y volvemos a cerrar y suturar.</> }
+          { icon: '', text: <><strong>¿Por qué hace falta?</strong> Cuando la infección es tan profunda que las herramientas normales no llegan a limpiar el fondo de la bolsa de sarro.</> },
+          { icon: '', text: <><strong>¿Cómo se hace?</strong> Con la zona dormida, apartamos suavemente la encía (como si abriéramos la solapa de un sobre). Así vemos perfectamente el hueso y la raíz, los limpiamos a conciencia, y volvemos a cerrar con unos puntos muy finos.</> }
         ],
         detailedPrices: [
           {
             icon: '',
             /* ✨ */  title: [
               { tipo: 'oculto', texto: 'Cirugía periodontal a colgajo ' },
-              { tipo: 'normal', texto: 'Por pieza dental' },
+              { tipo: 'normal', texto: 'Limpiar un solo diente' },
               { tipo: 'oculto', texto: '. Precio: 26 €.' }
             ],
             description: '',
@@ -3732,98 +3757,98 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             icon: '',
             /* ✨ */  title: [
               { tipo: 'oculto', texto: 'Cirugía periodontal a colgajo ' },
-              { tipo: 'normal', texto: 'Por cuadrante completo' },
+              { tipo: 'normal', texto: 'Limpiar un cuadrante entero' },
               { tipo: 'oculto', texto: '. Precio: 100 €.' }
             ],
-            description: '',
+            description: '(Precio por cuadrante completo de la boca)',
             price: "100 €"
           }
         ]
       },
       {
         id: "epulis",
-        name: "Extirpación de épulis",
+        name: "Quitar bultitos en la encía (Épulis)",
         price: "40 €",
-        subTitle: "Extirpar quistes.",
+        subTitle: "Fuera roces y molestias.",
         points: [
-          { icon: '', text: <><strong>Intervención menor  </strong> para quitar un pequeño bulto benigno o quiste que se haya formado en la encía, generalmente a causa de una irritación crónica.</> }
+          { icon: '', text: <><strong>Intervención muy sencilla y rápida</strong> para quitar un pequeño bulto benigno o quiste que sale en la encía, casi siempre por el roce continuo de una dentadura postiza o un diente roto.</> }
         ]
       },
       {
         id: "regenerativo",
-        name: "Regenerando Hueso perdido",
-        subTitle: "Perfeccionando el soporte óseo.",
+        name: "Regenerar el hueso perdido (Injertos)",
+        subTitle: "Reconstruyendo el soporte de tu diente.",
         points: [
-          { icon: '', text: <><strong>¿Por qué hace falta?</strong> Se busca recuperar el soporte óseo perdido alrededor de los dientes debido a enfermedades o infecciones.</> },
-          { icon: '', text: <>De este modo se permite salvar piezas dentales que de otro modo se perderían.</> }
+          { icon: '', text: <><strong>¿Por qué hace falta?</strong> La infección bacteriana se ha comido parte del hueso que sujeta tu diente. Si no lo rellenamos, ese diente se soltará por no tener donde sujetarse.</> },
+          { icon: '', text: <>Añadimos materiales especiales para que tu organismo vuelva a fabricar hueso natural en esa zona.</> }
         ],
         detailedPrices: [
           {
             icon: '',
-            /* ✨ */  title: [
-              { tipo: 'normal', texto: 'Cirugía periodontal de injerto' },
+            title: [
+              { tipo: 'normal', texto: 'Cirugía periodontal de injerto de hueso' },
               { tipo: 'oculto', texto: '. Precio: 130 €.' }
             ],
-            description: 'Cuando tras limpiar la cirugía de colgajo, se detecta que se ha perdido hueso de soporte. Precio por cirugía.',
+            description: 'Intervención para preparar el hueco y colocar el material.',
             price: '130 €'
           },
           {
             icon: '',
-            /* ✨ */  title: [
-              { tipo: 'normal', texto: 'Membranas regenerativas' },
+            title: [
+              { tipo: 'normal', texto: 'Malla de sujeción (Membrana regenerativa)' },
               { tipo: 'oculto', texto: '. Precio: 150 €.' }
             ],
-            description: 'Junto con injertos para guiar la regeneración de nuevo hueso y encía y que el tejido blando no invada el espacio donde debe crecer el hueso.',
+            description: 'Malla que sujeta la encía para que no invada el hueco que ha de ocupar el nuevo hueso regenerado.',
             price: "150 €"
           },
           {
             icon: '',
-            /* ✨ */  title: [
-              { tipo: 'normal', texto: 'Injerto autólogo' },
+            title: [
+              { tipo: 'normal', texto: 'Hueso del propio paciente (Injerto autólogo)' },
               { tipo: 'oculto', texto: '. Precio: 190 €.' }
             ],
-            description: 'Hueso del propio paciente.',
+            description: 'La opción biológica más segura.',
             price: "190 €"
           },
           {
             icon: '',
-            /* ✨ */  title: [
-              { tipo: 'normal', texto: 'Otros materiales de injerto' },
+            title: [
+              { tipo: 'normal', texto: 'Hueso artificial (Otros materiales de injerto)' },
               { tipo: 'oculto', texto: '. Precio: 150 €.' }
             ],
-            description: 'Hidroxiapatita, hueso liofilizado, etc. Precio por unidad.',
+            description: 'Material de relleno estéril que tu cuerpo asimila. Precio por unidad.',
             price: "150 €"
           }
         ]
       },
       {
         id: "gingivectomia",
-        name: "Alargamiento de la corona",
+        name: "Recorte estético de la encía",
         subTitle: (
           <div className="flex flex-col gap-2 mb-2">
-            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme mt-4">Beneficio estético</span>
+            <span className="text-dkv-green font-bold text-lg uppercase tracking-[0.2em] font-fsme mt-4">Solución a la 'sonrisa de encía'</span>
           </div>
         ),
         points: [
-          { icon: '', text: <><strong>Recuperación de sonrisa.</strong> Una vez controlada la infección y el hueso, estos tratamientos se enfocan en recortar la encía con absoluta precisión si está demasiado inflamada (hiperplasia) o si "tapa" demasiado al diente, mejorando también enormemente la estética de tu sonrisa.</> }
+          { icon: '', text: <><strong>Dientes más grandes y bonitos.</strong> Si sientes que tus dientes son muy cortos, o que enseñas demasiada encía al sonreír (o está inflamada), recortamos milimétricamente los bordes de la encía para destapar el diente y mejorar tu sonrisa de forma espectacular.</> }
         ],
         detailedPrices: [
           {
             icon: '',
-            /* ✨ */  title: [
-              { tipo: 'normal', texto: 'Gingivectomía total' },
+            title: [
+              { tipo: 'normal', texto: 'Recorte de encía simple (Gingivectomía)' },
               { tipo: 'oculto', texto: '. Precio: 17 €.' }
             ],
-            description: 'Elimina exceso de encía para aumentar la longitud de los dientes sin necesidad de tocar hueso. Precio por cuadrante',
+            description: 'Quitar el exceso de encía sin tocar el hueso. Precio por zona (cuadrante).',
             price: '17 €'
           },
           {
             icon: '',
-            /* ✨ */  title: [
-              { tipo: 'normal', texto: 'Alargamiento coronario' },
+            title: [
+              { tipo: 'normal', texto: 'Alargamiento completo del diente' },
               { tipo: 'oculto', texto: '. Precio: 100 €.' }
             ],
-            description: 'Además de recortar exceso de encía implica remodelar el hueso para exponer más estructura dental.',
+            description: 'Además de recortar la encía, limamos un poquito el hueso para exponer más diente natural.',
             price: "100 €"
           }
         ]
@@ -3842,10 +3867,10 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
             <span className="text-[#D4AF37] font-bold text-sm md:text-base uppercase tracking-[0.2em] font-fsme">Upgrade Premium</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-lemon mb-4 uppercase tracking-wide leading-tight">
-            Cirugía Maxilar de Alta Complejidad
+            Cirugía Avanzada y Láser Dental
           </h2>
           <div className="inline-block bg-[#D4AF37]/20 border border-[#D4AF37]/40 px-4 py-1.5 rounded-full text-sm font-bold text-[#D4AF37] mb-8 uppercase tracking-widest">
-            Exclusivo en Centros Propios
+            Exclusivo en Centros Propios Especiales
           </div>
 
           <div className="space-y-6">
@@ -3853,14 +3878,14 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 mb-4 border-b border-white/10">
                 <div className="flex items-center gap-3">
                   <Zap className="w-6 h-6 text-[#D4AF37] shrink-0" />
-                  <h3 className="font-bold text-lg md:text-xl text-white">Suplemento láser de diodo en cirugía periodontal</h3>
+                  <h3 className="font-bold text-lg md:text-xl text-white">Operar con Luz Láser (Sin bisturí)</h3>
                 </div>
                 <span className="text-[#D4AF37] font-lemon font-bold text-2xl mt-4 md:mt-0 shrink-0">
                   55 € <span className="text-sm font-fsme text-white/70 block md:inline md:ml-1">/acto</span>
                 </span>
               </div>
               <p className="text-white/80 font-fsme leading-relaxed text-lg">
-                <strong>El beneficio:</strong> Usamos la luz del láser en lugar del bisturí tradicional. Esto cauteriza al instante, desinfecta a nivel microscópico, no sangra y <strong>elimina prácticamente el dolor postoperatorio.</strong>
+                <strong>El beneficio:</strong> Usamos la luz láser en lugar del clásico bisturí para cortar la encía. El láser cauteriza y desinfecta al instante, evitando el sangrado y <strong>eliminando prácticamente el dolor e hinchazon de los días posteriores.</strong>
               </p>
             </div>
 
@@ -3868,14 +3893,13 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 mb-4 border-b border-white/10">
                 <div className="flex items-center gap-3">
                   <Droplet className="w-6 h-6 text-[#D4AF37] shrink-0" />
-                  <h3 className="font-bold text-lg md:text-xl text-white">Terapia regenerativa con Plasma (PRGF)</h3>
+                  <h3 className="font-bold text-lg md:text-xl text-white">Cicatrización acelerada con tu propio plasma (PRGF)</h3>
                 </div>
                 <span className="text-[#D4AF37] font-lemon font-bold text-2xl mt-4 md:mt-0 shrink-0">
                   150 €
                 </span>
               </div>
-              <p className="text-white/80 font-fsme leading-relaxed text-lg">
-                Usamos las proteínas y factores de crecimiento de tu propia sangre (Plasma Rico en Plaquetas) para aplicarlas en la zona intervenida, logrando que tus encías y huesos <strong>cicatricen a velocidad récord</strong> y de forma totalmente natural.
+              <p className="text-white/80 font-fsme leading-relaxed text-lg">Sacamos una muestra de tu sangre para extraer tus propias plaquetas y defensas naturales. Las ponemos en la zona intervenida, logrando que tus encías <strong>cicatricen a velocidad récord</strong>, de forma 100% natural.
               </p>
             </div>
           </div>
@@ -3885,17 +3909,17 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 mb-4 border-b border-white/10">
                 <div className="flex items-center gap-3">
                   <MoveUp className="w-6 h-6 text-[#D4AF37] shrink-0" />
-                  <h3 className="font-bold text-lg md:text-xl text-white">Elevación de seno abierto</h3>
+                  <h3 className="font-bold text-lg md:text-xl text-white">Hacer sitio arriba (Elevación de seno abierto)</h3>
                 </div>
                 <span className="text-[#D4AF37] font-lemon font-bold text-2xl mt-4 md:mt-0 shrink-0">
                   310 €
                 </span>
               </div>
               <p className="text-white/80 font-fsme leading-relaxed text-lg mb-3">
-                <strong>¿Por qué se hace?</strong> Es una técnica avanzada para pacientes que han perdido las muelas superiores hace mucho tiempo y apenas les queda 1 o 2 milímetros de hueso debajo del pómulo.
+                <strong>¿Por qué se hace?</strong> Es para pacientes que perdieron las muelas de arriba hace años y ya no les queda altura de hueso para poner un implante (chocaría con la cavidad nasal).
               </p>
               <p className="text-white/80 font-fsme leading-relaxed text-lg">
-                <strong>La técnica:</strong> A través de una pequeña "ventana" lateral en la encía, elevamos la membrana respiratoria y creamos un gran lecho óseo capaz de soportar futuros implantes con total seguridad.
+                <strong>La técnica:</strong> Levantamos suavemente esa cavidad desde dentro y metemos hueso para crear unos cimientos fuertes y seguros para tus futuros implantes.
               </p>
             </div>
 
@@ -3903,14 +3927,14 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 mb-4 border-b border-white/10">
                 <div className="flex items-center gap-3">
                   <Stethoscope className="w-6 h-6 text-[#D4AF37] shrink-0" />
-                  <h3 className="font-bold text-lg md:text-xl text-white">Técnicas de Regeneración Tisular Guiada (RTG)</h3>
+                  <h3 className="font-bold text-lg md:text-xl text-white">Reconstrucción de huecos gigantes (Regeneración Tisular Guiada -RTG-)</h3>
                 </div>
                 <span className="text-[#D4AF37] font-lemon font-bold text-2xl mt-4 md:mt-0 shrink-0">
                   325 €
                 </span>
               </div>
               <p className="text-white/80 font-fsme leading-relaxed text-lg">
-                Técnicas de microcirugía guiada con membrana reabsorbible para reconstruir defectos óseos enormes con la máxima predictibilidad clínica, recuperando la anatomía original de tu maxilar.
+Usamos mallas especiales para tapar agujeros enormes en el hueso (ej causados por grandes quistes). Es la ingeniería más avanzada para recuperar la forma original de tu mandíbula.
               </p>
             </div>
           </div>
@@ -3918,9 +3942,9 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       </div>
     ),
     cta: {
-      title: "Mínima invasión, máxima eficacia",
-      infoNote: "La tecnología actual nos permite realizar intervenciones en las encías de forma rápida, segura y con un postoperatorio sumamente llevadero.",
-      description: "Acude a uno de nuestros especialistas para valorar la salud profunda de tus encías y la viabilidad de utilizar tecnología láser en tu tratamiento:"
+      title: "Tecnología para no sufrir",
+      infoNote: "La tecnología láser y el uso de plasma nos permiten realizar intervenciones en las encías que hace años eran un suplicio, de forma rápida, segura y con un postoperatorio fácil de llevar.",
+      description: "Acude a uno de nuestros especialistas para valorar la salud profunda de tus encías y descubrir cómo el láser puede hacerte la vida más fácil:"
     }
   },
 
@@ -3928,8 +3952,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
   'cirugia-extracciones': {
     slug: 'cirugia-extracciones',
     activeSubNavId: 'extracciones',
-    /* ✨ */ seoTitle: "Extracción de Muelas del Juicio y Cirugía Oral Compleja",
-    /* ✨ */ seoDescription: "Intervenciones seguras para dientes impactados o muy rotos. Máximo confort, recuperación rápida y un presupuesto claro. Pide valoración cerca de ti.",
+    seoTitle: "Extracción de Muelas del Juicio y Dientes Rotos",
+    seoDescription: "¿Te duele la muela del juicio o tienes una raíz hundida? Te lo solucionamos rápido y con precios súper claros. Pide cita en nuestros centros dentales.",
     breadcrumbs: [
       { label: "Tratamientos", href: "/#tratamientos" },
       { label: "Cirugía Avanzada", href: "/?modal=11#tratamientos" },
@@ -3939,87 +3963,84 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
       badgeText: "Muelas del juicio y más",
       title: { dark: "EXTRACCIONES", normal: "DENTALES" },
       description: [
-        "Intervenciones precisas y seguras para pacientes que necesitan extracciones muy complejas o dientes severamente dañados.",
-        "Técnicas avanzadas para minimizar el impacto, preservar el hueso sano y asegurar una recuperación rápida y sin complicaciones."
+        "A nadie le gusta que le saquen una muela, pero cuando un diente está destrozado o las muelas del juicio están empujando y generando dolor, lo importante es hacerlo rápido.",
+        "Nuestros dentistas usan técnicas avanzadas para quitar esa muela molesta en minutos, minimizar el impacto en tu encía y que te recuperes rápidamente y sin complicaciones."
       ]
     },
     rows: [
       {
         id: "muelas-juicio",
         name: "Extracciones",
-        subTitle: "Ultimo recurso.",
+        subTitle: "El mal trago pasa volando.",
         points: [
-          { icon: '', text: <><strong>Diagnóstico. </strong> Si el diente es extraíble, es una <strong>extracción simple</strong>. Si solo queda la raíz, son <strong>restos radiculares</strong>. Si es una muela del juicio erupcionada es <strong>simple</strong>, si está bajo la encía es <strong>submucosa</strong>, y si está dentro del hueso es <strong>cirugía</strong>.</> },
-          { icon: '', text: <><strong>Conservación. </strong> Antes de extraer un molar entero, se puede intentar una <strong>amputación radicular</strong> para salvar la raíz sana.</> },
-          { icon: '', text: <><strong>Regeneración. </strong>  Tras cualquier extracción compleja o de muela del juicio, es muy recomendable un <strong>tratamiento regenerativo alveolar</strong> para preservar el hueso para un futuro implante.</> }
+          { icon: '', text: <><strong>El diagnóstico es la clave.</strong> Si el diente se ve entero, sacarlo es facilísimo. Si está muy roto o es una muela del juicio que viene torcida dentro del hueso, lleva un poquito más de trabajo, pero con la anestesia adecuada no sentirás absolutamente nada.</> },
+          { icon: '', text: <><strong>Pensando en el mañana.</strong> Si tras quitar la muela tienes pensado ponerte un implante, te recomendamos "rellenar el hueco" en el mismo momento para que tu hueso no se encoja.</> }
         ],
         priceGroups: [
           {
-            title: "Extracción dental",
-            description: "(no muelas del juicio)",
+            title: "Extracción de dientes (que no son del juicio)",
+            description: "Por ej para muelas rotas, picadas o que se mueven demasiado.",
             items: [
               { icon: '',
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Extracción dental simple' },
+                title: [
+                  { tipo: 'normal', texto: 'Sacar un diente normal (Extracción simple)' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "Diente visible en la boca, generalmente sin necesidad de incisión en la encía.", price: "Incluido"},
+                description: "El diente está a la vista y sale entero sin necesidad de abrir la encía.", price: "Incluido"},
               { icon: '',
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Extracción dental compleja. Restos radiculares' },
+                title: [
+                  { tipo: 'normal', texto: 'Sacar raíces rotas (Restos radiculares)' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "Raíces dentales fracturadas o remanentes de dientes que han perdido su corono. A menudo requiere incisión en encía para acceder a la raíz.", price: "Incluido"},
+                description: "Cuando la muela se ha partido a ras de encía y solo queda el 'tocón' hundido. Si es necesario, abrimos un poquito la encía para sacarlo con cuidado.", price: "Incluido"},
               { icon: '',
-                /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Amputación radicular (hemisección)' },
+                title: [
+                  { tipo: 'normal', texto: 'Salvar media muela (Amputación radicular)' },
                   { tipo: 'oculto', texto: '. Incluido (gratuito en consulta para asociad@ a DKV DENTISALUD ELITE).' }
                 ],
-                description: "Eliminar una de las raíces de un molar multirradicular por estar dañada, conservando el resto del diente sano. Evita la extracción de todo el diente.", price: "Incluido"}
+                description: "Si una muela grande tiene varias raíces y solo una está mala, cortamos la mala y salvamos el resto del diente. Evita la extracción de toda la pieza.", price: "Incluido"}
             ]
           },
           {
-            title: "Muela del juicio",
-            description: "",
+            title: "Las Muelas del Juicio",
+            description: "Las muelas que salen tarde y casi siempre estorban.",
             items: [
               { icon: '',
                 /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Extracción Muela del juicio normal' },
+                  { tipo: 'normal', texto: 'Extracción de Muela del juicio que ya ha salido (normal)' },
                   { tipo: 'oculto', texto: '. Precio: 15 €.' }
                 ],
-                description: "La muela ha salido ya completamente de la encía. A veces se sutura.", price: "15 €" },
+                description: "La muela ha salido entera y se saca fácilmente.", price: "15 €" },
               { icon: '',
                 /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Extracción Muela del juicio submucosa' },
+                  { tipo: 'normal', texto: 'Extracción de Muela del juicio a medio salir (submucosa)' },
                   { tipo: 'oculto', texto: '. Precio: 15 €.' }
                 ],
-                description: "La muela no ha erupcionado del todo, está cubierta al menos en parte por la encía, pero no llega a estar retenida en el hueso.", price: "15 €"},
+                description: "La muela asoma, pero sigue medio tapada por la encía.", price: "15 €"},
               { icon: '',
                 /* ✨ */  title: [
-                  { tipo: 'normal', texto: 'Cirugía Muela del juicio' },
+                  { tipo: 'normal', texto: 'Muela del juicio escondida o torcida (cirugía)' },
                   { tipo: 'oculto', texto: '. Precio: 25 €.' }
                 ],
-                description: "Para muelas retenidas en el hueso o en posición horizontal. Con o sin quiste dentinario.", price: "25 €"}
+                description: "La muela está tumbada o atrapada dentro del hueso. Hay que hacer una pequeña intervención para liberarla y dar algún punto de sutura.", price: "25 €"}
             ]
           },
           {
-            title: "Tratamiento regenerativo Alveolar Post-Exodoncia",
-            description: "Tras una extracción es muy recomendable para evitar que el hueso alveolar (donde estaba la raíz) se pierda o reabsorba, preparando la zona para un futuro implante.",
+            title: "Rellenar el hueco para el futuro",
+            description: "Cuando sacas un diente, la encía y el hueso se hunden al quedarse vacíos. Si vas a querer ponerte un implante en el futuro, rellenamos el hueco en el mismo momento de la extracción con hueso artificial para que tu encía no se encoja y sea mucho más fácil poner el implante después.",
             items: [
               { icon: '',
-                /* ✨ */  title: [
-                  { tipo: 'oculto', texto: 'Tratamiento regenerativo alveolar post-exodoncia: ' },
-                  { tipo: 'normal', texto: 'Una pieza' },
-                  { tipo: 'oculto', texto: '. Precio: 80 €.' }
+                title: [
+                  { tipo: 'normal', texto: 'Rellenar el hueco de un diente' },
+                  { tipo: 'oculto', texto: 'Tratamiento regenerativo alveolar post-exodoncia: Una pieza. Precio: 80 €.' }
                 ],
-                description: "Tras sacar el diente, se coloca hueso artifical en el alveolo para favorecer la cicatrización ósea. Incluye materiales de relleno.", price: "80 €" },
+                description: "(Tratamiento regenerativo post-exodoncia). Incluye el material de relleno.", price: "80 €" },
               { icon: '',
-                /* ✨ */  title: [
-                  { tipo: 'oculto', texto: 'Tratamiento regenerativo alveolar post-exodoncia: ' },
-                  { tipo: 'normal', texto: 'Más de una pieza' },
-                  { tipo: 'oculto', texto: '. Precio: 150 €.' }
+                title: [
+                  { tipo: 'normal', texto: 'Rellenar el hueco de varios dientes' },
+                  { tipo: 'oculto', texto: 'Tratamiento regenerativo alveolar post-exodoncia: Más de una pieza. Precio: 150 €.' }
                 ],
-                description: "Similar al anterior pero aplicado a la extracción de dos o más dientes. Incluye materiales de relleno.", price: "150 €"}
+                description: "Si sacamos dos o más dientes seguidos. Incluye el material de relleno.", price: "150 €"}
             ]
           }
         ]
@@ -4027,8 +4048,8 @@ export const treatmentsRegistry: Record<string, TreatmentDefinition> = {
     ],
     cta: {
       title: "En manos expertas",
-      infoNote: "La cirugía oral avanzada requiere pericia y experiencia. Nuestros cirujanos maxilofaciales y odontólogos especialistas garantizan intervenciones limpias con el mejor postoperatorio posible.",
-      description: "Si te han diagnosticado la necesidad de extraer una muela del juicio o un caso complejo, busca tu clínica DKV más cercana y ponte en las mejores manos:"
+      infoNote: "Quitar una muela del juicio escondida requiere muchísima destreza para no tocar nervios importantes, hacerlo rápido y que al día siguiente tengas pocas molestias.",
+      description: "Si te está doliendo la muela del juicio o tienes un diente partido que no tiene salvación, busca nuestro centro dental más cercano y quítate el problema de encima hoy mismo:"
     }
   }
 
