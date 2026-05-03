@@ -1,17 +1,12 @@
-// components\dentists\DentistsContainer.tsx
-
+// components/dentists/DentistsContainer.tsx
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { ChevronUp, ChevronDown, Stethoscope, Loader2, X } from "lucide-react";
+import { ChevronUp, ChevronDown, Stethoscope } from "lucide-react";
 import { useNavigation, NavigationState } from "@/context/NavigationContext";
 import ClinicList from "@/components/dentists/ClinicList";
-import { motion, AnimatePresence } from "framer-motion";
-
-// 🌟 IMPORTACIÓN DEL SINGLETON PARA EVITAR MÚLTIPLES INSTANCIAS
-import { getSupabaseClient } from "@/lib/supabase-client";
 
 const DentalMapClient = dynamic<any>(() => import("@/components/map/DentalMapClient"), {
   ssr: false,
@@ -23,9 +18,6 @@ const formatter = new Intl.NumberFormat('es-ES');
 export default function DentistsContainer({ initialData }: { initialData: NavigationState }) {
   const { updateNavigation } = useNavigation();
   const router = useRouter();
-
-  // 🌟 Referencia local para el cliente Singleton
-  const supabase = getSupabaseClient();
 
   const [localMarks, setLocalMarks] = useState(initialData.mapa.marks);
   const [localClinics, setLocalClinics] = useState(initialData.lista.clinics);
@@ -73,24 +65,41 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
     setDynamicMapMode('FREE');
     setIsUpdatingMap(true);
     try {
-      // 🌟 Llamada RPC a la base de datos utilizando el cliente único
-      const { data, error } = await supabase.rpc('get_centros_en_bounds', {
-          sw_lat: bounds.getSouthWest().lat, sw_lng: bounds.getSouthWest().lng,
-          ne_lat: bounds.getNorthEast().lat, ne_lng: bounds.getNorthEast().lng,
-          center_lat: newCenter.lat, center_lng: newCenter.lng          
+      const response = await fetch('/api/clinics/bounds', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sw_lat: bounds.getSouthWest().lat,
+          sw_lng: bounds.getSouthWest().lng,
+          ne_lat: bounds.getNorthEast().lat,
+          ne_lng: bounds.getNorthEast().lng,
+          center_lat: newCenter.lat,
+          center_lng: newCenter.lng
+        }),
       });
-      if (error) throw error;
+
+      if (!response.ok) throw new Error('Error fetching map data');
+      
+      const data = await response.json();
+
       setLocalClinics(data || []);
       setLocalMarks((data || []).map((c: any) => ({
         name: c.name, lat: c.latitude, lng: c.longitude, slug: c.clinic_id, count: c.staff_count, tipo: 'centro'
       })));
-    } catch (e) { console.error(e); } finally { setIsUpdatingMap(false); }
-  }, [currentLevel, supabase]);
+    } catch (e) { 
+      console.error(e); 
+    } finally { 
+      setIsUpdatingMap(false); 
+    }
+  }, [currentLevel]);
 
   return (
     <div className="relative w-full h-[85dvh] min-h-[600px] md:h-[80vh] md:min-h-[750px] bg-white flex flex-col pt-4 pb-12 px-4 md:px-10 font-fsme">
       <div className="relative w-full h-full bg-white rounded-[40px] overflow-hidden border-8 border-white shadow-xl z-20">
         <div className="absolute inset-0 z-10">
+            {/* 🌟 AQUÍ ESTABA EL ERROR DE SINTAXIS */}
             <DentalMapClient 
                 marks={localMarks}
                 modo={dynamicMapMode}
