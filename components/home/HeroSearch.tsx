@@ -5,65 +5,97 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Search, MapPin, Navigation, Loader2 } from "lucide-react";
 
-/* ********** lo dejamos para que vaya cargando a su marcha y no penalice el dibujo inicial
-import { createClient } from "@supabase/supabase-js";
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
-********** */
-
 interface SearchItem {
   n: string;
   t: string;
   s: string;
 }
 
-// 🌟 CIUDADES EN MINÚSCULAS
 const PLACEHOLDER_CITIES = ["calatayud", "huesca", "almendralejo", "sitges", "eibar"];
+
+// 🌟 SINGLETONS GLOBALES
+// 1. Promesa de la petición de datos (evita peticiones duplicadas si se dispara Hover y Click a la vez)
+let dictionaryPromise: Promise<SearchItem[]> | null = null;
+// 2. Caché de los datos ya procesados (instantáneo al volver a la página)
+let cachedDictionary: SearchItem[] | null = null;
 
 export default function HeroSearch() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [dictionary, setDictionary] = useState<SearchItem[] | null>(null);
+  const [dictionary, setDictionary] = useState<SearchItem[] | null>(cachedDictionary); // Inicializa con caché si existe
   const [isLoading, setIsLoading] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
- 
+  
   const router = useRouter();
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  // Guardamos la instancia de supabase en una ref
-  const supabaseRef = useRef<any>(null);
-  // 🚀 ESTRATEGIA IDLE: Cargamos Supabase en segundo plano una vez que la web ya se ha pintado
-  useEffect(() => {
+  // 🚀 CORE WEB VITALS: Precarga del diccionario (Lazy + Idle + Hover) vía API Route
+  const prefetchDictionary = async () => {
+    // Si ya lo tenemos en memoria, no hacemos nada
+    if (cachedDictionary) {
+      if (!dictionary) setDictionary(cachedDictionary);
+      return;
+    }
 
-    // Si ya existe la conexión, no hacemos nada
-    if (supabaseRef.current) return;
+    // Si ya hay una petición en curso, no lanzamos otra
+    if (dictionaryPromise) {
+      const data = await dictionaryPromise;
+      if (!dictionary) setDictionary(data);
+      return;
+    }
 
-    // Usamos importación dinámica. Esto crea un chunk separado.
-    import("@supabase/supabase-js").then(({ createClient }) => {
+    setIsLoading(true);
 
-      // 2. Doble comprobación por seguridad
-      if (!supabaseRef.current) {
-         supabaseRef.current = createClient(
-           process.env.NEXT_PUBLIC_SUPABASE_URL!,
-           process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-         );
+    // Creamos la promesa global de búsqueda apuntando al Route Handler
+    dictionaryPromise = new Promise(async (resolve) => {
+      try {
+        const response = await fetch('/api/dictionary');
+        
+        if (!response.ok) {
+          throw new Error('Error al cargar el diccionario predictivo');
+        }
+
+        const data = await response.json();
+
+        cachedDictionary = data as SearchItem[];
+        setDictionary(cachedDictionary);
+        console.log("🔥 Diccionario precargado desde API con: ", cachedDictionary.length, " registros");
+        resolve(cachedDictionary);
+      } catch (error) {
+        console.error("Error precargando el diccionario:", error);
+        resolve([]);
+      } finally {
+        setIsLoading(false);
       }
-
     });
+
+    await dictionaryPromise;
+  };
+
+  // 🚀 ESTRATEGIA IDLE: Cargar cuando el navegador no tiene nada mejor que hacer
+  useEffect(() => {
+    // Evitamos ejecutarlo si ya tenemos los datos
+    if (cachedDictionary) return;
+
+    // Retrasamos la ejecución 2 segundos tras montar el componente para asegurar
+    // que Next.js ha terminado de hidratar y cargar imágenes críticas (LCP)
+    const idleTimeout = setTimeout(() => {
+      const requestIdle = (window as any).requestIdleCallback || ((cb: any) => setTimeout(cb, 1));
+      requestIdle(() => {
+        prefetchDictionary();
+      });
+    }, 2000);
+
+    return () => clearTimeout(idleTimeout);
   }, []);
 
-
-  // 🌟 ESTADOS PARA EL PLACEHOLDER ANIMADO
+  // 🌟 ANIMACIÓN DEL PLACEHOLDER (Se mantiene intacta)
   const [typedPlaceholder, setTypedPlaceholder] = useState("");
   const [isAnimatingUp, setIsAnimatingUp] = useState(false);
 
-  // 🌟 LÓGICA MAESTRA: TECLEO Y ANIMACIÓN HACIA ARRIBA
   useEffect(() => {
-    // Si el usuario hace clic o escribe, vaciamos todo para dejar el campo en blanco
     if (isOpen || query.length > 0 || isNavigating) {
       setTypedPlaceholder("");
       setIsAnimatingUp(false);
@@ -74,8 +106,6 @@ export default function HeroSearch() {
     let cityIdx = 0;
     let text = '';
     let timerId: NodeJS.Timeout;
-    
-    // Máquina de estados: TYPING -> PAUSED -> ANIMATING_UP -> WAITING_NEXT
     let state = 'TYPING'; 
 
     const loop = () => {
@@ -88,25 +118,23 @@ export default function HeroSearch() {
 
         if (text === fullText) {
           state = 'PAUSED';
-          timerId = setTimeout(loop, 2.500); // Pausa de 2.5s con la palabra completa
+          timerId = setTimeout(loop, 2500);
         } else {
-          timerId = setTimeout(loop, 120); // Velocidad de tecleo
+          timerId = setTimeout(loop, 120);
         }
       } 
       else if (state === 'PAUSED') {
-        // Disparamos la animación CSS hacia arriba
         setIsAnimatingUp(true);
         state = 'ANIMATING_UP';
-        timerId = setTimeout(loop, 300); // Esperamos a que acabe la transición CSS
+        timerId = setTimeout(loop, 300);
       } 
       else if (state === 'ANIMATING_UP') {
-        // Limpiamos el texto invisible y reseteamos la posición
         text = '';
         setTypedPlaceholder('');
         setIsAnimatingUp(false);
-        cityIdx = (cityIdx + 1) % PLACEHOLDER_CITIES.length; // Pasamos a la siguiente ciudad
+        cityIdx = (cityIdx + 1) % PLACEHOLDER_CITIES.length;
         state = 'WAITING_NEXT';
-        timerId = setTimeout(loop, 300); // Pausa con el campo vacío antes de empezar
+        timerId = setTimeout(loop, 300);
       } 
       else if (state === 'WAITING_NEXT') {
         state = 'TYPING';
@@ -122,62 +150,17 @@ export default function HeroSearch() {
     };
   }, [isOpen, query, isNavigating]);
   
-  const loadDictionary = async () => {
-    if (dictionary || isLoading || isNavigating) return; 
-    
-    setIsLoading(true);
-    try {
-      const { data, error } = await supabaseRef.current
-        .from('vw_search_predictive')
-        .select('*')
-        .limit(15000); // 🌟 AQUÍ ESTÁ LA MAGIA: Forzamos que traiga todo el diccionario
-
-      if (error) throw error;
-      setDictionary(data as SearchItem[]);
-    } catch (error) {
-      console.error("Error cargando el diccionario predictivo:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-
-  // 🌟 EL NUEVO FETCH ADAPTADO
-  const fetchDictionary = async () => {
-    // Si supabase aún no ha terminado de cargar en segundo plano, esperamos.
-    // Esto es casi inmediato, por lo que el usuario rara vez notará latencia.
-    if (!supabaseRef.current) return; 
-
-    setIsLoading(true);
-    try {
-      if (!supabaseRef.current) return; // Por si el usuario hace clic rapidísimo antes de que cargue de fondo
-      const { data, error } = await supabaseRef.current
-        .from("ciudades")
-        .select("n, t, s")
-        .order("n");
-
-      if (error) throw error;
-      setDictionary(data as SearchItem[]);
-    } catch (err) {
-      console.error("Error cargando diccionario:", err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-
-
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (isNavigating) return; 
     const value = e.target.value;
     setQuery(value);
 
+    // Usamos el estado local 'dictionary' que ya estará hidratado
     if (value.length >= 2 && dictionary) {
       const searchWord = value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       
       const filtered = dictionary.filter(item => {
-        const itemName = item.n.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const itemName = (item.n || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         return itemName.includes(searchWord);
       }).slice(0, 6);
 
@@ -202,7 +185,7 @@ export default function HeroSearch() {
     } else if (dictionary) {
       const searchWord = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       const match = dictionary.find(item => 
-        item.n.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(searchWord)
+        (item.n || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(searchWord)
       );
       
       if (match) {
@@ -237,16 +220,16 @@ export default function HeroSearch() {
         console.warn("Error de geolocalización:", error);
         switch(error.code) {
           case error.PERMISSION_DENIED:
-            alert("📍 No tenemos permiso para ver tu ubicación. Por favor, actívala en los Ajustes de tu móvil.");
+            alert("📍 No tenemos permiso para ver tu ubicación.");
             break;
           case error.POSITION_UNAVAILABLE:
-            alert("📍 La señal del GPS no está disponible en este momento. Inténtalo de nuevo en unos segundos.");
+            alert("📍 La señal del GPS no está disponible.");
             break;
           case error.TIMEOUT:
-            alert("📍 Hemos tardado demasiado en encontrarte. Asegúrate de tener buena cobertura.");
+            alert("📍 Tiempo de espera agotado.");
             break;
           default:
-            alert("📍 Ha ocurrido un error al intentar localizarte. Usa la búsqueda por texto.");
+            alert("📍 Error al localizarte.");
         }
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
@@ -264,7 +247,12 @@ export default function HeroSearch() {
   }, []);
 
   return (
-    <div ref={wrapperRef} className="relative w-full max-w-3xl mx-auto z-40 text-left">
+    // 🌟 1. AÑADIMOS onMouseEnter al wrapper principal para adelantarnos al clic
+    <div 
+      ref={wrapperRef} 
+      className="relative w-full max-w-3xl mx-auto z-40 text-left"
+      onMouseEnter={prefetchDictionary}
+    >
       
       <div 
         className={`bg-white rounded-full border p-2 flex items-center relative transition-all duration-300 
@@ -277,17 +265,14 @@ export default function HeroSearch() {
         onClick={() => {
           if (isNavigating) return; 
           setIsOpen(true);
-          loadDictionary();
+          prefetchDictionary(); // En caso de que no haya saltado el hover (ej. móviles)
           
           if (wrapperRef.current) {
             const headerElement = document.querySelector('header'); 
             const headerHeight = headerElement ? headerElement.offsetHeight : 90;
-            const breathingRoom = 24; 
-            const yOffset = -(headerHeight + breathingRoom); 
-            
+            const yOffset = -(headerHeight + 24); 
             const element = wrapperRef.current;
             const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
-            
             window.scrollTo({ top: y, behavior: 'smooth' });
           }
         }}
@@ -302,10 +287,7 @@ export default function HeroSearch() {
           )}
         </div>
 
-        {/* 🌟 CONTENEDOR RELATIVO PARA EL INPUT Y EL PLACEHOLDER FALSO */}
         <div className="relative flex-1 flex items-center h-full overflow-hidden">
-          
-          {/* PLACEHOLDER FALSO ANIMADO */}
           {!isOpen && query.length === 0 && !isNavigating && (
             <span 
               className={`absolute left-2 text-gray-600 italic text-lg pointer-events-none transition-all duration-300 ${
@@ -318,23 +300,26 @@ export default function HeroSearch() {
 
           <input
             type="text"
-            placeholder="" // Siempre vacío. Si hacen clic, queda inmaculado.
-            aria-label="Buscador de dentistas y centros dentales por localidad o provincia en España"
+            placeholder=""
+            aria-label="Buscador de dentistas y centros dentales"
             className={`w-full bg-transparent border-none focus:ring-0 px-2 py-3 text-lg outline-none transition-colors
               ${isNavigating ? 'text-gray-400 cursor-wait' : 'text-gray-700'}
             `}
             value={query}
             readOnly={isNavigating} 
             onChange={handleInputChange}
-            onFocus={() => {
-              if(!isNavigating) setIsOpen(true);
+            // 🌟 2. AÑADIMOS la carga al focus como medida redundante de seguridad
+            onFocus={() => { 
+              if(!isNavigating) {
+                setIsOpen(true);
+                prefetchDictionary(); 
+              }
             }}
             onKeyDown={(e) => e.key === 'Enter' && handleSearch()} 
           />
         </div>
       </div>
 
-      {/* MENÚ DESPLEGABLE */}
       {isOpen && !isNavigating && (
         <div className="absolute z-40 top-full left-0 right-0 mt-4 bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden divide-y divide-gray-50 py-2">
           
@@ -352,9 +337,7 @@ export default function HeroSearch() {
                 <span className="text-gray-800 font-bold text-lg block">
                   {isLocating ? "Buscando tu ubicación..." : "Búsqueda cercana"}
                 </span>
-                <span className="text-gray-500 text-sm block">
-                  {isLocating ? "Espera un momento, por favor" : "Encuentra dentistas cerca de tu ubicación actual"}
-                </span>
+                <span className="text-gray-500 text-sm block">Encuentra dentistas cerca de ti</span>
               </div>
             </div>
           )}
@@ -380,7 +363,7 @@ export default function HeroSearch() {
           {query.length > 1 && results.length === 0 && dictionary && (
             <div className="px-6 py-8 text-center text-gray-500">
               <span className="block font-medium text-lg mb-1">No hay resultados para "{query}"</span>
-              <span className="text-sm">Prueba con el nombre de otra localidad cercana.</span>
+              <span className="text-sm">Prueba con otra localidad.</span>
             </div>
           )}
         </div>
