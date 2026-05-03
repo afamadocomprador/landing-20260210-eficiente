@@ -1,4 +1,5 @@
 // app/dentistas/[[...slug]]/page.tsx
+// app/dentistas/[[...slug]]/page.tsx
 
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
@@ -343,7 +344,12 @@ export default async function DentistasPage({ params }: PageProps) {
       // Si el enlace apunta genéricamente a la raíz de dentistas, lo redirigimos a la sección del buscador
       //if (item.href === '/dentistas' || item.href === '/dentistas/' || item.href === '/') {
       // 👇 Eliminamos la comprobación de la raíz '/' para no pisar el inicio
-      if (item.href === '/dentistas' || item.href === '/dentistas/') {
+      //if (item.href === '/dentistas' || item.href === '/dentistas/') {
+      //  return { ...item, href: '/#dentistas' };
+      //}
+      // Excepción: Si el label es "España", no redirigir a la home. 
+      // Queremos que recargue o apunte a la página de nivel nacional.
+      if ((item.href === '/dentistas' || item.href === '/dentistas/') && item.label !== "España") {
         return { ...item, href: '/#dentistas' };
       }
       return item;
