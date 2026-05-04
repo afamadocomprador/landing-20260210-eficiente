@@ -1,4 +1,4 @@
-// componentes/map/DentalMapClient.tsx
+// components/map/DentalMapClient.tsx
 
 "use client";
 
@@ -19,11 +19,13 @@ export interface MapMarkerData {
 
 interface MapProps {
   marks?: MapMarkerData[]; initialCenter?: [number, number]; initialZoom?: number;
-  modo?: 'FIT_BOUNDS' | 'CENTER_ZOOM'; tileStyle?: string; geoJsonUrl?: string; 
+  modo?: 'FIT_BOUNDS' | 'CENTER_ZOOM' | 'FREE'; tileStyle?: string; geoJsonUrl?: string; 
   onMarkerClick?: (id: string) => void; activeBoundaryId?: string; 
   activeCenterExternal?: string | null; 
   onMapMove?: (center: { lat: number, lng: number }, zoom: number, bounds: L.LatLngBounds) => void;
   enableClustering?: boolean; onMapClick?: () => void;
+  landingLevel?: string;
+  isNearMeMode?: boolean;
 }
 
 function MapEvents({ onMapMove, onMapClick }: any) {
@@ -59,36 +61,77 @@ const createCustomIcon = (count: number, name: string, isActive: boolean = false
   return L.divIcon({ className: 'custom-pin', html, iconSize: [80, 75], iconAnchor: [40, 46] });
 };
 
-function MapController({ marks, modo, initialCenter, initialZoom, setMapInstance }: any) {
+function MapController({ marks, modo, initialCenter, initialZoom, setMapInstance, landingLevel }: any) {
   const map = useMap();
+  
   useEffect(() => {
     if (!map) return; 
     setMapInstance(map); 
     map.invalidateSize();
+
+    if (modo === 'FREE') return;
     
-    if (modo === 'CENTER_ZOOM' && initialCenter) { 
+    // 🌟 LÓGICA PARA NIVEL 07: Centrado estricto en el municipio pero ajustando zoom a las clínicas
+    if (landingLevel === '07' && initialCenter) {
+      const pts = marks.filter((m: any) => m.lat != null).map((m: any) => [m.lat, m.lng] as [number, number]);
+      
+      if (pts.length > 0) {
+        let maxDeltaLat = 0;
+        let maxDeltaLng = 0;
+
+        // Buscamos la clínica más lejana respecto al centroide del municipio
+        pts.forEach(([lat, lng]: [number, number]) => {
+          const dLat = Math.abs(lat - initialCenter[0]);
+          const dLng = Math.abs(lng - initialCenter[1]);
+          if (dLat > maxDeltaLat) maxDeltaLat = dLat;
+          if (dLng > maxDeltaLng) maxDeltaLng = dLng;
+        });
+
+        // Aplicamos un 10% extra de margen para que los iconos no se corten en los bordes
+        maxDeltaLat = maxDeltaLat === 0 ? 0.01 : maxDeltaLat * 1.1;
+        maxDeltaLng = maxDeltaLng === 0 ? 0.01 : maxDeltaLng * 1.1;
+
+        // Creamos una caja perfecta y simétrica para no perder el eje central
+        const symmetricBounds = L.latLngBounds(
+          [initialCenter[0] - maxDeltaLat, initialCenter[1] - maxDeltaLng],
+          [initialCenter[0] + maxDeltaLat, initialCenter[1] + maxDeltaLng]
+        );
+
+        map.flyToBounds(symmetricBounds, { 
+          paddingTopLeft: [15, 60], 
+          paddingBottomRight: [15, 120], 
+          maxZoom: 16, 
+          animate: true, 
+          duration: 1.5 
+        });
+      } else {
+        // Si no hay clínicas, zoom por defecto
+        map.flyTo(initialCenter, initialZoom || 13, { animate: true, duration: 1.5 });
+      }
+
+    } else if (modo === 'CENTER_ZOOM' && initialCenter) { 
       map.flyTo(initialCenter, initialZoom || 6, { animate: true, duration: 1.5 });
     } else if (modo === 'FIT_BOUNDS' && marks && marks.length > 0) {
       const pts = marks.filter((m: any) => m.lat != null).map((m: any) => [m.lat, m.lng] as [number, number]);
       if (pts.length > 0) {
-        // 🌟 Usamos SIEMPRE flyToBounds para asegurar que se vean todos los iconos.
-        // Al subir el maxZoom a 16, si solo hay 1 clínica (o están muy pegadas), 
-        // bajará hasta nivel de calle.
         map.flyToBounds(L.latLngBounds(pts), { 
           paddingTopLeft: [15, 60], 
           paddingBottomRight: [15, 120], 
-          maxZoom: 16, // <--- LA MAGIA ESTÁ AQUÍ
+          maxZoom: 16, 
           animate: true, 
           duration: 1.5 
         });
       }
     }
-  }, [marks, modo, initialCenter, initialZoom, map, setMapInstance]);
+  }, [marks, modo, initialCenter, initialZoom, map, setMapInstance, landingLevel]);
+  
   return null;
 }
 
 export default function DentalMapClient({ 
-  marks = [], initialCenter = [40.41, -3.70], initialZoom = 6, modo = 'CENTER_ZOOM', tileStyle = 'light_all', geoJsonUrl = "/maps/autonomous_regions.geojson", onMarkerClick, activeBoundaryId, activeCenterExternal, onMapMove, enableClustering = false, onMapClick
+  marks = [], initialCenter = [40.41, -3.70], initialZoom = 6, modo = 'CENTER_ZOOM', tileStyle = 'light_all', geoJsonUrl = "/maps/autonomous_regions.geojson", onMarkerClick, activeBoundaryId, activeCenterExternal, onMapMove, enableClustering = false, onMapClick,
+  landingLevel,
+  isNearMeMode = false
 }: MapProps) {
   
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null);
@@ -96,7 +139,6 @@ export default function DentalMapClient({
   const [geoJsonData, setGeoJsonData] = useState<any | null>(null);
   const router = useRouter();
 
-  // 🌟 LÓGICA MAPA MUDO: Nacional, CCAA y ahora también PROVINCIA (cleanId length 2)
   const cleanId = String(activeBoundaryId).replace(/\D/g, '');
   const isNational = !activeBoundaryId && geoJsonUrl?.includes('autonomous_regions');
   const isCCAA = String(activeBoundaryId).startsWith('CA-');
@@ -137,27 +179,40 @@ export default function DentalMapClient({
     });
   }, [activeBoundaryId, geoJsonData, marks, isCCAA, cleanId]);
 
+  const isLevel07 = landingLevel === '07';
+  const shouldDrawMask = activeFeatures.length > 0 && !isLevel07 && !isNearMeMode;
+
   return (
     <div style={{ height: "100%", width: "100%" }}>
       <MapContainer center={initialCenter} zoom={initialZoom} style={{ height: "100%", width: "100%" }} zoomControl={false}>
         <MapEvents onMapMove={onMapMove} onMapClick={onMapClick} />
-        <MapController marks={marks} modo={modo} initialCenter={initialCenter} initialZoom={initialZoom} setMapInstance={setMapInstance} />
+        
+        <MapController marks={marks} modo={modo} initialCenter={initialCenter} initialZoom={initialZoom} setMapInstance={setMapInstance} landingLevel={landingLevel} />
+        
         <ZoomControl position="topright" />
         <TileLayer url={tileUrl} attribution='&copy; CARTO' />
         
+        {shouldDrawMask && (
+          <Polygon 
+            key={`mask-${activeBoundaryId}-${activeFeatures.length}`} 
+            positions={createInvertedMask(activeFeatures)}
+            pathOptions={{ fillColor: 'white', fillOpacity: 0.85, stroke: false, interactive: false, fillRule: 'evenodd' }}
+          />
+        )}
+        
         {activeFeatures.length > 0 && (
-          <>
-            <Polygon 
-              key={`mask-${activeBoundaryId}-${activeFeatures.length}`} 
-              positions={createInvertedMask(activeFeatures)}
-              pathOptions={{ fillColor: 'white', fillOpacity: 0.85, stroke: false, interactive: false, fillRule: 'evenodd' }}
-            />
-            <GeoJSON 
-              key={`borders-${activeBoundaryId}`}
-              data={{ type: "FeatureCollection", features: activeFeatures } as any}
-              style={{ color: '#033B37', weight: 1.2, opacity: 0.3, fillColor: 'transparent', className: 'pointer-events-none' }}
-            />
-          </>
+          <GeoJSON 
+            key={`borders-${activeBoundaryId}-lvl${landingLevel}`}
+            data={{ type: "FeatureCollection", features: activeFeatures } as any}
+            style={{ 
+              color: isLevel07 ? '#849700' : '#033B37', // Verde DKV si es Nivel 07, si no azul oscuro DKV
+              weight: isLevel07 ? 2 : 1.2, 
+              opacity: isLevel07 ? 0.9 : 0.3, 
+              fillColor: isLevel07 ? '#849700' : 'transparent', // Relleno verde DKV claro
+              fillOpacity: isLevel07 ? 0.15 : 0, // 15% de transparencia en Nivel 07
+              className: 'pointer-events-none' 
+            }}
+          />
         )}
 
         {!activeBoundaryId && geoJsonData && (
