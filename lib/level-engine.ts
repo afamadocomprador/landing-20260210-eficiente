@@ -579,7 +579,11 @@ export async function getLevelData(
       totalDentistasHero: totalHeroDentistas || 0, 
       totalCentrosHero: totalHeroCentros || 0,
       // 🌟 Usamos el nuevo campo seo_h1 como fuente principal del título
-      h1: { dark: "Encuentra tu dentista en", normal: landing.seo_h1 || landing.breadcrumb }, 
+      //h1: { dark: "Encuentra tu dentista en", normal: landing.seo_h1 || landing.breadcrumb }, 
+      h1: { 
+          dark: landing.nivel === "07" ? "Encuentra tu dentista cerca de" : "Encuentra tu dentista en", 
+          normal: landing.seo_h1 || landing.breadcrumb 
+        },
       breadcrumbs: breadcrumbItems,
       enlacesSugeridos: [], 
       // 🌟 Mejoramos también la etiqueta <title> usando seo_h1
