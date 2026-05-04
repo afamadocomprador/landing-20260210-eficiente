@@ -150,6 +150,9 @@ export default function HeroSearch() {
     };
   }, [isOpen, query, isNavigating]);
   
+
+
+/* **********************************
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (isNavigating) return; 
     const value = e.target.value;
@@ -169,6 +172,50 @@ export default function HeroSearch() {
       setResults([]);
     }
   };
+********************************************************  */
+
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (isNavigating) return; 
+    const value = e.target.value;
+    setQuery(value);
+
+    if (value.length >= 2 && dictionary) {
+      const searchWord = value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      
+      const filtered = dictionary
+        .filter(item => {
+          const itemName = (item.n || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+          return itemName.includes(searchWord);
+        })
+        .sort((a, b) => {
+          const nameA = (a.n || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+          const nameB = (b.n || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+          // 1. Prioridad Máxima: Coincidencia exacta (ej. "Aragón" vs "Aragón")
+          if (nameA === searchWord) return -1;
+          if (nameB === searchWord) return 1;
+
+          // 2. Prioridad Alta: Empieza por la palabra (ej. "Zaragoza" antes que "Villarreal de Zaragoza")
+          const startsWithA = nameA.startsWith(searchWord);
+          const startsWithB = nameB.startsWith(searchWord);
+          if (startsWithA && !startsWithB) return -1;
+          if (!startsWithA && startsWithB) return 1;
+
+          // 3. Prioridad Normal: Si ambos coinciden igual, ordenar por longitud 
+          // (Las Comunidades y Provincias tienen nombres más cortos que los municipios compuestos)
+          return nameA.length - nameB.length;
+        })
+        .slice(0, 6); // ¡Ahora sí cortamos, teniendo a los mejores candidatos arriba!
+
+      setResults(filtered);
+    } else {
+      setResults([]);
+    }
+  };
+
+
+
 
   const handleSelect = (slug: string, name: string) => {
     setQuery(name);
