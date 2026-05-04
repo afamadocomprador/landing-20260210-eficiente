@@ -11,9 +11,11 @@ import { getDatosHubs } from '@/services/getHubs';
 import { getDatosCentrosDeHub } from '@/services/getCentrosDeHubs';
 import { getBreadcrumbTrail } from '@/services/getBreadcrumb';
 import { SITE_CONFIG } from '@/constants/config'; 
-
 import { cookies } from "next/headers";
 import { getRelatedLinks, RelatedLinksData } from '@/services/getEnlaces';
+
+// 🌟 IMPORTACIÓN DEL NUEVO SERVICIO PARA EL NIVEL 07
+import { getCentrosCercanosBySlug } from '@/services/getCentrosByLanding';
 
 export interface ExtendedNavigationState extends NavigationState {
     relatedLinks: RelatedLinksData;
@@ -206,7 +208,15 @@ export async function getLevelData(
      listado = datos.listado;
      totalHeroDentistas = stats.total_comarca_dentistas;
      totalHeroCentros = stats.total_comarca_centros;
-  } 
+  }
+  // 🌟 NUEVO BLOQUE: Implementación Nivel 07
+  else if (landing.nivel === "07") {
+     const datos = await getCentrosCercanosBySlug(supabase, landing.slug);
+     stats = datos.stats;
+     listado = datos.listado;
+     totalHeroDentistas = stats.total_dentistas;
+     totalHeroCentros = stats.total_clinicas;
+  }
 
   // 3. MARCADORES MAPA
   let markers: any[] = [];
@@ -309,21 +319,42 @@ export async function getLevelData(
              tipo: 'comarca' 
        }));
   }
+  // 🌟 NUEVO BLOQUE: Marcadores Nivel 07
+  else if (landing.nivel === "07") {
+       markers = (listado || [])
+         .filter(m => m.latitude != null && m.longitude != null)
+         .map(m => ({
+            name: m.name, 
+            lat: m.latitude, 
+            lng: m.longitude, 
+            slug: m.clinic_id, 
+            count: m.staff_count, 
+            tipo: 'centro',
+            distancia_km: m.distancia_km
+       }));
+  }
 
   // 4. BREADCRUMBS
   const breadcrumbItems = await getBreadcrumbTrail(supabase, landing.nivel, landing.codigo_ine, landing.subcodigo_ine);
 
   // 5. CLÍNICAS (Listado inferior)
-  let queryClinicsBuilder = supabase.from("view_clinics_con_dentistas").select("*");
-  switch (landing.nivel) {
-    case "01": case "02": queryClinicsBuilder = queryClinicsBuilder.eq('is_propio', true); break;
-    case "03": queryClinicsBuilder = queryClinicsBuilder.eq('ine_province_code', landing.codigo_ine); break;
-    case "04": queryClinicsBuilder = queryClinicsBuilder.eq('ine_city_code', landing.codigo_ine); break;
-    case "05": queryClinicsBuilder = queryClinicsBuilder.eq('codigo_hub', landing.subcodigo_ine); break;
-    case "06": queryClinicsBuilder = queryClinicsBuilder.eq('ine_comarca_code', landing.codigo_ine); break;
-  }
+  // 🌟 REESTRUCTURACIÓN: Evitamos re-consultar a DB si ya tenemos las clínicas para el Nivel 07
+  let listClinics: any[] = [];
   
-  const { data: listClinics } = await queryClinicsBuilder;
+  if (landing.nivel === "07") {
+    listClinics = listado;
+  } else {
+    let queryClinicsBuilder = supabase.from("view_clinics_con_dentistas").select("*");
+    switch (landing.nivel) {
+      case "01": case "02": queryClinicsBuilder = queryClinicsBuilder.eq('is_propio', true); break;
+      case "03": queryClinicsBuilder = queryClinicsBuilder.eq('ine_province_code', landing.codigo_ine); break;
+      case "04": queryClinicsBuilder = queryClinicsBuilder.eq('ine_city_code', landing.codigo_ine); break;
+      case "05": queryClinicsBuilder = queryClinicsBuilder.eq('codigo_hub', landing.subcodigo_ine); break;
+      case "06": queryClinicsBuilder = queryClinicsBuilder.eq('ine_comarca_code', landing.codigo_ine); break;
+    }
+    const { data } = await queryClinicsBuilder;
+    listClinics = data || [];
+  }
   
   // 6. ENLACES RELACIONADOS
   const relatedLinks = await getRelatedLinks(supabase, {
@@ -529,11 +560,14 @@ export async function getLevelData(
     codigo_ine: landing.codigo_ine,
     mapa: {
       marks: markers,
-      modo: landing.nivel === "01" ? 'CENTER_ZOOM' : 'FIT_BOUNDS',
+      //modo: landing.nivel === "01" ? 'CENTER_ZOOM' : 'FIT_BOUNDS',
+      modo: ["01", "07"].includes(landing.nivel) ? 'CENTER_ZOOM' : 'FIT_BOUNDS',
       centro: [landing.latitud_gps || 40.41, landing.longitud_gps || -3.70],
-      zoom: landing.nivel === "01" ? 6 : 10,
+      // 🌟 Ajuste específico de zoom inicial para la vista detallada de Nivel 07
+      zoom: landing.nivel === "01" ? 6 : (landing.nivel === "07" ? 14 : 10),
+      // 🌟 Ajuste visual del mapa para Nivel 07
       tileStyle: ["01", "02", "03"].includes(landing.nivel) ? "light_nolabels" : 
-                 (["04", "05", "06"].includes(landing.nivel) ? "osm" : "light_all")
+                 (["04", "05", "06", "07"].includes(landing.nivel) ? "osm" : "light_all")
     },
     lista: {
       totalDentistas: totalHeroDentistas || 0,
@@ -545,17 +579,13 @@ export async function getLevelData(
       totalDentistasHero: totalHeroDentistas || 0, 
       totalCentrosHero: totalHeroCentros || 0,
       // 🌟 Usamos el nuevo campo seo_h1 como fuente principal del título
-      //h1: { dark: "Encuentra tu dentista en", normal: landing.breadcrumb },
       h1: { dark: "Encuentra tu dentista en", normal: landing.seo_h1 || landing.breadcrumb }, 
       breadcrumbs: breadcrumbItems,
       enlacesSugeridos: [], 
       // 🌟 Mejoramos también la etiqueta <title> usando seo_h1
-      //title: `${landing.nombre_ine} | DKV Dentisalud`,
       title: `${landing.seo_h1 || landing.breadcrumb} | DKV Dentisalud Elite`,
-      //description: "",
-      // 🌟 Aquí conectas el nuevo campo de la base de datos
+      // 🌟 Aquí conectas el nuevo campo de la base de datos[cite: 1]
       description: landing.seo_txt_contextual || "",
-      // 👈 ¡AÑADE ESTA LÍNEA AQUÍ!
       nivel: landing.nivel, 
       schemaData: schemaJsonLd 
     },
