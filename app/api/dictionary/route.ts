@@ -21,7 +21,7 @@ export async function GET() {
     const { data, error } = await supabase
       .from('vw_search_predictive')
       .select('*')
-      .limit(3000); // Mismo límite que tenías
+      .limit(9000); // Mismo límite que tenías
 
     if (error) {
       console.error('Error fetching dictionary:', error);
