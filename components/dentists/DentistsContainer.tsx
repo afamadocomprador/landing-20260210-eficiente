@@ -1,4 +1,5 @@
 // components/dentists/DentistsContainer.tsx
+
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
@@ -18,6 +19,19 @@ const formatter = new Intl.NumberFormat('es-ES');
 export default function DentistsContainer({ initialData }: { initialData: NavigationState }) {
   const { updateNavigation } = useNavigation();
   const router = useRouter();
+
+// ------------------------------------------------------------------
+  // 🕵️‍♂️ RASTROS DE CONSOLA PARA DEPURACIÓN
+  // ------------------------------------------------------------------
+  console.log("🚀 [DentistsContainer] MONTAJE INICIAL");
+  console.log("📦 [Datos] Nivel Final:", initialData.nivelFinal);
+  console.log("📦 [Datos] Código INE:", initialData.codigo_ine);
+  console.log("📦 [Datos] Estado inicial lista:", initialData.lista?.estadoInicial);
+  console.log("📦 [Datos] Clínicas totales recibidas:", initialData.lista?.clinics?.length);
+  console.log("📦 [Datos] Modo de mapa:", initialData.mapa?.modo);
+  console.log("📦 [Datos] Centro de mapa:", initialData.mapa?.centro);
+  // ------------------------------------------------------------------
+
 
   const [localMarks, setLocalMarks] = useState(initialData.mapa.marks);
   const [localClinics, setLocalClinics] = useState(initialData.lista.clinics);
@@ -61,7 +75,9 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
   const [selectedFromList, setSelectedFromList] = useState<string | null>(null);
 
   const handleMapMove = useCallback(async (newCenter: { lat: number, lng: number }, zoom: number, bounds: any) => {
-    if (currentLevel !== "00") return;
+    // Permitimos la recarga dinámica en el nivel 00 (Cerca de mí) y en el 07 (Municipio base)
+    if (currentLevel !== "00" && currentLevel !== "07") return;
+
     setDynamicMapMode('FREE');
     setIsUpdatingMap(true);
     try {
@@ -99,7 +115,6 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
     <div className="relative w-full h-[85dvh] min-h-[600px] md:h-[80vh] md:min-h-[750px] bg-white flex flex-col pt-4 pb-12 px-4 md:px-10 font-fsme">
       <div className="relative w-full h-full bg-white rounded-[40px] overflow-hidden border-8 border-white shadow-xl z-20">
         <div className="absolute inset-0 z-10">
-            {/* 🌟 AQUÍ ESTABA EL ERROR DE SINTAXIS */}
             <DentalMapClient 
                 marks={localMarks}
                 modo={dynamicMapMode}
@@ -113,6 +128,8 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
                 onMapMove={handleMapMove}
                 enableClustering={isNational}
                 onMapClick={() => { setSelectedClinicId(null); setSelectedFromList(null); }}
+                landingLevel={currentLevel}
+                isNearMeMode={currentLevel === "00"}
             /> 
         </div>
 
