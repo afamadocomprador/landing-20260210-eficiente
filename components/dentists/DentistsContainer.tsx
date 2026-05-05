@@ -20,19 +20,6 @@ export default function DentistsContainer({ initialData }: { initialData: Naviga
   const { updateNavigation } = useNavigation();
   const router = useRouter();
 
-// ------------------------------------------------------------------
-  // 🕵️‍♂️ RASTROS DE CONSOLA PARA DEPURACIÓN
-  // ------------------------------------------------------------------
-  console.log("🚀 [DentistsContainer] MONTAJE INICIAL");
-  console.log("📦 [Datos] Nivel Final:", initialData.nivelFinal);
-  console.log("📦 [Datos] Código INE:", initialData.codigo_ine);
-  console.log("📦 [Datos] Estado inicial lista:", initialData.lista?.estadoInicial);
-  console.log("📦 [Datos] Clínicas totales recibidas:", initialData.lista?.clinics?.length);
-  console.log("📦 [Datos] Modo de mapa:", initialData.mapa?.modo);
-  console.log("📦 [Datos] Centro de mapa:", initialData.mapa?.centro);
-  // ------------------------------------------------------------------
-
-
   const [localMarks, setLocalMarks] = useState(initialData.mapa.marks);
   const [localClinics, setLocalClinics] = useState(initialData.lista.clinics);
   const [isUpdatingMap, setIsUpdatingMap] = useState(false); 
