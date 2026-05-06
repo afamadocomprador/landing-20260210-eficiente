@@ -1,5 +1,4 @@
 // app/dentistas/[[...slug]]/page.tsx
-// app/dentistas/[[...slug]]/page.tsx
 
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
@@ -319,25 +318,40 @@ export default async function DentistasPage({ params }: PageProps) {
     const isSpain = locationName.toLowerCase() === 'españa';
     const showPlusPrefix = totalDentistas > 300;
 
-    // 🌟 LÓGICA POR LONGITUD DE TEXTO
-    const rawDescription = navigationData.seo.description || "";
-    const isLongDescription = rawDescription.length >= 100;
+// 🌟 LÓGICA POR LONGITUD DE TEXTO Y NIVELES
+    const rawDescription = navigationData.seo.description || "";
+    const rawDescriptionBottom = navigationData.seo.descriptionBottom || ""; // 👈 NUEVO CAMPO
+    const pageLevel = navigationData.level || ""; // 👈 NECESITAMOS EL NIVEL
 
-    let htmlContentZone1 = null;
-    let htmlContentZone2 = null;
+    const isLongDescription = rawDescription.length >= 100 || rawDescriptionBottom.length > 0;
 
-    // Si la descripción es larga, preparamos el HTML y gestionamos el SPLIT
-    if (isLongDescription) {
-      const processedHtml = rawDescription
-        .replace(/{totalCentros}/g, formattedClinics)
-        .replace(/{totalDentistas}/g, formattedProfessionals)
-        .replace(/{locationName}/g, locationName);
-        
-      // Partimos el texto usando la etiqueta de separación
-      const parts = processedHtml.split('---SPLIT---');
-      htmlContentZone1 = parts[0] || null;
-      htmlContentZone2 = parts.length > 1 ? parts[1] : null;
-    }
+    let htmlContentZone1 = null;
+    let htmlContentZone2 = null;
+
+    if (isLongDescription) {
+      // Procesamos las variables dinámicas del texto superior
+      const processedHtmlTop = rawDescription
+        .replace(/{totalCentros}/g, formattedClinics)
+        .replace(/{totalDentistas}/g, formattedProfessionals)
+        .replace(/{locationName}/g, locationName);
+
+      if (pageLevel === '07' || rawDescriptionBottom) {
+        // --- NUEVA LÓGICA PARA NIVEL 07 (Dos columnas separadas) ---
+        htmlContentZone1 = processedHtmlTop;
+        
+        // Procesamos también el texto inferior por si lleva variables
+        htmlContentZone2 = rawDescriptionBottom
+          .replace(/{totalCentros}/g, formattedClinics)
+          .replace(/{totalDentistas}/g, formattedProfessionals)
+          .replace(/{locationName}/g, locationName);
+      } else {
+        // --- LÓGICA ANTIGUA (Mantenemos el SPLIT para el Nivel 04 y otros) ---
+        const parts = processedHtmlTop.split('---SPLIT---');
+        htmlContentZone1 = parts[0] || null;
+        htmlContentZone2 = parts.length > 1 ? parts[1] : null;
+      }
+    }
+
 
     // ⚡️ MAGIA DEL BREADCRUMB: Modificamos solo la parte visual para que el ancla funcione
     const visualBreadcrumbs = (navigationData.seo.breadcrumbs || []).map((item: any) => {
@@ -454,4 +468,3 @@ export default async function DentistasPage({ params }: PageProps) {
     return notFound();
   }
 }
-
