@@ -321,7 +321,8 @@ export default async function DentistasPage({ params }: PageProps) {
 // 🌟 LÓGICA POR LONGITUD DE TEXTO Y NIVELES
     const rawDescription = navigationData.seo.description || "";
     const rawDescriptionBottom = navigationData.seo.descriptionBottom || ""; // 👈 NUEVO CAMPO
-    const pageLevel = navigationData.level || ""; // 👈 NECESITAMOS EL NIVEL
+    //const pageLevel = navigationData.level || ""; // 👈 NECESITAMOS EL NIVEL
+    const pageLevel = navigationData.seo.nivel || navigationData.nivelFinal || ""; // 👈 AHORA SÍ APUNTA AL LUGAR CORRECTO
 
     const isLongDescription = rawDescription.length >= 100 || rawDescriptionBottom.length > 0;
 
