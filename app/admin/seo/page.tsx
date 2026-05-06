@@ -51,7 +51,7 @@ export default async function SeoDashboardPage() {
 
         {/* 4. SECCIÓN: TABLA HISTÓRICA */}
         <section>
-          <SeoTable audits={audits || []} />
+          <SeoTable initialData={audits || []} />
         </section>
 
       </div>
