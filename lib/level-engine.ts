@@ -590,6 +590,7 @@ export async function getLevelData(
       title: `${landing.seo_h1 || landing.breadcrumb} | DKV Dentisalud Elite`,
       // 🌟 Aquí conectas el nuevo campo de la base de datos[cite: 1]
       description: landing.seo_txt_contextual || "",
+      descriptionBottom: landing.seo_txt_contextual_bottom || "", // 👈 AÑADIMOS EL NUEVO CAMPO AQUÍ
       nivel: landing.nivel, 
       schemaData: schemaJsonLd 
     },
