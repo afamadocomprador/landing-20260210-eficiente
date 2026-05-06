@@ -4,7 +4,8 @@ import { createClient } from '@supabase/supabase-js';
 import SeoTable from './SeoTable';
 import SeoDoctor from '@/components/seo/SeoDoctor'; 
 import GlobalScanner from './GlobalScanner'; 
-import SeoAnalytics from './SeoAnalytics'; // <-- Importamos nuestra nueva analítica
+import SeoAnalytics from './SeoAnalytics';
+import SeoBatchProcessor from './SeoBatchProcessor'; // <-- Importamos nuestro nuevo componente
 
 export const revalidate = 0;
 
@@ -33,19 +34,24 @@ export default async function SeoDashboardPage() {
           <SeoDoctor />
         </section>
 
+        {/* NUEVA SECCIÓN: INYECCIÓN BATCH DE SEO */}
+        <section>
+          <SeoBatchProcessor />
+        </section>
+
         {/* 2. SECCIÓN: AUDITORÍA GLOBAL */}
         <section>
           <GlobalScanner />
         </section>
 
-        {/* 3. SECCIÓN: ANALÍTICA CRUZADA (¡El paso 3!) */}
+        {/* 3. SECCIÓN: ANALÍTICA CRUZADA */}
         <section>
           <SeoAnalytics audits={audits || []} />
         </section>
 
         {/* 4. SECCIÓN: TABLA HISTÓRICA */}
         <section>
-          <SeoTable initialData={audits || []} />
+          <SeoTable audits={audits || []} />
         </section>
 
       </div>
