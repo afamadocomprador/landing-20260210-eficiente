@@ -1,5 +1,6 @@
 // app/api/admin/check-geodata/route.ts
 
+
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import * as turf from '@turf/turf';
@@ -19,7 +20,6 @@ export async function GET(request: Request) {
     const limit = Number(searchParams.get('limit')) || 50;
     const offset = Number(searchParams.get('offset')) || 0;
 
-    // 1. Obtener clínicas (Añadimos zip_code y address)
     const { data: clinics, error: clinicsError } = await supabase
       .from('view_clinics')
       .select('clinic_id, name, latitude, longitude, city, ine_city_code, address, zip_code')
@@ -27,7 +27,6 @@ export async function GET(request: Request) {
 
     if (clinicsError) throw clinicsError;
 
-    // 2. Cargar el GeoJSON (Para la validación de GPS)
     const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
     const host = process.env.VERCEL_URL || 'localhost:3000';
     const geoResponse = await fetch(`${protocol}://${host}/maps/municipalities.json`, { cache: 'no-store' });
@@ -46,11 +45,8 @@ export async function GET(request: Request) {
     }
 
     const report = [];
-
-    // Función auxiliar para normalizar textos (evitar falsos positivos por tildes/mayúsculas)
     const normalize = (str: string) => str?.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim() || "";
 
-    // 3. Procesar clínicas una a una con el DOBLE CHECK
     for (const clinic of clinics) {
       let geoStatus = "OK";
       let geoDetectedName = "Coincide";
@@ -62,7 +58,6 @@ export async function GET(request: Request) {
       const dbCityNorm = normalize(clinic.city);
       const dbIne = String(clinic.ine_city_code || '').padStart(5, '0');
 
-      // --- TEST 1: VALIDACIÓN GEOGRÁFICA (GPS vs Polígono) ---
       const latClean = String(clinic.latitude || '').replace(',', '.').trim();
       const lngClean = String(clinic.longitude || '').replace(',', '.').trim();
       const lat = Number(latClean);
@@ -85,13 +80,15 @@ export async function GET(request: Request) {
         }
 
         if (strictMuni && strictMuni.ine !== dbIne) {
-          // Chequeo de tolerancia (500m)
           let withinTolerance = false;
           const expectedFeature = features.find(f => String(f.id || f.properties?.id || f.properties?.cod_ine || f.properties?.COD_INE).padStart(5, '0') === dbIne);
           
           if (expectedFeature) {
             const bufferedPoint = turf.buffer(pt, MARGEN_TOLERANCIA_KM, { units: 'kilometers' });
-            if (turf.booleanIntersects(bufferedPoint, expectedFeature)) withinTolerance = true;
+            // 🌟 CORRECCIÓN TYPESCRIPT: Aseguramos que bufferedPoint existe antes de usarlo
+            if (bufferedPoint && turf.booleanIntersects(bufferedPoint, expectedFeature)) {
+               withinTolerance = true;
+            }
           }
 
           if (!withinTolerance) {
@@ -107,9 +104,7 @@ export async function GET(request: Request) {
         geoDetectedName = "N/A";
       }
 
-      // --- TEST 2: VALIDACIÓN POSTAL (Dirección vs Google Geocoding) ---
       if (GOOGLE_API_KEY) {
-        // Usamos zip_code en lugar de postal_code
         const fullAddress = `${clinic.address || ''}, ${clinic.zip_code || ''} ${clinic.city || ''}, España`.trim();
         
         if (fullAddress.length > 10) {
@@ -142,7 +137,6 @@ export async function GET(request: Request) {
         addressDetectedName = "Sin clave de Google";
       }
 
-      // 4. Agregamos al reporte SOLO si hay algún tipo de error
       if (geoStatus !== "OK" || addressStatus !== "OK") {
         report.push({
           clinic_id: clinic.clinic_id,
@@ -160,7 +154,6 @@ export async function GET(request: Request) {
       }
     }
 
-    // 5. Renderizado HTML
     const html = `
     <!DOCTYPE html>
     <html lang="es">
