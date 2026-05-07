@@ -14,7 +14,7 @@ import { SITE_CONFIG } from '@/constants/config';
 import { cookies } from "next/headers";
 import { getRelatedLinks, RelatedLinksData } from '@/services/getEnlaces';
 
-// 🌟 IMPORTACIÓN DEL NUEVO SERVICIO PARA EL NIVEL 07
+// 🌟 IMPORTACIÓN DEL SERVICIO (Mantenemos la importación por si se usa en otros procesos, aunque priorizamos el RPC para el Nivel 07)
 import { getCentrosCercanosBySlug } from '@/services/getCentrosByLanding';
 
 export interface ExtendedNavigationState extends NavigationState {
@@ -26,7 +26,7 @@ export async function getLevelData(
   nivelInicial: string,
   nivelFinal: string,
   slug: string | "",
-  sharedClinicId: string | null = null // 🌟 NUEVO PARÁMETRO
+  sharedClinicId: string | null = null 
 ): Promise<ExtendedNavigationState> {
 
   // ====================================================================
@@ -38,7 +38,6 @@ export async function getLevelData(
     let lat: number;
     let lng: number;
 
-    // Si nos pasan un ID de clínica compartida, usamos SUS coordenadas como centro del mundo
     if (sharedClinicId) {
        const { data: clinicData, error: clinicError } = await supabase
          .from('view_clinics')
@@ -47,13 +46,12 @@ export async function getLevelData(
          .single();
 
        if (clinicError || !clinicData) {
-         throw new Error("NO_COORDS"); // Fallback si la clínica no existe
+         throw new Error("NO_COORDS"); 
        }
        lat = clinicData.latitude;
        lng = clinicData.longitude;
        console.log(`[DEBUG ENGINE] Usando coordenadas de clínica compartida: ${lat}, ${lng}`);
     } else {
-       // Si no, usamos las coordenadas del usuario
        const cookieStore = cookies();
        const latStr = cookieStore.get("user_lat")?.value;
        const lngStr = cookieStore.get("user_lng")?.value;
@@ -66,16 +64,14 @@ export async function getLevelData(
        lng = parseFloat(lngStr);
     }
 
-    // Llamamos a tu nueva función PostGIS con las coordenadas seleccionadas
     const { data: listClinics, error } = await supabase.rpc('get_centros_cercanos', {
       user_lat: lat,
       user_lng: lng,
-      radio_km: 25 // 25 kilómetros a la redonda
+      radio_km: 25 
     });
 
     if (error) throw error;
 
-    // Convertimos las clínicas devueltas en marcadores de mapa
     const markers = (listClinics || []).map((c: any) => ({
       name: c.name,
       lat: c.latitude,
@@ -86,7 +82,6 @@ export async function getLevelData(
       distancia_km: c.distancia_km 
     }));
 
-    // Calculamos totales para el Hero
     const totalCentros = listClinics?.length || 0;
     const totalDentistas = listClinics?.reduce((acc: number, curr: any) => acc + (Number(curr.staff_count) || 0), 0) || 0;
 
@@ -121,9 +116,6 @@ export async function getLevelData(
       relatedLinks: { madre: null, hijas: null, hermanas: null, cercanas: null, comarcas: null, comarcas_sin_dentistas: null }
     };
   }
-  // ====================================================================
-  // FIN DEL CORTOCIRCUITO
-  // ====================================================================
 
   // 1. NORMALIZACIÓN
   const isProvinciaSlug = slug.endsWith("-provincia");
@@ -153,6 +145,7 @@ export async function getLevelData(
   let listado: any[] = [];
   let totalHeroDentistas = 0;
   let totalHeroCentros = 0;
+  let auxMunicipiosCercanos: any[] = []; // Auxiliar para Nivel 07
 
   if (landing.nivel === "01") {
      const datos = await getDatosComunidades(supabase);
@@ -209,36 +202,45 @@ export async function getLevelData(
      totalHeroDentistas = stats.total_comarca_dentistas;
      totalHeroCentros = stats.total_comarca_centros;
   }
-  // 🌟 NUEVO BLOQUE: Implementación Nivel 07
+  // 🌟 LÓGICA EXPERTA: Nivel 07 (Contexto visual dinámico)
   else if (landing.nivel === "07") {
-     const datos = await getCentrosCercanosBySlug(supabase, landing.slug);
-     stats = datos.stats;
-     listado = datos.listado;
-     totalHeroDentistas = stats.total_dentistas;
-     totalHeroCentros = stats.total_clinicas;
+     // 1. Llamamos a la nueva función inteligente que devuelve los 2 más cercanos + los del Bounding Box
+     const { data: munis, error: errMunis } = await supabase.rpc('get_contexto_mapa_nivel_07', {
+        p_slug: landing.slug
+     });
+
+     if (errMunis) throw errMunis;
+     auxMunicipiosCercanos = munis || [];
+
+     // 2. Extraemos los INE de esos municipios para rellenar la lista de clínicas abajo
+     const ineCodes = auxMunicipiosCercanos.map((m: any) => m.codigo_ine);
+
+     const { data: clinicasDetalle } = await supabase
+        .from("view_clinics_con_dentistas")
+        .select("*")
+        .in('ine_city_code', ineCodes);
+
+     listado = clinicasDetalle || [];
+     
+     // 3. Totales para el Hero (Suman todos los dentistas de los pueblos mostrados)
+     totalHeroDentistas = auxMunicipiosCercanos.reduce((acc, m) => acc + (Number(m.total_dentistas) || 0), 0);
+     totalHeroCentros = auxMunicipiosCercanos.reduce((acc, m) => acc + (Number(m.total_centros) || 0), 0);
   }
+
+
+
 
   // 3. MARCADORES MAPA
   let markers: any[] = [];
   
   if (landing.nivel === "01") {
     const SLUG_OVERRIDES: Record<string, string> = {
-      '06': 'cantabria-provincia',
-      '03': 'asturias',
-      '13': 'madrid-provincia',
-      '18': 'ceuta-municipio',
-      '19': 'melilla-municipio',
-      '17': 'la-rioja-provincia',
-      '15': 'navarra',
-      '14': 'murcia-provincia',
-      '04': 'illes-balears-provincia'
+      '06': 'cantabria-provincia', '03': 'asturias', '13': 'madrid-provincia',
+      '18': 'ceuta-municipio', '19': 'melilla-municipio', '17': 'la-rioja-provincia',
+      '15': 'navarra', '14': 'murcia-provincia', '04': 'illes-balears-provincia'
     };
     const NAME_OVERRIDES: Record<string, string> = {
-      '03': 'Asturias',
-      '13': 'Madrid',
-      '15': 'Navarra',
-      '14': 'Murcia',
-      '10': 'Valencia'
+      '03': 'Asturias', '13': 'Madrid', '15': 'Navarra', '14': 'Murcia', '10': 'Valencia'
     };
 
     markers = (listado || []).filter(m => m.lat_comunidad).map(m => ({
@@ -319,17 +321,15 @@ export async function getLevelData(
              tipo: 'comarca' 
        }));
   }
-  // 🌟 NUEVO BLOQUE: Marcadores Nivel 07
+  // 🌟 LÓGICA MEJORADA: Marcadores Nivel 07 (Un icono por municipio con total dentistas)
   else if (landing.nivel === "07") {
-       markers = (listado || [])
-         .filter(m => m.latitude != null && m.longitude != null)
-         .map(m => ({
-            name: m.name, 
-            lat: m.latitude, 
-            lng: m.longitude, 
-            slug: m.clinic_id, 
-            count: m.staff_count, 
-            tipo: 'centro',
+       markers = auxMunicipiosCercanos.map((m: any) => ({
+            name: m.nombre_municipio, 
+            lat: m.latitud, 
+            lng: m.longitud, 
+            slug: m.slug_municipio, 
+            count: Number(m.total_dentistas), 
+            tipo: 'municipio', // 👈 Se comporta como el Nivel 03 (icono de municipio)
             distancia_km: m.distancia_km
        }));
   }
@@ -338,9 +338,7 @@ export async function getLevelData(
   const breadcrumbItems = await getBreadcrumbTrail(supabase, landing.nivel, landing.codigo_ine, landing.subcodigo_ine);
 
   // 5. CLÍNICAS (Listado inferior)
-  // 🌟 REESTRUCTURACIÓN: Evitamos re-consultar a DB si ya tenemos las clínicas para el Nivel 07
   let listClinics: any[] = [];
-  
   if (landing.nivel === "07") {
     listClinics = listado;
   } else {
@@ -506,12 +504,7 @@ export async function getLevelData(
     };
 
     if (clinic.specialties && Array.isArray(clinic.specialties) && clinic.specialties.length > 0) {
-      clinicNode.medicalSpecialty = clinic.specialties;
-    }
-
-    if (clinic.specialties && Array.isArray(clinic.specialties) && clinic.specialties.length > 0) {
       const validSchemaSpecialties = new Set<string>();
-      
       clinic.specialties.forEach((spec: string) => {
         const lowerSpec = spec.toLowerCase();
         if (lowerSpec.includes("odontología") || lowerSpec.includes("ortodoncia") || lowerSpec.includes("implantes") || lowerSpec.includes("bucodental")) {
@@ -560,12 +553,10 @@ export async function getLevelData(
     codigo_ine: landing.codigo_ine,
     mapa: {
       marks: markers,
-      //modo: landing.nivel === "01" ? 'CENTER_ZOOM' : 'FIT_BOUNDS',
-      modo: ["01", "07"].includes(landing.nivel) ? 'CENTER_ZOOM' : 'FIT_BOUNDS',
+      // 🌟 Cambiamos Nivel 07 a FIT_BOUNDS para que encuadre los municipios cercanos y la zona sombreada
+      modo: ["01"].includes(landing.nivel) ? 'CENTER_ZOOM' : 'FIT_BOUNDS',
       centro: [landing.latitud_gps || 40.41, landing.longitud_gps || -3.70],
-      // 🌟 Ajuste específico de zoom inicial para la vista detallada de Nivel 07
       zoom: landing.nivel === "01" ? 6 : (landing.nivel === "07" ? 14 : 10),
-      // 🌟 Ajuste visual del mapa para Nivel 07
       tileStyle: ["01", "02", "03"].includes(landing.nivel) ? "light_nolabels" : 
                  (["04", "05", "06", "07"].includes(landing.nivel) ? "osm" : "light_all")
     },
@@ -578,19 +569,15 @@ export async function getLevelData(
     seo: {
       totalDentistasHero: totalHeroDentistas || 0, 
       totalCentrosHero: totalHeroCentros || 0,
-      // 🌟 Usamos el nuevo campo seo_h1 como fuente principal del título
-      //h1: { dark: "Encuentra tu dentista en", normal: landing.seo_h1 || landing.breadcrumb }, 
       h1: { 
           dark: landing.nivel === "07" ? "Encuentra tu dentista cerca de" : "Encuentra tu dentista en", 
           normal: landing.seo_h1 || landing.breadcrumb 
         },
       breadcrumbs: breadcrumbItems,
       enlacesSugeridos: [], 
-      // 🌟 Mejoramos también la etiqueta <title> usando seo_h1
       title: `${landing.seo_h1 || landing.breadcrumb} | DKV Dentisalud Elite`,
-      // 🌟 Aquí conectas el nuevo campo de la base de datos[cite: 1]
       description: landing.seo_txt_contextual || "",
-      descriptionBottom: landing.seo_txt_contextual_bottom || "", // 👈 AÑADIMOS EL NUEVO CAMPO AQUÍ
+      descriptionBottom: landing.seo_txt_contextual_bottom || "", 
       nivel: landing.nivel, 
       schemaData: schemaJsonLd 
     },
