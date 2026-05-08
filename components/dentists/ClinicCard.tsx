@@ -9,34 +9,30 @@ import { MapPin, Phone, Users, ArrowRight, Plus, Minus, Share2, Check } from "lu
 import { formatPhoneNumber } from "@/lib/text-formatter";
 
 interface ClinicCardProps {
-  // Mantenemos 'any' por tu directiva de evitar errores de build con la DB, 
-  // aunque idealmente usaríamos el tipo 'Clinic' exportado de tus tipos.
   clinic: any; 
   onSelectClinic: (id: string) => void;
-  // NUEVA PROP: Recibimos si esta es la tarjeta seleccionada
   isSelected?: boolean;
 }
 
 export default function ClinicCard({ clinic, onSelectClinic, isSelected = false }: ClinicCardProps) {
   const [showStaff, setShowStaff] = useState(false);
-  const [isShared, setIsShared] = useState(false); // Estado para el check de copiado
+  const [isShared, setIsShared] = useState(false);
 
-  // Lógica evolucionada de compartir
+  // 🌟 LÓGICA DE COMPARTIR CORREGIDA Y RESPETUOSA CON EL SLUG
   const handleShare = async (e: React.MouseEvent) => {
-    e.stopPropagation(); // Evita que la tarjeta se abra al hacer clic en compartir
+    e.stopPropagation();
 
     const shareTitle = `Clínica DKV: ${clinic.name}`;
     const shareText = `Mira este dentista en el cuadro médico de DKV:\n\n🏥 ${clinic.name}\n📍 ${clinic.address}, ${clinic.zip_code || ""} ${clinic.city}\n📞 ${clinic.phone || ""}\n\n`;
     
-    // Si la clínica tiene un slug, construimos su URL directa, si no, compartimos la página actual
-    //const shareUrl = clinic.slug ? `${window.location.origin}/dentistas/${clinic.slug}` : window.location.href;
-    // Limpiamos la URL actual por si el usuario ya está viendo una ficha compartida, para no apilar los "share-".
+    // Si tiene slug (es un centro importante), compartimos su URL directa.
+    // Si no tiene slug, compartimos el municipio + el interceptor share-ID
     const baseUrl = window.location.href.split('/share-')[0];
-    // Y le pegamos el ID de la clínica
-    const shareUrl = `${baseUrl}/share-${clinic.clinic_id}`;
+    const shareUrl = clinic.slug 
+      ? `${window.location.origin}/dentistas/${clinic.slug}` 
+      : `${baseUrl}/share-${clinic.clinic_id}`;
 
     try {
-      // 1. Intentamos usar la API nativa de compartir (Móviles y navegadores modernos)
       if (navigator.share) {
         await navigator.share({
           title: shareTitle,
@@ -44,20 +40,16 @@ export default function ClinicCard({ clinic, onSelectClinic, isSelected = false 
           url: shareUrl,
         });
       } else {
-        // 2. FALLBACK (Escritorio): Copiamos al portapapeles
+        // Fallback para navegadores de escritorio que no tienen menú nativo
         await navigator.clipboard.writeText(`${shareText}${shareUrl}`);
-        
-        // Feedback visual de "Copiado"
         setIsShared(true);
         setTimeout(() => setIsShared(false), 2000);
       }
     } catch (err) {
-      // Si el usuario cancela el menú nativo, no hacemos nada.
-      console.log("Acción de compartir cancelada o fallida", err);
+      console.log("Acción de compartir cancelada o no soportada", err);
     }
   };
 
-  // Soporte para navegación por teclado (Enter/Espacio) - Clave para Accesibilidad
   const handleKeyDown = (e: KeyboardEvent<HTMLElement>) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -80,7 +72,6 @@ export default function ClinicCard({ clinic, onSelectClinic, isSelected = false 
         }
       `}
     >
-      {/* INDICADOR VISUAL: Barra lateral verde animada */}
       <div 
         className={`absolute left-0 top-0 bottom-0 w-2 bg-dkv-green transform transition-transform duration-300
           ${isSelected ? 'translate-x-0' : '-translate-x-full group-hover:translate-x-0'}
@@ -105,7 +96,6 @@ export default function ClinicCard({ clinic, onSelectClinic, isSelected = false 
             {clinic.name}
           </h2>
 
-          {/* Acordeón de Especialistas */}
           {(clinic.staff_count ?? 0) > 0 && (
             <div className="mb-4">
               <button 
@@ -160,7 +150,6 @@ export default function ClinicCard({ clinic, onSelectClinic, isSelected = false 
             </div>
           </div>
 
-          {/* ACCIONES DE LA CLÍNICA: Teléfono y Compartir */}
           <div className="flex items-center gap-3">
             {clinic.phone && (
               <a 
@@ -174,7 +163,6 @@ export default function ClinicCard({ clinic, onSelectClinic, isSelected = false 
               </a>
             )}
 
-            {/* BOTÓN DE COMPARTIR RECUPERADO */}
             <button
               onClick={handleShare}
               aria-label="Compartir información de la clínica"
@@ -190,7 +178,6 @@ export default function ClinicCard({ clinic, onSelectClinic, isSelected = false 
           </div>
         </div>
 
-        {/* Flecha lateral derecha */}
         <div className="hidden sm:flex shrink-0 self-center" aria-hidden="true">
           <div className={`w-14 h-14 rounded-full flex items-center justify-center transition-all shadow-sm border border-gray-100
             ${isSelected ? 'bg-dkv-green text-white' : 'bg-gray-50 text-dkv-green group-hover:bg-dkv-green group-hover:text-white'}
