@@ -1,9 +1,11 @@
 // components/dentists/ClinicCard.tsx
 
+// components/dentists/ClinicCard.tsx
+
 "use client";
 
 import { useState, KeyboardEvent } from "react";
-import { MapPin, Phone, Users, ArrowRight, Plus, Minus } from "lucide-react";
+import { MapPin, Phone, Users, ArrowRight, Plus, Minus, Share2, Check } from "lucide-react";
 import { formatPhoneNumber } from "@/lib/text-formatter";
 
 interface ClinicCardProps {
@@ -11,22 +13,45 @@ interface ClinicCardProps {
   // aunque idealmente usaríamos el tipo 'Clinic' exportado de tus tipos.
   clinic: any; 
   onSelectClinic: (id: string) => void;
-  // 1. NUEVA PROP: Recibimos si esta es la tarjeta seleccionada
+  // NUEVA PROP: Recibimos si esta es la tarjeta seleccionada
   isSelected?: boolean;
 }
 
-
-//añadimos
-//export default function ClinicCard({ clinic, onSelectClinic }: ClinicCardProps) {
 export default function ClinicCard({ clinic, onSelectClinic, isSelected = false }: ClinicCardProps) {
-
   const [showStaff, setShowStaff] = useState(false);
+  const [isShared, setIsShared] = useState(false); // Estado para el check de copiado
 
-  // --- AÑADE ESTO ---
-  if (isSelected) {
-      //console.log("💳 [PASO 7] Tarjeta iluminada. El ID real de este componente es:", clinic.clinic_id);
-  }
-  // ------------------
+  // Lógica evolucionada de compartir
+  const handleShare = async (e: React.MouseEvent) => {
+    e.stopPropagation(); // Evita que la tarjeta se abra al hacer clic en compartir
+
+    const shareTitle = `Clínica DKV: ${clinic.name}`;
+    const shareText = `Mira este dentista en el cuadro médico de DKV:\n\n🏥 ${clinic.name}\n📍 ${clinic.address}, ${clinic.zip_code || ""} ${clinic.city}\n📞 ${clinic.phone || ""}\n\n`;
+    
+    // Si la clínica tiene un slug, construimos su URL directa, si no, compartimos la página actual
+    const shareUrl = clinic.slug ? `${window.location.origin}/dentistas/${clinic.slug}` : window.location.href;
+
+    try {
+      // 1. Intentamos usar la API nativa de compartir (Móviles y navegadores modernos)
+      if (navigator.share) {
+        await navigator.share({
+          title: shareTitle,
+          text: shareText,
+          url: shareUrl,
+        });
+      } else {
+        // 2. FALLBACK (Escritorio): Copiamos al portapapeles
+        await navigator.clipboard.writeText(`${shareText}${shareUrl}`);
+        
+        // Feedback visual de "Copiado"
+        setIsShared(true);
+        setTimeout(() => setIsShared(false), 2000);
+      }
+    } catch (err) {
+      // Si el usuario cancela el menú nativo, no hacemos nada.
+      console.log("Acción de compartir cancelada o fallida", err);
+    }
+  };
 
   // Soporte para navegación por teclado (Enter/Espacio) - Clave para Accesibilidad
   const handleKeyDown = (e: KeyboardEvent<HTMLElement>) => {
@@ -38,14 +63,12 @@ export default function ClinicCard({ clinic, onSelectClinic, isSelected = false 
 
   return (
     <div 
-      // Usamos el ID real de base de datos (el Hash que tú mismo has visto)
       id={`clinic-${clinic.clinic_id}`}
       role="button"
       tabIndex={0}
       onClick={() => onSelectClinic(clinic.clinic_id)}
       onKeyDown={handleKeyDown}
       aria-label={`Ver detalles de ${clinic.name}`}
-
       className={`group bg-white p-6 rounded-[28px] border transition-all duration-300 cursor-pointer relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-dkv-green
         ${isSelected 
           ? 'border-dkv-green shadow-[0_8px_30px_rgba(132,151,0,0.15)] ring-1 ring-dkv-green' 
@@ -53,14 +76,7 @@ export default function ClinicCard({ clinic, onSelectClinic, isSelected = false 
         }
       `}
     >
-
-      {/* 4. INDICADOR VISUAL: Si está seleccionado, la barra lateral verde se queda fija
-      <div 
-        className="absolute left-0 top-0 bottom-0 w-2 bg-dkv-green transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300" 
-        aria-hidden="true" 
-      />
-       */}
-
+      {/* INDICADOR VISUAL: Barra lateral verde animada */}
       <div 
         className={`absolute left-0 top-0 bottom-0 w-2 bg-dkv-green transform transition-transform duration-300
           ${isSelected ? 'translate-x-0' : '-translate-x-full group-hover:translate-x-0'}
@@ -134,14 +150,14 @@ export default function ClinicCard({ clinic, onSelectClinic, isSelected = false 
             </div>
             <div className="flex flex-col font-fsme leading-tight">
               <span className="text-gray-800 font-bold text-base md:text-lg mb-0.5">{clinic.address}</span>
-              {/* ACCESIBILIDAD: Gris oscurecido para pasar el test de contraste */}
               <span className="text-gray-600 font-medium text-sm md:text-base">
                 {clinic.zip_code || ""} {clinic.city}
               </span>
             </div>
           </div>
 
-          <div className="flex items-center">
+          {/* ACCIONES DE LA CLÍNICA: Teléfono y Compartir */}
+          <div className="flex items-center gap-3">
             {clinic.phone && (
               <a 
                 href={`tel:${clinic.phone.toString().replace(/\D/g, "")}`}
@@ -153,21 +169,28 @@ export default function ClinicCard({ clinic, onSelectClinic, isSelected = false 
                 <span>{formatPhoneNumber(clinic.phone)}</span>
               </a>
             )}
+
+            {/* BOTÓN DE COMPARTIR RECUPERADO */}
+            <button
+              onClick={handleShare}
+              aria-label="Compartir información de la clínica"
+              title="Compartir clínica"
+              className="flex items-center justify-center w-[52px] h-[52px] bg-gray-50 text-dkv-green-dark rounded-2xl border border-gray-200 shadow-sm hover:bg-dkv-green/10 hover:text-dkv-green hover:border-dkv-green/30 transition-all active:scale-95"
+            >
+              {isShared ? (
+                <Check className="w-5 h-5 text-green-600 animate-in zoom-in" aria-hidden="true" />
+              ) : (
+                <Share2 className="w-5 h-5" aria-hidden="true" />
+              )}
+            </button>
           </div>
         </div>
 
+        {/* Flecha lateral derecha */}
         <div className="hidden sm:flex shrink-0 self-center" aria-hidden="true">
-
-          {/*
-          <div className="w-14 h-14 rounded-full bg-gray-50 flex items-center justify-center text-dkv-green group-hover:bg-dkv-green group-hover:text-white transition-all shadow-sm border border-gray-100">
-          */}
-
           <div className={`w-14 h-14 rounded-full flex items-center justify-center transition-all shadow-sm border border-gray-100
             ${isSelected ? 'bg-dkv-green text-white' : 'bg-gray-50 text-dkv-green group-hover:bg-dkv-green group-hover:text-white'}
           `}>
-
-
-
             <ArrowRight className="w-7 h-7" />
           </div>
         </div>
