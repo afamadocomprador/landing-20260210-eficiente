@@ -18,13 +18,10 @@ export default function ClinicCard({ clinic, onSelectClinic, isSelected = false 
   const [showStaff, setShowStaff] = useState(false);
   const [isShared, setIsShared] = useState(false);
 
-  // 🌟 LÓGICA DE COMPARTIR CORREGIDA Y RESPETUOSA CON EL SLUG
+  // 🌟 LÓGICA DE COMPARTIR LIMPIA (Solo URL para que brille el OG)
   const handleShare = async (e: React.MouseEvent) => {
     e.stopPropagation();
 
-    const shareTitle = `Clínica DKV: ${clinic.name}`;
-    const shareText = `Mira este dentista en el cuadro médico de DKV:\n\n🏥 ${clinic.name}\n📍 ${clinic.address}, ${clinic.zip_code || ""} ${clinic.city}\n📞 ${clinic.phone || ""}\n\n`;
-    
     // Si tiene slug (es un centro importante), compartimos su URL directa.
     // Si no tiene slug, compartimos el municipio + el interceptor share-ID
     const baseUrl = window.location.href.split('/share-')[0];
@@ -32,16 +29,19 @@ export default function ClinicCard({ clinic, onSelectClinic, isSelected = false 
       ? `${window.location.origin}/dentistas/${clinic.slug}` 
       : `${baseUrl}/share-${clinic.clinic_id}`;
 
+    const shareTitle = `Clínica DKV: ${clinic.name}`;
+
     try {
       if (navigator.share) {
+        // En móviles, mandamos solo Título y URL. Sin el parámetro 'text', 
+        // el mensaje en WhatsApp es puramente el enlace (lo que hace que la tarjeta OG destaque).
         await navigator.share({
           title: shareTitle,
-          text: shareText,
           url: shareUrl,
         });
       } else {
-        // Fallback para navegadores de escritorio que no tienen menú nativo
-        await navigator.clipboard.writeText(`${shareText}${shareUrl}`);
+        // Fallback para PC: Copiamos única y exclusivamente el enlace limpio.
+        await navigator.clipboard.writeText(shareUrl);
         setIsShared(true);
         setTimeout(() => setIsShared(false), 2000);
       }
