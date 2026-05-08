@@ -43,22 +43,111 @@ interface PageProps {
    return await getLevelData(supabase, "sin informar", level, currentSlug, sharedClinicId);
  }
 
-// --- 2. METADATA DINÁMICA (SEO) ---
+// --- 2. METADATA DINÁMICA (SEO Y COMPARTIR) ---
  export async function generateMetadata(
    { params }: PageProps,
    parent: ResolvingMetadata
  ): Promise<Metadata> {
+   
+   // 🌟 1. SACAMOS LA LÓGICA DE COMPARTIR FUERA DEL CATCH (Prioridad Absoluta)
+   let cleanSlug = params?.slug ? [...params.slug] : [];
+   let sharedClinicId = null;
+
+   if (cleanSlug.length > 0 && cleanSlug[cleanSlug.length - 1].startsWith('share-')) {
+     sharedClinicId = cleanSlug[cleanSlug.length - 1].replace('share-', '');
+     cleanSlug = cleanSlug.slice(0, -1); // Le quitamos el trozo de share a la ruta para que la página cargue normal
+   }
+
+   const currentPath = cleanSlug.join('/');
+   const canonicalUrl = `/dentistas/${currentPath}`.replace(/\/$/, "");
+
+   // 🌟 2. SI HAY UN ID COMPARTIDO, GENERAMOS SU TARJETA OG ESPECÍFICA
+   if (sharedClinicId) {
+     try {
+       const cookieStore = cookies();
+       const supabase = createServerClient(
+         process.env.NEXT_PUBLIC_SUPABASE_URL!,
+         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+         { cookies: { get: (name: string) => cookieStore.get(name)?.value } }
+       );
+
+       const { data: clinicData } = await supabase
+         .from('view_clinics') 
+         .select('name, staff_count, city, address, zip_code')
+         .eq('clinic_id', sharedClinicId) 
+         .single();
+
+       if (clinicData) {
+         const formattedZip = clinicData.zip_code 
+           ? String(clinicData.zip_code).padStart(5, '0').replace(/(\d{2})(\d{3})/, '$1.$2') 
+           : '';
+
+         const clinicTitle = `📍 ${clinicData.address || ''}, ${formattedZip ? formattedZip + ' - ' : ''}${clinicData.city || ''}`;
+         const clinicDesc = `Consulta ubicación, dentistas y precios de tratamientos en este centro dental DKV DENTISALUD ÉLITE. Pide cita directa.`;
+         const ogTitleToRender = `TU CENTRO DENTAL ${clinicData.name}`;
+
+         return {
+           metadataBase: new URL(baseUrl),
+           title: clinicTitle,
+           description: clinicDesc,
+           alternates: {
+             canonical: canonicalUrl,
+           },
+           openGraph: {
+             title: clinicTitle,
+             description: clinicDesc,
+             url: `${canonicalUrl}/share-${sharedClinicId}`,
+             siteName: 'DKV Dentisalud Élite',
+             images: [
+               {
+                 url: `/api/og?title=${encodeURIComponent(ogTitleToRender)}&v=1`,
+                 width: 1200,
+                 height: 630,
+                 alt: clinicData.name,
+               }
+             ],
+             locale: 'es_ES',
+             type: 'website',
+           }
+         };
+       }
+     } catch (err) {
+       console.error("No se pudo cargar la clínica compartida", err);
+     }
+   }
+
+   // 🌟 3. SI NO ES UNA CLÍNICA COMPARTIDA, GENERAMOS EL SEO NORMAL DE LA CIUDAD
    try {
-     const navigationData = await getPageData(params.slug);
+     const navigationData = await getPageData(cleanSlug);
      const { seo } = navigationData;
-     const currentPath = params.slug ? params.slug.join('/') : '';
-     const canonicalUrl = `/dentistas/${currentPath}`.replace(/\/$/, "");
      
-     // 1. SEO PARA GOOGLE
+     if (currentPath.includes('cerca-de-ti') || currentPath.includes('cerca-de-mi')) {
+       return {
+         metadataBase: new URL(baseUrl),
+         title: '📍 Dentistas DKV Cerca de Ti | ⭐ Valoración Excelente',
+         description: 'Encuentra las clínicas del cuadro médico oficial DKV más cercanas a tu ubicación. Ahorro garantizado.',
+         openGraph: {
+           title: '📍 Dentistas DKV Cerca de Ti | ⭐ Valoración Excelente',
+           description: 'Cuadro médico oficial DKV. Implantes y tratamientos con hasta un 40% de ahorro garantizado. Pide tu cita.',
+           url: `/dentistas/${currentPath}`,
+           siteName: 'DKV Dentisalud Élite',
+           images: [
+             {
+               url: `/api/og?title=Dentistas%20cerca%20de%20ti&v=3`,
+               width: 1200,
+               height: 630,
+               alt: 'Dentistas cerca de ti',
+             }
+           ],
+           locale: 'es_ES',
+           type: 'website',
+         }
+       };
+     }
+
      const title = seo.title || `Dentistas en ${seo.h1.normal} | DKV Dentisalud Elite`;
      const description = seo.description || `Cuadro médico DKV en ${seo.h1.normal}.`;
 
-     // 2. 🌟 SEO PARA WHATSAPP / REDES SOCIALES
      const formatter = new Intl.NumberFormat('es-ES');
      const numDentistas = seo.totalDentistasHero || 0;
      const numCentros = seo.totalCentrosHero || 0;
@@ -99,87 +188,6 @@ interface PageProps {
      };
 
    } catch (e: any) {
-     const currentPath = params?.slug ? params.slug.join('/') : '';
-     const lastSegment = params?.slug ? params.slug[params.slug.length - 1] : '';
-     
-     if (lastSegment && lastSegment.startsWith('share-')) {
-       const clinicId = lastSegment.replace('share-', ''); 
-       try {
-         const { createServerClient } = require('@supabase/ssr');
-         const { cookies } = require('next/headers');
-         const cookieStore = cookies();
-         const supabase = createServerClient(
-           process.env.NEXT_PUBLIC_SUPABASE_URL!,
-           process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-           { cookies: { get: (name: string) => cookieStore.get(name)?.value } }
-         );
-
-         const { data: clinicData } = await supabase
-           .from('view_clinics') 
-           .select('name, staff_count, city, address, zip_code')
-           .eq('clinic_id', clinicId) 
-           .single();
-
-         if (clinicData) {
-           const formattedZip = clinicData.zip_code 
-             ? String(clinicData.zip_code).padStart(5, '0').replace(/(\d{2})(\d{3})/, '$1.$2') 
-             : '';
-
-           const clinicTitle = `📍 ${clinicData.address || ''}, ${formattedZip ? formattedZip + ' - ' : ''}${clinicData.city || ''}`;
-           const clinicDesc = `Consulta ubicación, dentistas y precios de tratamientos en este centro dental DKV DENTISALUD ÉLITE. Pide cita directa.`;
-           const ogTitleToRender = `TU CENTRO DENTAL ${clinicData.name}`;
-
-           return {
-             metadataBase: new URL(baseUrl),
-             title: clinicTitle,
-             description: clinicDesc,
-             openGraph: {
-               title: clinicTitle,
-               description: clinicDesc,
-               url: `/dentistas/${currentPath}`,
-               siteName: 'DKV Dentisalud Élite',
-               images: [
-                 {
-                   url: `/api/og?title=${encodeURIComponent(ogTitleToRender)}&v=1`,
-                   width: 1200,
-                   height: 630,
-                   alt: clinicData.name,
-                 }
-               ],
-               locale: 'es_ES',
-               type: 'website',
-             }
-           };
-         }
-       } catch (dbError) {
-         console.error("No se pudo cargar info", dbError);
-       }
-     }
-
-     if (currentPath.includes('cerca-de-ti') || currentPath.includes('cerca-de-mi')) {
-       return {
-         metadataBase: new URL(baseUrl),
-         title: '📍 Dentistas DKV Cerca de Ti | ⭐ Valoración Excelente',
-         description: 'Encuentra las clínicas del cuadro médico oficial DKV más cercanas a tu ubicación. Ahorro garantizado.',
-         openGraph: {
-           title: '📍 Dentistas DKV Cerca de Ti | ⭐ Valoración Excelente',
-           description: 'Cuadro médico oficial DKV. Implantes y tratamientos con hasta un 40% de ahorro garantizado. Pide tu cita.',
-           url: `/dentistas/${currentPath}`,
-           siteName: 'DKV Dentisalud Élite',
-           images: [
-             {
-               url: `/api/og?title=Dentistas%20cerca%20de%20ti&v=3`,
-               width: 1200,
-               height: 630,
-               alt: 'Dentistas cerca de ti',
-             }
-           ],
-           locale: 'es_ES',
-           type: 'website',
-         }
-       };
-     }
-
      return {
        metadataBase: new URL(baseUrl),
        title: 'DKV Dentisalud Élite | Seguro Dental con Precios Pactados',
@@ -318,52 +326,37 @@ export default async function DentistasPage({ params }: PageProps) {
     const isSpain = locationName.toLowerCase() === 'españa';
     const showPlusPrefix = totalDentistas > 300;
 
-// 🌟 LÓGICA POR LONGITUD DE TEXTO Y NIVELES
-    const rawDescription = navigationData.seo.description || "";
-    const rawDescriptionBottom = navigationData.seo.descriptionBottom || ""; // 👈 NUEVO CAMPO
-    //const pageLevel = navigationData.level || ""; // 👈 NECESITAMOS EL NIVEL
-    const pageLevel = navigationData.seo.nivel || navigationData.nivelFinal || ""; // 👈 AHORA SÍ APUNTA AL LUGAR CORRECTO
+    // 🌟 LÓGICA POR LONGITUD DE TEXTO Y NIVELES
+    const rawDescription = navigationData.seo.description || "";
+    const rawDescriptionBottom = navigationData.seo.descriptionBottom || ""; 
+    const pageLevel = navigationData.seo.nivel || navigationData.nivelFinal || ""; 
 
-    const isLongDescription = rawDescription.length >= 100 || rawDescriptionBottom.length > 0;
+    const isLongDescription = rawDescription.length >= 100 || rawDescriptionBottom.length > 0;
 
-    let htmlContentZone1 = null;
-    let htmlContentZone2 = null;
+    let htmlContentZone1 = null;
+    let htmlContentZone2 = null;
 
-    if (isLongDescription) {
-      // Procesamos las variables dinámicas del texto superior
-      const processedHtmlTop = rawDescription
-        .replace(/{totalCentros}/g, formattedClinics)
-        .replace(/{totalDentistas}/g, formattedProfessionals)
-        .replace(/{locationName}/g, locationName);
+    if (isLongDescription) {
+      const processedHtmlTop = rawDescription
+        .replace(/{totalCentros}/g, formattedClinics)
+        .replace(/{totalDentistas}/g, formattedProfessionals)
+        .replace(/{locationName}/g, locationName);
 
-      if (pageLevel === '07' || rawDescriptionBottom) {
-        // --- NUEVA LÓGICA PARA NIVEL 07 (Dos columnas separadas) ---
-        htmlContentZone1 = processedHtmlTop;
-        
-        // Procesamos también el texto inferior por si lleva variables
-        htmlContentZone2 = rawDescriptionBottom
-          .replace(/{totalCentros}/g, formattedClinics)
-          .replace(/{totalDentistas}/g, formattedProfessionals)
-          .replace(/{locationName}/g, locationName);
-      } else {
-        // --- LÓGICA ANTIGUA (Mantenemos el SPLIT para el Nivel 04 y otros) ---
-        const parts = processedHtmlTop.split('---SPLIT---');
-        htmlContentZone1 = parts[0] || null;
-        htmlContentZone2 = parts.length > 1 ? parts[1] : null;
-      }
-    }
+      if (pageLevel === '07' || rawDescriptionBottom) {
+        htmlContentZone1 = processedHtmlTop;
+        
+        htmlContentZone2 = rawDescriptionBottom
+          .replace(/{totalCentros}/g, formattedClinics)
+          .replace(/{totalDentistas}/g, formattedProfessionals)
+          .replace(/{locationName}/g, locationName);
+      } else {
+        const parts = processedHtmlTop.split('---SPLIT---');
+        htmlContentZone1 = parts[0] || null;
+        htmlContentZone2 = parts.length > 1 ? parts[1] : null;
+      }
+    }
 
-
-    // ⚡️ MAGIA DEL BREADCRUMB: Modificamos solo la parte visual para que el ancla funcione
     const visualBreadcrumbs = (navigationData.seo.breadcrumbs || []).map((item: any) => {
-      // Si el enlace apunta genéricamente a la raíz de dentistas, lo redirigimos a la sección del buscador
-      //if (item.href === '/dentistas' || item.href === '/dentistas/' || item.href === '/') {
-      // 👇 Eliminamos la comprobación de la raíz '/' para no pisar el inicio
-      //if (item.href === '/dentistas' || item.href === '/dentistas/') {
-      //  return { ...item, href: '/#dentistas' };
-      //}
-      // Excepción: Si el label es "España", no redirigir a la home. 
-      // Queremos que recargue o apunte a la página de nivel nacional.
       if ((item.href === '/dentistas' || item.href === '/dentistas/') && item.label !== "España") {
         return { ...item, href: '/#dentistas' };
       }
@@ -389,18 +382,14 @@ export default async function DentistasPage({ params }: PageProps) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(navigationSchema) }}
         />
  
-        {/* ⚡️ Usamos nuestros visualBreadcrumbs mapeados con el # */}
         <FixedBreadcrumb items={visualBreadcrumbs} />
 
-        {/* 🌟 HERO CONDICIONAL */}
         <DentistHero 
           h1={navigationData.seo.h1}
           description={isLongDescription ? undefined : rawDescription}
         />
 
-        {/* 🌟 TEXTO EN EL CUERPO CONDICIONAL (ZONA 1 - ARRIBA DEL MAPA) */}
         {isLongDescription ? (
-          /* --- A) RENDERIZADO PARA TEXTOS LARGOS (MÁS DE 100 CARACTERES) - ZONA 1 --- */
           htmlContentZone1 && (
             <section className="container mx-auto px-safe-x md:px-6 pt-4 pb-6 text-left">
               <div className="max-w-4xl relative">
@@ -411,7 +400,6 @@ export default async function DentistasPage({ params }: PageProps) {
             </section>
           )
         ) : (
-          /* --- B) RENDERIZADO PARA TEXTOS CORTOS (MENOS DE 100 CARACTERES) --- */
           (totalDentistas > 0 || totalCentros > 0) && (
             <section className="container mx-auto px-safe-x md:px-6 pt-2 pb-6 text-left">
               <div className="max-w-4xl relative">
@@ -436,7 +424,6 @@ export default async function DentistasPage({ params }: PageProps) {
           <MapLazyLoader initialData={navigationData} />
         </section>
 
-        {/* 🌟 TEXTO SEO PARA TEXTOS LARGOS (ZONA 2 - DEBAJO DEL MAPA) */}
         {isLongDescription && htmlContentZone2 && (
             <section className="container mx-auto px-safe-x md:px-6 pt-8 pb-6 text-left">
               <div className="max-w-4xl relative">
