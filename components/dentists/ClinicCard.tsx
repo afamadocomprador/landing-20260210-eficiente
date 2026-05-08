@@ -29,7 +29,11 @@ export default function ClinicCard({ clinic, onSelectClinic, isSelected = false 
     const shareText = `Mira este dentista en el cuadro médico de DKV:\n\n🏥 ${clinic.name}\n📍 ${clinic.address}, ${clinic.zip_code || ""} ${clinic.city}\n📞 ${clinic.phone || ""}\n\n`;
     
     // Si la clínica tiene un slug, construimos su URL directa, si no, compartimos la página actual
-    const shareUrl = clinic.slug ? `${window.location.origin}/dentistas/${clinic.slug}` : window.location.href;
+    //const shareUrl = clinic.slug ? `${window.location.origin}/dentistas/${clinic.slug}` : window.location.href;
+    // Limpiamos la URL actual por si el usuario ya está viendo una ficha compartida, para no apilar los "share-".
+    const baseUrl = window.location.href.split('/share-')[0];
+    // Y le pegamos el ID de la clínica
+    const shareUrl = `${baseUrl}/share-${clinic.clinic_id}`;
 
     try {
       // 1. Intentamos usar la API nativa de compartir (Móviles y navegadores modernos)
