@@ -1,68 +1,75 @@
 // components/dentists/MapLazyLoader.tsx
+
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 
-// 1. Importación diferida del mapa real
 const DentistsContainer = dynamic(() => import('@/components/dentists/DentistsContainer'), {
   ssr: false,
-  loading: () => <MapSkeleton />
 });
 
-// 2. Tu Skeleton exacto
-const MapSkeleton = () => (
-  <div className="w-full h-[600px] bg-gray-100 animate-pulse rounded-dkv flex items-center justify-center">
-    <div className="flex flex-col items-center text-gray-400">
-      <svg className="w-10 h-10 mb-2 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-      <span className="font-fsme text-sm">Cargando mapa de clínicas...</span>
-    </div>
-  </div>
-);
+export default function MapLazyLoader({ initialData, slug }: { initialData: any, slug?: string }) {
+  const [showPlaceholder, setShowPlaceholder] = useState(true);
+  const [imageError, setImageError] = useState(false);
 
-// 3. El Wrapper "Idle-Until-Urgent"
-export default function MapLazyLoader({ initialData }: { initialData: any }) {
-  const [shouldLoadMap, setShouldLoadMap] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const locationName = initialData?.seo?.h1?.normal || "tu zona";
+  const currentSlug = slug || initialData?.slug || "default";
 
   useEffect(() => {
-    if (shouldLoadMap) return;
+    setShowPlaceholder(true);
 
-    let timeoutId: NodeJS.Timeout;
+    const timer = setTimeout(() => {
+      setShowPlaceholder(false);
+    }, 5500);
 
-    // CONDICIÓN 1: Tiempo de inactividad (2.5 segundos tras cargar la página)
-    timeoutId = setTimeout(() => {
-      setShouldLoadMap(true);
-    }, 2500);
-
-    // CONDICIÓN 2: El usuario hace scroll hacia el mapa
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setShouldLoadMap(true);
-          observer.disconnect();
-          clearTimeout(timeoutId);
-        }
-      },
-      { rootMargin: '300px' } // Empieza a cargar 300px antes de que entre en pantalla
-    );
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-
-    return () => {
-      clearTimeout(timeoutId);
-      observer.disconnect();
-    };
-  }, [shouldLoadMap]);
+    return () => clearTimeout(timer);
+  }, [currentSlug]);
 
   return (
-    <div ref={containerRef} className="w-full relative">
-      {shouldLoadMap ? <DentistsContainer initialData={initialData} /> : <MapSkeleton />}
+    <div className="w-full relative rounded-[28px] overflow-hidden bg-gray-100 h-[80vh] md:h-[600px] lg:h-[700px] shadow-inner flex flex-col z-0">
+      
+      {/* CAPA 1 (Deepest): EL MAPA INTERACTIVO REAL */}
+      <div className="absolute inset-0 w-full h-full">
+        <DentistsContainer initialData={initialData} />
+      </div>
+
+      {/* ⚡️ CAPA 2 (Z-1000): EL ENVOLTORIO DE FACHADA */}
+      {/* Añadido 'md:hidden' -> Esta capa y el mensaje SOLO existirán en móviles */}
+      <div 
+        className={`absolute inset-0 z-[1000] bg-white transition-opacity duration-1000 ease-in-out md:hidden ${
+          showPlaceholder ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+      >
+        <picture className="absolute inset-0 w-full h-full z-10">
+          <source 
+            media="(min-width: 1024px)" 
+            srcSet={imageError ? '/images/map-placeholder.webp' : `/images/maps/${currentSlug}-desktop.webp`} 
+          />
+          <source 
+            media="(min-width: 768px)" 
+            srcSet={imageError ? '/images/map-placeholder.webp' : `/images/maps/${currentSlug}-tablet.webp`} 
+          />
+          <img 
+            src={imageError ? '/images/map-placeholder.webp' : `/images/maps/${currentSlug}-mobile.webp`} 
+            alt={`Mapa de clínicas en ${locationName}`}
+            className="w-full h-full object-cover"
+            onError={() => setImageError(true)}
+            fetchPriority="high" 
+          />
+        </picture>
+        
+        {/* EL MENSAJE "CONECTANDO..." */}
+        {showPlaceholder && (
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-md px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 border border-gray-100 w-max max-w-[90%] z-20 animate-in fade-in zoom-in-50 duration-500">
+            <div className="w-3 h-3 flex-shrink-0 bg-dkv-green rounded-full animate-pulse" />
+            <span className="text-xs font-bold text-dkv-green-dark uppercase tracking-widest truncate">
+              Conectando con el mapa interactivo...
+            </span>
+          </div>
+        )}
+      </div>
+
     </div>
   );
 }
