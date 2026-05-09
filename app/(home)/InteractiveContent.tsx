@@ -10,7 +10,6 @@ import ScrollReveal from '@/components/ui/ScrollReveal';
 import { useInteractiveHome } from '@/hooks/useInteractiveHome';
 
 // ⚡️ TUS DATOS ORIGINALES EXACTOS
-/* *************************************************
 const tratamientosList = [
   { id: 1, hasSub: true, icon: Baby, image: "/images/tratamientos/estetica.png", title: "Precio de Estética" },
   { id: 2, hasSub: true, icon: Sparkles, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "Precio de Ortodoncia" },
@@ -23,21 +22,6 @@ const tratamientosList = [
   { id: 10, hasSub: true, icon: HeartPulse, image: "/images/tratamientos/encias-y-periodoncia.png", title: "Precio de Periodoncia" },
   { id: 11, href: "/tratamientos-v2/cirugia-extracciones", icon: Scissors, title: "Precio de Extracciones", image: "/images/tratamientos/cirugia.png" },
 ];
-**************************************** */
-
-const tratamientosList = [
-  { id: 1, hasSub: true, icon: Baby, image: "/images/tratamientos/estetica.png", title: "Precio de Estética", altimg: "Dientes blancos y tabla de coloración" },
-  { id: 2, hasSub: true, icon: Sparkles, image: "/images/tratamientos/ortodoncia-brackets-cristal-zafiro-standard-un-diente.png", title: "Precio de Ortodoncia", altimg: "Detalle de bracket" },
-  { id: 3, hasSub: true, icon: Stethoscope, image: "/images/tratamientos/implantes.png", title: "Precio de Implantes", altimg: "Tornillo de implante" },
-  { id: 4, hasSub: true, icon: Zap, image: "/images/tratamientos/endodoncia.png", title: "Precio de Empastes y Endodoncias", altimg: "Sección lateral de muela con endodoncia" },
-  { id: 5, hasSub: true, icon: Activity, title: "Precios de Prótesis", image: "/images/tratamientos/protesis.png", altimg: "Prótesis de tres piezas en laboratorio" },
-  { id: 9, href: "/tratamientos-v2/apnea", icon: Moon, title: "Precio para Apnea", image: "/images/tratamientos/ferula.png", altimg: "Férula dental para apnea" },
-  { id: 6, hasSub: true, icon: Smile, image: "/images/tratamientos/odontopediatria.png", title: "Niñ@s", altimg: "Instrumental odontológico con colores infantiles" },
-  { id: 7, hasSub: true, icon: ShieldCheck, image: "/images/tratamientos/general.png", title: "Prevención", altimg: "Instrumental odontológico" },
-  { id: 10, hasSub: true, icon: HeartPulse, image: "/images/tratamientos/encias-y-periodoncia.png", title: "Precio de Periodoncia", altimg: "Medida de encía para periodoncia" },
-  { id: 11, href: "/tratamientos-v2/cirugia-extracciones", icon: Scissors, title: "Precio de Extracciones", image: "/images/tratamientos/cirugia.png", altimg: "Intervención en hueco en encía" },
-];
-
 
 const esteticaSubOptions = [
   { id: 'blanqueamiento', title: 'Blanqueamiento', href: '/tratamientos-v2/estetica-blanqueamiento', tag: 'Luz y armonía' },
@@ -100,9 +84,6 @@ const periodonciaSubOptions = [
 const cirugiaSubOptions = [
   { id: 'extracciones', title: 'Extracciones', href: '/tratamientos-v2/cirugia-extracciones', tag: 'Muelas del juicio y más' }
 ];
-
-
-
 
 // ⚡️ NUEVA INTERFAZ PARA RECIBIR LOS SERVER COMPONENTS
 interface InteractiveContentProps {
@@ -216,12 +197,10 @@ export default function InteractiveContent({
 
                     <div className={`w-full flex-1 flex items-center justify-center transition-all duration-500 relative overflow-hidden group-hover:bg-dkv-green/5 pointer-events-none`}>
                       {item.image ? (
-                        <Image 
+                        <img 
                           src={item.image} 
-                          alt={item.altimg}
-                          fill
-                          sizes="(max-width: 768px) 50vw, 25vw"
-                          className="object-cover transition-transform group-hover:scale-110 duration-500" 
+                          alt={item.title} 
+                          className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" 
                         />
                       ) : (
                         <div className="text-dkv-green transition-transform group-hover:scale-110 duration-300">
@@ -293,7 +272,6 @@ export default function InteractiveContent({
             
             <button 
               onClick={() => setActiveFloatingId(null)}
-              aria-label="Cerrar modal"
               className="p-1.5 rounded-full bg-[#E5E5E5] text-dkv-green-dark hover:bg-[#D5D5D5] transition-colors"
             >
               <X className="w-5 h-5" strokeWidth={2.5} />
