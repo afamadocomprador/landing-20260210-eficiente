@@ -1,7 +1,5 @@
 // app/dentistas/[[...slug]]/page.tsx
 
-// app/dentistas/[[...slug]]/page.tsx
-
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
@@ -435,8 +433,13 @@ export default async function DentistasPage({ params }: PageProps) {
         </div>
 
         <section id="mapa-buscador" className="relative flex-1 flex flex-col pt-4">
-          <MapLazyLoader initialData={navigationData} />
+          {/* ⚡️ PASAMOS EL SLUG PARA QUE ENCUENTRE LAS 3 FOTOS */}
+          <MapLazyLoader 
+            initialData={navigationData} 
+            slug={cleanSlug.join('/')} 
+          />
         </section>
+
 
         {isLongDescription && htmlContentZone2 && (
             <section className="container mx-auto px-safe-x md:px-6 pt-8 pb-6 text-left">
