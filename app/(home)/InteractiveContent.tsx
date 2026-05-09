@@ -197,10 +197,12 @@ export default function InteractiveContent({
 
                     <div className={`w-full flex-1 flex items-center justify-center transition-all duration-500 relative overflow-hidden group-hover:bg-dkv-green/5 pointer-events-none`}>
                       {item.image ? (
-                        <img 
+                        <Image 
                           src={item.image} 
-                          alt={item.title} 
-                          className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" 
+                          alt={item.title}
+                          fill
+                          sizes="(max-width: 768px) 50vw, 25vw"
+                          className="object-cover transition-transform group-hover:scale-110 duration-500" 
                         />
                       ) : (
                         <div className="text-dkv-green transition-transform group-hover:scale-110 duration-300">
