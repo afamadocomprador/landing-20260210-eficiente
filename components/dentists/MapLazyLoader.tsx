@@ -16,7 +16,8 @@ export default function MapLazyLoader({ initialData, slug }: { initialData: any,
   const isEligibleLevel = nivel === '04' || nivel === '07';
 
   // Si es elegible, empezamos en true. Si no, en false desde el principio.
-  const [showPlaceholder, setShowPlaceholder] = useState(isEligibleLevel);
+  //const [showPlaceholder, setShowPlaceholder] = useState(isEligibleLevel);
+  const [showPlaceholder, setShowPlaceholder] = useState(false);
   const [imageError, setImageError] = useState(false);
 
   const locationName = initialData?.seo?.h1?.normal || "tu zona";
