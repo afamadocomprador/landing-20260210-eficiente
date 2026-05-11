@@ -9,6 +9,10 @@ import { ChevronRight, X, ArrowRight, Stethoscope, HeartPulse, Sparkles, Activit
 import ScrollReveal from '@/components/ui/ScrollReveal';
 import { useInteractiveHome } from '@/hooks/useInteractiveHome';
 
+// --- IMPORTACIÓN DE POSTHOG ---
+import ScrollTracker from '@/components/posthog/ScrollTracker';
+import { usePostHog } from 'posthog-js/react';
+
 // ⚡️ TUS DATOS ORIGINALES EXACTOS
 /* *************************************************
 const tratamientosList = [
@@ -118,6 +122,63 @@ export default function InteractiveContent({
 }: InteractiveContentProps) {
   // ⚡️ ESTADO AISLADO EN EL HOOK
   const { activeFloatingId, setActiveFloatingId } = useInteractiveHome(); 
+
+  // ****************************************************************************
+  // ********************* CONTROL DE OPCIONES PULSADAS POSTHOG *****************
+  // ****************************************************************************
+  // 1. Iniciamos PostHog
+  const posthog = usePostHog();
+
+  // 2. Creamos el interceptor de clics de las opciones del bento-grid
+  const handleTreatmentClick = (e: React.MouseEvent, item: any) => {
+    // A. Enviamos el dato a PostHog
+    if (posthog) {
+      posthog.capture('tratamiento_clicado', {
+        nombre_tratamiento: item.title,
+        abre_modal: item.hasSub
+      });
+    }
+
+    // B. Mantenemos el comportamiento original de tu web
+    if (item.hasSub) {
+      e.preventDefault();
+      setActiveFloatingId(item.id);
+    }
+  };
+
+
+  // 3. Creamos el Interceptor de clics de las opciones en el sheet modal
+  const handleSubOptionClick = (sub: any) => {
+    if (posthog) {
+      posthog.capture('subtratamiento_clicado', {
+        categoria_padre: activeCategory?.title, // Ejemplo: "Precio de Implantes"
+        nombre_sub_opcion: sub.title,          // Ejemplo: "Implante Individual"
+        url_destino: sub.href
+      });
+    }
+    // Cerramos el modal como siempre
+    setActiveFloatingId(null);
+  };
+
+  // 4. Creamos el Interceptor de clics de la opcióon de Plantear Consulta
+  const handleConsultaClick = () => {
+    if (posthog) {
+      posthog.capture('consulta_clicada', {
+        section_name: 'Información',
+        origen: 'landing_principal',
+        texto_boton: 'Plantear Consulta' // O el texto que tenga tu botón
+      });
+    }
+  
+    // La lógica que ya tenía en el botón
+    setActiveFloatingId('contacto');
+  }
+
+
+  // ****************************************************************************
+  // ********************* FINAL DE CONTROL DE OPCIONES PULSADAS POSTHOG
+  // ****************************************************************************
+
   
   const neumorphicBase = "shadow-[8px_8px_12px_#033b3720,-5px_-5px_10px_#ffffff]";
   const neumorphicActive = "active:shadow-[inset_4px_4px_8px_#033b3730,inset_-4px_-4px_8px_#ffffff]";
@@ -169,6 +230,10 @@ export default function InteractiveContent({
   return (
     <>
       <section id="tratamientos" className="py-20 bg-[#F0F0F0] border-t border-dkv-gray-border scroll-mt-28 relative z-40">
+
+        {/* VIGILANTE AQUÍ: Por dentro del contenedor principal */}
+        <ScrollTracker sectionName="Tratamientos" />
+
         <div className="container mx-auto max-w-5xl px-6 md:px-8">
           <ScrollReveal>
             <h2 className="text-4xl md:text-5xl font-lemon text-dkv-green-dark mb-6 text-left md:text-center uppercase tracking-wide">
@@ -195,10 +260,7 @@ export default function InteractiveContent({
                 <ScrollReveal key={item.id} delay={finalDelay}>
                   <Wrapper 
                     href={(item.hasSub ? undefined : item.href) as any}
-                    onClick={item.hasSub ? (e) => {
-                      e.preventDefault();
-                      setActiveFloatingId(item.id);
-                    } : undefined}
+                    onClick={(e) => handleTreatmentClick(e, item)}
                     className={`w-full relative flex flex-col overflow-hidden rounded-3xl bg-[#F0F0F0] group transition-all duration-300 ease-out aspect-square hover:scale-[1.02] active:scale-[0.98] ${neumorphicBase} ${neumorphicActive}`}
                   >
                     {item.hasSub && <div className="absolute inset-0 z-50 cursor-pointer" />}
@@ -241,6 +303,10 @@ export default function InteractiveContent({
       {dentistasSection}
 
       <section id="informacion" className="py-20 bg-white border-t border-dkv-gray-border scroll-mt-28 relative z-30">
+
+         {/* VIGILANTE AQUÍ: Por dentro del contenedor principal */}
+         <ScrollTracker sectionName="Información" />
+
          <ScrollReveal>
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-4xl font-lemon text-dkv-green-dark mb-6 uppercase tracking-wide">¿Algo que comentar?</h2>
@@ -249,7 +315,7 @@ export default function InteractiveContent({
             </p>
             <button 
               type="button"
-              onClick={() => setActiveFloatingId('contacto')}
+              onClick={handleConsultaClick}
               className="inline-flex items-center justify-center rounded-dkv font-fsme font-extrabold bg-dkv-green-dark text-white shadow-xl hover:scale-105 hover:shadow-2xl active:scale-95 transition-all duration-300 text-xl px-8 py-6 h-auto z-50 relative"
             >
               Plantear Consulta
@@ -329,7 +395,7 @@ export default function InteractiveContent({
                     <Link 
                       key={sub.id} 
                       href={sub.href}
-                      onClick={() => setActiveFloatingId(null)}
+                      onClick={() => handleSubOptionClick(sub)}
                       className="group flex items-center justify-between py-4 border-b border-gray-200/60 hover:bg-gray-50 transition-colors active:bg-gray-100"
                     >
                       <div className="flex items-center flex-wrap gap-2">
