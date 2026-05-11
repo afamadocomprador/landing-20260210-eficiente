@@ -7,6 +7,10 @@ import "./globals.css";
 // IMPORTANTE: Ruta correcta del Header migrado
 import Header from "@/components/layout/Header";
 
+// --- IMPORTACIONES DE POSTHOG ---
+import { PostHogProvider } from "./providers";
+import PostHogPageView from "./PostHogPageView";
+
 // Configuración de Fuentes Corporativas (Setup original del proyecto)
 const lemonMilk = localFont({
   src: "./fonts/LemonMilkPro-Bold.woff2",
@@ -28,7 +32,6 @@ export const metadata: Metadata = {
   verification: {
     google: 'ZcZv1ys4X1ftnI0uYOf6EfLkxGXAUsuaiK_9h1DaRv0', // Código de Search Console original
   },
-
   alternates: {
     canonical: 'https://landing-20260210-eficiente.vercel.app', // Pon aquí la URL oficial y definitiva
   },
@@ -65,14 +68,19 @@ export default function RootLayout({
       
       <body className={`${lemonMilk.variable} ${fsMe.variable} font-fsme antialiased bg-white`}>
         
-        {/* Header V1 Restaurado (Ruta: @/components/layout/Header) */}
-        <Header />
+        {/* 2. INYECTAMOS POSTHOG WRAPPER */}
+        <PostHogProvider>
+          <PostHogPageView />
+          
+          {/* Header V1 Restaurado (Ruta: @/components/layout/Header) */}
+          <Header />
 
-        {/* Padding-top de 110px para compensar el header fijo y no tapar el Hero */}
-        <main className="pt-[110px] min-h-screen">
-          {children}
-        </main>
-        
+          {/* Padding-top de 110px para compensar el header fijo y no tapar el Hero */}
+          <main className="pt-[110px] min-h-screen">
+            {children}
+          </main>
+          
+        </PostHogProvider>
       </body>
     </html>
   );
