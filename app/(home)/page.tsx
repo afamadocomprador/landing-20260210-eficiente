@@ -1,7 +1,5 @@
 // app/(home)/page.tsx
 
-// app/(home)/page.tsx
-
 import { Viewport } from 'next';
 import dynamic from 'next/dynamic';
 import { SITE_CONFIG } from '@/constants/config';
@@ -11,6 +9,9 @@ import FooterLegal from '@/components/FooterLegal';
 // ⚡️ Importaciones necesarias para las secciones que ahora renderizará el servidor
 import HeroSearch from '@/components/home/HeroSearch';
 import ScrollReveal from '@/components/ui/ScrollReveal';
+
+// --- IMPORTACIÓN DE POSTHOG ---
+import ScrollTracker from '@/components/posthog/ScrollTracker';
 
 // ⚡️ LA SOLUCIÓN AL TTI: 
 // Importamos dinámicamente la interactividad y forzamos a que no bloquee el servidor
@@ -83,6 +84,10 @@ export default function LandingPage() {
   // ⚡️ Construimos el bloque del buscador puramente aquí, fuera del "use client"
   const dentistasSection = (
     <section id="dentistas" className="py-24 bg-white border-t border-dkv-gray-border scroll-mt-28 relative overflow-visible">
+
+      {/* VIGILANTE AQUÍ: Por dentro del contenedor principal */}
+      <ScrollTracker sectionName="Dentistas" />
+
       <div className="container mx-auto px-4 text-center relative z-40">
          <ScrollReveal>
           <h2 className="text-4xl md:text-5xl font-lemon text-dkv-green-dark mb-6 uppercase tracking-wide">Dentistas.</h2>
