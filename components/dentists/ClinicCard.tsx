@@ -7,6 +7,8 @@
 import { useState, KeyboardEvent } from "react";
 import { MapPin, Phone, Users, ArrowRight, Plus, Minus, Share2, Check } from "lucide-react";
 import { formatPhoneNumber } from "@/lib/text-formatter";
+import posthog from "posthog-js";
+import { usePathname } from "next/navigation";
 
 interface ClinicCardProps {
   clinic: any; 
@@ -15,6 +17,8 @@ interface ClinicCardProps {
 }
 
 export default function ClinicCard({ clinic, onSelectClinic, isSelected = false }: ClinicCardProps) {
+  const pathname = usePathname();
+
   const [showStaff, setShowStaff] = useState(false);
   const [isShared, setIsShared] = useState(false);
 
@@ -49,6 +53,21 @@ export default function ClinicCard({ clinic, onSelectClinic, isSelected = false 
       console.log("Acción de compartir cancelada o no soportada", err);
     }
   };
+
+  const handlePhoneClick = (e: React.MouseEvent) => {
+
+    e.stopPropagation(); // Mantenemos esto para que no se pulse la tarjeta entera
+    
+    posthog.capture('intencion_llamada_clinica', {
+      origen: pathname,
+      nombre_clinica: clinic.name,
+      telefono_marcado: clinic.phone,
+      tipo_contacto: 'llamada_directa'
+    });
+
+  };
+
+
 
   const handleKeyDown = (e: KeyboardEvent<HTMLElement>) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -154,7 +173,7 @@ export default function ClinicCard({ clinic, onSelectClinic, isSelected = false 
             {clinic.phone && (
               <a 
                 href={`tel:${clinic.phone.toString().replace(/\D/g, "")}`}
-                onClick={(e) => e.stopPropagation()}
+                onClick={handlePhoneClick}
                 aria-label={`Llamar al teléfono ${clinic.phone} de ${clinic.name}`}
                 className="flex items-center gap-3 px-6 py-3.5 bg-dkv-green-dark text-white rounded-2xl text-base font-bold shadow-md hover:bg-dkv-green transition-all active:scale-95"
               >
