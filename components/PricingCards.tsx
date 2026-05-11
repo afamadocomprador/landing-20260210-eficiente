@@ -1,9 +1,11 @@
 // components/PricingCards.tsx
 
-// components/PricingCards.tsx
 import React from 'react';
 import { CheckCircle2, Info } from 'lucide-react';
 import { cn, formatPrice } from '@/lib/utils'; 
+
+// --- IMPORTACIÓN DE POSTHOG ---
+import ScrollTracker from '@/components/posthog/ScrollTracker';
 
 // MEJORA DE EFICIENCIA: Extraemos los datos constantes fuera del componente 
 // para evitar re-crear los arrays y objetos en cada renderizado.
@@ -32,6 +34,10 @@ const PricingCards = () => {
   return (
     // ESTILO V1: Fondo gris muy suave (#F7F7F7) para separar la sección
     <section id="ventajas" className="py-20 bg-dkv-gray-light">
+
+      {/* VIGILANTE AQUÍ: Encapsulado dentro de la sección */}
+      <ScrollTracker sectionName="Precios" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="text-center max-w-3xl mx-auto mb-16">

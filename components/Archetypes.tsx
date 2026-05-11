@@ -4,9 +4,16 @@ import React from 'react';
 import Image from 'next/image'; 
 import { CheckCircle2 } from 'lucide-react';
 
+// --- IMPORTACIÓN DE POSTHOG ---
+import ScrollTracker from '@/components/posthog/ScrollTracker';
+
 const Archetypes = () => {
   return (
     <section className="py-16 md:py-24 bg-white">
+
+      {/* VIGILANTE AQUÍ: Encapsulado dentro de la sección */}
+      <ScrollTracker sectionName="Arquetipos" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
            {/* AQUÍ ESTÁ EL CAMBIO: h2 para accesibilidad */}

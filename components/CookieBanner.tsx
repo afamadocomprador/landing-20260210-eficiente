@@ -4,10 +4,15 @@
 
 import React, { useState, useEffect } from 'react';
 import { Settings, X, ShieldCheck } from 'lucide-react';
+// 1. Importamos el hook de PostHog
+import { usePostHog } from 'posthog-js/react';
 
 const CookieBanner = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [showConfig, setShowConfig] = useState(false);
+  
+  // Instanciamos PostHog
+  const posthog = usePostHog();
   
   // Estado de las preferencias (Marketing desactivado por defecto - Opt-in estricto RGPD)
   const [preferences, setPreferences] = useState({
@@ -16,7 +21,8 @@ const CookieBanner = () => {
   });
 
   useEffect(() => {
-    // Comprobar si ya existe consentimiento guardado
+    // Ya solo necesitamos comprobar si mostramos el banner o no.
+    // El Provider ahora se encarga de despertar a PostHog si ya había consentimiento.
     const consent = localStorage.getItem('dkv_cookie_consent');
     if (!consent) {
       setIsVisible(true);
@@ -38,7 +44,7 @@ const CookieBanner = () => {
     localStorage.setItem('dkv_cookie_consent', 'true');
     localStorage.setItem('dkv_cookie_prefs', JSON.stringify(finalPreferences));
 
-    // 2. Lógica de Desbloqueo (Consent Mode v2)
+    // 2. Lógica de Desbloqueo (Consent Mode v2 + PostHog)
     if (typeof window !== 'undefined') {
       const gtmStatus = finalPreferences.marketing ? 'granted' : 'denied';
       
@@ -52,6 +58,24 @@ const CookieBanner = () => {
       
       // Disparamos el evento clave para que GTM sepa que hubo una actualización
       (window as any).dataLayer?.push({'event': 'consent_update'});
+
+      // 3. ACTUALIZACIÓN ESTADO POSTHOG AL HACER CLIC
+      if (posthog) {
+        if (finalPreferences.marketing) {
+          // El usuario acepta: persistimos en cookie y empezamos a trackear
+          posthog.set_config({ persistence: 'localStorage+cookie' });
+          posthog.opt_in_capturing();
+          
+          // ¡FORZAMOS EL PAGEVIEW INICIAL!
+          // Como acaba de aceptar, capturamos la visita actual que estaba bloqueada
+          posthog.capture('$pageview', {
+             $current_url: window.location.href
+          });
+        } else {
+          // El usuario rechaza: apagado total
+          posthog.opt_out_capturing();
+        }
+      }
     }
 
     setIsVisible(false);

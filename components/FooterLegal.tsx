@@ -3,6 +3,9 @@
 import React from 'react';
 import Link from 'next/link';
 
+// --- IMPORTACIÓN DE POSTHOG ---
+import ScrollTracker from '@/components/posthog/ScrollTracker';
+
 /**
  * FooterLegal - Estructura de dos zonas
  * Zona Oscura: Navegación de contenido y contacto.
@@ -13,6 +16,10 @@ const FooterLegal: React.FC = () => {
 
   return (
     <footer className="w-full">
+
+      {/* VIGILANTE AQUÍ: Encapsulado dentro del footer */}
+      <ScrollTracker sectionName="Footer" />
+
       {/* --- ZONA 1: GRIS OSCURA (Contenido y Navegación) --- */}
       <div className="bg-dkv-gray text-white py-14 font-fsme">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
