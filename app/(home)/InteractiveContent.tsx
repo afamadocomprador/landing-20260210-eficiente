@@ -171,7 +171,7 @@ export default function InteractiveContent({
     }
   
     // La lógica que ya tenía en el botón
-    setActiveFloatingId('contacto');
+    //setActiveFloatingId('contacto'); ahora la navegación la hará el LINK de next
   }
 
 
@@ -313,6 +313,7 @@ export default function InteractiveContent({
             <p className="text-xl text-dkv-gray font-fsme max-w-3xl mx-auto mb-10 leading-relaxed text-balance">
                 Plantéanos cualquier duda sobre tus circunstancias y cómo te puedes beneficiar de nuestros tratamientos.
             </p>
+            {/* ****************************** NAVEGACION A NEXT
             <button 
               type="button"
               onClick={handleConsultaClick}
@@ -320,6 +321,17 @@ export default function InteractiveContent({
             >
               Plantear Consulta
             </button>
+             *************************************** NAVEGACION A NEXT */}
+            {/* ⚡️ MODIFICADO: De <button> a <Link href="/contacto"> */}
+            <Link 
+              href="/contacto"
+              onClick={handleConsultaClick}
+              className="inline-flex items-center justify-center rounded-dkv font-fsme font-extrabold bg-dkv-green-dark text-white shadow-xl hover:scale-105 hover:shadow-2xl active:scale-95 transition-all duration-300 text-xl px-8 py-6 h-auto z-50 relative"
+            >
+              Plantear Consulta
+            </Link>
+
+
           </div>
          </ScrollReveal>
       </section>
@@ -352,9 +364,14 @@ export default function InteractiveContent({
         >
           <div className="bg-[#F5F5F5] px-5 py-4 flex items-center justify-between border-b border-gray-300 shrink-0">
             <div className="flex items-center gap-1.5 text-[15px] font-medium text-gray-500 font-fsme">
-              <span>{isContacto ? 'Contacto' : 'Tratamientos'}</span>
-              {!isContacto && <ChevronRight className="w-4 h-4" />}
-              {!isContacto && <span className="text-gray-900">{activeCategory?.title || 'Opciones'}</span>}
+              {/* ⚡️ LIMPIEZA: Eliminado el "isContacto" de la cabecera ***************************************
+               <span>{isContacto ? 'Contacto' : 'Tratamientos'}</span> 
+               {!isContacto && <ChevronRight className="w-4 h-4" />}
+               {!isContacto && <span className="text-gray-900">{activeCategory?.title || 'Opciones'}</span>}
+               ********************************************************* */}
+              <span>Tratamientos</span>
+              <ChevronRight className="w-4 h-4" />
+              <span className="text-gray-900">{activeCategory?.title || 'Opciones'}</span>
             </div>
             
             <button 
@@ -374,11 +391,14 @@ export default function InteractiveContent({
               {modalSubtitle}
             </p>
 
+
+            {/* ⚡️ LIMPIEZA: Eliminado el bloque entero de isContacto ******************************** 
             {isContacto ? (
               <div className="border-t border-gray-300 pt-6">
                 <p className="text-sm text-gray-500 italic">Formulario de contacto en desarrollo (Supabase / Telegram)...</p>
               </div>
             ) : (
+            **************************************** */}
               <div className="flex flex-col border-t border-gray-300 pt-2">
                 {subOptions.map((sub: any) => {
                   if (sub.isSeparator) {
@@ -416,7 +436,9 @@ export default function InteractiveContent({
                   );
                 })}
               </div>
+            {/* ⚡️ LIMPIEZA: Eliminado el bloque entero de isContacto ******************************** 
             )}
+            **************************************** */}
           </div>
         </div>
       </div>
