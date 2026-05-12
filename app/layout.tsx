@@ -39,8 +39,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal, // ⚡️ 1. AÑADIMOS EL PROP MODAL
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode; // ⚡️ 2. TIPAMOS EL PROP
 }>) {
   return (
     <html lang="es" className="scroll-smooth">
@@ -79,6 +81,9 @@ export default function RootLayout({
           <main className="pt-[110px] min-h-screen">
             {children}
           </main>
+
+          {/* ⚡️ 3. RENDERIZAMOS EL MODAL (EL HUECO) AQUÍ */}
+          {modal}
           
         </PostHogProvider>
       </body>
