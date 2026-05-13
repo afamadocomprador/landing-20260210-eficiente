@@ -7,6 +7,8 @@ import "./globals.css";
 // IMPORTANTE: Ruta correcta del Header migrado
 import Header from "@/components/layout/Header";
 
+import SmartStickyCTA from "@/components/ui/SmartStickyCTA";
+
 // --- IMPORTACIONES DE POSTHOG ---
 import { PostHogProvider } from "./providers";
 import PostHogPageView from "./PostHogPageView";
@@ -81,6 +83,9 @@ export default function RootLayout({
           <main className="pt-[110px] min-h-screen">
             {children}
           </main>
+
+          {/* EL BOTÓN FLOTANTE INTELIGENTE PARA MÓVILES */}
+          <SmartStickyCTA />
 
           {/* ⚡️ 3. RENDERIZAMOS EL MODAL (EL HUECO) AQUÍ */}
           {modal}
