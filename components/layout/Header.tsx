@@ -19,12 +19,12 @@ interface NavItem {
   icon: React.ElementType;
 }
 
-// 🌟 1. Restauramos los anclajes NATIVOS (sin la "/") para recuperar el scroll suave
+// 🌟 1. Actualizamos el ítem de Contacto a una ruta absoluta
 const NAV_ITEMS: NavItem[] = [
   { 
     label: "Inicio", 
     subLabel: "Página principal",
-    href: "/", // Inicio siempre va a la raíz
+    href: "/", 
     ariaLabel: "Ir al inicio de la página",
     icon: Home
   },
@@ -43,9 +43,10 @@ const NAV_ITEMS: NavItem[] = [
     icon: MapPin
   },
   { 
-    label: "Consultas", 
+    // 🌟 AHORA ES UNA RUTA REAL PARA DISPARAR EL MODAL
+    label: "Contacto", 
     subLabel: "Plantéanos tus dudas",
-    href: "#información", 
+    href: "/contacto", 
     ariaLabel: "Plantéanos cualquier duda o comentario que necesites",
     icon: MessageCircle
   },
@@ -98,7 +99,6 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
                 className="relative flex items-center transition-all duration-300"
                 onClick={(e) => {
                   setIsMobileMenuOpen(false);
-                  // 🌟 Si tocamos el logo estando en Home, hacemos scroll suave arriba
                   if (isHome) {
                     e.preventDefault();
                     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -112,42 +112,63 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
                     width={220} height={90}
                     className="w-full h-auto object-contain object-left"
                     priority 
-                    style={{ width: "auto" }} // <--- AÑADE ESTA LÍNEA
+                    style={{ width: "auto" }}
                   />
                </div>
              </Link>
           </div>
 
           {/* --- NAVEGACIÓN DESKTOP --- */}
-          <div className="flex items-center gap-6 lg:gap-10 z-50">
-            <nav className="hidden md:flex gap-6 lg:gap-8">
-              {NAV_ITEMS.map((item) => (
-                <Link
-                  key={item.label}
-                  // 🌟 2. Lógica Dinámica: Si es Inicio usa "/", si no, evalúa si estamos en la Home o en otra página
-                  href={item.label === "Inicio" ? "/" : (isHome ? item.href : `/${item.href}`)}
-                  onClick={(e) => {
-                    // 🌟 3. Intercepción: Si pulsamos Inicio y ya estamos en Home, forzamos scroll suave arriba
-                    if (item.label === "Inicio" && isHome) {
-                      e.preventDefault();
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                    }
-                  }}
-                  className="text-white/90 font-fsme text-sm lg:text-base font-bold hover:text-white transition-colors uppercase tracking-widest relative group py-2"
-                >
-                  {item.label}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
-                </Link>
-              ))}
+          <div className="flex items-center gap-4 lg:gap-8 z-50">
+            <nav className="hidden md:flex items-center gap-5 lg:gap-8">
+              {NAV_ITEMS.map((item) => {
+                
+                // 🌟 2. SI EL ENLACE ES CONTACTO, LO CONVERTIMOS EN BOTÓN DESTACADO
+                if (item.href === "/contacto") {
+                  return (
+                    <Link
+                      key={item.label}
+                      href="/contacto"
+                      className="bg-dkv-green-dark text-white hover:bg-white hover:text-dkv-green font-lemon tracking-widest text-xs lg:text-sm h-10 px-5 lg:px-6 rounded-[1rem] shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 uppercase font-bold flex items-center ml-2 border-2 border-transparent hover:border-dkv-green-dark"
+                    >
+                      Plantear Consulta
+                    </Link>
+                  );
+                }
+
+                // 🌟 3. LÓGICA DINÁMICA PARA EL RESTO DE ENLACES
+                const isAnchor = item.href.startsWith('#');
+                const finalHref = item.label === "Inicio" 
+                  ? "/" 
+                  : (isAnchor ? (isHome ? item.href : `/${item.href}`) : item.href);
+
+                return (
+                  <Link
+                    key={item.label}
+                    href={finalHref}
+                    onClick={(e) => {
+                      if (item.label === "Inicio" && isHome) {
+                        e.preventDefault();
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }
+                    }}
+                    className="text-white/90 font-fsme text-sm lg:text-base font-bold hover:text-white transition-colors uppercase tracking-widest relative group py-2"
+                  >
+                    {item.label}
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+                  </Link>
+                );
+              })}
             </nav>
             
-            {/* CTA STICKY DESKTOP */}
-            <div className={`transition-all duration-500 transform hidden md:block ${showCta ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}>
-              <Link href="/presupuesto" className="bg-white text-dkv-green hover:bg-gray-100 font-lemon tracking-widest text-xs md:text-sm h-10 px-6 rounded-btn shadow-lg transition-all uppercase font-bold flex items-center">
+            {/* CTA STICKY DESKTOP (Aparece con el scroll) */}
+            <div className={`transition-all duration-500 transform hidden md:flex items-center overflow-hidden ${showCta ? "opacity-100 translate-y-0 w-auto" : "opacity-0 translate-y-4 pointer-events-none w-0"}`}>
+              <Link href="/presupuesto" className="bg-white text-dkv-green hover:bg-gray-100 font-lemon tracking-widest text-xs md:text-sm h-10 px-6 rounded-btn shadow-lg transition-all uppercase font-bold flex items-center whitespace-nowrap">
                 Calcula tu precio
               </Link>
             </div>
 
+            {/* BOTÓN MENÚ MÓVIL */}
             <button className="md:hidden text-white p-2" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                     aria-label={isMobileMenuOpen ? "Cerrar menú principal" : "Abrir menú principal"}
             >
@@ -167,13 +188,9 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
           {/* ILUSTRACIÓN IZQUIERDA */}
           <div className="w-[28%] border-r border-dkv-green/5 relative bg-dkv-green/5 flex flex-col justify-end">
             <div className="absolute inset-0 opacity-60">
-                {/* cantaba un poco en rendimiento **************
-                <Image src="/images/utensilios-dental.png" alt="Decoración" fill className="object-cover object-bottom pt-8 pb-4" />
-                ************************** */}
                 <Image src="/images/utensilios-dental.png" alt="Decoración" fill className="object-cover object-bottom pt-8 pb-4" 
-  sizes="(max-width: 768px) 30vw, 150px"
-/>
-
+                 sizes="(max-width: 768px) 30vw, 150px"
+                />
             </div>
           </div>
 
@@ -181,14 +198,17 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
           <nav className="flex-1 flex flex-col p-2 pl-1">
             {NAV_ITEMS.map((item, index) => {
               const Icon = item.icon;
+              const isAnchor = item.href.startsWith('#');
+              const finalHref = item.label === "Inicio" 
+                  ? "/" 
+                  : (isAnchor ? (isHome ? item.href : `/${item.href}`) : item.href);
+
               return (
                 <Link
                   key={item.label}
-                  // Lógica Dinámica también aplicada en móvil
-                  href={item.label === "Inicio" ? "/" : (isHome ? item.href : `/${item.href}`)}
+                  href={finalHref}
                   onClick={(e) => {
                     setIsMobileMenuOpen(false);
-                    // Mismo control manual de scroll para Inicio
                     if (item.label === "Inicio" && isHome) {
                       e.preventDefault();
                       window.scrollTo({ top: 0, behavior: "smooth" });
