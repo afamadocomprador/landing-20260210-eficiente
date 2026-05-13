@@ -1,13 +1,11 @@
 // components/dentists/ClinicCard.tsx
 
-// components/dentists/ClinicCard.tsx
-
 "use client";
 
 import { useState, KeyboardEvent } from "react";
 import { MapPin, Phone, Users, ArrowRight, Plus, Minus, Share2, Check } from "lucide-react";
 import { formatPhoneNumber } from "@/lib/text-formatter";
-import posthog from "posthog-js";
+import { usePostHog } from "posthog-js/react";
 import { usePathname } from "next/navigation";
 
 interface ClinicCardProps {
@@ -18,6 +16,7 @@ interface ClinicCardProps {
 
 export default function ClinicCard({ clinic, onSelectClinic, isSelected = false }: ClinicCardProps) {
   const pathname = usePathname();
+  const posthog = usePostHog();
 
   const [showStaff, setShowStaff] = useState(false);
   const [isShared, setIsShared] = useState(false);
@@ -58,12 +57,14 @@ export default function ClinicCard({ clinic, onSelectClinic, isSelected = false 
 
     e.stopPropagation(); // Mantenemos esto para que no se pulse la tarjeta entera
     
-    posthog.capture('intencion_llamada_clinica', {
-      origen: pathname,
-      nombre_clinica: clinic.name,
-      telefono_marcado: clinic.phone,
-      tipo_contacto: 'llamada_directa'
-    });
+    if (posthog) {
+      posthog.capture('llamada_clinica_iniciada', {
+        origen: pathname,
+        nombre_clinica: clinic.name,
+        telefono_marcado: clinic.phone ? clinic.phone.toString() : ''
+      });
+    }
+
 
   };
 
