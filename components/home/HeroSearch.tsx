@@ -4,7 +4,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { Search, MapPin, Navigation, Loader2 } from "lucide-react";
-import posthog from "posthog-js"; 
+import { usePostHog } from 'posthog-js/react';
 
 interface SearchItem {
   n: string;
@@ -31,6 +31,7 @@ export default function HeroSearch() {
   
   const router = useRouter();
   const pathname = usePathname();
+  const posthog = usePostHog();
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   // 🚀 CORE WEB VITALS: Precarga del diccionario (Lazy + Idle + Hover) vía API Route
@@ -226,13 +227,15 @@ export default function HeroSearch() {
     router.push(`/dentistas/${slug}`);
   };
  ************************* SUSTITUIDO POR POSTHOG ************ */
- const handleSelect = (slug: string, name: string, metodo: string = 'texto_predictivo') => {
+ const handleSelect = (slug: string, name: string, metodo: string = 'predictivo') => {
     // 🚀 ENVIAMOS EL EVENTO A POSTHOG
-    posthog.capture('busqueda_dentista_iniciada', {
-      origen: pathname === '/' ? 'landing_principal' : pathname,
-      metodo_busqueda: metodo,
-      ubicacion_buscada: name // Aquí viajará "Zaragoza", "Huesca", etc.
-    });
+    if (posthog) {
+      posthog.capture('busqueda_iniciada', {
+        origen: pathname,
+        metodo_busqueda: metodo,
+        ubicacion_buscada: name // Aquí viajará "Zaragoza", "Huesca", etc.
+      });
+    }
 
     setQuery(name);
     setIsOpen(false);
@@ -246,7 +249,7 @@ export default function HeroSearch() {
     if (results.length > 0) {
       //handleSelect(results[0].s, results[0].n);
       // 🚀 Añadimos 'tecleo_enter' para PostHog
-      handleSelect(results[0].s, results[0].n, 'tecleo_enter');
+      handleSelect(results[0].s, results[0].n, 'enter');
     } else if (dictionary) {
       const searchWord = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       const match = dictionary.find(item => 
@@ -256,7 +259,7 @@ export default function HeroSearch() {
       if (match) {
         // handleSelect(match.s, match.n);
         // 🚀 Añadimos 'tecleo_enter' Para PostHog
-        handleSelect(match.s, match.n, 'tecleo_enter');
+        handleSelect(match.s, match.n, 'enter');
       }
     }
   };
@@ -271,13 +274,13 @@ export default function HeroSearch() {
 
 
     // 🚀 ENVIAMOS EL EVENTO GPS A POSTHOG
-    posthog.capture('busqueda_dentista_iniciada', {
-      origen: pathname === '/' ? 'landing_principal' : pathname,
-      metodo_busqueda: 'gps',
-      ubicacion_buscada: 'Cerca de mi'
-    });
-
-
+    if (posthog) {
+      posthog.capture('busqueda_iniciada', {
+        origen: pathname,
+        metodo_busqueda: 'gps',
+        ubicacion_buscada: 'Cerca de mi'
+      });
+    }
 
     setIsLocating(true);
 
