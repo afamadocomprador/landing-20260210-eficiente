@@ -3,16 +3,25 @@
 import React from 'react';
 import Link from 'next/link';
 
-// --- IMPORTACIÓN DE POSTHOG ---
+// --- IMPORTACIONES DE SERVICIOS Y POSTHOG ---
 import ScrollTracker from '@/components/posthog/ScrollTracker';
+import { getCustomerServicePhone } from '@/lib/services/config';
+import TrackedPhoneLink from '@/components/posthog/TrackedPhoneLink';
 
 /**
  * FooterLegal - Estructura de dos zonas
  * Zona Oscura: Navegación de contenido y contacto.
  * Zona Clara: Enlaces legales y cumplimiento.
  */
-const FooterLegal: React.FC = () => {
+// 🚀 Convertimos a función async (Server Component) para poder leer el teléfono
+export default async function FooterLegal() {
   const currentYear = new Date().getFullYear();
+  
+  // 🚀 Llamamos a tu servicio en el servidor
+  const customerPhone = await getCustomerServicePhone();
+  
+  // Formateo visual para mantener tu diseño original (ej. "+34  976  217  463")
+  const displayPhone = customerPhone.replace('+34', '+34  ').replace(/(\d{3})(\d{3})(\d{3})/, '$1  $2  $3');
 
   return (
     <footer className="w-full">
@@ -50,9 +59,14 @@ const FooterLegal: React.FC = () => {
                <p className="font-bold mb-6 text-lg uppercase tracking-wide font-lemon text-white">CONTACTO NACIONAL</p>
                <ul className="space-y-4 opacity-90">
                  <li>
-                   <a href="tel:+34976217463" className="hover:underline text-xl font-bold flex md:justify-end items-center gap-2 font-fsme">
-                     +34  976  217  463
-                   </a>
+                   {/* 🚀 Usamos el nuevo componente interactivo con PostHog */}
+                   <TrackedPhoneLink 
+                     phone={customerPhone} 
+                     seccion="Footer" 
+                     className="hover:underline text-xl font-bold flex md:justify-end items-center gap-2 font-fsme"
+                   >
+                     {displayPhone}
+                   </TrackedPhoneLink>
                  </li>
                  <li>
                    {/* Ajustado para apuntar a la sección de "plantear cuestiones" (#informacion) */}
@@ -100,6 +114,4 @@ const FooterLegal: React.FC = () => {
       </div>
     </footer>
   );
-};
-
-export default FooterLegal;
+}
