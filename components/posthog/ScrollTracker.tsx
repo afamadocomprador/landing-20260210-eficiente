@@ -4,6 +4,7 @@
 
 import { useEffect, useRef } from 'react';
 import { usePostHog } from 'posthog-js/react';
+import { usePathname } from 'next/navigation';
 
 interface ScrollTrackerProps {
   sectionName: string;
@@ -12,13 +13,15 @@ interface ScrollTrackerProps {
 export default function ScrollTracker({ sectionName }: ScrollTrackerProps) {
   const ref = useRef<HTMLDivElement>(null);
   const posthog = usePostHog();
+  const pathname = usePathname();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && posthog) {
-          posthog.capture('section_viewed', {
-            section_name: sectionName,
+          posthog.capture('seccion_visualizada', {
+            origen: pathname,
+            nombre_seccion: sectionName,
           });
           observer.disconnect(); 
         }
