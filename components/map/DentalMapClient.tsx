@@ -8,7 +8,8 @@ import { MapContainer, TileLayer, Marker, useMap, GeoJSON, useMapEvents, Polygon
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import { usePostHog } from 'posthog-js/react';
 import * as topojson from "topojson-client";
 
 export interface MapMarkerData {
@@ -111,6 +112,9 @@ export default function DentalMapClient({
   const [activeCenter, setActiveCenter] = useState<string | null>(null);
   const [geoJsonData, setGeoJsonData] = useState<any | null>(null);
   const router = useRouter();
+
+  const pathname = usePathname(); 
+  const posthog = usePostHog();
 
   // 🌟 LÓGICA RESTAURADA: ¿Debe ser mudo el mapa?
   const isMudo = ['00', '01', '02', '03'].includes(String(landingLevel));
@@ -219,6 +223,15 @@ export default function DentalMapClient({
             icon={createCustomIcon(m.count, m.name, m.name === activeCenter)}
             eventHandlers={{ 
               click: () => {
+
+                if (posthog) {
+                  posthog.capture('pin_mapa_clicado', {
+                    origen: pathname,
+                    pin_mapa_tipo: m.tipo || 'desconocido',
+                    pin_mapa_nombre: m.name || 'desconocido',
+                  });
+                }
+
                 if (m.tipo === 'centro') { 
                   setActiveCenter(m.name); 
                   onMarkerClick && onMarkerClick(m.name); 
