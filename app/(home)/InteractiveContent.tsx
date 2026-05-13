@@ -12,6 +12,7 @@ import { useInteractiveHome } from '@/hooks/useInteractiveHome';
 // --- IMPORTACIÓN DE POSTHOG ---
 import ScrollTracker from '@/components/posthog/ScrollTracker';
 import { usePostHog } from 'posthog-js/react';
+import { usePathname } from "next/navigation";
 
 // ⚡️ TUS DATOS ORIGINALES EXACTOS
 /* *************************************************
@@ -128,6 +129,7 @@ export default function InteractiveContent({
   // ****************************************************************************
   // 1. Iniciamos PostHog
   const posthog = usePostHog();
+  const pathname = usePathname();
 
   // 2. Creamos el interceptor de clics de las opciones del bento-grid
   const handleTreatmentClick = (e: React.MouseEvent, item: any) => {
@@ -164,9 +166,9 @@ export default function InteractiveContent({
   const handleConsultaClick = () => {
     if (posthog) {
       posthog.capture('consulta_clicada', {
-        section_name: 'Información',
-        origen: 'landing_principal',
-        texto_boton: 'Plantear Consulta' // O el texto que tenga tu botón
+        origen: pathname,
+        nombre_seccion: 'Información',
+        texto_boton: 'Plantear Consulta'
       });
     }
   
