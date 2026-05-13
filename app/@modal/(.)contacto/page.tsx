@@ -1,34 +1,68 @@
 // app/@modal/(.)contacto/page.tsx
+// app/@modal/(.)contacto/page.tsx
+
 
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect, useRef } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { X, Loader2 } from "lucide-react";
+import { X, Loader2, Phone } from "lucide-react";
 import { usePostHog } from 'posthog-js/react';
+
+// --- SERVICIOS Y COMPONENTES ANALÍTICOS ---
+import { getCustomerServicePhone } from '@/lib/services/config';
+import TrackedPhoneLink from '@/components/posthog/TrackedPhoneLink';
 
 export default function ContactModalIntercepted() {
   const router = useRouter();
+  const pathname = usePathname();
   const posthog = usePostHog();
   
-  // Estado para la animación suave de entrada/salida
-  const [isAnimating, setIsAnimating] = useState(false);
+  // Referencia para no duplicar el evento
+  const formStartedRef = useRef(false);
   
+  const [isAnimating, setIsAnimating] = useState(false);
   const [formData, setFormData] = useState({ nombre: '', telefono: '', email: '', cp: '', mensaje: '', consent: false });
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [customerPhone, setCustomerPhone] = useState("+34 976 217 463");
 
-  // Al montarse, disparamos la animación de entrada
   useEffect(() => {
     setIsAnimating(true);
+    // Recuperamos el teléfono del servidor de forma transparente
+    async function fetchPhone() {
+      try {
+        const phone = await getCustomerServicePhone();
+        setCustomerPhone(phone);
+      } catch (error) {
+        console.warn("No se pudo cargar el teléfono del servidor.");
+      }
+    }
+    fetchPhone();
   }, []);
 
-  // Función maestra de cierre: Hace la animación de salida y luego retrocede en el historial
   const closeModal = () => {
     setIsAnimating(false);
     setTimeout(() => {
       router.back();
-    }, 400); // 400ms da tiempo a que termine la transición CSS antes de destruir el componente
+    }, 400); 
+  };
+
+  // LIMPIEZA Y FORMATEO: Quitamos el +34 y lo agrupamos de 3 en 3 (ej. 976 217 463)
+  const displayPhone = customerPhone
+    .replace(/^\+34\s?/, '') 
+    .replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3') 
+    .trim();
+
+  // Función para rastrear cuando el usuario empieza a escribir
+  const handleFormStart = () => {
+    if (!formStartedRef.current && posthog) {
+      posthog.capture('formulario_iniciado', {
+        origen: pathname,
+        tipo_vista: 'modal_interceptado'
+      });
+      formStartedRef.current = true;
+    }
   };
 
   const handleContactSubmit = async (e: React.FormEvent) => {
@@ -53,58 +87,92 @@ export default function ContactModalIntercepted() {
       if (response.ok) {
         setSubmitStatus('success');
         if (posthog) {
-          posthog.capture('lead_enviado', { origen: 'modal_interceptado' });
+          posthog.capture('formulario_enviado', { origen: pathname, tipo_vista: 'modal_interceptado' });
         }
-        // Tras el éxito, esperamos 3.5 segundos para que lea el mensaje y cerramos automáticamente
         setTimeout(closeModal, 3500);
       } else {
+        if (posthog) {
+          posthog.capture('formulario_error', { origen: pathname, tipo_vista: 'modal_interceptado', mensaje_error: 'Respuesta no exitosa API' });
+        }
         throw new Error('Fallo en la respuesta del servidor');
       }
     } catch (error) {
       setSubmitStatus('error');
+      if (posthog) {
+        posthog.capture('formulario_error', { origen: pathname, tipo_vista: 'modal_interceptado', mensaje_error: 'Error de red' });
+      }
     }
   };
 
   return (
-    <div 
-      className={`fixed inset-0 z-[9999] flex flex-col justify-end md:justify-center items-center px-4 pb-0 md:p-4 transition-all duration-500 ease-out`}
-    >
+    <div className={`fixed inset-0 z-[9999] flex flex-col justify-end md:justify-center items-center px-4 pb-0 md:p-4 transition-all duration-500 ease-out`}>
       {/* Fondo oscuro desenfocado */}
       <div 
-        className={`absolute inset-0 bg-dkv-green-dark/60 backdrop-blur-sm transition-opacity duration-400 ${
-          isAnimating ? 'opacity-100' : 'opacity-0'
-        }`}
+        className={`absolute inset-0 bg-dkv-green-dark/60 backdrop-blur-sm transition-opacity duration-400 ${isAnimating ? 'opacity-100' : 'opacity-0'}`}
         onClick={closeModal}
       />
 
       {/* Contenedor del Modal */}
-      <div 
-        className={`relative w-full md:max-w-[450px] bg-white shadow-2xl rounded-t-[28px] md:rounded-[28px] overflow-hidden transition-transform duration-500 flex flex-col max-h-[90vh] ${
-          isAnimating ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-[100%] md:translate-y-10 md:scale-95 opacity-0'
-        }`}
-      >
-        {/* Cabecera */}
-        <div className="bg-[#F5F5F5] px-5 py-4 flex items-center justify-between border-b border-gray-200 shrink-0">
-          <div className="flex items-center gap-1.5 text-[15px] font-bold text-dkv-green-dark font-fsme uppercase tracking-wider">
-            <span>Atención al Paciente</span>
+      <div className={`relative w-full md:max-w-[450px] bg-white shadow-2xl rounded-t-[28px] md:rounded-[28px] overflow-hidden transition-transform duration-500 flex flex-col max-h-[90vh] ${isAnimating ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-[100%] md:translate-y-10 md:scale-95 opacity-0'}`}>
+        
+        {/* --- CABECERA VERDE OSCURA --- */}
+        <div className="bg-dkv-green-dark px-6 pt-7 pb-8 text-white shrink-0 relative">
+          
+          <div className="flex items-center justify-between mb-4">
+            {/* 🚀 Título restaurado con text-white y fuente gorda forzada */}
+            <h2 className="text-4xl md:text-5xl font-lemon text-white uppercase tracking-wide m-0 leading-none">
+              CONTACTO
+            </h2>
+            <button 
+              onClick={closeModal} 
+              className="p-1 text-white/80 hover:text-white transition-colors"
+              aria-label="Cerrar modal"
+            >
+              <X className="w-7 h-7" strokeWidth={3} />
+            </button>
           </div>
-          <button 
-            onClick={closeModal} 
-            className="p-1.5 rounded-full bg-[#E5E5E5] text-dkv-green-dark hover:bg-[#D5D5D5] transition-colors"
-          >
-            <X className="w-5 h-5" strokeWidth={2.5} />
-          </button>
-        </div>
 
-        {/* Cuerpo / Formulario */}
-        <div className="px-5 pt-6 pb-10 md:pb-8 overflow-y-auto overscroll-contain">
-          <h3 className="text-[26px] font-lemon text-dkv-green-dark uppercase tracking-tight mb-1 leading-none">
-            CONTACTO
-          </h3>
-          <p className="text-gray-500 text-[16px] font-fsme mb-6">
-            Envíanos tu duda o consulta. Te responderemos lo antes posible.
+          <p className="text-[15px] font-fsme text-white/90 leading-snug mt-6 mb-6">
+            <span className="font-bold text-white">HABLA con un agente exclusivo</span> para resolver cualquier duda.
           </p>
 
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                <Phone className="w-5 h-5 text-white" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[13px] text-white/70 font-fsme leading-tight mb-1">
+                  Llámanos directamente
+                </span>
+                <TrackedPhoneLink 
+                  phone={customerPhone}
+                  seccion="Modal Contacto"
+                  className="text-[26px] font-bold text-white leading-none tracking-tight hover:text-white/80 transition-colors font-fsme"
+                >
+                  {displayPhone}
+                </TrackedPhoneLink>
+              </div>
+            </div>
+            <p className="font-bold text-[16px] text-white font-fsme mt-2">
+              Atención para toda España
+            </p>
+          </div>
+        </div>
+
+        {/* --- CUERPO / FORMULARIO BLANCO --- */}
+        <div className="px-6 py-6 overflow-y-auto overscroll-contain bg-white flex-1">
+          
+          {/* Separador */}
+          <div className="relative flex py-2 items-center mb-6">
+            <div className="flex-grow border-t border-gray-200"></div>
+            <span className="flex-shrink-0 mx-4 text-gray-700 text-sm font-bold uppercase tracking-widest">
+              O envíanos tu consulta
+            </span>
+            <div className="flex-grow border-t border-gray-200"></div>
+          </div>
+
+          {/* Estado de envío y Formulario */}
           {submitStatus === 'success' ? (
             <div className="bg-green-50 text-dkv-green-dark p-8 rounded-2xl text-center border border-green-100 animate-in fade-in zoom-in duration-300">
               <span className="text-5xl mb-4 block">✅</span>
@@ -113,15 +181,15 @@ export default function ContactModalIntercepted() {
             </div>
           ) : (
             <form onSubmit={handleContactSubmit} className="flex flex-col gap-4">
-              <input required type="text" placeholder="Tu Nombre" className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3.5 outline-none focus:bg-white focus:ring-2 focus:ring-dkv-green/50 transition-all font-fsme text-gray-800" value={formData.nombre} onChange={e => setFormData({...formData, nombre: e.target.value})} />
+              <input required type="text" placeholder="Tu Nombre" onFocus={handleFormStart} className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3.5 outline-none focus:bg-white focus:ring-2 focus:ring-dkv-green/50 transition-all font-fsme text-gray-800 text-base md:text-sm" value={formData.nombre} onChange={e => setFormData({...formData, nombre: e.target.value})} />
               <div className="grid grid-cols-2 gap-3">
-                <input required type="tel" placeholder="Teléfono" className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3.5 outline-none focus:bg-white focus:ring-2 focus:ring-dkv-green/50 transition-all font-fsme text-gray-800" value={formData.telefono} onChange={e => setFormData({...formData, telefono: e.target.value})} />
-                <input required type="email" placeholder="Email" className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3.5 outline-none focus:bg-white focus:ring-2 focus:ring-dkv-green/50 transition-all font-fsme text-gray-800" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
+                <input required type="tel" placeholder="Teléfono" onFocus={handleFormStart} className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3.5 outline-none focus:bg-white focus:ring-2 focus:ring-dkv-green/50 transition-all font-fsme text-gray-800 text-base md:text-sm" value={formData.telefono} onChange={e => setFormData({...formData, telefono: e.target.value})} />
+                <input required type="email" placeholder="Email" onFocus={handleFormStart} className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3.5 outline-none focus:bg-white focus:ring-2 focus:ring-dkv-green/50 transition-all font-fsme text-gray-800 text-base md:text-sm" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
               </div>
-              <textarea required placeholder="¿En qué podemos ayudarte?" rows={4} className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3.5 outline-none focus:bg-white focus:ring-2 focus:ring-dkv-green/50 transition-all resize-none font-fsme text-gray-800" value={formData.mensaje} onChange={e => setFormData({...formData, mensaje: e.target.value})} />
+              <textarea required placeholder="¿En qué podemos ayudarte?" onFocus={handleFormStart} rows={4} className="w-full bg-gray-50 border border-gray-200 rounded-xl p-3.5 outline-none focus:bg-white focus:ring-2 focus:ring-dkv-green/50 transition-all resize-none font-fsme text-gray-800 text-base md:text-sm" value={formData.mensaje} onChange={e => setFormData({...formData, mensaje: e.target.value})} />
               
               <label className="flex items-start gap-3 text-[12px] text-gray-500 cursor-pointer mt-1 bg-gray-50 p-3 rounded-xl border border-gray-100">
-                <input required type="checkbox" className="mt-0.5 w-4 h-4 accent-dkv-green shrink-0" checked={formData.consent} onChange={e => setFormData({...formData, consent: e.target.checked})} />
+                <input required type="checkbox" onFocus={handleFormStart} className="mt-0.5 w-4 h-4 accent-dkv-green shrink-0 cursor-pointer" checked={formData.consent} onChange={e => setFormData({...formData, consent: e.target.checked})} />
                 <span className="leading-tight">Acepto la <Link href="/politica-privacidad" className="underline text-dkv-green">política de privacidad</Link> y consiento el envío de información comercial.</span>
               </label>
               
