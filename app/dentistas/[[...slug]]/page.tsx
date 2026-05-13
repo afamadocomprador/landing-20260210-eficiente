@@ -19,6 +19,10 @@ import ScrollToMapButton from "@/components/dentists/ScrollToMapButton";
 import RelatedLinks from "@/components/dentists/links/RelatedLinks"; 
 import FooterLegal from "@/components/FooterLegal"; 
 
+// ⚡️ NUEVAS IMPORTACIONES PARA EL CTA FINAL
+import Link from "next/link";
+import { MessageCircle } from "lucide-react";
+
 export const dynamic = "force-dynamic";
 
 const baseUrl = SITE_CONFIG.domain;
@@ -450,6 +454,48 @@ export default async function DentistasPage({ params }: PageProps) {
               </div>
             </section>
         )}
+
+
+        {/* ⚡️ CTA: EL ATRAPA-FUGAS (Siempre visible antes del footer y relacionados) */}
+        {(() => {
+          const preposicion = navigationData.seo.h1?.preposicion || (pageLevel === '07' ? 'cerca de' : 'en');
+          const locationContextText = isSpain 
+            ? 'en todo el territorio nacional' 
+            : `${preposicion} ${locationName}`;
+          
+          return (
+            <section className="container mx-auto px-safe-x md:px-6 py-12 md:py-16 text-left md:text-center">
+              <div className="max-w-3xl mx-auto bg-gray-50 border border-gray-100 rounded-3xl p-8 md:p-12 shadow-sm">
+                <h3 className="text-2xl md:text-3xl font-lemon text-dkv-green-dark mb-4 uppercase">
+
+                  {totalCentros > 1 ? (
+                    <div className="bloque-duda">
+                      ¿No sabes qué centro dental elegir {locationContextText}?
+                    </div>
+                  ) : (
+                    <div className="bloque-alternativas">
+                      ¿Otros centros cercanos a {locationName}?
+                    </div>
+                  )}
+
+                </h3>
+                <p className="text-lg text-gray-600 font-fsme mb-8">
+                  Nuestro agente exclusivo te ayudará a encontrar el centro ideal más cercano y resolverá cualquier duda que tengas sobre los tratamientos y nuestros precios pactados.
+                </p>
+                {/* ⚡️ BOTÓN GHOST: No compite con el header, pero está ahí cuando se necesita */}
+                <Link 
+                  href="/contacto" 
+                  className="inline-flex items-center justify-center gap-3 bg-transparent border-2 border-dkv-green-dark text-dkv-green-dark font-extrabold font-fsme text-lg px-8 py-4 rounded-xl hover:bg-dkv-green-dark hover:text-white hover:shadow-xl hover:scale-105 transition-all duration-300 w-full sm:w-auto"
+                >
+                  <MessageCircle className="w-6 h-6" />
+                  <span>Contactar con tu agente</span>
+                </Link>
+              </div>
+            </section>
+          );
+        })()}
+
+
 
         <RelatedLinks 
           data={navigationData.relatedLinks} 
