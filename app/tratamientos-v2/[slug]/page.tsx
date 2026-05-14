@@ -206,6 +206,7 @@ export default function TreatmentPage({ params }: Props) {
       {/* 👇 AÑADIMOS EL COMPONENTE INVISIBLE AQUÍ */}
       <ScrollToTop />
       <TreatmentLayout treatment={treatment} />
+
     </>
   );
 }
