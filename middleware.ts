@@ -16,6 +16,7 @@ const redis = new Redis({
 const ratelimit = new Ratelimit({
   redis: redis,
   limiter: Ratelimit.slidingWindow(30, '10 s'),
+  //limiter: Ratelimit.slidingWindow(3, '10 s'),
   analytics: true, // Esto te permitirá ver gráficos en el panel de Upstash
 });
 
