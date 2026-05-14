@@ -19,6 +19,8 @@ import ScrollToMapButton from "@/components/dentists/ScrollToMapButton";
 import RelatedLinks from "@/components/dentists/links/RelatedLinks"; 
 import FooterLegal from "@/components/FooterLegal"; 
 
+import TrackedContactCTA from "@/components/dentists/TrackedContactCTA";
+
 // ⚡️ NUEVAS IMPORTACIONES PARA EL CTA FINAL
 import Link from "next/link";
 import { MessageCircle } from "lucide-react";
@@ -483,6 +485,7 @@ export default async function DentistasPage({ params }: PageProps) {
                   Nuestro agente exclusivo te ayudará a encontrar el centro ideal más cercano y resolverá cualquier duda que tengas sobre los tratamientos y nuestros precios pactados.
                 </p>
                 {/* ⚡️ BOTÓN GHOST: No compite con el header, pero está ahí cuando se necesita */}
+                {/*  ****** no es componente client ************************************
                 <Link 
                   href="/contacto" 
                   className="inline-flex items-center justify-center gap-3 bg-transparent border-2 border-dkv-green-dark text-dkv-green-dark font-extrabold font-fsme text-lg px-8 py-4 rounded-xl hover:bg-dkv-green-dark hover:text-white hover:shadow-xl hover:scale-105 transition-all duration-300 w-full sm:w-auto"
@@ -490,6 +493,10 @@ export default async function DentistasPage({ params }: PageProps) {
                   <MessageCircle className="w-6 h-6" />
                   <span>Contactar con tu agente</span>
                 </Link>
+                ********************************************************************************   */}
+
+                <TrackedContactCTA />
+
               </div>
             </section>
           );
