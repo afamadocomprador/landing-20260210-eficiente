@@ -1,11 +1,19 @@
+// components/ui/ShareButton.tsx
+
 "use client";
 
 import { Share2, Check } from "lucide-react";
 import { useState, useEffect } from "react";
 
+import { usePostHog } from 'posthog-js/react';
+import { usePathname } from 'next/navigation';
+
 export default function ShareButton({ id, title }: { id: string; title: string }) {
   const [copied, setCopied] = useState(false);
   const [mounted, setMounted] = useState(false);
+
+  const posthog = usePostHog();
+  const pathname = usePathname();
 
   useEffect(() => {
     setMounted(true);
@@ -14,6 +22,16 @@ export default function ShareButton({ id, title }: { id: string; title: string }
   const handleShare = async () => {
     // ⚡️ Construimos la URL con el Query Param (SEO) y el Hash (Scroll)
     const url = `${window.location.origin}${window.location.pathname}?share=${id}#${id}`;
+
+    if (posthog) {
+      posthog.capture('contenido_compartido', {
+        origen: pathname,
+        tipo_contenido: 'tratamiento', // Especificamos que es un tratamiento
+        id_compartido: title // Guardamos el nombre (ej. "Ortodoncia Invisible")
+      });
+    }
+
+
     
     if (navigator.share) {
       try {
