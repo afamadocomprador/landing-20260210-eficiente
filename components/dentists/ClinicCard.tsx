@@ -34,6 +34,14 @@ export default function ClinicCard({ clinic, onSelectClinic, isSelected = false 
 
     const shareTitle = `Clínica DKV: ${clinic.name}`;
 
+    if (posthog) {
+      posthog.capture('contenido_compartido', {
+        origen: pathname,
+        tipo_contenido: 'clinica',
+        id_compartido: clinic.name
+      });
+    }
+
     try {
       if (navigator.share) {
         // En móviles, mandamos solo Título y URL. Sin el parámetro 'text', 
