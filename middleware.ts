@@ -2,8 +2,9 @@
 
 
 import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/request';
+import type { NextRequest } from 'next/server'; 
 import { Ratelimit } from '@upstash/ratelimit';
+
 import { Redis } from '@upstash/redis';
 
 // 1. Conexión a tu instancia de Frankfurt
