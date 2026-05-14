@@ -5,11 +5,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
+// 🆕 NUEVAS IMPORTACIONES PARA EL BOTÓN Y LA ANALÍTICA
+import { MessageCircle } from 'lucide-react';
+import { usePostHog } from 'posthog-js/react';
+import { usePathname } from 'next/navigation';
+
 interface StickySubNavProps {
   activeId: string; 
 }
 
-// ⚡️ DICCIONARIO CENTRALIZADO DE NAVEGACIÓN TRANSVERSAL (CORREGIDO)
 const NAVIGATION_CLUSTERS = {
   estetica: [
     { id: 'blanqueamiento', label: 'BLANQUEAMIENTO', href: '/tratamientos-v2/estetica-blanqueamiento' },
@@ -66,10 +70,12 @@ export default function StickySubNav({ activeId }: StickySubNavProps) {
   const [isVisible, setIsVisible] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Lógica de visibilidad al hacer scroll
+  // 📊 INICIALIZAMOS HOOKS DE ANALÍTICA (Misma lógica que el botón flotante anterior)
+  const posthog = usePostHog();
+  const pathname = usePathname();
+
   useEffect(() => {
     const handleScroll = () => {
-      // Aparece al pasar la primera visualización (hero)
       setIsVisible(window.scrollY > 350); 
     };
 
@@ -79,17 +85,13 @@ export default function StickySubNav({ activeId }: StickySubNavProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // ⚡️ LÓGICA DE AUTO-SCROLL A LA PÍLDORA ACTIVA
   useEffect(() => {
     if (isVisible && scrollContainerRef.current) {
       const activeElement = document.getElementById(`pill-${activeId}`);
       const container = scrollContainerRef.current;
 
       if (activeElement && container) {
-        // Calculamos la posición para dejar el botón en el centro de la pantalla
         const scrollLeft = activeElement.offsetLeft - (container.offsetWidth / 2) + (activeElement.offsetWidth / 2);
-        
-        // Ejecutamos el scroll de forma suave
         container.scrollTo({
           left: scrollLeft,
           behavior: 'smooth'
@@ -98,7 +100,30 @@ export default function StickySubNav({ activeId }: StickySubNavProps) {
     }
   }, [isVisible, activeId]);
 
-  // ⚡️ LÓGICA DE RUTEO INTELIGENTE AUTOMÁTICO
+  // 📊 FUNCIÓN DE TRACKING (Enviará el evento a tu panel de conversión)
+  const handleContactClick = () => {
+    if (posthog) {
+      posthog.capture('sticky_cta_clicado', {
+        origen: pathname
+      });
+    }
+  };
+
+
+  // 🟢 --- AÑADIDO: FUNCIÓN DE TRACKING DE NAVEGACIÓN LATERAL --- 🟢
+  const handleSubTreatmentClick = (label: string, href: string) => {
+    if (posthog) {
+      posthog.capture('subtratamiento_clicado', {
+        origen: pathname,                   // Para saber que viene del submenú
+        categoria_padre: pathname,          // Mantenemos este campo para que coincida con la Home
+        nombre_sub_opcion: label,           // Qué ha pulsado (ej. 'METÁLICA')
+        url_destino: href                   // A dónde va
+      });
+    }
+  };
+  // 🟢 ----------------------------------------------------------- 🟢
+
+
   const activeCluster = Object.values(NAVIGATION_CLUSTERS).find(cluster => 
     cluster.some(item => item.id === activeId)
   );
@@ -107,37 +132,54 @@ export default function StickySubNav({ activeId }: StickySubNavProps) {
 
   return (
     <div 
+      // 🎨 REDISEÑO ESTRUCTURAL: Ahora se ancla a bottom-0, ocupa el 100% (w-full) y solo se ve en móvil (md:hidden)
       className={`
-        fixed bottom-6 left-0 right-0 z-[60] w-full px-4
-        transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) pointer-events-none
-        flex justify-center
-        ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-[150%] opacity-0'}
+        fixed bottom-0 left-0 right-0 z-[90] w-full md:hidden
+        transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) pointer-events-none
+        ${isVisible ? 'translate-y-0' : 'translate-y-full'}
       `}
     >
 
-      <div 
-        ref={scrollContainerRef}
-        className="bg-[#022A27]/95 backdrop-blur-xl border border-white/10 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.3)] rounded-full p-1.5 flex items-center justify-start gap-2 overflow-x-auto hide-scrollbar max-w-full pointer-events-auto"
-      >
+      {/* 🎨 CONTENEDOR DOCK UNIFICADO: Fondo oscuro corporativo con desenfoque */}
+      <div className="bg-[#022A27]/95 backdrop-blur-xl border-t border-white/10 shadow-[0_-15px_40px_-10px_rgba(0,0,0,0.5)] flex flex-col pointer-events-auto pb-[env(safe-area-inset-bottom)]">
         
-        {activeCluster.map((item) => {
-          const isActive = item.id === activeId;
+        {/* ⚡️ FILA 1: PÍLDORAS DE NAVEGACIÓN (SCROLL HORIZONTAL) */}
+        <div 
+          ref={scrollContainerRef}
+          className="flex items-center gap-2 overflow-x-auto hide-scrollbar px-4 py-3 border-b border-white/5"
+        >
+          {activeCluster.map((item) => {
+            const isActive = item.id === activeId;
 
-          return (
-            <Link 
-              key={item.id}
-              id={`pill-${item.id}`} 
-              href={item.href}
-              className={`snap-start shrink-0 px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 text-center ${
-                isActive 
-                  ? 'bg-dkv-green text-white shadow-lg' 
-                  : 'text-white/70 hover:bg-white/10 hover:text-white'
-              }`}
-            >
-              {item.label}
-            </Link>
-          );
-        })}
+            return (
+              <Link 
+                key={item.id}
+                id={`pill-${item.id}`} 
+                href={item.href}
+                onClick={() => handleSubTreatmentClick(item.label, item.href)}
+                className={`snap-start shrink-0 px-5 py-2 rounded-full text-xs font-bold transition-all duration-300 text-center uppercase tracking-wide border border-transparent ${
+                  isActive 
+                    ? 'bg-dkv-green text-white shadow-lg' 
+                    : 'text-white/70 bg-white/5 hover:bg-white/10 hover:text-white border-white/10'
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* ⚡️ FILA 2: BOTÓN DE CONTACTO INTEGRADO (CON TRACKING CRO) */}
+        <div className="px-4 py-3">
+          <Link 
+            href="/contacto"
+            onClick={handleContactClick}
+            className="flex items-center justify-center gap-2.5 w-full bg-dkv-green-dark text-white font-bold font-fsme px-5 py-3.5 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.25)] active:scale-[0.98] transition-all border border-white/20"
+          >
+            <MessageCircle className="w-5 h-5 fill-white/20" />
+            <span className="tracking-wide uppercase text-sm">Consultas</span>
+          </Link>
+        </div>
 
       </div>
     </div>
