@@ -13,6 +13,9 @@ import HeroSearch from '@/components/home/HeroSearch';
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import ShareButton from "@/components/ui/ShareButton";
 
+import TrackedTreatmentCTA from '@/components/tratamientos-v2/TrackedTreatmentCTA';
+
+
 // --- ICONOS COMPOSITE ---
 const CustomTimerIcon = () => <img src="/images/icons/carillas_esteticas_de_composite_-_item_1.png" alt="Icono rápido y económico" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
 const CustomBrushIcon = () => <img src="/images/icons/carillas_esteticas_de_composite_-_item_2.png" alt="Icono modelado directo" className="w-16 h-16 shrink-0 relative z-10 object-contain" />;
@@ -662,6 +665,23 @@ export function TreatmentLayout({ treatment }: Props) {
         </main>
       </div>
       
+      {/* 🟢 --- AÑADIDO: SECCIÓN DE RESCATE (CTA) --- 🟢 */}
+      <section className="container mx-auto px-safe-x md:px-6 py-12 md:py-16 text-left md:text-center">
+        <div className="max-w-3xl mx-auto bg-gray-50 border border-gray-100 rounded-3xl p-8 md:p-12 shadow-sm">
+          <h3 className="text-2xl md:text-3xl font-lemon text-dkv-green-dark mb-4 uppercase">
+            ¿Tienes dudas?
+          </h3>
+          <p className="text-lg text-gray-600 font-fsme mb-8">
+            Nuestro agente exclusivo te ayudará a resolver cualquier duda y te informará sobre los detalles de nuestros precios pactados.
+          </p>
+          <TrackedTreatmentCTA />
+        </div>
+      </section>
+      {/* 🟢 ----------------------------------------- 🟢 */}
+
+
+
+
       <FooterLegal />
     </>
   );
