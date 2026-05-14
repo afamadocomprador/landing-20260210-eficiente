@@ -460,7 +460,8 @@ export default async function DentistasPage({ params }: PageProps) {
 
         {/* ⚡️ CTA: EL ATRAPA-FUGAS (Siempre visible antes del footer y relacionados) */}
         {(() => {
-          const preposicion = navigationData.seo.h1?.preposicion || (pageLevel === '07' ? 'cerca de' : 'en');
+          //const preposicion = navigationData.seo.h1?.preposicion || (pageLevel === '07' ? 'cerca de' : 'en');
+          const preposicion = (navigationData.seo.h1 as any)?.preposicion || (pageLevel === '07' ? 'cerca de' : 'en');
           const locationContextText = isSpain 
             ? 'en todo el territorio nacional' 
             : `${preposicion} ${locationName}`;
