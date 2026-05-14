@@ -6,8 +6,14 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { MessageCircle } from 'lucide-react';
 
+import { usePostHog } from 'posthog-js/react';
+import { usePathname } from 'next/navigation';
+
 export default function SmartStickyCTA() {
   const [isVisible, setIsVisible] = useState(false);
+
+  const posthog = usePostHog();
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,6 +34,14 @@ export default function SmartStickyCTA() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleStickyClick = () => {
+    if (posthog) {
+      posthog.capture('sticky_cta_clicado', {
+        origen: pathname
+      });
+    }
+  };
+
   return (
     <div 
       // z-[90] para que esté por encima del contenido, pero por debajo de modales (z-[9999]) y menú (z-[1010])
@@ -38,6 +52,7 @@ export default function SmartStickyCTA() {
     >
       <Link 
         href="/contacto"
+        onClick={handleStickyClick}
         className="flex items-center justify-center gap-2.5 bg-dkv-green-dark text-white font-bold font-fsme px-5 py-3.5 rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.25)] active:scale-95 transition-all border border-white/20"
       >
         <MessageCircle className="w-5 h-5 fill-white/20" />
