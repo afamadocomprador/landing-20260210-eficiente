@@ -15,6 +15,7 @@ export default function SmartStickyCTA() {
   const posthog = usePostHog();
   const pathname = usePathname();
 
+
   useEffect(() => {
     const handleScroll = () => {
       // El botón aparece cuando el usuario ha bajado 350px (aprox. al pasar el Hero)
@@ -24,6 +25,9 @@ export default function SmartStickyCTA() {
         setIsVisible(false);
       }
     };
+
+
+
 
     // Usamos passive: true para que el evento de scroll no ralentice la página en móviles
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -41,6 +45,16 @@ export default function SmartStickyCTA() {
       });
     }
   };
+
+
+  // -------------------------------------------------------------------
+  // 🚨 2. EL CORTAFUEGOS (DESPUÉS DE LOS HOOKS) 🚨
+  // -------------------------------------------------------------------
+  // Si detecta la ruta de tratamientos, aborta el renderizado para no pisar el Dock Unificado
+  //if (pathname?.includes("/tratamientos-v2/")) {
+  if (pathname?.includes("/tratamientos-v2/") || pathname?.includes("/contacto")) {
+    return null;
+  }
 
   return (
     <div 
