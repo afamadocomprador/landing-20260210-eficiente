@@ -7,6 +7,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, Stethoscope, MapPin, MessageCircle, Calculator, Home } from "lucide-react";
 
+import { usePostHog } from 'posthog-js/react';
+
 interface HeaderProps {
   onOpenCalculator?: () => void;
 }
@@ -30,14 +32,14 @@ const NAV_ITEMS: NavItem[] = [
   },
   { 
     label: "Tratamientos", 
-    subLabel: "Ver precios y coberturas",
+    subLabel: "Ver precios",
     href: "#tratamientos", 
     ariaLabel: "Ver precios de tratamientos cubiertos",
     icon: Stethoscope
   },
   { 
     label: "Dentistas", 
-    subLabel: "Encuentra tu clínica cercana",
+    subLabel: "Encuentra tu centro",
     href: "#dentistas", 
     ariaLabel: "Buscar dentistas en toda España o cerca de mí",
     icon: MapPin
@@ -55,6 +57,8 @@ const NAV_ITEMS: NavItem[] = [
 export default function Header({ onOpenCalculator }: HeaderProps) {
   const pathname = usePathname();  
   const isHome = pathname === "/";
+
+  const posthog = usePostHog();
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [showCta, setShowCta] = useState(false);
@@ -81,6 +85,22 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
+
+
+  // 🟢 --- LÍNEAS AÑADIDAS: MANEJADOR DEL BOTÓN HAMBURGUESA --- 🟢
+  const handleToggleMobileMenu = () => {
+    const newState = !isMobileMenuOpen;
+    setIsMobileMenuOpen(newState);
+    
+    // Solo disparamos el evento si el menú se está ABRIENDO
+    if (newState && posthog) {
+      posthog.capture('menu_movil_abierto', {
+        origen: pathname
+      });
+    }
+  };
+
+
 
   return (
     <>
@@ -169,7 +189,10 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
             </div>
 
             {/* BOTÓN MENÚ MÓVIL */}
+            {/* **** cambiamos el onClinck para PostHog *********************
             <button className="md:hidden text-white p-2" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            ******************** */}
+            <button className="md:hidden text-white p-2" onClick={handleToggleMobileMenu}
                     aria-label={isMobileMenuOpen ? "Cerrar menú principal" : "Abrir menú principal"}
             >
               <div className={`transition-transform duration-300 ${isMobileMenuOpen ? 'rotate-90' : 'rotate-0'}`}>
@@ -208,6 +231,15 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
                   key={item.label}
                   href={finalHref}
                   onClick={(e) => {
+
+                    if (posthog) {
+                      posthog.capture('opcion_menu_clicada', {
+                        origen: pathname,
+                        nombre_opcion: item.label,
+                        url_destino: finalHref
+                      });
+                    }
+
                     setIsMobileMenuOpen(false);
                     if (item.label === "Inicio" && isHome) {
                       e.preventDefault();
@@ -235,7 +267,24 @@ export default function Header({ onOpenCalculator }: HeaderProps) {
 
         {/* CTA BOTTOM MÓVIL */}
         <div className={`w-full max-w-sm mx-auto mt-6 transition-all duration-500 delay-150 ${isMobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+         {/* *************** cambiamos onclik para HostPog *********************
           <Link href="/presupuesto" onClick={() => setIsMobileMenuOpen(false)} className="w-full bg-white text-dkv-green py-4 rounded-[1.5rem] font-lemon text-base font-bold uppercase tracking-widest shadow-xl flex items-center justify-center gap-3">
+          ******************************************************  */}
+ 
+          <Link 
+            href="/presupuesto" 
+            onClick={() => {
+              if (posthog) {
+                posthog.capture('opcion_menu_clicada', {
+                  origen: pathname,
+                  nombre_opcion: 'Calcula tu precio (CTA)',
+                  url_destino: '/presupuesto'
+                });
+              }
+              setIsMobileMenuOpen(false);
+            }} 
+            className="w-full bg-white text-dkv-green py-4 rounded-[1.5rem] font-lemon text-base font-bold uppercase tracking-widest shadow-xl flex items-center justify-center gap-3"
+          >
             <Calculator className="w-5 h-5" />
             Calcula tu precio
           </Link>
